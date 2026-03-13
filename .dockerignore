@@ -1,0 +1,12 @@
+node_modules
+npm-debug.log
+dist
+.env
+.git
+.gitignore
+*.db
+*.sqlite
+/public/models/*
+!/public/models/.gitkeep
+/public/thumbnails/*
+!/public/thumbnails/.gitkeep
