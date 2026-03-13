@@ -576,8 +576,8 @@ app.get('*', (req, res) => {
     }
 });
 
-app.listen(PORT, '127.0.0.1', () => {
-    console.log(`[SUCCESS] Backend Server đang chạy tại http://127.0.0.1:${PORT}`);
+app.listen(PORT, '0.0.0.0', () => {
+    console.log(`[SUCCESS] Backend Server đang chạy tại cổng ${PORT}`);
     console.log(`[INFO] Thư mục upload: ${path.resolve(__dirname, '../public/models')}`);
 }).on('error', (err) => {
     if (err.code === 'EADDRINUSE') {
