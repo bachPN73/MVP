@@ -205,7 +205,7 @@ export default function Landing() {
                                 <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent z-10 pointer-events-none rounded-[1.8rem]"></div>
                                 <img
                                     className="w-full h-full rounded-[1.5rem] relative z-0 object-cover"
-                                    src="/Gemini_Generated_Image_wy3mdewy3mdewy3m.png"
+                                    src="https://images.unsplash.com/photo-1633167606207-d840b5070fc2?q=80&w=2000&auto=format&fit=crop"
                                     alt="Edu Tech Demo"
                                 />
                             </div>
@@ -426,7 +426,7 @@ export default function Landing() {
                         </p>
                         <div className="flex gap-8">
                             <span className="text-xs text-slate-400 font-black uppercase tracking-tighter">Powered by Gemini AI</span>
-                            <span className="text-xs text-slate-400 font-black uppercase tracking-tighter">React 19 Framework</span>
+                            <span className="text-xs text-slate-400 font-black uppercase tracking-tighter">React 18 Framework</span>
                         </div>
                     </div>
                 </div>

@@ -92,6 +92,7 @@ app.use(cors({
 app.use(express.json());
 app.use('/models', express.static(path.resolve(__dirname, '../public/models')));
 app.use('/thumbnails', express.static(path.resolve(__dirname, '../public/thumbnails')));
+app.use(express.static(path.resolve(__dirname, '../public')));
 
 // Serve giao diện frontend đã build tĩnh
 const distPath = path.resolve(__dirname, '../dist');
