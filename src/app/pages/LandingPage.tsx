@@ -200,17 +200,14 @@ export default function Landing() {
                         <div className="flex-1 w-full max-w-2xl lg:max-w-none relative animate-in zoom-in duration-700">
                             <div className="absolute inset-0 bg-gradient-to-tr from-primary/10 to-indigo-500/10 rounded-3xl blur-3xl transform rotate-3"></div>
 
-                            {/* Main Video Container */}
+                            {/* Main Image Container */}
                             <div className="relative rounded-[2rem] bg-slate-900 p-2 sm:p-3 shadow-2xl overflow-hidden aspect-video group transform transition-transform duration-500">
                                 <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent z-10 pointer-events-none rounded-[1.8rem]"></div>
-                                <iframe
-                                    className="w-full h-full rounded-[1.5rem] relative z-0"
-                                    src="https://www.youtube.com/embed/dQw4w9WgXcQ?controls=1&rel=0&playsinline=1&modestbranding=1&loop=1&playlist=dQw4w9WgXcQ"
-                                    title="Edu Tech Demo"
-                                    frameBorder="0"
-                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                    allowFullScreen
-                                ></iframe>
+                                <img
+                                    className="w-full h-full rounded-[1.5rem] relative z-0 object-cover"
+                                    src="/Gemini_Generated_Image_wy3mdewy3mdewy3m.png"
+                                    alt="Edu Tech Demo"
+                                />
                             </div>
 
                             {/* Floating decorative elements - Hidden on smaller mobile */}
