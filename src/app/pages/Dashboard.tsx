@@ -14,12 +14,14 @@ export default function Dashboard() {
     useEffect(() => {
         // Try getting user name from local storage auth data
         try {
-            const authData = localStorage.getItem('auth');
+        try {
+            const authData = localStorage.getItem('edu_tech_user');
             if (authData) {
-                const { user } = JSON.parse(authData);
+                const user = JSON.parse(authData);
                 if (user && user.name) setUserName(user.name);
                 if (user && user.plan) setUserPlan(user.plan.toLowerCase());
             }
+        } catch (e) { }
         } catch (e) { }
 
         const fetchModels = async () => {

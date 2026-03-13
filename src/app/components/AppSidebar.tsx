@@ -1,5 +1,5 @@
 import { Link } from 'react-router';
-import { Home, Library, Sparkles, BookOpen, LogOut, User, CreditCard, X, Globe2 } from 'lucide-react';
+import { Home, Library, Sparkles, BookOpen, LogOut, User, CreditCard, X } from 'lucide-react';
 import { useState, useEffect } from 'react';
 
 interface AppSidebarProps {
@@ -30,13 +30,11 @@ export function AppSidebar({ currentPath = '/', isOpen = false, setIsOpen }: App
     };
 
     const menuItems = [
-        { path: '/', label: 'Giới thiệu', icon: Globe2 },
         { path: '/dashboard', label: 'Trang chủ', icon: Home },
         { path: '/library', label: 'Thư viện', icon: Library },
         { path: '/find-ai', label: 'Find with AI', icon: Sparkles },
         { path: '/profile', label: 'Tài khoản', icon: User },
         { path: '/pricing-app', label: 'Gói dịch vụ', icon: CreditCard },
-
         { path: '/guide-app', label: 'Hướng dẫn', icon: BookOpen },
     ];
 
