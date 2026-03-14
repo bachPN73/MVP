@@ -600,8 +600,5 @@ app.get('*', (req, res) => {
     }
 });
 
-    }
-});
-
 // Remove old listen at bottom to prevent double listening
 // The server is now started at the top.
