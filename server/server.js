@@ -19,6 +19,22 @@ const __dirname = path.dirname(__filename);
 const app = express();
 const PORT = process.env.PORT || 3005;
 
+// Health Check Endpoint - Call this early to pass Render's port scan
+app.get('/health', (req, res) => res.status(200).send('OK'));
+app.get('/ping', (req, res) => res.status(200).send('pong'));
+
+// Start listening immediately
+const server = app.listen(PORT, '0.0.0.0', () => {
+    console.log(`[SUCCESS] Backend Server is binding to port ${PORT} at 0.0.0.0`);
+    console.log(`[INFO] NODE_ENV: ${process.env.NODE_ENV}`);
+}).on('error', (err) => {
+    if (err.code === 'EADDRINUSE') {
+        console.error(`[ERROR] Port ${PORT} already in use.`);
+    } else {
+        console.error('[ERROR] Server startup error:', err);
+    }
+});
+
 // Multer Storage Configuration - Model files
 const modelStorage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -137,6 +153,13 @@ async function initDb() {
             token TEXT NOT NULL,
             expires_at BIGINT NOT NULL
         )`);
+
+        // Migration: Đảm bảo cột 'type' tồn tại trong bảng 'models'
+        try {
+            await pool.query("ALTER TABLE models ADD COLUMN IF NOT EXISTS type TEXT DEFAULT '3D'");
+        } catch (e) {
+            console.log('[INFO] Cột type đã tồn tại hoặc không thể thêm.');
+        }
 
         console.log('Đã khởi tạo các bảng database thành công.');
 
@@ -577,13 +600,8 @@ app.get('*', (req, res) => {
     }
 });
 
-app.listen(PORT, '0.0.0.0', () => {
-    console.log(`[SUCCESS] Backend Server đang chạy tại cổng ${PORT}`);
-    console.log(`[INFO] Thư mục upload: ${path.resolve(__dirname, '../public/models')}`);
-}).on('error', (err) => {
-    if (err.code === 'EADDRINUSE') {
-        console.error(`[ERROR] Cổng ${PORT} đã bị sử dụng bởi ứng dụng khác.`);
-    } else {
-        console.error('[ERROR] Lỗi khi khởi chạy server:', err);
     }
 });
+
+// Remove old listen at bottom to prevent double listening
+// The server is now started at the top.

@@ -230,7 +230,7 @@ export default function Dashboard() {
                                             {getSubjectName(material.subject)}
                                         </span>
                                         <span className="px-2.5 py-1 bg-white/90 backdrop-blur-md rounded-md text-[11px] font-bold text-slate-700 shadow-sm uppercase tracking-wider">
-                                            {material.type === '3D' ? '3D' : 'Info'}
+                                            {(material.type === '3D' || (material.type as string) === '3d-model') ? '3D' : 'Info'}
                                         </span>
                                     </div>
 
