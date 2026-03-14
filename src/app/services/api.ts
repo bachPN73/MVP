@@ -1,8 +1,10 @@
 import { User, LoginResponse, ModelInput } from '../data/materialsData';
 
 const IS_DEV = import.meta.env?.DEV;
-// Vercel/Vite sẽ tìm biến VITE_API_URL trong cấu hình Environment Variables
-export const BASE_URL = import.meta.env.VITE_API_URL || (IS_DEV ? `http://127.0.0.1:3005` : '');
+// Ưu tiên VITE_API_URL, sau đó là origin hiện tại nếu không phải dev, cuối cùng là localhost
+const DEFAULT_DEV_URL = 'http://127.0.0.1:3005';
+export const BASE_URL = import.meta.env.VITE_API_URL || 
+                       (IS_DEV ? DEFAULT_DEV_URL : window.location.origin);
 const API_URL = `${BASE_URL}/api`;
 
 export const api = {

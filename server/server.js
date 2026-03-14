@@ -615,6 +615,17 @@ app.get('*', (req, res) => {
     if (req.path.startsWith('/api')) {
         return res.status(404).json({ error: 'API route not found' });
     }
+    
+    // Tránh trả về index.html (HTML) khi không tìm thấy tệp tĩnh.
+    // Việc này giúp Three.js/frontend nhận biết lỗi 404 thay vì lỗi "Unexpected token <"
+    const staticExtensions = ['.glb', '.gltf', '.fbx', '.json', '.jpg', '.jpeg', '.png', '.webp', '.svg', '.js', '.css', '.map'];
+    const ext = path.extname(req.path).toLowerCase();
+    
+    if (staticExtensions.includes(ext) || req.path.startsWith('/models/') || req.path.startsWith('/thumbnails/')) {
+        console.log(`[404] Resource not found: ${req.path}`);
+        return res.status(404).send('Resource not found');
+    }
+
     const htmlFile = path.resolve(__dirname, '../dist/index.html');
     if (fs.existsSync(htmlFile)) {
         res.sendFile(htmlFile);
