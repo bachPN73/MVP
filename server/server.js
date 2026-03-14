@@ -52,7 +52,7 @@ const thumbnailStorage = multer.diskStorage({
 const upload = multer({
     storage: modelStorage,
     fileFilter: (req, file, cb) => {
-        const allowedExtensions = ['.glb', '.gltf', '.jpg', '.jpeg', '.png', '.webp', '.pdf'];
+        const allowedExtensions = ['.glb', '.gltf', '.fbx', '.jpg', '.jpeg', '.png', '.webp', '.pdf'];
         const ext = path.extname(file.originalname).toLowerCase();
         if (allowedExtensions.includes(ext)) {
             cb(null, true);
@@ -194,6 +194,17 @@ app.post('/api/users', async (req, res) => {
             [name, email, role, plan || 'free', hashPassword]
         );
         res.json({ id: insertRes.rows[0].id, message: 'Đăng ký thành công' });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+app.delete('/api/users/:id', async (req, res) => {
+    const { id } = req.params;
+    try {
+        const result = await pool.query('DELETE FROM users WHERE id = $1', [id]);
+        if (result.rowCount === 0) return res.status(404).json({ error: 'Người dùng không tồn tại' });
+        res.json({ message: 'Xóa người dùng thành công' });
     } catch (err) {
         res.status(500).json({ error: err.message });
     }

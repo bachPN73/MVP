@@ -1,5 +1,5 @@
 import { AdminLayout } from '../../components/admin/AdminLayout';
-import { Users, Search, Filter, MoreVertical, ShieldAlert, BadgeCheck } from 'lucide-react';
+import { Users, Search, Filter, MoreVertical, ShieldAlert, BadgeCheck, Trash2, CheckCircle2, AlertCircle } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { api } from '../../services/api';
 
@@ -28,6 +28,22 @@ export default function AdminUsersPage() {
         (user.email || '').toLowerCase().includes(searchTerm.toLowerCase())
     );
 
+    const [status, setStatus] = useState<{ type: 'success' | 'error' | null, message: string }>({ type: null, message: "" });
+
+    const handleDeleteUser = async (id: number, name: string) => {
+        if (window.confirm(`Bạn có chắc chắn muốn xóa người dùng "${name}" không?\nHành động này không thể hoàn tác.`)) {
+            try {
+                await api.deleteUser(id);
+                setUsers(prev => prev.filter(u => u.id !== id));
+                setStatus({ type: 'success', message: 'Đã xóa người dùng thành công.' });
+                setTimeout(() => setStatus({ type: null, message: "" }), 3000);
+            } catch (error: any) {
+                console.error("Failed to delete user", error);
+                setStatus({ type: 'error', message: 'Xóa thất bại: ' + error.message });
+            }
+        }
+    };
+
     return (
         <AdminLayout>
             <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4 mb-8">
@@ -54,6 +70,13 @@ export default function AdminUsersPage() {
                     </button>
                 </div>
             </div>
+
+            {status.type && (
+                <div className={`mb-6 flex items-center gap-3 p-4 rounded-xl border ${status.type === 'success' ? 'bg-emerald-50 border-emerald-200 text-emerald-700' : 'bg-rose-50 border-rose-200 text-rose-700'}`}>
+                    {status.type === 'success' ? <CheckCircle2 className="w-5 h-5" /> : <AlertCircle className="w-5 h-5" />}
+                    <p className="font-medium text-sm">{status.message}</p>
+                </div>
+            )}
 
             <div className="bg-transparent md:bg-white md:border md:border-slate-200 md:rounded-xl overflow-hidden md:shadow-sm">
                 {/* Desktop view table */}
@@ -122,9 +145,18 @@ export default function AdminUsersPage() {
                                             )}
                                         </td>
                                         <td className="px-6 py-4 text-right">
-                                            <button className="text-slate-400 hover:text-indigo-600 transition-colors p-2 rounded-lg hover:bg-indigo-50">
-                                                <MoreVertical className="w-5 h-5" />
-                                            </button>
+                                            <div className="flex justify-end gap-2">
+                                                <button 
+                                                    onClick={() => handleDeleteUser(user.id, user.name)}
+                                                    className="text-slate-400 hover:text-rose-600 transition-colors p-2 rounded-lg hover:bg-rose-50"
+                                                    title="Xóa người dùng"
+                                                >
+                                                    <Trash2 className="w-5 h-5" />
+                                                </button>
+                                                <button className="text-slate-400 hover:text-indigo-600 transition-colors p-2 rounded-lg hover:bg-indigo-50">
+                                                    <MoreVertical className="w-5 h-5" />
+                                                </button>
+                                            </div>
                                         </td>
                                     </tr>
                                 ))
@@ -167,6 +199,12 @@ export default function AdminUsersPage() {
                                             )}
                                         </div>
                                     </div>
+                                    <button 
+                                        onClick={() => handleDeleteUser(user.id, user.name)}
+                                        className="absolute top-2 right-8 p-1 text-slate-400 hover:text-rose-600"
+                                    >
+                                        <Trash2 className="w-3.5 h-3.5" />
+                                    </button>
                                     <button className="absolute top-2 right-2 p-1 text-slate-400">
                                         <MoreVertical className="w-3.5 h-3.5" />
                                     </button>

@@ -13,6 +13,15 @@ export const api = {
         if (!response.ok) throw new Error(data.error || 'Failed to fetch users');
         return data;
     },
+    
+    deleteUser: async (id: number | string): Promise<{ message: string }> => {
+        const response = await fetch(`${API_URL}/users/${id}`, {
+            method: 'DELETE',
+        });
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.error || 'Failed to delete user');
+        return data;
+    },
 
     register: async (userData: Partial<User> & { password?: string }): Promise<{ id: number; message: string }> => {
         const response = await fetch(`${API_URL}/users`, {

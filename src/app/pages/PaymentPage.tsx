@@ -11,9 +11,10 @@ export default function PaymentPage() {
     const [step, setStep] = useState(1);
 
     const plans: Record<string, any> = {
-        free: { name: "Free", price: 0 },
-        advanced: { name: "Advanced", price: 99000 },
-        premium: { name: "Premium", price: 199000 },
+        free: { name: "Miễn phí", price: 0 },
+        basic: { name: "Cơ bản", price: 249000 },
+        pro: { name: "Chuyên nghiệp", price: 499000 },
+        school: { name: "Trường học", price: 9000000 },
     };
 
     const plan = plans[planId || "free"];

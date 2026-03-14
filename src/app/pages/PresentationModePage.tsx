@@ -2,7 +2,7 @@ import { useParams, useNavigate } from 'react-router';
 import { materials as mockMaterials, Material } from '../data/materialsData';
 import { X, Maximize2, Minimize2, RotateCcw, BookOpen, Loader2 } from 'lucide-react';
 import { useState, useEffect } from 'react';
-import { api } from '../services/api';
+import { api, BASE_URL } from '../services/api';
 import ModelViewer from '../components/ModelViewer';
 
 export default function PresentationMode() {
@@ -25,8 +25,8 @@ export default function PresentationMode() {
                     if (data && !data.error) {
                         setMaterial({
                             id, title: data.title, subject: data.subject,
-                            type: '3d-model', description: data.description,
-                            thumbnail: '3d-placeholder', tags: data.tags || [],
+                            type: data.type === 'infographic' ? 'infographic' : '3D', description: data.description,
+                            thumbnail: data.thumbnail || '3d-placeholder', tags: data.tags || [],
                             grade: data.grade || 10, file_url: data.file_url,
                         });
                     }
@@ -90,7 +90,7 @@ export default function PresentationMode() {
     const getFullModelUrl = (url: string | undefined) => {
         if (!url) return "https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/Duck/glTF-Binary/Duck.glb";
         if (url.startsWith('/models/')) {
-            return `http://127.0.0.1:3005${url}`;
+            return `${BASE_URL}${url}`;
         }
         return url;
     };
@@ -117,7 +117,7 @@ export default function PresentationMode() {
                     </div>
 
                     <div className="flex items-center gap-3">
-                        {material.type === '3d-model' && (
+                        {material.type === '3D' && (
                             <button
                                 onClick={handleRotate}
                                 className="p-2 hover:bg-white/10 rounded-lg transition-colors"
@@ -157,7 +157,7 @@ export default function PresentationMode() {
                         className={`w-full h-full mx-auto relative transition-all ${isFullscreen ? 'max-w-none' : 'max-w-7xl'}`}
                         style={{ transform: `rotate(${rotation}deg)`, transition: 'transform 0.3s ease' }}
                     >
-                        {material.type === '3d-model' ? (
+                        {material.type === '3D' ? (
                             <div className={`absolute inset-0 overflow-hidden ${isFullscreen ? 'rounded-none border-none' : 'rounded-2xl border border-white/10 shadow-2xl'}`}>
                                 <ModelViewer modelUrl={getFullModelUrl((material as any).file_url)} />
                             </div>
@@ -201,7 +201,7 @@ export default function PresentationMode() {
             <div className="bg-black/80 backdrop-blur-sm border-t border-white/10 px-6 py-3">
                 <div className="flex items-center justify-between text-sm text-gray-400">
                     <div className="flex items-center gap-6">
-                        <span>Loại: {material.type === '3d-model' ? 'Mô hình 3D' : 'Infographic'}</span>
+                        <span>Loại: {material.type === '3D' ? 'Mô hình 3D' : 'Infographic'}</span>
                         <span>Môn: {material.subject === 'physics' ? 'Vật lý' : material.subject === 'chemistry' ? 'Hóa học' : 'Sinh học'}</span>
                         <span>Lớp {material.grade}</span>
                     </div>

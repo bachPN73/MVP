@@ -41,7 +41,7 @@ export default function FindWithAI() {
                 id: `db-${m.id}`,
                 title: m.title,
                 subject: m.subject,
-                type: '3d-model' as const,
+                type: m.type === 'infographic' ? 'infographic' : '3D',
                 description: m.description,
                 thumbnail: m.thumbnail ? `${BASE_URL}${m.thumbnail}` : '3d-placeholder',
                 tags: Array.isArray(m.tags) ? m.tags : [],

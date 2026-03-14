@@ -42,7 +42,7 @@ export default function Library() {
                 id: `db-${m.id}`,
                 title: m.title,
                 subject: m.subject,
-                type: '3d-model',
+                type: m.type === 'infographic' ? 'infographic' : '3D',
                 description: m.description,
                 thumbnail: m.thumbnail ? `${BASE_URL}${m.thumbnail}` : '3d-placeholder',
                 tags: m.tags || [],

@@ -25,9 +25,9 @@ export default function MaterialDetail() {
                             id: id,
                             title: data.title,
                             subject: data.subject,
-                            type: '3d-model',
+                            type: data.type === 'infographic' ? 'infographic' : '3D',
                             description: data.description,
-                            thumbnail: '3d-placeholder',
+                            thumbnail: data.thumbnail || '3d-placeholder',
                             tags: data.tags || [],
                             grade: data.grade || 10,
                             file_url: data.file_url
@@ -100,7 +100,7 @@ export default function MaterialDetail() {
                         {/* Material viewer */}
                         <div className="bg-card border border-border rounded-2xl overflow-hidden mb-6 shadow-lg">
                             <div className="aspect-video bg-gradient-to-br from-primary/20 to-secondary/20 relative flex items-center justify-center group overflow-hidden">
-                                {material.type === '3d-model' ? (
+                                {material.type === '3D' ? (
                                     <div id="3d-viewer-container" className="absolute inset-0 z-10 bg-black">
                                         <ModelViewer modelUrl={getFullModelUrl((material as any).file_url)} />
                                         <div className="absolute bottom-4 left-4 bg-white/90 backdrop-blur-sm px-4 py-2 rounded-lg text-sm z-50 shadow-md pointer-events-none">
@@ -108,13 +108,21 @@ export default function MaterialDetail() {
                                         </div>
                                     </div>
                                 ) : (
-                                    <>
-                                        {material.thumbnail && material.thumbnail !== '3d-placeholder' ? (
-                                            <img src={material.thumbnail} alt={material.title} className="w-full h-full object-cover" />
+                                    <div className="w-full h-full flex items-center justify-center p-4">
+                                        {material.file_url?.toLowerCase().endsWith('.pdf') ? (
+                                            <iframe
+                                                src={`${BASE_URL}${material.file_url}`}
+                                                className="w-full h-full border-none rounded-xl"
+                                                title={material.title}
+                                            />
                                         ) : (
-                                            <BookOpen className="w-32 h-32 text-primary/40" />
+                                            <img
+                                                src={material.file_url ? `${BASE_URL}${material.file_url}` : (material.thumbnail !== '3d-placeholder' ? material.thumbnail : '')}
+                                                alt={material.title}
+                                                className="max-w-full max-h-full object-contain rounded-xl shadow-2xl"
+                                            />
                                         )}
-                                    </>
+                                    </div>
                                 )}
 
                                 {/* Presentation mode button */}
@@ -178,7 +186,7 @@ export default function MaterialDetail() {
                                     </div>
                                 </div>
 
-                                {material.type === '3d-model' && (
+                                {material.type === '3D' && (
                                     <div>
                                         <h3 className="font-semibold mb-2">Hướng dẫn sử dụng mô hình 3D</h3>
                                         <ul className="list-disc list-inside space-y-1 text-muted-foreground">
