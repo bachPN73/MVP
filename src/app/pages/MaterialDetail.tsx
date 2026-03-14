@@ -25,7 +25,7 @@ export default function MaterialDetail() {
                             id: id,
                             title: data.title,
                             subject: data.subject,
-                            type: '3d-model',
+                            type: data.type,
                             description: data.description,
                             thumbnail: '3d-placeholder',
                             tags: data.tags || [],
@@ -100,7 +100,7 @@ export default function MaterialDetail() {
                         {/* Material viewer */}
                         <div className="bg-card border border-border rounded-2xl overflow-hidden mb-6 shadow-lg">
                             <div className="aspect-video bg-gradient-to-br from-primary/20 to-secondary/20 relative flex items-center justify-center group overflow-hidden">
-                                {material.type === '3d-model' ? (
+                                {material.type === '3D' ? (
                                     <div id="3d-viewer-container" className="absolute inset-0 z-10 bg-black">
                                         <ModelViewer modelUrl={getFullModelUrl((material as any).file_url)} />
                                         <div className="absolute bottom-4 left-4 bg-white/90 backdrop-blur-sm px-4 py-2 rounded-lg text-sm z-50 shadow-md pointer-events-none">
@@ -177,8 +177,8 @@ export default function MaterialDetail() {
                                         ))}
                                     </div>
                                 </div>
-
-                                {material.type === '3d-model' && (
+                                
+                                {material.type === '3D' && (
                                     <div>
                                         <h3 className="font-semibold mb-2">Hướng dẫn sử dụng mô hình 3D</h3>
                                         <ul className="list-disc list-inside space-y-1 text-muted-foreground">

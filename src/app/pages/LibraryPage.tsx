@@ -42,7 +42,7 @@ export default function Library() {
                 id: `db-${m.id}`,
                 title: m.title,
                 subject: m.subject,
-                type: '3d-model',
+                type: m.type,
                 description: m.description,
                 thumbnail: m.thumbnail ? `${BASE_URL}${m.thumbnail}` : '3d-placeholder',
                 tags: m.tags || [],
@@ -151,7 +151,7 @@ export default function Library() {
                                 className="w-full px-4 py-2 bg-input-background border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
                             >
                                 <option value="all">Tất cả loại</option>
-                                <option value="3d-model">Mô hình 3D</option>
+                                <option value="3D">Mô hình 3D</option>
                                 <option value="infographic">Infographic</option>
                             </select>
                         </div>
