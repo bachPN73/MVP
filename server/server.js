@@ -10,6 +10,17 @@ import bcrypt from 'bcryptjs';
 import dotenv from 'dotenv';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 
+// Global Error Handlers - Catch crashes before they become silent timeouts
+process.on('uncaughtException', (err) => {
+    console.error('[CRITICAL] Uncaught Exception:', err);
+    // Give logs a chance to flush before exiting
+    setTimeout(() => process.exit(1), 100);
+});
+
+process.on('unhandledRejection', (reason, promise) => {
+    console.error('[CRITICAL] Unhandled Rejection at:', promise, 'reason:', reason);
+});
+
 // Load environment variables
 dotenv.config({ path: path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../.env') });
 
@@ -24,16 +35,18 @@ app.get('/health', (req, res) => res.status(200).send('OK'));
 app.get('/ping', (req, res) => res.status(200).send('pong'));
 
 // Start listening immediately
-const server = app.listen(PORT, '0.0.0.0', () => {
-    console.log(`[SUCCESS] Backend Server is binding to port ${PORT} at 0.0.0.0`);
-    console.log(`[INFO] NODE_ENV: ${process.env.NODE_ENV}`);
+// We bind to '0.0.0.0' or the dynamically provided Render host
+const HOST = '0.0.0.0';
+const server = app.listen(PORT, HOST, () => {
+    console.log(`[STARTUP] Server is listening on ${HOST}:${PORT}`);
+    console.log(`[STARTUP] DATABASE_URL: ${process.env.DATABASE_URL ? 'PRESENT (masked)' : 'MISSING'}`);
+    console.log(`[STARTUP] NODE_ENV: ${process.env.NODE_ENV || 'development'}`);
 }).on('error', (err) => {
-    if (err.code === 'EADDRINUSE') {
-        console.error(`[ERROR] Port ${PORT} already in use.`);
-    } else {
-        console.error('[ERROR] Server startup error:', err);
-    }
+    console.error('[ERROR] Failed to start server:', err);
 });
+
+// Timeout the process if it doesn't become healthy soon? 
+// No, let Render handle it, but we log everything.
 
 // Multer Storage Configuration - Model files
 const modelStorage = multer.diskStorage({
@@ -116,9 +129,18 @@ app.use(express.static(distPath));
 
 // Database setup
 const isProduction = process.env.NODE_ENV === 'production';
+
+// Log connection attempt
+console.log(`[DB] Attempting to connect to PostgreSQL...`);
+
 const pool = new Pool({
     connectionString: process.env.DATABASE_URL,
-    ssl: isProduction ? { rejectUnauthorized: false } : false
+    ssl: isProduction ? { rejectUnauthorized: false } : false,
+    connectionTimeoutMillis: 5000, // Don't hang forever
+});
+
+pool.on('error', (err) => {
+    console.error('[DB] Unexpected error on idle client', err);
 });
 
 async function initDb() {
@@ -184,6 +206,7 @@ async function initDb() {
     }
 }
 
+console.log(`[STARTUP] Initializing database...`);
 initDb();
 
 // Helper: generate random 6-digit reset code
