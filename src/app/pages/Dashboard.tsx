@@ -31,7 +31,7 @@ export default function Dashboard() {
                     id: `db-${m.id}`,
                     title: m.title,
                     subject: m.subject,
-                    type: m.type as '3D' | 'infographic',
+                    type: '3d-model' as const,
                     description: m.description,
                     thumbnail: m.thumbnail ? `${BASE_URL}${m.thumbnail}` : '3d-placeholder',
                     tags: m.tags || [],
@@ -230,7 +230,7 @@ export default function Dashboard() {
                                             {getSubjectName(material.subject)}
                                         </span>
                                         <span className="px-2.5 py-1 bg-white/90 backdrop-blur-md rounded-md text-[11px] font-bold text-slate-700 shadow-sm uppercase tracking-wider">
-                                            {(material.type === '3D' || (material.type as string) === '3d-model') ? '3D' : 'Info'}
+                                            {material.type === '3d-model' ? '3D' : 'Info'}
                                         </span>
                                     </div>
 

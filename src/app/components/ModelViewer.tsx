@@ -1,7 +1,7 @@
 import { Canvas, ThreeElements } from '@react-three/fiber';
-import { useGLTF, useFBX, OrbitControls, Stage, Environment } from '@react-three/drei';
-import { Suspense, useEffect, useMemo } from 'react';
-import { Loader2, BookOpen } from 'lucide-react';
+import { useGLTF, OrbitControls, Stage, Environment } from '@react-three/drei';
+import { Suspense, useEffect } from 'react';
+import { Loader2 } from 'lucide-react';
 import * as THREE from 'three';
 
 // Declare R3F elements for TypeScript
@@ -14,36 +14,23 @@ declare global {
 }
 
 function Model({ url }: { url: string }) {
-    const isFbx = url.toLowerCase().endsWith('.fbx');
-    const gltf = useGLTF(isFbx ? '' : url, undefined, undefined, (loader) => {
-        // Optional: setup loader
-    });
-    const fbx = useFBX(isFbx ? url : '');
-
-    const scene = useMemo(() => {
-        if (isFbx) return fbx;
-        return gltf.scene;
-    }, [isFbx, fbx, gltf]);
+    const { scene } = useGLTF(url);
 
     useEffect(() => {
-        if (!scene) return;
-        
         scene.traverse((child) => {
             if ((child as any).isMesh) {
                 const mesh = child as THREE.Mesh;
 
                 // Nâng cấp vật liệu nếu cần
                 if (mesh.material && !(mesh.material as any).isMeshPhysicalMaterial) {
-                    const oldMat = Array.isArray(mesh.material) ? mesh.material[0] : mesh.material;
-                    const oldMatAny = oldMat as any;
-                    
+                    const oldMat = mesh.material as any;
                     mesh.material = new THREE.MeshPhysicalMaterial({
-                        map: oldMatAny.map,
-                        color: oldMatAny.color,
-                        normalMap: oldMatAny.normalMap,
-                        roughness: oldMatAny.roughness || 0.5,
-                        metalness: oldMatAny.metalness || 0.5,
-                        name: oldMatAny.name
+                        map: oldMat.map,
+                        color: oldMat.color,
+                        normalMap: oldMat.normalMap,
+                        roughness: oldMat.roughness,
+                        metalness: oldMat.metalness,
+                        name: oldMat.name
                     });
                 }
 
@@ -67,15 +54,13 @@ function Model({ url }: { url: string }) {
                     material.transparent = true;
                 } else {
                     // Đảm bảo các phần khác không bị tối
-                    if (material.color && material.color.r < 0.1 && material.color.g < 0.1 && material.color.b < 0.1) {
+                    if (material.color.r < 0.1 && material.color.g < 0.1 && material.color.b < 0.1) {
                         material.color.set('#666666');
                     }
                 }
             }
         });
     }, [scene]);
-
-    if (!scene) return null;
 
     return <primitive object={scene} />;
 }
@@ -90,39 +75,6 @@ function Loader() {
 }
 
 export default function ModelViewer({ modelUrl }: { modelUrl: string }) {
-    const is3DFile = useMemo(() => {
-        const url = modelUrl.toLowerCase();
-        return url.endsWith('.glb') || url.endsWith('.gltf') || url.endsWith('.fbx');
-    }, [modelUrl]);
-
-    if (!modelUrl) {
-        return (
-            <div className="w-full h-full flex items-center justify-center bg-slate-50 text-slate-400">
-                <p>Không có đường dẫn mô hình</p>
-            </div>
-        );
-    }
-
-    if (!is3DFile) {
-        return (
-            <div className="w-full h-full flex flex-col items-center justify-center bg-amber-50 p-6 text-center">
-                <BookOpen className="w-12 h-12 text-amber-400 mb-3" />
-                <h3 className="text-amber-800 font-semibold mb-1">Định dạng không hỗ trợ 3D</h3>
-                <p className="text-amber-600 text-sm">
-                    Tệp tin này không phải là mô hình 3D (.glb, .gltf, .fbx).
-                </p>
-                <a 
-                    href={modelUrl} 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="mt-4 text-xs text-primary hover:underline"
-                >
-                    Xem tệp gốc
-                </a>
-            </div>
-        );
-    }
-
     return (
         <div className="relative w-full h-full bg-white rounded-2xl overflow-hidden border border-border shadow-2xl">
             <Suspense fallback={<Loader />}>
@@ -138,9 +90,6 @@ export default function ModelViewer({ modelUrl }: { modelUrl: string }) {
                     }}
                     onCreated={({ gl }) => {
                         gl.toneMappingExposure = 1.5; // Cân bằng phơi sáng HDR
-                    }}
-                    onError={(e) => {
-                        console.error("R3F Canvas Error:", e);
                     }}
                 >
                     <color attach="background" args={['#ffffff']} />

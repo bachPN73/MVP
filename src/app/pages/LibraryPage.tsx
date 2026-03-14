@@ -42,7 +42,7 @@ export default function Library() {
                 id: `db-${m.id}`,
                 title: m.title,
                 subject: m.subject,
-                type: m.type,
+                type: '3d-model',
                 description: m.description,
                 thumbnail: m.thumbnail ? `${BASE_URL}${m.thumbnail}` : '3d-placeholder',
                 tags: m.tags || [],
@@ -151,7 +151,7 @@ export default function Library() {
                                 className="w-full px-4 py-2 bg-input-background border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
                             >
                                 <option value="all">Tất cả loại</option>
-                                <option value="3D">Mô hình 3D</option>
+                                <option value="3d-model">Mô hình 3D</option>
                                 <option value="infographic">Infographic</option>
                             </select>
                         </div>
@@ -214,11 +214,7 @@ export default function Library() {
                                 >
                                     <div className="aspect-video bg-gradient-to-br from-primary/10 to-secondary/10 flex items-center justify-center overflow-hidden shrink-0">
                                         {material.thumbnail && material.thumbnail !== '3d-placeholder' ? (
-                                            <img 
-                                                src={material.thumbnail.startsWith('http') ? material.thumbnail : (material.thumbnail.startsWith('/') ? `${BASE_URL}${material.thumbnail}` : `${BASE_URL}/${material.thumbnail}`)} 
-                                                alt={material.title} 
-                                                className="w-full h-full object-cover" 
-                                            />
+                                            <img src={material.thumbnail.startsWith('http') ? material.thumbnail : (material.thumbnail.startsWith('/') ? `${BASE_URL}${material.thumbnail}` : material.thumbnail)} alt={material.title} className="w-full h-full object-cover" />
                                         ) : (
                                             <BookOpen className="w-8 h-8 sm:w-16 sm:h-16 text-primary/30" />
                                         )}

@@ -25,7 +25,7 @@ export default function MaterialDetail() {
                             id: id,
                             title: data.title,
                             subject: data.subject,
-                            type: data.type,
+                            type: '3d-model',
                             description: data.description,
                             thumbnail: '3d-placeholder',
                             tags: data.tags || [],
@@ -70,16 +70,12 @@ export default function MaterialDetail() {
         );
     }
 
-    const getAssetUrl = (url: string | undefined): string => {
-        if (!url) return "";
-        if (url.startsWith('http')) return url;
-        if (url.startsWith('/')) return `${BASE_URL}${url}`;
-        return `${BASE_URL}/${url}`;
-    };
-
     const getFullModelUrl = (url: string | undefined) => {
         if (!url) return "https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/Duck/glTF-Binary/Duck.glb";
-        return getAssetUrl(url);
+        if (url.startsWith('/models/')) {
+            return `${BASE_URL}${url}`;
+        }
+        return url;
     };
 
     const relatedMaterials = mockMaterials
@@ -104,39 +100,22 @@ export default function MaterialDetail() {
                         {/* Material viewer */}
                         <div className="bg-card border border-border rounded-2xl overflow-hidden mb-6 shadow-lg">
                             <div className="aspect-video bg-gradient-to-br from-primary/20 to-secondary/20 relative flex items-center justify-center group overflow-hidden">
-                                {(() => {
-                                    const type = material.type as string;
-                                    const fileUrl = (material as any).file_url || "";
-                                    const ext = fileUrl.split('.').pop()?.toLowerCase();
-                                    const is3DExtension = ['glb', 'gltf', 'fbx'].includes(ext || '');
-                                    const is3DType = type === '3D' || type === '3d-model';
-                                    
-                                    // Ưu tiên kiểm tra extension thực tế để tránh lỗi load nhầm
-                                    if (is3DType && is3DExtension) {
-                                        return (
-                                            <div id="3d-viewer-container" className="absolute inset-0 z-10 bg-black">
-                                                <ModelViewer modelUrl={getFullModelUrl((material as any).file_url)} />
-                                                <div className="absolute bottom-4 left-4 bg-white/90 backdrop-blur-sm px-4 py-2 rounded-lg text-sm z-50 shadow-md pointer-events-none">
-                                                    <p className="text-gray-800 font-medium">Kéo chuột trái để xoay • Cuộn để zoom</p>
-                                                </div>
-                                            </div>
-                                        );
-                                    } else {
-                                        return (
-                                            <div className="w-full h-full flex items-center justify-center bg-white p-4">
-                                                {(material.file_url || material.thumbnail) ? (
-                                                    <img 
-                                                        src={getAssetUrl(material.file_url || material.thumbnail)} 
-                                                        alt={material.title} 
-                                                        className="max-w-full max-h-full object-contain shadow-sm rounded-lg" 
-                                                    />
-                                                ) : (
-                                                    <BookOpen className="w-32 h-32 text-primary/40" />
-                                                )}
-                                            </div>
-                                        );
-                                    }
-                                })()}
+                                {material.type === '3d-model' ? (
+                                    <div id="3d-viewer-container" className="absolute inset-0 z-10 bg-black">
+                                        <ModelViewer modelUrl={getFullModelUrl((material as any).file_url)} />
+                                        <div className="absolute bottom-4 left-4 bg-white/90 backdrop-blur-sm px-4 py-2 rounded-lg text-sm z-50 shadow-md pointer-events-none">
+                                            <p className="text-gray-800 font-medium">Kéo chuột trái để xoay • Cuộn để zoom</p>
+                                        </div>
+                                    </div>
+                                ) : (
+                                    <>
+                                        {material.thumbnail && material.thumbnail !== '3d-placeholder' ? (
+                                            <img src={material.thumbnail} alt={material.title} className="w-full h-full object-cover" />
+                                        ) : (
+                                            <BookOpen className="w-32 h-32 text-primary/40" />
+                                        )}
+                                    </>
+                                )}
 
                                 {/* Presentation mode button */}
                                 <button
@@ -198,8 +177,8 @@ export default function MaterialDetail() {
                                         ))}
                                     </div>
                                 </div>
-                                
-                                {((material.type as string) === '3D' || (material.type as string) === '3d-model') && (
+
+                                {material.type === '3d-model' && (
                                     <div>
                                         <h3 className="font-semibold mb-2">Hướng dẫn sử dụng mô hình 3D</h3>
                                         <ul className="list-disc list-inside space-y-1 text-muted-foreground">

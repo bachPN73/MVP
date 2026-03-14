@@ -10,17 +10,6 @@ import bcrypt from 'bcryptjs';
 import dotenv from 'dotenv';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 
-// Global Error Handlers - Catch crashes before they become silent timeouts
-process.on('uncaughtException', (err) => {
-    console.error('[CRITICAL] Uncaught Exception:', err);
-    // Give logs a chance to flush before exiting
-    setTimeout(() => process.exit(1), 100);
-});
-
-process.on('unhandledRejection', (reason, promise) => {
-    console.error('[CRITICAL] Unhandled Rejection at:', promise, 'reason:', reason);
-});
-
 // Load environment variables
 dotenv.config({ path: path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../.env') });
 
@@ -29,24 +18,6 @@ const __dirname = path.dirname(__filename);
 
 const app = express();
 const PORT = process.env.PORT || 3005;
-
-// Health Check Endpoint - Call this early to pass Render's port scan
-app.get('/health', (req, res) => res.status(200).send('OK'));
-app.get('/ping', (req, res) => res.status(200).send('pong'));
-
-// Start listening immediately
-// We bind to '0.0.0.0' or the dynamically provided Render host
-const HOST = '0.0.0.0';
-const server = app.listen(PORT, HOST, () => {
-    console.log(`[STARTUP] Server is listening on ${HOST}:${PORT}`);
-    console.log(`[STARTUP] DATABASE_URL: ${process.env.DATABASE_URL ? 'PRESENT (masked)' : 'MISSING'}`);
-    console.log(`[STARTUP] NODE_ENV: ${process.env.NODE_ENV || 'development'}`);
-}).on('error', (err) => {
-    console.error('[ERROR] Failed to start server:', err);
-});
-
-// Timeout the process if it doesn't become healthy soon? 
-// No, let Render handle it, but we log everything.
 
 // Multer Storage Configuration - Model files
 const modelStorage = multer.diskStorage({
@@ -81,7 +52,7 @@ const thumbnailStorage = multer.diskStorage({
 const upload = multer({
     storage: modelStorage,
     fileFilter: (req, file, cb) => {
-        const allowedExtensions = ['.glb', '.gltf', '.fbx', '.jpg', '.jpeg', '.png', '.webp', '.pdf'];
+        const allowedExtensions = ['.glb', '.gltf', '.jpg', '.jpeg', '.png', '.webp', '.pdf'];
         const ext = path.extname(file.originalname).toLowerCase();
         if (allowedExtensions.includes(ext)) {
             cb(null, true);
@@ -129,18 +100,9 @@ app.use(express.static(distPath));
 
 // Database setup
 const isProduction = process.env.NODE_ENV === 'production';
-
-// Log connection attempt
-console.log(`[DB] Attempting to connect to PostgreSQL...`);
-
 const pool = new Pool({
     connectionString: process.env.DATABASE_URL,
-    ssl: isProduction ? { rejectUnauthorized: false } : false,
-    connectionTimeoutMillis: 5000, // Don't hang forever
-});
-
-pool.on('error', (err) => {
-    console.error('[DB] Unexpected error on idle client', err);
+    ssl: isProduction ? { rejectUnauthorized: false } : false
 });
 
 async function initDb() {
@@ -176,13 +138,6 @@ async function initDb() {
             expires_at BIGINT NOT NULL
         )`);
 
-        // Migration: Đảm bảo cột 'type' tồn tại trong bảng 'models'
-        try {
-            await pool.query("ALTER TABLE models ADD COLUMN IF NOT EXISTS type TEXT DEFAULT '3D'");
-        } catch (e) {
-            console.log('[INFO] Cột type đã tồn tại hoặc không thể thêm.');
-        }
-
         console.log('Đã khởi tạo các bảng database thành công.');
 
         // Auto-seed admin user
@@ -206,7 +161,6 @@ async function initDb() {
     }
 }
 
-console.log(`[STARTUP] Initializing database...`);
 initDb();
 
 // Helper: generate random 6-digit reset code
@@ -615,14 +569,6 @@ app.get('*', (req, res) => {
     if (req.path.startsWith('/api')) {
         return res.status(404).json({ error: 'API route not found' });
     }
-    
-    // Tránh trả về index.html (HTML) khi không tìm thấy tệp tĩnh.
-    // Việc này giúp Three.js/frontend nhận biết lỗi 404 thay vì lỗi "Unexpected token <"
-    if (path.extname(req.path) || req.path.startsWith('/models/') || req.path.startsWith('/thumbnails/')) {
-        console.log(`[404] Resource not found: ${req.path}`);
-        return res.status(404).send('Resource not found');
-    }
-
     const htmlFile = path.resolve(__dirname, '../dist/index.html');
     if (fs.existsSync(htmlFile)) {
         res.sendFile(htmlFile);
@@ -631,5 +577,13 @@ app.get('*', (req, res) => {
     }
 });
 
-// Remove old listen at bottom to prevent double listening
-// The server is now started at the top.
+app.listen(PORT, '0.0.0.0', () => {
+    console.log(`[SUCCESS] Backend Server đang chạy tại cổng ${PORT}`);
+    console.log(`[INFO] Thư mục upload: ${path.resolve(__dirname, '../public/models')}`);
+}).on('error', (err) => {
+    if (err.code === 'EADDRINUSE') {
+        console.error(`[ERROR] Cổng ${PORT} đã bị sử dụng bởi ứng dụng khác.`);
+    } else {
+        console.error('[ERROR] Lỗi khi khởi chạy server:', err);
+    }
+});

@@ -11,26 +11,12 @@ export default function PaymentPage() {
     const [step, setStep] = useState(1);
 
     const plans: Record<string, any> = {
-        free: { name: "Miễn phí", price: 0 },
-        basic: { name: "Cơ bản", price: 249000 },
-        pro: { name: "Chuyên nghiệp", price: 499000 },
-        school: { name: "Trường học", price: 9000000 },
+        free: { name: "Free", price: 0 },
+        advanced: { name: "Advanced", price: 99000 },
+        premium: { name: "Premium", price: 199000 },
     };
 
     const plan = plans[planId || "free"];
-
-    // Safety check: if plan is not found, show error or redirect
-    if (!plan) {
-        return (
-            <Layout>
-                <div className="p-8 text-center min-h-[50vh] flex flex-col items-center justify-center">
-                    <h1 className="text-2xl font-bold mb-4">Không tìm thấy thông tin gói cước</h1>
-                    <p className="text-muted-foreground mb-6">Gói cước bạn chọn không tồn tại hoặc đã hết hạn.</p>
-                    <Button onClick={() => navigate("/pricing-app")}>Quay lại bảng giá</Button>
-                </div>
-            </Layout>
-        );
-    }
 
     const handlePayment = (e: React.FormEvent) => {
         e.preventDefault();

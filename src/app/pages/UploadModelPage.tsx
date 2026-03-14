@@ -53,8 +53,8 @@ export default function UploadModelPage() {
         if (e.target.files && e.target.files[0]) {
             const selectedFile = e.target.files[0];
             const ext = selectedFile.name.split('.').pop()?.toLowerCase();
-            if (ext !== 'glb' && ext !== 'gltf' && ext !== 'fbx') {
-                setStatus({ type: 'error', message: "Vui lòng chọn tệp định dạng .glb, .gltf hoặc .fbx" });
+            if (ext !== 'glb' && ext !== 'gltf') {
+                setStatus({ type: 'error', message: "Vui lòng chọn tệp định dạng .glb hoặc .gltf" });
                 return;
             }
             setFile(selectedFile);
@@ -121,7 +121,6 @@ export default function UploadModelPage() {
                 file_url: uploadRes.file_url,
                 thumbnail: thumbnailUrl,
                 tags: formData.tags.split(',').map(t => t.trim()).filter(t => t !== ""),
-                type: ((formData as any).type || '3D') as '3D' | 'infographic'
             };
 
             await api.saveModel(modelData);
@@ -149,56 +148,28 @@ export default function UploadModelPage() {
                 <h1 className="text-3xl font-bold mb-8 text-foreground">Tải lên mô hình 3D mới</h1>
 
                 <form onSubmit={handleSubmit} className="space-y-6">
-                    {/* Type Selection */}
-                    <div className="flex gap-4 p-1 bg-muted rounded-xl w-fit">
-                        <button
-                            type="button"
-                            onClick={() => {
-                                setFormData({ ...formData, subject: formData.subject as any, tags: formData.tags });
-                                // Manual hack since we don't have 'type' in local formData state but we need it for the API
-                                (formData as any).type = '3D';
-                                setFile(null);
-                            }}
-                            className={`px-6 py-2 rounded-lg text-sm font-bold transition-all ${(formData as any).type !== 'infographic' ? 'bg-background text-primary shadow-sm' : 'text-muted-foreground'}`}
-                        >
-                            Mô Hình 3D
-                        </button>
-                        <button
-                            type="button"
-                            onClick={() => {
-                                (formData as any).type = 'infographic';
-                                setFile(null);
-                            }}
-                            className={`px-6 py-2 rounded-lg text-sm font-bold transition-all ${(formData as any).type === 'infographic' ? 'bg-background text-primary shadow-sm' : 'text-muted-foreground'}`}
-                        >
-                            Infographic
-                        </button>
-                    </div>
-
                     {/* File Upload Area */}
                     <div className="bg-card border-2 border-dashed border-border rounded-2xl p-10 text-center hover:border-primary/50 transition-colors relative">
                         <input
                             type="file"
-                            accept={(formData as any).type === 'infographic' ? ".jpg,.jpeg,.png,.webp,.pdf" : ".glb,.gltf,.fbx"}
+                            accept=".glb,.gltf"
                             onChange={handleFileChange}
                             className="absolute inset-0 opacity-0 cursor-pointer"
                         />
                         <div className="flex flex-col items-center">
                             <div className="w-16 h-16 bg-primary/10 text-primary rounded-full flex items-center justify-center mb-4">
-                                {(formData as any).type === 'infographic' ? <ImagePlus className="w-8 h-8" /> : <Upload className="w-8 h-8" />}
+                                <Upload className="w-8 h-8" />
                             </div>
                             <h3 className="text-xl font-bold mb-2">
-                                {file ? file.name : `Chọn tệp ${(formData as any).type === 'infographic' ? 'infographic' : 'mô hình 3D'}`}
+                                {file ? file.name : "Kéo thả hoặc nhấp để chọn tệp"}
                             </h3>
-                            <p className="text-muted-foreground">
-                                {(formData as any).type === 'infographic' ? "Hỗ trợ định dạng .jpg, .png, .webp, .pdf" : "Hỗ trợ định dạng .glb, .gltf, .fbx"} (Tối đa 50MB)
-                            </p>
+                            <p className="text-muted-foreground">Hỗ trợ định dạng .glb, .gltf (Tối đa 50MB)</p>
                         </div>
                     </div>
 
                     {/* Thumbnail Upload Area */}
                     <div className="bg-card border border-border rounded-xl p-6 shadow-sm">
-                        <label className="text-sm font-medium mb-3 block">Ảnh đại diện (Thumbnail)</label>
+                        <label className="text-sm font-medium mb-3 block">Ảnh đại diện (Avatar)</label>
                         <div className="flex items-start gap-4">
                             {thumbnailPreview ? (
                                 <div className="relative group">

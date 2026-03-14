@@ -67,8 +67,8 @@ export default function AdminMaterialsPage() {
             const ext = selectedFile.name.split('.').pop()?.toLowerCase() || '';
             
             if (formData.type === '3D') {
-                if (ext !== 'glb' && ext !== 'gltf' && ext !== 'fbx') {
-                    setStatus({ type: 'error', message: "Vui lòng chọn tệp định dạng .glb, .gltf hoặc .fbx" });
+                if (ext !== 'glb' && ext !== 'gltf') {
+                    setStatus({ type: 'error', message: "Vui lòng chọn tệp định dạng .glb hoặc .gltf" });
                     return;
                 }
             } else {
@@ -233,7 +233,7 @@ export default function AdminMaterialsPage() {
                                 <div className="bg-slate-50 border-2 border-dashed border-slate-300 rounded-2xl p-8 text-center hover:border-indigo-400 transition-colors relative group">
                                     <input
                                         type="file"
-                                        accept={formData.type === '3D' ? ".glb,.gltf,.fbx" : ".jpg,.jpeg,.png,.webp,.pdf"}
+                                        accept={formData.type === '3D' ? ".glb,.gltf" : ".jpg,.jpeg,.png,.webp,.pdf"}
                                         onChange={handleFileChange}
                                         className="absolute inset-0 opacity-0 cursor-pointer z-10"
                                     />
@@ -245,7 +245,7 @@ export default function AdminMaterialsPage() {
                                             {file ? file.name : `Chọn tệp ${formData.type === '3D' ? 'mô hình 3D' : 'infographic'}`}
                                         </h3>
                                         <p className="text-slate-500 text-sm">
-                                            {formData.type === '3D' ? 'Hỗ trợ .glb, .gltf, .fbx' : 'Hỗ trợ .jpg, .png, .webp, .pdf'} (Max 50MB)
+                                            {formData.type === '3D' ? 'Hỗ trợ .glb, .gltf' : 'Hỗ trợ .jpg, .png, .webp, .pdf'} (Max 50MB)
                                         </p>
                                     </div>
                                 </div>
