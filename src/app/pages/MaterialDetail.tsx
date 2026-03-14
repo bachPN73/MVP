@@ -70,12 +70,16 @@ export default function MaterialDetail() {
         );
     }
 
+    const getAssetUrl = (url: string | undefined): string => {
+        if (!url) return "";
+        if (url.startsWith('http')) return url;
+        if (url.startsWith('/')) return `${BASE_URL}${url}`;
+        return `${BASE_URL}/${url}`;
+    };
+
     const getFullModelUrl = (url: string | undefined) => {
         if (!url) return "https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/Duck/glTF-Binary/Duck.glb";
-        if (url.startsWith('/models/')) {
-            return `${BASE_URL}${url}`;
-        }
-        return url;
+        return getAssetUrl(url);
     };
 
     const relatedMaterials = mockMaterials
@@ -108,13 +112,17 @@ export default function MaterialDetail() {
                                         </div>
                                     </div>
                                 ) : (
-                                    <>
-                                        {material.thumbnail && material.thumbnail !== '3d-placeholder' ? (
-                                            <img src={material.thumbnail} alt={material.title} className="w-full h-full object-cover" />
+                                    <div className="w-full h-full flex items-center justify-center bg-white p-4">
+                                        {(material.file_url || material.thumbnail) ? (
+                                            <img 
+                                                src={getAssetUrl(material.file_url || material.thumbnail)} 
+                                                alt={material.title} 
+                                                className="max-w-full max-h-full object-contain shadow-sm rounded-lg" 
+                                            />
                                         ) : (
                                             <BookOpen className="w-32 h-32 text-primary/40" />
                                         )}
-                                    </>
+                                    </div>
                                 )}
 
                                 {/* Presentation mode button */}

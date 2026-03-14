@@ -214,7 +214,11 @@ export default function Library() {
                                 >
                                     <div className="aspect-video bg-gradient-to-br from-primary/10 to-secondary/10 flex items-center justify-center overflow-hidden shrink-0">
                                         {material.thumbnail && material.thumbnail !== '3d-placeholder' ? (
-                                            <img src={material.thumbnail.startsWith('http') ? material.thumbnail : (material.thumbnail.startsWith('/') ? `${BASE_URL}${material.thumbnail}` : material.thumbnail)} alt={material.title} className="w-full h-full object-cover" />
+                                            <img 
+                                                src={material.thumbnail.startsWith('http') ? material.thumbnail : (material.thumbnail.startsWith('/') ? `${BASE_URL}${material.thumbnail}` : `${BASE_URL}/${material.thumbnail}`)} 
+                                                alt={material.title} 
+                                                className="w-full h-full object-cover" 
+                                            />
                                         ) : (
                                             <BookOpen className="w-8 h-8 sm:w-16 sm:h-16 text-primary/30" />
                                         )}
