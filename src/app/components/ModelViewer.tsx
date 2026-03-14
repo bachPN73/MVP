@@ -1,6 +1,6 @@
 import { Canvas, ThreeElements } from '@react-three/fiber';
-import { useGLTF, OrbitControls, Stage, Environment } from '@react-three/drei';
-import { Suspense, useEffect } from 'react';
+import { useGLTF, useFBX, OrbitControls, Stage, Environment } from '@react-three/drei';
+import { Suspense, useEffect, useMemo } from 'react';
 import { Loader2 } from 'lucide-react';
 import * as THREE from 'three';
 
@@ -14,23 +14,36 @@ declare global {
 }
 
 function Model({ url }: { url: string }) {
-    const { scene } = useGLTF(url);
+    const isFbx = url.toLowerCase().endsWith('.fbx');
+    const gltf = useGLTF(isFbx ? '' : url, undefined, undefined, (loader) => {
+        // Optional: setup loader
+    });
+    const fbx = useFBX(isFbx ? url : '');
+
+    const scene = useMemo(() => {
+        if (isFbx) return fbx;
+        return gltf.scene;
+    }, [isFbx, fbx, gltf]);
 
     useEffect(() => {
+        if (!scene) return;
+        
         scene.traverse((child) => {
             if ((child as any).isMesh) {
                 const mesh = child as THREE.Mesh;
 
                 // Nâng cấp vật liệu nếu cần
                 if (mesh.material && !(mesh.material as any).isMeshPhysicalMaterial) {
-                    const oldMat = mesh.material as any;
+                    const oldMat = Array.isArray(mesh.material) ? mesh.material[0] : mesh.material;
+                    const oldMatAny = oldMat as any;
+                    
                     mesh.material = new THREE.MeshPhysicalMaterial({
-                        map: oldMat.map,
-                        color: oldMat.color,
-                        normalMap: oldMat.normalMap,
-                        roughness: oldMat.roughness,
-                        metalness: oldMat.metalness,
-                        name: oldMat.name
+                        map: oldMatAny.map,
+                        color: oldMatAny.color,
+                        normalMap: oldMatAny.normalMap,
+                        roughness: oldMatAny.roughness || 0.5,
+                        metalness: oldMatAny.metalness || 0.5,
+                        name: oldMatAny.name
                     });
                 }
 
@@ -54,13 +67,15 @@ function Model({ url }: { url: string }) {
                     material.transparent = true;
                 } else {
                     // Đảm bảo các phần khác không bị tối
-                    if (material.color.r < 0.1 && material.color.g < 0.1 && material.color.b < 0.1) {
+                    if (material.color && material.color.r < 0.1 && material.color.g < 0.1 && material.color.b < 0.1) {
                         material.color.set('#666666');
                     }
                 }
             }
         });
     }, [scene]);
+
+    if (!scene) return null;
 
     return <primitive object={scene} />;
 }

@@ -53,8 +53,8 @@ export default function UploadModelPage() {
         if (e.target.files && e.target.files[0]) {
             const selectedFile = e.target.files[0];
             const ext = selectedFile.name.split('.').pop()?.toLowerCase();
-            if (ext !== 'glb' && ext !== 'gltf') {
-                setStatus({ type: 'error', message: "Vui lòng chọn tệp định dạng .glb hoặc .gltf" });
+            if (ext !== 'glb' && ext !== 'gltf' && ext !== 'fbx') {
+                setStatus({ type: 'error', message: "Vui lòng chọn tệp định dạng .glb, .gltf hoặc .fbx" });
                 return;
             }
             setFile(selectedFile);
@@ -121,6 +121,7 @@ export default function UploadModelPage() {
                 file_url: uploadRes.file_url,
                 thumbnail: thumbnailUrl,
                 tags: formData.tags.split(',').map(t => t.trim()).filter(t => t !== ""),
+                type: '3D' as '3D' | 'infographic'
             };
 
             await api.saveModel(modelData);
@@ -152,7 +153,7 @@ export default function UploadModelPage() {
                     <div className="bg-card border-2 border-dashed border-border rounded-2xl p-10 text-center hover:border-primary/50 transition-colors relative">
                         <input
                             type="file"
-                            accept=".glb,.gltf"
+                            accept=".glb,.gltf,.fbx"
                             onChange={handleFileChange}
                             className="absolute inset-0 opacity-0 cursor-pointer"
                         />
@@ -163,7 +164,7 @@ export default function UploadModelPage() {
                             <h3 className="text-xl font-bold mb-2">
                                 {file ? file.name : "Kéo thả hoặc nhấp để chọn tệp"}
                             </h3>
-                            <p className="text-muted-foreground">Hỗ trợ định dạng .glb, .gltf (Tối đa 50MB)</p>
+                            <p className="text-muted-foreground">Hỗ trợ định dạng .glb, .gltf, .fbx (Tối đa 50MB)</p>
                         </div>
                     </div>
 

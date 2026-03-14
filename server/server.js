@@ -52,7 +52,7 @@ const thumbnailStorage = multer.diskStorage({
 const upload = multer({
     storage: modelStorage,
     fileFilter: (req, file, cb) => {
-        const allowedExtensions = ['.glb', '.gltf', '.jpg', '.jpeg', '.png', '.webp', '.pdf'];
+        const allowedExtensions = ['.glb', '.gltf', '.fbx', '.jpg', '.jpeg', '.png', '.webp', '.pdf'];
         const ext = path.extname(file.originalname).toLowerCase();
         if (allowedExtensions.includes(ext)) {
             cb(null, true);
