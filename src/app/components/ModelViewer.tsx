@@ -1,7 +1,7 @@
 import { Canvas, ThreeElements } from '@react-three/fiber';
 import { useGLTF, useFBX, OrbitControls, Stage, Environment } from '@react-three/drei';
 import { Suspense, useEffect, useMemo } from 'react';
-import { Loader2 } from 'lucide-react';
+import { Loader2, BookOpen } from 'lucide-react';
 import * as THREE from 'three';
 
 // Declare R3F elements for TypeScript
@@ -90,6 +90,39 @@ function Loader() {
 }
 
 export default function ModelViewer({ modelUrl }: { modelUrl: string }) {
+    const is3DFile = useMemo(() => {
+        const url = modelUrl.toLowerCase();
+        return url.endsWith('.glb') || url.endsWith('.gltf') || url.endsWith('.fbx');
+    }, [modelUrl]);
+
+    if (!modelUrl) {
+        return (
+            <div className="w-full h-full flex items-center justify-center bg-slate-50 text-slate-400">
+                <p>Không có đường dẫn mô hình</p>
+            </div>
+        );
+    }
+
+    if (!is3DFile) {
+        return (
+            <div className="w-full h-full flex flex-col items-center justify-center bg-amber-50 p-6 text-center">
+                <BookOpen className="w-12 h-12 text-amber-400 mb-3" />
+                <h3 className="text-amber-800 font-semibold mb-1">Định dạng không hỗ trợ 3D</h3>
+                <p className="text-amber-600 text-sm">
+                    Tệp tin này không phải là mô hình 3D (.glb, .gltf, .fbx).
+                </p>
+                <a 
+                    href={modelUrl} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="mt-4 text-xs text-primary hover:underline"
+                >
+                    Xem tệp gốc
+                </a>
+            </div>
+        );
+    }
+
     return (
         <div className="relative w-full h-full bg-white rounded-2xl overflow-hidden border border-border shadow-2xl">
             <Suspense fallback={<Loader />}>
@@ -105,6 +138,9 @@ export default function ModelViewer({ modelUrl }: { modelUrl: string }) {
                     }}
                     onCreated={({ gl }) => {
                         gl.toneMappingExposure = 1.5; // Cân bằng phơi sáng HDR
+                    }}
+                    onError={(e) => {
+                        console.error("R3F Canvas Error:", e);
                     }}
                 >
                     <color attach="background" args={['#ffffff']} />

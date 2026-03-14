@@ -104,26 +104,39 @@ export default function MaterialDetail() {
                         {/* Material viewer */}
                         <div className="bg-card border border-border rounded-2xl overflow-hidden mb-6 shadow-lg">
                             <div className="aspect-video bg-gradient-to-br from-primary/20 to-secondary/20 relative flex items-center justify-center group overflow-hidden">
-                                {((material.type as string) === '3D' || (material.type as string) === '3d-model') ? (
-                                    <div id="3d-viewer-container" className="absolute inset-0 z-10 bg-black">
-                                        <ModelViewer modelUrl={getFullModelUrl((material as any).file_url)} />
-                                        <div className="absolute bottom-4 left-4 bg-white/90 backdrop-blur-sm px-4 py-2 rounded-lg text-sm z-50 shadow-md pointer-events-none">
-                                            <p className="text-gray-800 font-medium">Kéo chuột trái để xoay • Cuộn để zoom</p>
-                                        </div>
-                                    </div>
-                                ) : (
-                                    <div className="w-full h-full flex items-center justify-center bg-white p-4">
-                                        {(material.file_url || material.thumbnail) ? (
-                                            <img 
-                                                src={getAssetUrl(material.file_url || material.thumbnail)} 
-                                                alt={material.title} 
-                                                className="max-w-full max-h-full object-contain shadow-sm rounded-lg" 
-                                            />
-                                        ) : (
-                                            <BookOpen className="w-32 h-32 text-primary/40" />
-                                        )}
-                                    </div>
-                                )}
+                                {(() => {
+                                    const type = material.type as string;
+                                    const fileUrl = (material as any).file_url || "";
+                                    const ext = fileUrl.split('.').pop()?.toLowerCase();
+                                    const is3DExtension = ['glb', 'gltf', 'fbx'].includes(ext || '');
+                                    const is3DType = type === '3D' || type === '3d-model';
+                                    
+                                    // Ưu tiên kiểm tra extension thực tế để tránh lỗi load nhầm
+                                    if (is3DType && is3DExtension) {
+                                        return (
+                                            <div id="3d-viewer-container" className="absolute inset-0 z-10 bg-black">
+                                                <ModelViewer modelUrl={getFullModelUrl((material as any).file_url)} />
+                                                <div className="absolute bottom-4 left-4 bg-white/90 backdrop-blur-sm px-4 py-2 rounded-lg text-sm z-50 shadow-md pointer-events-none">
+                                                    <p className="text-gray-800 font-medium">Kéo chuột trái để xoay • Cuộn để zoom</p>
+                                                </div>
+                                            </div>
+                                        );
+                                    } else {
+                                        return (
+                                            <div className="w-full h-full flex items-center justify-center bg-white p-4">
+                                                {(material.file_url || material.thumbnail) ? (
+                                                    <img 
+                                                        src={getAssetUrl(material.file_url || material.thumbnail)} 
+                                                        alt={material.title} 
+                                                        className="max-w-full max-h-full object-contain shadow-sm rounded-lg" 
+                                                    />
+                                                ) : (
+                                                    <BookOpen className="w-32 h-32 text-primary/40" />
+                                                )}
+                                            </div>
+                                        );
+                                    }
+                                })()}
 
                                 {/* Presentation mode button */}
                                 <button
