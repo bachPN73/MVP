@@ -42,3 +42,7 @@ server/server_debug.log
 # References and local repositories
 LearningCell_Ref/
 
+# Vite cache
+.vite/
+
+
