@@ -29,9 +29,9 @@ export default defineConfig({
     server: {
         warmup: {
             clientFiles: [
-                './src/app/pages/LandingPage.tsx',
-                './src/app/pages/LoginPage.tsx',
-                './src/app/pages/Dashboard.tsx',
+                './src/pages/LandingPage.tsx',
+                './src/pages/LoginPage.tsx',
+                './src/pages/Dashboard.tsx',
             ],
         },
     },

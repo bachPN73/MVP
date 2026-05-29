@@ -29,7 +29,16 @@ dist-ssr
 .env.production
 server/database.db
 server/uploads/*
+server/models/*
+server/thumbnails/*
+server/server_debug.log
 !server/uploads/.gitkeep
+!server/models/.gitkeep
+!server/thumbnails/.gitkeep
 
 # Build files
 *.tsbuildinfo
+
+# References and local repositories
+LearningCell_Ref/
+

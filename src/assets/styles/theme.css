@@ -1,0 +1,458 @@
+@custom-variant dark (&:is(.dark *));
+
+:root {
+    --font-size: 16px;
+    --background: #f8fafc; /* Pristine light slate-50 for an extremely bright and clean backdrop! */
+    --foreground: #020617; /* Slate 950 for maximum high-contrast, crystal-clear dark text */
+    --card: #ffffff; /* Solid pure white card background so cards pop beautifully! */
+    --card-foreground: #020617;
+    --popover: #ffffff;
+    --popover-foreground: #020617;
+    --primary: #4f46e5; /* Modern premium Indigo */
+    --primary-foreground: #ffffff;
+    --secondary: #10b981;
+    --secondary-foreground: #ffffff;
+    --muted: #e2e8f0;
+    --muted-foreground: #334155; /* Replaced #64748b with Slate-700 for high-contrast muted text */
+    --accent: rgba(79, 70, 229, 0.06); /* Soft Indigo hover glow */
+    --accent-foreground: #4f46e5;
+    --destructive: #ef4444;
+    --destructive-foreground: #ffffff;
+    --border: #94a3b8; /* Crisp Slate-400 border so all boundaries stand out sharply! */
+    --input: #f8fafc;
+    --input-background: #ffffff;
+    --switch-background: #94a3b8;
+    --font-weight-medium: 600; /* Increased to 600 for slightly bolder and crisp typography */
+    --font-weight-normal: 500; /* Increased to 500 for slightly bolder body text */
+    --ring: #4f46e5;
+    --chart-1: #3b82f6;
+    --chart-2: #10b981;
+    --chart-3: #6366f1;
+    --chart-4: #8b5cf6;
+    --chart-5: #ec4899;
+    --radius: 0.75rem;
+    --sidebar: #ffffff; /* Solid white sidebar to contrast perfectly with slate background */
+    --sidebar-foreground: #020617;
+    --sidebar-primary: #4f46e5;
+    --sidebar-primary-foreground: #ffffff;
+    --sidebar-accent: rgba(79, 70, 229, 0.05);
+    --sidebar-accent-foreground: #4f46e5;
+    --sidebar-border: #cbd5e1; /* Clear sidebar right border */
+    --sidebar-ring: #4f46e5;
+
+    /* Custom ultra-high contrast slate colors in light mode */
+    --slate-50: #f1f5f9;  /* Perfect light gray backdrop fill against the ultra-bright body background */
+    --slate-100: #e2e8f0; /* Perfect for highlighted content panels or disabled controls */
+    --slate-200: #94a3b8; /* Makes standard borders like border-slate-200 extremely solid and visible */
+    --slate-300: #64748b; /* Perfect for dividers and secondary icons */
+    --slate-400: #334155; /* Replaced #94a3b8 with Slate-700 for highly visible meta descriptions/labels */
+    --slate-500: #1e293b; /* Replaced #64748b with Slate-800 so normal body/descriptions are extremely dark and legible */
+    --slate-600: #0f172a; /* Replaced #475569 with Slate-900 */
+    --slate-700: #020617; /* Replaced #334155 with Slate-950 for maximum contrast */
+    --slate-800: #010409;
+    --slate-900: #000000;
+}
+
+.dark {
+    --background: #080c14; /* Deep, luxurious navy-black space base */
+    --foreground: #f8fafc; /* Crisp clean slate white */
+    --card: #0e1726; /* Deep navy-indigo card container */
+    --card-foreground: #f8fafc;
+    --popover: #0e1726;
+    --popover-foreground: #f8fafc;
+    --primary: #6366f1; /* Premium glowing Indigo instead of stark white */
+    --primary-foreground: #ffffff;
+    --secondary: #10b981; /* Emerald accent */
+    --secondary-foreground: #ffffff;
+    --muted: #1e293b; /* Sleek slate-800 for tabs, tags, and inactive blocks */
+    --muted-foreground: #94a3b8; /* High-contrast readable sub-text */
+    --accent: rgba(99, 102, 241, 0.15); /* Soft premium indigo hover glow */
+    --accent-foreground: #f8fafc;
+    --destructive: #ef4444;
+    --destructive-foreground: #ffffff;
+    --border: rgba(255, 255, 255, 0.08); /* Clean, ultra-thin premium glassmorphic border */
+    --input: rgba(255, 255, 255, 0.06);
+    --input-background: rgba(10, 17, 30, 0.8);
+    --ring: #6366f1;
+    --font-weight-medium: 500;
+    --font-weight-normal: 400;
+    --chart-1: #6366f1;
+    --chart-2: #10b981;
+    --chart-3: #8b5cf6;
+    --chart-4: #f59e0b;
+    --chart-5: #ec4899;
+    --sidebar: #05080f; /* Distinct ultra-dark sidebar for luxurious navigation contrast */
+    --sidebar-foreground: #f8fafc;
+    --sidebar-primary: #6366f1;
+    --sidebar-primary-foreground: #ffffff;
+    --sidebar-accent: rgba(99, 102, 241, 0.1);
+    --sidebar-accent-foreground: #ffffff;
+    --sidebar-border: rgba(255, 255, 255, 0.06);
+    --sidebar-ring: #6366f1;
+
+    /* Keep original Tailwind slate colors in dark mode for optimal glassmorphism aesthetics */
+    --slate-50: #f8fafc;
+    --slate-100: #f1f5f9;
+    --slate-200: #e2e8f0;
+    --slate-300: #cbd5e1;
+    --slate-400: #94a3b8;
+    --slate-500: #64748b;
+    --slate-600: #475569;
+    --slate-700: #334155;
+    --slate-800: #1e293b;
+    --slate-900: #0f172a;
+}
+
+@theme inline {
+    --color-background: var(--background);
+    --color-foreground: var(--foreground);
+    --color-card: var(--card);
+    --color-card-foreground: var(--card-foreground);
+    --color-popover: var(--popover);
+    --color-popover-foreground: var(--popover-foreground);
+    --color-primary: var(--primary);
+    --color-primary-foreground: var(--primary-foreground);
+    --color-secondary: var(--secondary);
+    --color-secondary-foreground: var(--secondary-foreground);
+    --color-muted: var(--muted);
+    --color-muted-foreground: var(--muted-foreground);
+    --color-accent: var(--accent);
+    --color-accent-foreground: var(--accent-foreground);
+    --color-destructive: var(--destructive);
+    --color-destructive-foreground: var(--destructive-foreground);
+    --color-border: var(--border);
+    --color-input: var(--input);
+    --color-input-background: var(--input-background);
+    --color-switch-background: var(--switch-background);
+    --color-ring: var(--ring);
+    --color-chart-1: var(--chart-1);
+    --color-chart-2: var(--chart-2);
+    --color-chart-3: var(--chart-3);
+    --color-chart-4: var(--chart-4);
+    --color-chart-5: var(--chart-5);
+    --radius-sm: calc(var(--radius) - 4px);
+    --radius-md: calc(var(--radius) - 2px);
+    --radius-lg: var(--radius);
+    --radius-xl: calc(var(--radius) + 4px);
+    --color-sidebar: var(--sidebar);
+    --color-sidebar-foreground: var(--sidebar-foreground);
+    --color-sidebar-primary: var(--sidebar-primary);
+    --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+    --color-sidebar-accent: var(--sidebar-accent);
+    --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+    --color-sidebar-border: var(--sidebar-border);
+    --color-sidebar-ring: var(--sidebar-ring);
+    --font-sans: var(--font-sans);
+    --font-heading: var(--font-heading);
+
+    /* Dynamic Tailwind v4 Slate override mapping */
+    --color-slate-50: var(--slate-50);
+    --color-slate-100: var(--slate-100);
+    --color-slate-200: var(--slate-200);
+    --color-slate-300: var(--slate-300);
+    --color-slate-400: var(--slate-400);
+    --color-slate-500: var(--slate-500);
+    --color-slate-600: var(--slate-600);
+    --color-slate-700: var(--slate-700);
+    --color-slate-800: var(--slate-800);
+    --color-slate-900: var(--slate-900);
+
+    /* Dynamic Tailwind v4 Gray override mapping */
+    --color-gray-50: var(--slate-50);
+    --color-gray-100: var(--slate-100);
+    --color-gray-200: var(--slate-200);
+    --color-gray-300: var(--slate-300);
+    --color-gray-400: var(--slate-400);
+    --color-gray-500: var(--slate-500);
+    --color-gray-600: var(--slate-600);
+    --color-gray-700: var(--slate-700);
+    --color-gray-800: var(--slate-800);
+    --color-gray-900: var(--slate-900);
+
+    /* Dynamic Tailwind v4 Zinc override mapping */
+    --color-zinc-50: var(--slate-50);
+    --color-zinc-100: var(--slate-100);
+    --color-zinc-200: var(--slate-200);
+    --color-zinc-300: var(--slate-300);
+    --color-zinc-400: var(--slate-400);
+    --color-zinc-500: var(--slate-500);
+    --color-zinc-600: var(--slate-600);
+    --color-zinc-700: var(--slate-700);
+    --color-zinc-800: var(--slate-800);
+    --color-zinc-900: var(--slate-900);
+
+    /* Dynamic Tailwind v4 Neutral override mapping */
+    --color-neutral-50: var(--slate-50);
+    --color-neutral-100: var(--slate-100);
+    --color-neutral-200: var(--slate-200);
+    --color-neutral-300: var(--slate-300);
+    --color-neutral-400: var(--slate-400);
+    --color-neutral-500: var(--slate-500);
+    --color-neutral-600: var(--slate-600);
+    --color-neutral-700: var(--slate-700);
+    --color-neutral-800: var(--slate-800);
+    --color-neutral-900: var(--slate-900);
+}
+
+@layer base {
+    * {
+        @apply border-border outline-ring/50;
+    }
+
+    body {
+        @apply bg-background text-foreground;
+    }
+
+    /**
+  * Default typography styles for HTML elements (h1-h4, p, label, button, input).
+  * These are in @layer base, so Tailwind utility classes (like text-sm, text-lg) automatically override them.
+  */
+
+    html {
+        font-size: var(--font-size);
+    }
+
+    h1 {
+        font-family: var(--font-heading);
+        font-size: var(--text-2xl);
+        font-weight: 700;
+        line-height: 1.3;
+    }
+
+    h2 {
+        font-family: var(--font-heading);
+        font-size: var(--text-xl);
+        font-weight: 600;
+        line-height: 1.35;
+    }
+
+    h3 {
+        font-family: var(--font-heading);
+        font-size: var(--text-lg);
+        font-weight: 600;
+        line-height: 1.4;
+    }
+
+    h4 {
+        font-family: var(--font-heading);
+        font-size: var(--text-base);
+        font-weight: 600;
+        line-height: 1.4;
+    }
+
+    label {
+        font-size: var(--text-base);
+        font-weight: var(--font-weight-medium);
+        line-height: 1.5;
+    }
+
+    button {
+        font-size: var(--text-base);
+        font-weight: var(--font-weight-medium);
+        line-height: 1.5;
+    }
+
+    input {
+        font-size: var(--text-base);
+        font-weight: var(--font-weight-normal);
+        line-height: 1.5;
+    }
+
+    /* GPU-accelerated smooth transitions for all interactive elements */
+    a, button, input, select, textarea {
+        transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* Optimize rendering performance */
+    img, video, canvas {
+        content-visibility: auto;
+    }
+
+    /* Smooth scrolling */
+    html {
+        scroll-behavior: smooth;
+    }
+}
+
+/* Page transition animations */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideInFromBottom {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes scaleIn {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Utility animation classes */
+.animate-in {
+    animation-fill-mode: both;
+}
+
+.fade-in {
+    animation: fadeIn 0.4s ease-out;
+}
+
+.slide-in-from-bottom-2 {
+    animation: slideInFromBottom 0.4s ease-out;
+}
+
+.slide-in-from-bottom-4 {
+    animation: slideInFromBottom 0.5s ease-out;
+}
+
+.zoom-in {
+    animation: scaleIn 0.4s ease-out;
+}
+
+.duration-300 {
+    animation-duration: 0.3s;
+}
+
+.duration-500 {
+    animation-duration: 0.5s;
+}
+
+/* Card hover effects */
+.hover-lift {
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.hover-lift:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+/* Glassmorphism utilities */
+.glass {
+    backdrop-filter: blur(16px) saturate(180%);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.glass-dark {
+    backdrop-filter: blur(16px) saturate(180%);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+    background: rgba(15, 23, 42, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* Gradient border utility */
+.gradient-border {
+    position: relative;
+    border: none !important;
+}
+.gradient-border::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 2px;
+    background: linear-gradient(135deg, #7c3aed, #3b82f6, #06b6d4);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+}
+
+/* Shimmer animation */
+@keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+}
+.animate-shimmer {
+    background: linear-gradient(90deg, transparent 30%, rgba(255,255,255,0.15) 50%, transparent 70%);
+    background-size: 200% 100%;
+    animation: shimmer 2s infinite;
+}
+
+/* Pulse glow animation */
+@keyframes pulse-glow {
+    0%, 100% { box-shadow: 0 0 20px rgba(99, 102, 241, 0.2); }
+    50% { box-shadow: 0 0 40px rgba(99, 102, 241, 0.4); }
+}
+.animate-pulse-glow {
+    animation: pulse-glow 3s ease-in-out infinite;
+}
+
+/* Slow pulse for decorative elements */
+@keyframes pulse-slow {
+    0%, 100% { opacity: 0.6; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.05); }
+}
+.animate-pulse-slow {
+    animation: pulse-slow 4s ease-in-out infinite;
+}
+
+/* Premium Sidebar Utilities */
+.premium-sidebar-item {
+    @apply relative transition-all duration-300 ease-out;
+}
+
+.premium-sidebar-item::before {
+    content: '';
+    @apply absolute -left-1.5 top-1/2 -translate-y-1/2 w-1.5 h-0 bg-indigo-500 rounded-r-full transition-all duration-300 opacity-0 shadow-[0_0_15px_#6366f1];
+}
+
+.premium-sidebar-item.active::before {
+    @apply h-8 opacity-100;
+}
+
+.dark .premium-sidebar-item.active {
+    @apply bg-white/10 text-white shadow-[0_0_20px_rgba(255,255,255,0.03)];
+}
+
+.glass-card {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.03));
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.sidebar-glow {
+    box-shadow: 0 0 40px -10px rgba(99, 102, 241, 0.15);
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+    width: 4px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.2);
+}

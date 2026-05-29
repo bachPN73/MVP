@@ -1,0 +1,9 @@
+@import './fonts.css';
+@import './tailwind.css';
+@import './theme.css';
+
+/* Utility to prevent scrolling and set full viewport height */
+.no-scroll {
+  height: 100vh;
+  overflow: hidden;
+}
