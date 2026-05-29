@@ -61,7 +61,7 @@ export function Layout({ children }: LayoutProps) {
             )}
 
             {/* Main Content Area */}
-            <main className={`flex-1 pt-14 md:pt-0 w-full overflow-x-hidden transition-all duration-300 ${isCollapsed ? 'md:ml-20' : 'md:ml-60'}`}>
+            <main className={`flex-1 pt-14 md:pt-0 w-full overflow-x-hidden transition-all duration-300 ${isCollapsed ? 'md:ml-20' : 'md:ml-64'}`}>
                 {children}
             </main>
         </div>
