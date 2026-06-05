@@ -551,7 +551,33 @@ app.post('/api/upload', upload.single('file'), async (req, res) => {
         const fileExt = path.extname(req.file.originalname);
         const fileBaseName = `${uniqueSuffix}${fileExt}`;
 
-        if (!supabase) {
+        const isTooLargeForSupabase = req.file.size > 48 * 1024 * 1024;
+        let useLocal = !supabase || isTooLargeForSupabase;
+        let publicUrl = '';
+
+        if (!useLocal) {
+            try {
+                const fileName = `models/${fileBaseName}`;
+                const { data, error } = await supabase.storage
+                    .from(supabaseBucket)
+                    .upload(fileName, req.file.buffer, {
+                        contentType: req.file.mimetype,
+                        upsert: false
+                    });
+
+                if (error) throw error;
+
+                const { data: { publicUrl: url } } = supabase.storage
+                    .from(supabaseBucket)
+                    .getPublicUrl(fileName);
+                publicUrl = url;
+            } catch (err) {
+                console.error('[SUPABASE UPLOAD FALLBACK] Supabase upload failed, saving locally:', err.message);
+                useLocal = true;
+            }
+        }
+
+        if (useLocal) {
             // Local Fallback
             const modelsDir = path.resolve(DATA_DIR, 'models');
             if (!fs.existsSync(modelsDir)) {
@@ -559,30 +585,17 @@ app.post('/api/upload', upload.single('file'), async (req, res) => {
             }
             const localPath = path.join(modelsDir, fileBaseName);
             fs.writeFileSync(localPath, req.file.buffer);
-            console.log(`[LOCAL UPLOAD] Saved model locally at: ${localPath}`);
+            console.log(`[LOCAL UPLOAD] Saved model locally at: ${localPath} (Size: ${(req.file.size/(1024*1024)).toFixed(2)}MB)`);
             
             const host = req.get('host');
             const protocol = req.protocol;
-            const publicUrl = `${protocol}://${host}/models/${fileBaseName}`;
-            
-            return res.json({ file_url: publicUrl, message: 'Tải lên máy cục bộ thành công (Không có Supabase)' });
+            publicUrl = `${protocol}://${host}/models/${fileBaseName}`;
         }
 
-        const fileName = `models/${fileBaseName}`;
-        const { data, error } = await supabase.storage
-            .from(supabaseBucket)
-            .upload(fileName, req.file.buffer, {
-                contentType: req.file.mimetype,
-                upsert: false
-            });
-
-        if (error) throw error;
-
-        const { data: { publicUrl } } = supabase.storage
-            .from(supabaseBucket)
-            .getPublicUrl(fileName);
-
-        res.json({ file_url: publicUrl, message: 'Tải lên Supabase thành công' });
+        res.json({ 
+            file_url: publicUrl, 
+            message: useLocal ? 'Tải lên máy cục bộ thành công (Bypass Supabase)' : 'Tải lên Supabase thành công' 
+        });
     } catch (err) {
         console.error('[UPLOAD ERROR]', err.message);
         res.status(500).json({ error: 'Lỗi khi tải file lên: ' + err.message });
