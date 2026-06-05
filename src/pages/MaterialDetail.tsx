@@ -1,7 +1,7 @@
 import { Layout } from '../layout/MainLayout';
 import { useParams, Link, useNavigate } from 'react-router';
 import { materials as mockMaterials, getSubjectName, getTypeName, Material } from '../data/materialsData';
-import { ArrowLeft, Maximize2, Minimize2, BookOpen, Tag, GraduationCap, Loader2, Play, ZoomIn, RotateCcw, Move, Compass, Sparkles, Search } from 'lucide-react';
+import { ArrowLeft, Maximize2, Minimize2, BookOpen, Tag, GraduationCap, Loader2, Play, ZoomIn, RotateCcw, Move, Compass, Sparkles, Search, Lock, Zap, Download } from 'lucide-react';
 import { useState, useEffect, lazy, Suspense, useRef, useMemo } from 'react';
 import { api, BASE_URL } from '../api';
 import { useTheme } from '../components/ThemeProvider';
@@ -68,6 +68,7 @@ export default function MaterialDetail() {
     const [relatedSearch, setRelatedSearch] = useState('');
 
     const [userRole, setUserRole] = useState('student');
+    const [userPlan, setUserPlan] = useState('free');
     const [isEditing, setIsEditing] = useState(false);
     const [isSaving, setIsSaving] = useState(false);
     const [errorMsg, setErrorMsg] = useState('');
@@ -152,6 +153,7 @@ export default function MaterialDetail() {
             try {
                 const user = JSON.parse(stored);
                 if (user.role) setUserRole(user.role);
+                if (user.plan) setUserPlan(user.plan.toLowerCase());
             } catch (e) {}
         }
     }, []);
@@ -377,6 +379,48 @@ export default function MaterialDetail() {
         setIsDragging(false);
     };
 
+    const handleDownloadResource = () => {
+        if (!material) return;
+        
+        if (userPlan === 'free') {
+            const currentMonth = new Date().toISOString().slice(0, 7);
+            const usageStr = localStorage.getItem('edu_tech_download_usage');
+            let count = 0;
+            
+            if (usageStr) {
+                try {
+                    const usage = JSON.parse(usageStr);
+                    if (usage.month === currentMonth) {
+                        count = usage.count;
+                    }
+                } catch (e) {}
+            }
+            
+            if (count >= 2) {
+                alert("Bạn đã dùng hết 2 lượt tải học liệu miễn phí trong tháng này. Vui lòng nâng cấp gói để tải không giới hạn!");
+                navigate('/pricing');
+                return;
+            }
+            
+            // Increment count
+            const newCount = count + 1;
+            localStorage.setItem('edu_tech_download_usage', JSON.stringify({ month: currentMonth, count: newCount }));
+        }
+        
+        // Trigger file download
+        const url = fileUrl || (material as any).thumbnail || "";
+        if (!url) return;
+        
+        const fullUrl = getFullModelUrl(url);
+        const link = document.createElement('a');
+        link.href = fullUrl;
+        link.download = material.title || 'hoc-lieu';
+        link.target = '_blank';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    };
+
     if (isLoading) {
         return (
             <Layout>
@@ -423,6 +467,8 @@ export default function MaterialDetail() {
         : '3d-placeholder';
     const isPDF = ext === 'pdf';
     const config = SUBJECT_CONFIGS[material.subject as keyof typeof SUBJECT_CONFIGS] || SUBJECT_CONFIGS.physics;
+    const isPremiumMaterial = id ? !id.toLowerCase().includes('demo') : true;
+    const isBlocked = isPremiumMaterial && userPlan === 'free';
 
     return (
         <Layout>
@@ -569,173 +615,228 @@ export default function MaterialDetail() {
                                     </div>
                                 )}
 
-                                {!viewerActive ? (
-                                    /* ======================== CLICK-TO-LOAD PLACEHOLDER ======================== */
-                                    <div className="absolute inset-0 flex flex-col items-center justify-center cursor-pointer select-none"
-                                        onClick={() => setViewerActive(true)}
-                                    >
-                                        {/* Show thumbnail as blurred background */}
+                                 {isBlocked ? (
+                                    <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center select-none bg-slate-900/90 dark:bg-slate-950/95 backdrop-blur-md z-30">
                                         {thumbnailUrl && (
                                             <img
                                                 src={thumbnailUrl}
                                                 alt=""
-                                                className="absolute inset-0 w-full h-full object-cover filter blur-sm scale-102 opacity-50 transition-all duration-700 group-hover:scale-105"
+                                                className="absolute inset-0 w-full h-full object-cover filter blur-md opacity-20"
                                             />
                                         )}
-
-                                        {/* Overlay */}
-                                        <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-900/40 to-slate-950/20"></div>
-
-                                        {/* Play / View button */}
-                                        <div className="relative z-10 flex flex-col items-center gap-5 p-6 rounded-[2.5rem] bg-slate-900/40 backdrop-blur-xl border border-white/10 shadow-2xl transition-all duration-300 group-hover:scale-102 group-hover:bg-slate-900/50">
-                                            <div className="w-20 h-20 rounded-full flex items-center justify-center bg-primary/25 backdrop-blur-md border-2 border-primary/40 shadow-2xl shadow-primary/20 hover:scale-110 active:scale-95 transition-all duration-300">
-                                                {is3D ? (
-                                                    <Play className="w-8 h-8 text-white ml-1 animate-pulse" />
-                                                ) : (
-                                                    <ZoomIn className="w-8 h-8 text-white" />
-                                                )}
+                                        <div className="relative z-10 max-w-md p-8 rounded-3xl border border-white/10 bg-slate-900/70 backdrop-blur-xl shadow-2xl flex flex-col items-center gap-4">
+                                            <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white shadow-lg shadow-indigo-500/30 animate-pulse">
+                                                <Lock className="w-8 h-8" />
                                             </div>
-                                            <div className="text-center px-4">
-                                                <p className="text-white font-black text-xl tracking-tight drop-shadow-md">
-                                                    {is3D ? 'Nhấn để khám phá 3D' : isPDF ? 'Nhấn để xem tài liệu' : 'Nhấn để xem Infographic'}
-                                                </p>
-                                                <p className="text-slate-350 text-xs font-semibold mt-1">
-                                                    {is3D ? 'Xoay, thu phóng và tương tác mô hình' : 'Phóng to và di chuyển để quan sát'}
-                                                </p>
+                                            
+                                            <div className="inline-flex items-center gap-1 bg-indigo-500/10 border border-indigo-500/30 text-indigo-400 text-[10px] font-black uppercase tracking-wider px-3 py-1 rounded-full">
+                                                <Zap className="w-3 h-3 text-indigo-400" /> Tính Năng Trả Phí
                                             </div>
-                                        </div>
 
-                                        {/* Type indicator */}
-                                        <div className="absolute bottom-4 left-4 z-10 flex items-center gap-2 px-3 py-1.5 bg-black/40 backdrop-blur-md rounded-lg">
-                                            <span className="text-[11px] font-bold text-white/80 uppercase tracking-wider">
-                                                {is3D ? '🧊 Mô hình 3D' : isPDF ? '📄 PDF' : '🖼️ Infographic'}
-                                            </span>
+                                            <h3 className="text-xl font-bold font-heading text-white">
+                                                Mở khóa học liệu: {material.title}
+                                            </h3>
+
+                                            <p className="text-sm text-slate-300 leading-relaxed">
+                                                Học liệu này thuộc danh mục <strong className="text-indigo-400">Premium</strong>. Hãy nâng cấp tài khoản của bạn để xem và tương tác hoàn toàn với mô hình sinh động này!
+                                            </p>
+
+                                            <div className="w-full h-px bg-white/5 my-2" />
+
+                                            <div className="grid grid-cols-2 gap-3 w-full text-left text-xs text-slate-400 mb-2">
+                                                <div className="flex items-center gap-2">
+                                                    <span className="text-emerald-400 font-bold">✓</span> Xem 100+ mô hình 3D
+                                                </div>
+                                                <div className="flex items-center gap-2">
+                                                    <span className="text-emerald-400 font-bold">✓</span> Download infographic
+                                                </div>
+                                                <div className="flex items-center gap-2">
+                                                    <span className="text-emerald-400 font-bold">✓</span> Trợ lý AI học tập 24/7
+                                                </div>
+                                                <div className="flex items-center gap-2">
+                                                    <span className="text-emerald-400 font-bold">✓</span> Không quảng cáo
+                                                </div>
+                                            </div>
+
+                                            <button
+                                                onClick={() => navigate('/pricing')}
+                                                className="w-full py-3 rounded-xl bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white font-black text-xs uppercase tracking-wider hover:opacity-90 active:scale-[0.98] transition-all cursor-pointer shadow-lg shadow-indigo-500/20"
+                                            >
+                                                Nâng cấp gói dịch vụ ngay
+                                            </button>
                                         </div>
                                     </div>
                                 ) : (
-                                    /* ======================== ACTIVE VIEWER ======================== */
                                     <>
-                                        {is3D ? (
-                                            <div id="3d-viewer-container" className={`absolute inset-0 z-10 ${material.subtitle ? 'bg-transparent' : 'bg-black'}`}>
-                                                <Suspense fallback={
-                                                    <div className="absolute inset-0 flex flex-col items-center justify-center bg-slate-950 border border-slate-800/80 z-10">
-                                                        <Loader2 className="w-12 h-12 text-indigo-500 animate-spin mb-4" />
-                                                        <p className="text-slate-300 font-medium tracking-wide">Khởi tạo Engine 3D...</p>
+                                        {!viewerActive ? (
+                                            /* ======================== CLICK-TO-LOAD PLACEHOLDER ======================== */
+                                            <div className="absolute inset-0 flex flex-col items-center justify-center cursor-pointer select-none"
+                                                onClick={() => setViewerActive(true)}
+                                            >
+                                                {/* Show thumbnail as blurred background */}
+                                                {thumbnailUrl && (
+                                                    <img
+                                                        src={thumbnailUrl}
+                                                        alt=""
+                                                        className="absolute inset-0 w-full h-full object-cover filter blur-sm scale-102 opacity-50 transition-all duration-700 group-hover:scale-105"
+                                                    />
+                                                )}
+
+                                                {/* Overlay */}
+                                                <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-900/40 to-slate-950/20"></div>
+
+                                                {/* Play / View button */}
+                                                <div className="relative z-10 flex flex-col items-center gap-5 p-6 rounded-[2.5rem] bg-slate-900/40 backdrop-blur-xl border border-white/10 shadow-2xl transition-all duration-300 group-hover:scale-102 group-hover:bg-slate-900/50">
+                                                    <div className="w-20 h-20 rounded-full flex items-center justify-center bg-primary/25 backdrop-blur-md border-2 border-primary/40 shadow-2xl shadow-primary/20 hover:scale-110 active:scale-95 transition-all duration-300">
+                                                        {is3D ? (
+                                                            <Play className="w-8 h-8 text-white ml-1 animate-pulse" />
+                                                        ) : (
+                                                            <ZoomIn className="w-8 h-8 text-white" />
+                                                        )}
                                                     </div>
-                                                }>
-                                                    <ModelViewer modelUrl={getFullModelUrl(fileUrl)} />
-                                                </Suspense>
-                                                <div className="absolute bottom-4 left-4 bg-white/90 dark:bg-slate-900/90 backdrop-blur-sm px-4 py-2 rounded-lg text-sm z-50 shadow-md pointer-events-none">
-                                                    <p className="text-slate-800 dark:text-slate-200 font-medium">Kéo chuột trái để xoay • Cuộn để zoom</p>
+                                                    <div className="text-center px-4">
+                                                        <p className="text-white font-black text-xl tracking-tight drop-shadow-md">
+                                                            {is3D ? 'Nhấn để khám phá 3D' : isPDF ? 'Nhấn để xem tài liệu' : 'Nhấn để xem Infographic'}
+                                                        </p>
+                                                        <p className="text-slate-350 text-xs font-semibold mt-1">
+                                                            {is3D ? 'Xoay, thu phóng và tương tác mô hình' : 'Phóng to và di chuyển để quan sát'}
+                                                        </p>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        ) : isPDF ? (
-                                            <div className="absolute inset-0 bg-white flex items-center justify-center overflow-hidden">
-                                                <iframe
-                                                    src={getFullModelUrl(fileUrl)}
-                                                    className="w-full h-full border-none"
-                                                    title={material.title}
-                                                />
+
+                                                {/* Type indicator */}
+                                                <div className="absolute bottom-4 left-4 z-10 flex items-center gap-2 px-3 py-1.5 bg-black/40 backdrop-blur-md rounded-lg">
+                                                    <span className="text-[11px] font-bold text-white/80 uppercase tracking-wider">
+                                                        {is3D ? '🧊 Mô hình 3D' : isPDF ? '📄 PDF' : '🖼️ Infographic'}
+                                                    </span>
+                                                </div>
                                             </div>
                                         ) : (
-                                            /* ============ INFOGRAPHIC VIEWER – landscape & portrait adaptive ============ */
-                                            <div
-                                                className="absolute inset-0 overflow-hidden"
-                                                style={{
-                                                    background: 'radial-gradient(ellipse at center, #f8fafc 0%, #e2e8f0 100%)',
-                                                }}
-                                            >
-                                                {/* Dark mode background */}
-                                                <div className="absolute inset-0 dark:bg-slate-950 hidden dark:block" />
-
-                                                {/* Scrollable zoom container */}
-                                                <div
-                                                    className="absolute inset-0 flex items-center justify-center overflow-hidden"
-                                                    onWheel={handleWheel}
-                                                    onMouseDown={handleMouseDown}
-                                                    onMouseMove={handleMouseMove}
-                                                    onMouseUp={handleMouseUp}
-                                                    onMouseLeave={handleMouseUp}
-                                                    style={{ cursor: scale > 1 ? (isDragging ? 'grabbing' : 'grab') : 'zoom-in' }}
-                                                >
-                                                    {/* Image wrapper — fills available space while preserving aspect ratio */}
-                                                    <div
-                                                        className="relative flex items-center justify-center w-full h-full"
-                                                        style={{
-                                                            transform: `translate(${position.x}px, ${position.y}px) scale(${scale})`,
-                                                            transition: isDragging ? 'none' : 'transform 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
-                                                            willChange: 'transform',
-                                                        }}
-                                                    >
-                                                        <img
-                                                            src={getFullModelUrl(fileUrl || material.thumbnail)}
-                                                            alt={material.title}
-                                                            draggable={false}
-                                                            style={{
-                                                                maxWidth: '100%',
-                                                                maxHeight: '100%',
-                                                                width: 'auto',
-                                                                height: 'auto',
-                                                                objectFit: 'contain',
-                                                                imageRendering: scale > 1.5 ? '-webkit-optimize-contrast' : 'auto',
-                                                                display: 'block',
-                                                                borderRadius: '0.5rem',
-                                                                boxShadow: '0 8px 40px 0 rgba(0,0,0,0.10)',
-                                                            }}
-                                                            className="select-none"
+                                            /* ======================== ACTIVE VIEWER ======================== */
+                                            <>
+                                                {is3D ? (
+                                                    <div id="3d-viewer-container" className={`absolute inset-0 z-10 ${material.subtitle ? 'bg-transparent' : 'bg-black'}`}>
+                                                        <Suspense fallback={
+                                                            <div className="absolute inset-0 flex flex-col items-center justify-center bg-slate-950 border border-slate-800/80 z-10">
+                                                                <Loader2 className="w-12 h-12 text-indigo-500 animate-spin mb-4" />
+                                                                <p className="text-slate-300 font-medium tracking-wide">Khởi tạo Engine 3D...</p>
+                                                            </div>
+                                                        }>
+                                                            <ModelViewer modelUrl={getFullModelUrl(fileUrl)} />
+                                                        </Suspense>
+                                                        <div className="absolute bottom-4 left-4 bg-white/90 dark:bg-slate-900/90 backdrop-blur-sm px-4 py-2 rounded-lg text-sm z-50 shadow-md pointer-events-none">
+                                                            <p className="text-slate-800 dark:text-slate-200 font-medium">Kéo chuột trái để xoay • Cuộn để zoom</p>
+                                                        </div>
+                                                    </div>
+                                                ) : isPDF ? (
+                                                    <div className="absolute inset-0 bg-white flex items-center justify-center overflow-hidden">
+                                                        <iframe
+                                                            src={getFullModelUrl(fileUrl)}
+                                                            className="w-full h-full border-none"
+                                                            title={material.title}
                                                         />
                                                     </div>
-                                                </div>
+                                                ) : (
+                                                    /* ============ INFOGRAPHIC VIEWER – landscape & portrait adaptive ============ */
+                                                    <div
+                                                        className="absolute inset-0 overflow-hidden"
+                                                        style={{
+                                                            background: 'radial-gradient(ellipse at center, #f8fafc 0%, #e2e8f0 100%)',
+                                                        }}
+                                                    >
+                                                        {/* Dark mode background */}
+                                                        <div className="absolute inset-0 dark:bg-slate-950 hidden dark:block" />
 
-                                                {/* Top-left orientation badge */}
-                                                <div className="absolute top-4 left-4 z-50 pointer-events-none">
-                                                    <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-black/30 backdrop-blur-md text-white/80 text-[10px] font-bold uppercase tracking-widest">
-                                                        🖼️ Infographic
-                                                    </span>
-                                                </div>
-
-                                                {/* Zoom Controls */}
-                                                <div className="absolute bottom-5 right-5 flex items-center gap-1.5 z-50 p-1.5 bg-slate-900/70 dark:bg-slate-950/80 backdrop-blur-md border border-white/10 rounded-full shadow-2xl">
-                                                    <button
-                                                        onClick={() => setScale(prev => Math.max(0.5, prev - 0.25))}
-                                                        className="w-8 h-8 bg-white/10 hover:bg-white/25 border border-white/10 text-white rounded-full flex items-center justify-center text-base font-bold transition-all hover:scale-105 active:scale-95 cursor-pointer"
-                                                        title="Thu nhỏ"
-                                                    >−</button>
-                                                    <span className="px-2.5 text-white text-[11px] font-bold font-mono tabular-nums min-w-[44px] text-center">
-                                                        {Math.round(scale * 100)}%
-                                                    </span>
-                                                    <button
-                                                        onClick={() => setScale(prev => Math.min(6, prev + 0.25))}
-                                                        className="w-8 h-8 bg-white/10 hover:bg-white/25 border border-white/10 text-white rounded-full flex items-center justify-center text-base font-bold transition-all hover:scale-105 active:scale-95 cursor-pointer"
-                                                        title="Phóng to"
-                                                    >+</button>
-                                                    {scale !== 1 && (
-                                                        <button
-                                                            onClick={resetZoom}
-                                                            className="w-8 h-8 bg-rose-500/25 hover:bg-rose-500/40 border border-rose-500/30 text-rose-300 rounded-full flex items-center justify-center transition-all hover:scale-105 active:scale-95 cursor-pointer ml-0.5"
-                                                            title="Đặt lại"
+                                                        {/* Scrollable zoom container */}
+                                                        <div
+                                                            className="absolute inset-0 flex items-center justify-center overflow-hidden"
+                                                            onWheel={handleWheel}
+                                                            onMouseDown={handleMouseDown}
+                                                            onMouseMove={handleMouseMove}
+                                                            onMouseUp={handleMouseUp}
+                                                            onMouseLeave={handleMouseUp}
+                                                            style={{ cursor: scale > 1 ? (isDragging ? 'grabbing' : 'grab') : 'zoom-in' }}
                                                         >
-                                                            <RotateCcw className="w-3.5 h-3.5" />
-                                                        </button>
-                                                    )}
-                                                </div>
+                                                            {/* Image wrapper — fills available space while preserving aspect ratio */}
+                                                            <div
+                                                                className="relative flex items-center justify-center w-full h-full"
+                                                                style={{
+                                                                    transform: `translate(${position.x}px, ${position.y}px) scale(${scale})`,
+                                                                    transition: isDragging ? 'none' : 'transform 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+                                                                    willChange: 'transform',
+                                                                }}
+                                                            >
+                                                                <img
+                                                                    src={getFullModelUrl(fileUrl || material.thumbnail)}
+                                                                    alt={material.title}
+                                                                    draggable={false}
+                                                                    style={{
+                                                                        maxWidth: '100%',
+                                                                        maxHeight: '100%',
+                                                                        width: 'auto',
+                                                                        height: 'auto',
+                                                                        objectFit: 'contain',
+                                                                        imageRendering: scale > 1.5 ? '-webkit-optimize-contrast' : 'auto',
+                                                                        display: 'block',
+                                                                        borderRadius: '0.5rem',
+                                                                        boxShadow: '0 8px 40px 0 rgba(0,0,0,0.10)',
+                                                                    }}
+                                                                    className="select-none"
+                                                                />
+                                                            </div>
+                                                        </div>
 
-                                                {/* Pan hint */}
-                                                {scale > 1 && (
-                                                    <div className="absolute bottom-5 left-4 flex items-center gap-2 px-3 py-1.5 bg-black/40 backdrop-blur-md rounded-full text-white/70 text-[11px] font-semibold pointer-events-none z-50">
-                                                        <Move className="w-3 h-3" />
-                                                        <span>Kéo để di chuyển</span>
+                                                        {/* Top-left orientation badge */}
+                                                        <div className="absolute top-4 left-4 z-50 pointer-events-none">
+                                                            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-black/30 backdrop-blur-md text-white/80 text-[10px] font-bold uppercase tracking-widest">
+                                                                🖼️ Infographic
+                                                            </span>
+                                                        </div>
+
+                                                        {/* Zoom Controls */}
+                                                        <div className="absolute bottom-5 right-5 flex items-center gap-1.5 z-50 p-1.5 bg-slate-900/70 dark:bg-slate-950/80 backdrop-blur-md border border-white/10 rounded-full shadow-2xl">
+                                                            <button
+                                                                onClick={() => setScale(prev => Math.max(0.5, prev - 0.25))}
+                                                                className="w-8 h-8 bg-white/10 hover:bg-white/25 border border-white/10 text-white rounded-full flex items-center justify-center text-base font-bold transition-all hover:scale-105 active:scale-95 cursor-pointer"
+                                                                title="Thu nhỏ"
+                                                            >−</button>
+                                                            <span className="px-2.5 text-white text-[11px] font-bold font-mono tabular-nums min-w-[44px] text-center">
+                                                                {Math.round(scale * 100)}%
+                                                            </span>
+                                                            <button
+                                                                onClick={() => setScale(prev => Math.min(6, prev + 0.25))}
+                                                                className="w-8 h-8 bg-white/10 hover:bg-white/25 border border-white/10 text-white rounded-full flex items-center justify-center text-base font-bold transition-all hover:scale-105 active:scale-95 cursor-pointer"
+                                                                title="Phóng to"
+                                                            >+</button>
+                                                            {scale !== 1 && (
+                                                                <button
+                                                                    onClick={resetZoom}
+                                                                    className="w-8 h-8 bg-rose-500/25 hover:bg-rose-500/40 border border-rose-500/30 text-rose-300 rounded-full flex items-center justify-center transition-all hover:scale-105 active:scale-95 cursor-pointer ml-0.5"
+                                                                    title="Đặt lại"
+                                                                >
+                                                                    <RotateCcw className="w-3.5 h-3.5" />
+                                                                </button>
+                                                            )}
+                                                        </div>
+
+                                                        {/* Pan hint */}
+                                                        {scale > 1 && (
+                                                            <div className="absolute bottom-5 left-4 flex items-center gap-2 px-3 py-1.5 bg-black/40 backdrop-blur-md rounded-full text-white/70 text-[11px] font-semibold pointer-events-none z-50">
+                                                                <Move className="w-3 h-3" />
+                                                                <span>Kéo để di chuyển</span>
+                                                            </div>
+                                                        )}
+
+                                                        {/* Scroll hint when at default zoom */}
+                                                        {scale === 1 && (
+                                                            <div className="absolute bottom-5 left-4 flex items-center gap-2 px-3 py-1.5 bg-black/30 backdrop-blur-md rounded-full text-white/60 text-[11px] font-semibold pointer-events-none z-50">
+                                                                <ZoomIn className="w-3 h-3" />
+                                                                <span>Cuộn chuột để phóng to</span>
+                                                            </div>
+                                                        )}
                                                     </div>
                                                 )}
-
-                                                {/* Scroll hint when at default zoom */}
-                                                {scale === 1 && (
-                                                    <div className="absolute bottom-5 left-4 flex items-center gap-2 px-3 py-1.5 bg-black/30 backdrop-blur-md rounded-full text-white/60 text-[11px] font-semibold pointer-events-none z-50">
-                                                        <ZoomIn className="w-3 h-3" />
-                                                        <span>Cuộn chuột để phóng to</span>
-                                                    </div>
-                                                )}
-                                            </div>
+                                            </>
                                         )}
                                     </>
                                 )}
@@ -1139,6 +1240,23 @@ export default function MaterialDetail() {
                                                 <LatexText text={material.description} />
                                             </p>
                                         </div>
+
+                                        {/* Download Resource Action Button */}
+                                        {fileUrl && (
+                                            <div className="pt-1">
+                                                <button
+                                                    onClick={handleDownloadResource}
+                                                    className={`w-full py-3 px-4 rounded-xl text-white font-black text-xs uppercase tracking-wider transition-all duration-200 hover:shadow-lg active:scale-[0.98] cursor-pointer flex items-center justify-center gap-2 shadow-md ${
+                                                        material.subtitle 
+                                                            ? 'bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 hover:shadow-emerald-500/20' 
+                                                            : 'bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 hover:shadow-indigo-500/20'
+                                                    }`}
+                                                >
+                                                    <Download className="w-4 h-4 animate-bounce" />
+                                                    Tải tài nguyên ({is3D ? "Mô hình 3D" : isPDF ? "Tài liệu PDF" : "Infographic"})
+                                                </button>
+                                            </div>
+                                        )}
 
                                         {/* Quick Stats Grid for Premium Models */}
                                         {material.subtitle && (

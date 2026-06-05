@@ -11,6 +11,9 @@ export default function Library() {
 
     const [allMaterials, setAllMaterials] = useState<Material[]>(mockMaterials);
     const [isLoading, setIsLoading] = useState(true);
+
+    const [userPlan, setUserPlan] = useState('free');
+    const [downloadCount, setDownloadCount] = useState(0);
     const [searchQuery, setSearchQuery] = useState('');
     const [debouncedSearch, setDebouncedSearch] = useState('');
     const searchTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -253,16 +256,34 @@ export default function Library() {
         }
     };
 
-    // Check admin role from localStorage
+    // Check user plan and monthly download usage from localStorage
     useEffect(() => {
         try {
             const userData = localStorage.getItem('edu_tech_user');
             if (userData) {
                 const user = JSON.parse(userData);
                 setIsAdmin(user.role === 'admin');
+                if (user.plan) setUserPlan(user.plan.toLowerCase());
             }
-        } catch {
+        } catch (default_error) {
             setIsAdmin(false);
+        }
+
+        const currentMonth = new Date().toISOString().slice(0, 7);
+        const usageStr = localStorage.getItem('edu_tech_download_usage');
+        if (usageStr) {
+            try {
+                const usage = JSON.parse(usageStr);
+                if (usage.month === currentMonth) {
+                    setDownloadCount(usage.count);
+                } else {
+                    localStorage.setItem('edu_tech_download_usage', JSON.stringify({ month: currentMonth, count: 0 }));
+                    setDownloadCount(0);
+                }
+            } catch (e) {}
+        } else {
+            localStorage.setItem('edu_tech_download_usage', JSON.stringify({ month: currentMonth, count: 0 }));
+            setDownloadCount(0);
         }
     }, []);
 
@@ -825,6 +846,19 @@ export default function Library() {
                         </div>
                     ) : filteredMaterials.length > 0 ? (
                         <div ref={gridRef}>
+                            {userPlan === 'free' && (
+                                <div className="mb-4 p-4 rounded-2xl bg-indigo-50 dark:bg-indigo-950/20 border border-indigo-100 dark:border-indigo-500/20 text-xs font-semibold text-slate-700 dark:text-slate-300 flex items-center justify-between flex-wrap gap-2 animate-in fade-in duration-300">
+                                    <div className="flex items-center gap-2">
+                                        <span>📥</span>
+                                        <span>
+                                            Gói Miễn phí: Bạn còn <strong>{Math.max(0, 2 - downloadCount)} / 2</strong> lượt tải tài nguyên học tập trong tháng này.
+                                        </span>
+                                    </div>
+                                    <Link to="/pricing" className="text-indigo-600 dark:text-indigo-400 font-bold hover:underline">
+                                        Nâng cấp để tải không giới hạn &rarr;
+                                    </Link>
+                                </div>
+                            )}
                             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 sm:gap-5">
                                 {paginatedMaterials.map((material) => {
                                     const subjectStyle = getSubjectStyle(material.subject);

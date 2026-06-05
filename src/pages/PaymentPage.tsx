@@ -2,7 +2,7 @@ import { Layout } from "../layout/MainLayout";
 import { useParams, useNavigate, useLocation } from "react-router";
 import {
     ShieldCheck, ArrowLeft, Loader2, Sparkles, CheckCircle2,
-    QrCode, Copy, Check, AlertCircle, XCircle, Phone, Mail, MessageCircle,
+    QrCode, Copy, Check, AlertCircle, XCircle, X, Phone, Mail, MessageCircle,
     Clock, Zap, RefreshCw, ChevronRight, ExternalLink,
     Wifi, WifiOff, Lock
 } from "lucide-react";
@@ -229,6 +229,16 @@ export default function PaymentPage() {
                 <div className="max-w-sm w-full text-center">
                     <div className="bg-white dark:bg-slate-900 border border-emerald-200/60 dark:border-emerald-800/30 rounded-[2rem] p-8 shadow-2xl relative overflow-hidden">
                         <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-emerald-400 via-teal-400 to-cyan-400 rounded-t-[2rem]" />
+                        <button
+                            onClick={() => {
+                                if (redirectCountdownRef.current) clearInterval(redirectCountdownRef.current);
+                                navigate("/dashboard");
+                            }}
+                            className="absolute top-4 right-4 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 p-1.5 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition-all duration-200 cursor-pointer z-10"
+                            aria-label="Đóng"
+                        >
+                            <X className="w-5 h-5" />
+                        </button>
                         <div className="relative w-20 h-20 mx-auto mb-4">
                             <div className="absolute inset-0 rounded-full bg-emerald-400/20" style={{ animation: 'successPulse 2s ease-in-out infinite' }} />
                             <div className="w-20 h-20 bg-gradient-to-br from-emerald-400 to-teal-500 rounded-full flex items-center justify-center shadow-lg" style={{ animation: 'checkIn 0.6s cubic-bezier(0.175,0.885,0.32,1.275) 0.1s both' }}>

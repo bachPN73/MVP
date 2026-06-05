@@ -1,5 +1,5 @@
 import { Layout } from '../layout/MainLayout';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Sparkles, Search, Loader2, BookOpen, Brain, Tag, FlaskConical } from 'lucide-react';
 import { Link } from 'react-router';
 import { getSubjectName, Material } from '../data/materialsData';
@@ -10,6 +10,36 @@ export default function FindWithAI() {
     const [isSearching, setIsSearching] = useState(false);
     const [results, setResults] = useState<Material[]>([]);
     const [hasSearched, setHasSearched] = useState(false);
+
+    const [userPlan, setUserPlan] = useState('free');
+    const [aiCount, setAiCount] = useState(0);
+
+    useEffect(() => {
+        const stored = localStorage.getItem('edu_tech_user');
+        if (stored) {
+            try {
+                const user = JSON.parse(stored);
+                if (user.plan) setUserPlan(user.plan.toLowerCase());
+            } catch (e) {}
+        }
+
+        const usageStr = localStorage.getItem('edu_tech_ai_usage');
+        const today = new Date().toDateString();
+        if (usageStr) {
+            try {
+                const usage = JSON.parse(usageStr);
+                if (usage.date === today) {
+                    setAiCount(usage.count);
+                } else {
+                    localStorage.setItem('edu_tech_ai_usage', JSON.stringify({ date: today, count: 0 }));
+                    setAiCount(0);
+                }
+            } catch (e) {}
+        } else {
+            localStorage.setItem('edu_tech_ai_usage', JSON.stringify({ date: today, count: 0 }));
+            setAiCount(0);
+        }
+    }, []);
 
     // AI Insight state
     const [aiInsight, setAiInsight] = useState('');
@@ -26,6 +56,10 @@ export default function FindWithAI() {
 
     const handleSearch = async () => {
         if (!query.trim()) return;
+
+        if (userPlan === 'free' && aiCount >= 3) {
+            return;
+        }
 
         setIsSearching(true);
         setHasSearched(true);
@@ -54,6 +88,13 @@ export default function FindWithAI() {
             setResults(formattedResults);
             setAiInsight(response.ai_insight || '');
             setAiKeywords(response.keywords || []);
+
+            if (userPlan === 'free') {
+                const today = new Date().toDateString();
+                const newCount = aiCount + 1;
+                localStorage.setItem('edu_tech_ai_usage', JSON.stringify({ date: today, count: newCount }));
+                setAiCount(newCount);
+            }
             setAiSubject(response.predicted_subject || null);
         } catch (error) {
             console.error('AI Search error:', error);
@@ -118,12 +159,28 @@ export default function FindWithAI() {
                             </div>
                         </div>
                         <div className="flex flex-col sm:flex-row items-center justify-between gap-4 px-4 pt-2 border-t border-slate-100 dark:border-white/5">
-                            <div className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 font-semibold">
-                                {query.length} / 500 ký tự
+                            <div className="flex flex-col gap-1 text-left">
+                                <div className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 font-semibold">
+                                    {query.length} / 500 ký tự
+                                </div>
+                                {userPlan === 'free' && (
+                                    <div className={`text-xs font-bold ${aiCount >= 3 ? 'text-rose-500 animate-pulse' : 'text-indigo-600 dark:text-indigo-400'}`}>
+                                        {aiCount >= 3 ? (
+                                            <span>
+                                                ⚠️ Đã dùng hết 3 lượt AI hôm nay. {' '}
+                                                <Link to="/pricing" className="text-indigo-650 dark:text-indigo-400 underline hover:text-indigo-800">
+                                                    Nâng cấp gói ngay!
+                                                </Link>
+                                            </span>
+                                        ) : (
+                                            `🤖 Số lượt AI hôm nay: ${aiCount}/3 (Còn ${3 - aiCount} lượt)`
+                                        )}
+                                    </div>
+                                )}
                             </div>
                             <button
                                 onClick={handleSearch}
-                                disabled={!query.trim() || isSearching}
+                                disabled={!query.trim() || isSearching || (userPlan === 'free' && aiCount >= 3)}
                                 className="w-full sm:w-auto px-8 py-3.5 bg-gradient-to-r from-indigo-500 via-purple-500 to-emerald-500 text-white rounded-2xl font-bold hover:shadow-[0_4px_20px_rgba(99,102,241,0.4)] hover:scale-[1.02] active:scale-[0.98] transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 disabled:hover:shadow-none flex items-center justify-center gap-2 cursor-pointer shadow-md"
                             >
                                 {isSearching ? (
