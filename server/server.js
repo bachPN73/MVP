@@ -968,6 +968,20 @@ app.post('/api/school/join', async (req, res) => {
             return res.status(400).json({ error: 'Tài khoản của bạn đã được liên kết với một trường học' });
         }
 
+        // IF THE USER IS A SCHOOL ADMIN (plan === 'school' && role === 'admin'), link immediately!
+        if (user.role === 'admin' && user.plan === 'school') {
+            user.schoolId = school._id;
+            await user.save();
+            return res.json({ 
+                message: 'Liên kết Quản trị viên Trường học thành công!', 
+                success: true,
+                user: {
+                    ...user.toObject(),
+                    id: user._id.toString()
+                }
+            });
+        }
+
         const existingRequest = await MembershipRequest.findOne({ userId, status: 'pending' });
         if (existingRequest) {
             return res.status(400).json({ error: 'Bạn đã gửi một yêu cầu tham gia và đang chờ duyệt' });
@@ -1389,8 +1403,12 @@ app.post('/api/payments/:id/approve', async (req, res) => {
         payment.status = 'approved';
         await payment.save();
 
-        // 2. Activate user plan
-        await User.findByIdAndUpdate(payment.userId, { plan: payment.planId });
+        // 2. Activate user plan & upgrade role to admin if school plan
+        const updateFields = { plan: payment.planId };
+        if (payment.planId === 'school') {
+            updateFields.role = 'admin';
+        }
+        await User.findByIdAndUpdate(payment.userId, updateFields);
 
         res.json({ message: 'Phê duyệt giao dịch và kích hoạt tài khoản thành công!' });
     } catch (err) {
@@ -1491,8 +1509,12 @@ app.post('/api/webhooks/payment', async (req, res) => {
         payment.status = 'approved';
         await payment.save();
 
-        // Kích hoạt gói dịch vụ cho User
-        await User.findByIdAndUpdate(payment.userId, { plan: payment.planId });
+        // Kích hoạt gói dịch vụ cho User và nâng cấp vai trò lên admin nếu mua gói trường học
+        const updateFields = { plan: payment.planId };
+        if (payment.planId === 'school') {
+            updateFields.role = 'admin';
+        }
+        await User.findByIdAndUpdate(payment.userId, updateFields);
         console.log(`[PAYMENT WEBHOOK SUCCESS] Auto-approved payment ${cleanCode} → User ${payment.userId} → Plan ${payment.planId}`);
 
         res.json({ 

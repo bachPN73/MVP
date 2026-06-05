@@ -433,10 +433,29 @@ export default function ProfilePage() {
                                                 requestedRole,
                                                 requestedClass,
                                                 user.id
-                                            );
+                                            ) as any;
                                             setJoinSuccess(res.message);
                                             setSchoolCode("");
                                             setRequestedClass("");
+                                            
+                                            // If auto-approved/linked immediately (like for school admins), update localStorage and reload
+                                            if (res.success && res.user) {
+                                                const stored = localStorage.getItem('edu_tech_user');
+                                                if (stored) {
+                                                    const currentUser = JSON.parse(stored);
+                                                    const updatedUser = {
+                                                        ...currentUser,
+                                                        role: res.user.role,
+                                                        plan: res.user.plan,
+                                                        schoolId: res.user.schoolId,
+                                                        className: res.user.className
+                                                    };
+                                                    localStorage.setItem('edu_tech_user', JSON.stringify(updatedUser));
+                                                }
+                                                setTimeout(() => {
+                                                    window.location.reload();
+                                                }, 1000);
+                                            }
                                         } catch (err: any) {
                                             setJoinError(err.message || "Gửi yêu cầu gia nhập thất bại. Vui lòng kiểm tra lại mã.");
                                         } finally {
