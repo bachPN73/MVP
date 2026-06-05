@@ -3,6 +3,11 @@ import { createRoot } from "react-dom/client";
 import App from "./App.tsx";
 import "./assets/styles/index.css";
 import { ErrorBoundary } from "./components/ErrorBoundary.tsx";
+import { initGA } from "./utils/analytics.ts";
+
+// Initialize Google Analytics
+initGA();
+
 
 // Intercept all fetch requests globally to attach session headers and handle concurrent login logouts
 const originalFetch = window.fetch;
