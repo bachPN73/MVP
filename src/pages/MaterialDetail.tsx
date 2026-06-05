@@ -244,6 +244,8 @@ export default function MaterialDetail() {
     const [position, setPosition] = useState({ x: 0, y: 0 });
     const [isDragging, setIsDragging] = useState(false);
     const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
+    // Detect infographic image orientation
+    const [imgOrientation, setImgOrientation] = useState<'landscape' | 'portrait' | null>(null);
 
     useEffect(() => {
         const fetchMaterial = async () => {
@@ -615,14 +617,14 @@ export default function MaterialDetail() {
                                     /* ======================== ACTIVE VIEWER ======================== */
                                     <>
                                         {is3D ? (
-                                            <div id="3d-viewer-container" className={`absolute inset-0 z-10 ${material.subtitle ? 'bg-transparent' : 'bg-black'}`}>
+                                            <div id="3d-viewer-container" className={`absolute inset-0 z-10 ${material.subtitle ? 'bg-transparent' : ''}`}>
                                                 <Suspense fallback={
                                                     <div className="absolute inset-0 flex flex-col items-center justify-center bg-slate-950 border border-slate-800/80 z-10">
                                                         <Loader2 className="w-12 h-12 text-indigo-500 animate-spin mb-4" />
                                                         <p className="text-slate-300 font-medium tracking-wide">Khởi tạo Engine 3D...</p>
                                                     </div>
                                                 }>
-                                                    <ModelViewer modelUrl={getFullModelUrl(fileUrl)} />
+                                                    <ModelViewer modelUrl={getFullModelUrl(fileUrl)} isDark={theme === 'dark'} />
                                                 </Suspense>
                                                 <div className="absolute bottom-4 left-4 bg-white/90 dark:bg-slate-900/90 backdrop-blur-sm px-4 py-2 rounded-lg text-sm z-50 shadow-md pointer-events-none">
                                                     <p className="text-slate-800 dark:text-slate-200 font-medium">Kéo chuột trái để xoay • Cuộn để zoom</p>
@@ -639,25 +641,41 @@ export default function MaterialDetail() {
                                         ) : (
                                             /* ============ INFOGRAPHIC VIEWER with CRISP ZOOM ============ */
                                             <div
-                                                className="absolute inset-0 bg-white dark:bg-slate-900 flex items-center justify-center overflow-hidden"
+                                                className="absolute inset-0 flex items-center justify-center overflow-hidden"
+                                                style={{
+                                                    cursor: scale > 1 ? (isDragging ? 'grabbing' : 'grab') : 'zoom-in',
+                                                    background: theme === 'light'
+                                                        ? (imgOrientation === 'landscape' ? '#f8fafc' : '#f1f5f9')
+                                                        : (imgOrientation === 'landscape' ? '#0f172a' : '#020617'),
+                                                }}
                                                 onWheel={handleWheel}
                                                 onMouseDown={handleMouseDown}
                                                 onMouseMove={handleMouseMove}
                                                 onMouseUp={handleMouseUp}
                                                 onMouseLeave={handleMouseUp}
-                                                style={{ cursor: scale > 1 ? (isDragging ? 'grabbing' : 'grab') : 'zoom-in' }}
                                             >
                                                 <img
                                                     src={getFullModelUrl(fileUrl || material.thumbnail)}
                                                     alt={material.title}
                                                     draggable={false}
+                                                    onLoad={(e) => {
+                                                        const img = e.currentTarget;
+                                                        setImgOrientation(img.naturalWidth >= img.naturalHeight ? 'landscape' : 'portrait');
+                                                    }}
                                                     style={{
                                                         transform: `translate(${position.x}px, ${position.y}px) scale(${scale})`,
                                                         transition: isDragging ? 'none' : 'transform 0.2s ease-out',
                                                         imageRendering: scale > 1 ? '-webkit-optimize-contrast' : 'auto',
                                                         willChange: 'transform',
+                                                        // Landscape: fill width; Portrait: fill height
+                                                        ...(imgOrientation === 'landscape'
+                                                            ? { width: '100%', height: 'auto', maxHeight: '100%', objectFit: 'contain' }
+                                                            : imgOrientation === 'portrait'
+                                                            ? { height: '100%', width: 'auto', maxWidth: '100%', objectFit: 'contain' }
+                                                            : { maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }
+                                                        ),
                                                     }}
-                                                    className="max-w-full max-h-full object-contain select-none"
+                                                    className="select-none block"
                                                 />
 
                                                 {/* Zoom Controls */}
