@@ -92,7 +92,7 @@ export function AppSidebar({ currentPath = '/', isOpen = false, setIsOpen, isCol
         { path: '/pricing-app', label: 'Gói dịch vụ', icon: CreditCard },
         { path: '/guide-app', label: 'Hướng dẫn', icon: BookOpen },
         ...(userPlan === 'school' && userRole === 'admin' ? [{ path: '/school/dashboard', label: 'Trường học', icon: School }] : []),
-        ...(userRole === 'admin' ? [{ path: '/admin/dashboard', label: 'Bảng Admin', icon: ShieldAlert }] : []),
+        ...(userRole === 'admin' && userPlan !== 'school' ? [{ path: '/admin/dashboard', label: 'Bảng Admin', icon: ShieldAlert }] : []),
     ];
 
     const handleLogout = () => {

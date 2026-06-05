@@ -58,7 +58,7 @@ export default function AuthGuard({ children }: AuthGuardProps) {
 
         // 1. Guard for Global System Admin Routes (/admin/*)
         if (path.startsWith('/admin')) {
-            const isSystemAdmin = user.role === 'admin';
+            const isSystemAdmin = user.role === 'admin' && user.plan?.toLowerCase() !== 'school';
             if (!isSystemAdmin) {
                 console.warn('[SECURITY] Unauthorized access attempt to System Admin page:', user.email);
                 return <Navigate to="/dashboard" replace />;
