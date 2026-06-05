@@ -255,7 +255,11 @@ export default function FindWithAI() {
                                             <Link
                                                 key={material.id}
                                                 to={`/material/${material.id}`}
-                                                className="group bg-white dark:bg-slate-900 hover:bg-slate-50/50 dark:hover:bg-slate-900/90 border border-slate-200 dark:border-white/10 rounded-2xl overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-300 hover:-translate-y-1.5 flex flex-col h-full relative"
+                                                className={`group bg-white dark:bg-slate-900 hover:bg-slate-50/50 dark:hover:bg-slate-900/90 border border-slate-200 dark:border-white/10 rounded-2xl overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-300 hover:-translate-y-1.5 flex flex-col h-full relative ${
+                                                    material.subject === 'physics' ? 'hover-glow-physics' :
+                                                    material.subject === 'chemistry' ? 'hover-glow-chemistry' :
+                                                    'hover-glow-biology'
+                                                }`}
                                             >
                                                 {/* Visual Hover Line */}
                                                 <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-indigo-500 via-purple-500 to-emerald-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />

@@ -1,8 +1,9 @@
 import { AdminLayout } from '../../layout/AdminLayout';
-import { Box, Plus, Search, Filter, Upload, X, Loader2, CheckCircle2, AlertCircle, ImagePlus, Trash2, Calendar, Sparkles } from 'lucide-react';
-import { useState, useEffect } from 'react';
+import { Box, Plus, Search, Filter, Upload, X, Loader2, CheckCircle2, AlertCircle, ImagePlus, Trash2, Calendar, Sparkles, Pencil } from 'lucide-react';
+import { useState, useEffect, useMemo } from 'react';
 import { api, BASE_URL } from '../../api';
 import Button from '../../components/Button';
+import { materials as mockMaterials } from '../../data/materialsData';
 
 const SUBJECT_CONFIGS: Record<string, {
     subjectName: string;
@@ -51,6 +52,56 @@ export default function AdminMaterialsPage() {
     const [isLoading, setIsLoading] = useState(true);
     const [searchTerm, setSearchTerm] = useState('');
     const [showUploadForm, setShowUploadForm] = useState(false);
+    const [editingModelId, setEditingModelId] = useState<number | null>(null);
+    const [relatedSearch, setRelatedSearch] = useState('');
+
+    const handleEdit = (model: any) => {
+        setEditingModelId(model.id);
+        
+        // Map features back to text format "Name: Detail"
+        const featuresText = model.features 
+            ? model.features.map((f: any) => `${f.name}: ${f.detail}`).join('\n') 
+            : '';
+            
+        // Map tags back to comma separated string
+        const tags = model.tags ? model.tags.join(', ') : '';
+
+        setFormData({
+            title: model.title || "",
+            description: model.description || "",
+            subject: model.subject || "physics",
+            grade: model.grade || 10,
+            tags: tags,
+            type: model.type || "3d-model",
+            subtitle: model.subtitle || "",
+            category: model.category || "",
+            size: model.size || "",
+            location: model.location || "",
+            visibleInLM: model.visibleInLM || "",
+            featuresText: featuresText,
+            funFact: model.funFact || "",
+            source: model.source || "",
+            relatedMaterials: model.relatedMaterials || []
+        });
+        
+        setRelatedSearch('');
+        
+        // If there's an existing thumbnail, show preview
+        if (model.thumbnail) {
+            setThumbnailPreview(model.thumbnail.startsWith('http') ? model.thumbnail : `${BASE_URL}${model.thumbnail}`);
+        } else {
+            setThumbnailPreview(null);
+        }
+        
+        setFile(null); // File uploads are optional when editing
+        setThumbnailFile(null);
+        setShowUploadForm(true);
+        
+        // Show premium fields if any are present
+        const hasPremiumFields = model.subtitle || model.category || model.size || model.location || model.visibleInLM || model.funFact || featuresText;
+        setShowPremiumFields(!!hasPremiumFields);
+        setStatus({ type: null, message: "" });
+    };
 
     // Upload Form State
     const [file, setFile] = useState<File | null>(null);
@@ -73,8 +124,45 @@ export default function AdminMaterialsPage() {
         location: "",
         visibleInLM: "",
         featuresText: "", // multi-line structures format: "Tên: Mô tả"
-        funFact: ""
+        funFact: "",
+        source: "",
+        relatedMaterials: [] as string[]
     });
+
+    const allAvailableRelated = useMemo(() => {
+        const dbFormatted = materials.map((m: any) => ({
+            id: `db-${m.id}`,
+            title: m.title,
+            subject: m.subject,
+            type: m.type || '3d-model',
+            grade: m.grade || 10,
+            thumbnail: m.thumbnail,
+        }));
+        
+        const combined = [
+            ...mockMaterials.map(m => ({
+                id: m.id,
+                title: m.title,
+                subject: m.subject,
+                type: m.type,
+                grade: m.grade,
+                thumbnail: m.thumbnail,
+            })), 
+            ...dbFormatted
+        ];
+        
+        const currentId = editingModelId ? `db-${editingModelId}` : null;
+        return combined.filter(m => m.id !== currentId);
+    }, [materials, editingModelId]);
+
+    const filteredAvailableRelated = useMemo(() => {
+        const query = relatedSearch.toLowerCase().trim();
+        if (!query) return allAvailableRelated;
+        return allAvailableRelated.filter(m => 
+            m.title.toLowerCase().includes(query) || 
+            m.subject.toLowerCase().includes(query)
+        );
+    }, [allAvailableRelated, relatedSearch]);
 
     const config = SUBJECT_CONFIGS[formData.subject as keyof typeof SUBJECT_CONFIGS] || SUBJECT_CONFIGS.physics;
 
@@ -169,7 +257,9 @@ export default function AdminMaterialsPage() {
 
     const handleUploadSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (!file) {
+        
+        // If not editing, model file is required
+        if (!editingModelId && !file) {
             setStatus({ type: 'error', message: formData.type === '3d-model' ? "Vui lòng chọn tệp mô hình 3D" : "Vui lòng chọn tệp Infographic" });
             return;
         }
@@ -178,11 +268,24 @@ export default function AdminMaterialsPage() {
         setStatus({ type: null, message: "" });
 
         try {
-            const uploadRes = await api.uploadModelFile(file);
+            let fileUrl = null;
+            if (file) {
+                const uploadRes = await api.uploadModelFile(file);
+                fileUrl = uploadRes.file_url;
+            } else if (editingModelId) {
+                // Keep the old file URL
+                const existing = materials.find(m => m.id === editingModelId);
+                fileUrl = existing?.file_url;
+            }
+
             let thumbnailUrl = null;
             if (thumbnailFile) {
                 const thumbRes = await api.uploadThumbnail(thumbnailFile);
                 thumbnailUrl = thumbRes.thumbnail_url;
+            } else if (editingModelId) {
+                // Keep the old thumbnail (if any)
+                const existing = materials.find(m => m.id === editingModelId);
+                thumbnailUrl = existing?.thumbnail;
             }
 
             // Parse features multi-line text into array of { name, detail }
@@ -202,22 +305,28 @@ export default function AdminMaterialsPage() {
 
             const modelData = {
                 ...formData,
-                file_url: uploadRes.file_url,
+                file_url: fileUrl,
                 thumbnail: thumbnailUrl,
                 tags: formData.tags.split(',').map(t => t.trim()).filter(t => t !== ""),
                 features: features,
             };
 
-            await api.saveModel(modelData);
-
-            setStatus({ type: 'success', message: "Tải lên học liệu thành công!" });
+            if (editingModelId) {
+                await api.updateModel(editingModelId, modelData);
+                setStatus({ type: 'success', message: "Cập nhật học liệu thành công!" });
+            } else {
+                await api.saveModel(modelData);
+                setStatus({ type: 'success', message: "Tải lên học liệu thành công!" });
+            }
 
             // Reload list and close form after short delay
             setTimeout(() => {
                 setShowUploadForm(false);
+                setEditingModelId(null);
                 setStatus({ type: null, message: "" });
                 setFile(null);
                 removeThumbnail();
+                setRelatedSearch('');
                 setFormData({
                     title: "",
                     description: "",
@@ -231,7 +340,9 @@ export default function AdminMaterialsPage() {
                     location: "",
                     visibleInLM: "",
                     featuresText: "",
-                    funFact: ""
+                    funFact: "",
+                    source: "",
+                    relatedMaterials: []
                 });
                 loadMaterials();
             }, 1500);
@@ -269,7 +380,32 @@ export default function AdminMaterialsPage() {
                         <Filter className="w-3.5 h-3.5" /> <span>Lọc</span>
                     </button>
                     <button
-                        onClick={() => setShowUploadForm(!showUploadForm)}
+                        onClick={() => {
+                            if (showUploadForm) {
+                                setEditingModelId(null);
+                                setFile(null);
+                                removeThumbnail();
+                                setRelatedSearch('');
+                                setFormData({
+                                    title: "",
+                                    description: "",
+                                    subject: "physics",
+                                    grade: 10,
+                                    tags: "",
+                                    type: "3d-model",
+                                    subtitle: "",
+                                    category: "",
+                                    size: "",
+                                    location: "",
+                                    visibleInLM: "",
+                                    featuresText: "",
+                                    funFact: "",
+                                    source: "",
+                                    relatedMaterials: []
+                                });
+                            }
+                            setShowUploadForm(!showUploadForm);
+                        }}
                         className="flex items-center gap-2 px-4 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold transition-all shadow-md shadow-indigo-500/10 cursor-pointer font-sans"
                     >
                         {showUploadForm ? <X className="w-3.5 h-3.5" /> : <Plus className="w-3.5 h-3.5" />}
@@ -291,7 +427,9 @@ export default function AdminMaterialsPage() {
                 <div className="bg-white dark:bg-slate-900/60 rounded-2xl shadow-sm border border-slate-200 dark:border-white/10 p-6 md:p-8 mb-8 animate-slideDown backdrop-blur-xl relative">
                     <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-violet-500 to-indigo-500 rounded-t-2xl" />
                     
-                    <h2 className="text-lg font-bold mb-6 text-slate-900 dark:text-white font-heading">Tải lên học liệu mới</h2>
+                    <h2 className="text-lg font-bold mb-6 text-slate-900 dark:text-white font-heading">
+                        {editingModelId ? `Chỉnh sửa học liệu: ${materials.find(m => m.id === editingModelId)?.title || ''}` : "Tải lên học liệu mới"}
+                    </h2>
                     <form onSubmit={handleUploadSubmit} className="space-y-5">
                         {/* Type Selector */}
                         <div className="flex flex-col gap-2 font-sans">
@@ -435,6 +573,70 @@ export default function AdminMaterialsPage() {
                                     />
                                 </div>
 
+                                <div className="flex flex-col gap-1.5 font-sans">
+                                    <label className="text-xs font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">Nguồn học liệu (Nguồn gốc / Tác giả)</label>
+                                    <input 
+                                        type="text" 
+                                        placeholder="Ví dụ: Sketchfab, Mozaik 3D, Tự thiết kế..." 
+                                        className="p-3 bg-slate-50/50 dark:bg-slate-950/20 rounded-xl border border-slate-200 dark:border-white/10 text-sm font-semibold text-slate-900 dark:text-white focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 focus:outline-none w-full" 
+                                        value={formData.source} 
+                                        onChange={(e) => setFormData({ ...formData, source: e.target.value })} 
+                                    />
+                                </div>
+
+                                <div className="flex flex-col gap-1.5 font-sans">
+                                    <label className="text-xs font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">
+                                        Học liệu liên quan ({formData.relatedMaterials.length} đã chọn)
+                                    </label>
+                                    <div className="border border-slate-200 dark:border-white/10 rounded-xl p-3 bg-slate-50/50 dark:bg-slate-950/20 flex flex-col gap-2">
+                                        <div className="relative shrink-0">
+                                            <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-400" />
+                                            <input
+                                                type="text"
+                                                placeholder="Tìm kiếm học liệu để liên kết..."
+                                                value={relatedSearch}
+                                                onChange={(e) => setRelatedSearch(e.target.value)}
+                                                className="w-full pl-8 pr-4 py-1.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/10 rounded-lg text-xs font-semibold focus:outline-none focus:ring-1 focus:ring-indigo-500 text-slate-955 dark:text-white"
+                                            />
+                                        </div>
+                                        <div className="max-h-[150px] overflow-y-auto divide-y divide-slate-100 dark:divide-white/5 pr-1">
+                                            {filteredAvailableRelated.map(m => {
+                                                const isSelected = formData.relatedMaterials.includes(m.id);
+                                                return (
+                                                    <div
+                                                        key={m.id}
+                                                        onClick={() => {
+                                                            setFormData(prev => {
+                                                                const current = [...prev.relatedMaterials];
+                                                                const index = current.indexOf(m.id);
+                                                                if (index > -1) {
+                                                                    current.splice(index, 1);
+                                                                } else {
+                                                                    current.push(m.id);
+                                                                }
+                                                                return { ...prev, relatedMaterials: current };
+                                                            });
+                                                        }}
+                                                        className="flex items-center gap-2 py-1.5 px-2 hover:bg-slate-100 dark:hover:bg-slate-800/40 rounded-lg cursor-pointer transition-colors"
+                                                    >
+                                                        <input
+                                                            type="checkbox"
+                                                            checked={isSelected}
+                                                            onChange={() => {}}
+                                                            className="w-3.5 h-3.5 text-indigo-600 rounded cursor-pointer pointer-events-none"
+                                                        />
+                                                        <span className="text-xs font-semibold text-slate-700 dark:text-slate-200 truncate">{m.title}</span>
+                                                        <span className="text-[8px] font-bold text-slate-400 dark:text-slate-500 ml-auto shrink-0 uppercase tracking-wider">{m.subject === 'biology' ? 'Sinh' : m.subject === 'chemistry' ? 'Hóa' : 'Lý'} · Lớp {m.grade}</span>
+                                                    </div>
+                                                );
+                                            })}
+                                            {filteredAvailableRelated.length === 0 && (
+                                                <div className="text-center py-4 text-slate-400 text-xs">Không tìm thấy học liệu phù hợp.</div>
+                                            )}
+                                        </div>
+                                    </div>
+                                </div>
+
                                 {/* Collapsible Premium Details */}
                                 <div className="border-t border-slate-100 dark:border-white/5 pt-4 mt-4 font-sans">
                                     <button
@@ -538,14 +740,46 @@ export default function AdminMaterialsPage() {
                             </div>
                         )}
 
-                        <div className="flex justify-end border-t border-slate-100 dark:border-white/5 pt-6 font-sans">
+                        <div className="flex justify-end gap-3 border-t border-slate-100 dark:border-white/5 pt-6 font-sans">
+                            {editingModelId && (
+                                <button
+                                    type="button"
+                                    onClick={() => {
+                                        setShowUploadForm(false);
+                                        setEditingModelId(null);
+                                        setFile(null);
+                                        removeThumbnail();
+                                        setRelatedSearch('');
+                                        setFormData({
+                                            title: "",
+                                            description: "",
+                                            subject: "physics",
+                                            grade: 10,
+                                            tags: "",
+                                            type: "3d-model",
+                                            subtitle: "",
+                                            category: "",
+                                            size: "",
+                                            location: "",
+                                            visibleInLM: "",
+                                            featuresText: "",
+                                            funFact: "",
+                                            source: "",
+                                            relatedMaterials: []
+                                        });
+                                    }}
+                                    className="px-6 py-3 border border-slate-200 dark:border-white/10 text-slate-700 dark:text-slate-200 rounded-xl text-xs font-bold hover:bg-slate-50 dark:hover:bg-slate-800/50 cursor-pointer"
+                                >
+                                    Hủy
+                                </button>
+                            )}
                             <Button 
                                 type="submit" 
                                 variant="gradient"
                                 disabled={isUploading} 
                                 className="px-8 py-3 text-xs uppercase tracking-widest font-bold"
                             >
-                                {isUploading ? <><Loader2 className="w-4 h-4 animate-spin mr-2" /> Đang thiết lập...</> : "Lưu Học Liệu"}
+                                {isUploading ? <><Loader2 className="w-4 h-4 animate-spin mr-2" /> Đang thiết lập...</> : (editingModelId ? "Cập nhật học liệu" : "Lưu Học Liệu")}
                             </Button>
                         </div>
                     </form>
@@ -623,7 +857,18 @@ export default function AdminMaterialsPage() {
                                                 {model.created_at ? new Date(model.created_at).toLocaleDateString('vi-VN') : 'N/A'}
                                             </div>
                                         </td>
-                                        <td className="px-6 py-4 text-right">
+                                        <td className="px-6 py-4 text-right flex justify-end gap-1">
+                                            <button
+                                                onClick={(e) => {
+                                                    e.preventDefault();
+                                                    e.stopPropagation();
+                                                    handleEdit(model);
+                                                }}
+                                                className="text-slate-400 dark:text-slate-500 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors p-2 rounded-xl hover:bg-indigo-50 dark:hover:bg-indigo-950/30 cursor-pointer"
+                                                title="Sửa học liệu"
+                                            >
+                                                <Pencil className="w-4.5 h-4.5" />
+                                            </button>
                                             <button
                                                 onClick={(e) => {
                                                     e.preventDefault();
@@ -666,16 +911,30 @@ export default function AdminMaterialsPage() {
                                                 <Box className="w-6 h-6" />
                                             </div>
                                         )}
-                                        <button
-                                            onClick={(e) => {
-                                                e.preventDefault();
-                                                e.stopPropagation();
-                                                handleDelete(model.id, model.title);
-                                            }}
-                                            className="absolute top-1.5 right-1.5 p-1.5 bg-rose-600 hover:bg-rose-700 text-white rounded-lg shadow-md cursor-pointer transition-colors"
-                                        >
-                                            <Trash2 className="w-3.5 h-3.5" />
-                                        </button>
+                                        <div className="absolute top-1.5 right-1.5 flex gap-1 z-10">
+                                            <button
+                                                onClick={(e) => {
+                                                    e.preventDefault();
+                                                    e.stopPropagation();
+                                                    handleEdit(model);
+                                                }}
+                                                className="p-1.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg shadow-md cursor-pointer transition-colors"
+                                                title="Sửa"
+                                            >
+                                                <Pencil className="w-3.5 h-3.5" />
+                                            </button>
+                                            <button
+                                                onClick={(e) => {
+                                                    e.preventDefault();
+                                                    e.stopPropagation();
+                                                    handleDelete(model.id, model.title);
+                                                }}
+                                                className="p-1.5 bg-rose-600 hover:bg-rose-700 text-white rounded-lg shadow-md cursor-pointer transition-colors"
+                                                title="Xóa"
+                                            >
+                                                <Trash2 className="w-3.5 h-3.5" />
+                                            </button>
+                                        </div>
                                     </div>
                                     <div className="space-y-1 flex-1 flex flex-col justify-between">
                                         <div>

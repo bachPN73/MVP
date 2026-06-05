@@ -7,7 +7,8 @@ const userSchema = new mongoose.Schema({
     plan: { type: String, default: 'free' },
     password: { type: String, required: true },
     schoolId: { type: mongoose.Schema.Types.ObjectId, ref: 'School', default: null },
-    className: { type: String, default: '' }
+    className: { type: String, default: '' },
+    sessionToken: { type: String, default: null }
 }, { timestamps: true });
 
 const schoolSchema = new mongoose.Schema({
@@ -50,7 +51,9 @@ const modelSchema = new mongoose.Schema({
     whereItOccurs: {
         text: String,
         habitat: String
-    }
+    },
+    source: { type: String, default: '' },
+    relatedMaterials: { type: [String], default: [] }
 }, { timestamps: true });
 
 const resetTokenSchema = new mongoose.Schema({
@@ -59,9 +62,34 @@ const resetTokenSchema = new mongoose.Schema({
     expires_at: { type: Date, required: true }
 });
 
+const paymentSchema = new mongoose.Schema({
+    userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+    planId: { type: String, required: true },
+    amount: { type: Number, required: true },
+    paymentCode: { type: String, unique: true, required: true }, // Mã duy nhất để đối soát
+    status: { type: String, enum: ['pending', 'approved', 'rejected'], default: 'pending' },
+    bankName: { type: String, default: 'TPB' },
+    accountNumber: { type: String, default: '00000801691' },
+    accountName: { type: String, default: 'PHAM NGOC BACH' }
+}, { timestamps: true });
+
 export const User = mongoose.model('User', userSchema);
 export const Material = mongoose.model('Material', modelSchema);
 export const ResetToken = mongoose.model('ResetToken', resetTokenSchema);
 export const School = mongoose.model('School', schoolSchema);
 export const MembershipRequest = mongoose.model('MembershipRequest', membershipRequestSchema);
+export const Payment = mongoose.model('Payment', paymentSchema);
+
+const lessonSchema = new mongoose.Schema({
+    title: { type: String, required: true },
+    description: { type: String, default: '' },
+    subject: { type: String, required: true }, // 'physics', 'chemistry', 'biology'
+    grade: { type: Number, required: true },   // 10, 11, 12
+    chapter: { type: String, default: '' },    // E.g., "Chương 1: Động lực học"
+    materials: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Material' }],
+    order: { type: Number, default: 0 }
+}, { timestamps: true });
+
+export const Lesson = mongoose.model('Lesson', lessonSchema);
+
 

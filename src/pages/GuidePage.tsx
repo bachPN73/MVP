@@ -1,8 +1,20 @@
 import { Layout } from '../layout/MainLayout';
-import { BookOpen, Sparkles, Library, Maximize2, Search, MousePointer, ChevronRight, HelpCircle } from 'lucide-react';
+import { BookOpen, Sparkles, Library, Maximize2, Search, MousePointer, ChevronRight, HelpCircle, CreditCard, LogIn } from 'lucide-react';
 
 export default function Guide() {
     const sections = [
+        {
+            icon: LogIn,
+            title: 'Đăng ký & Đăng nhập',
+            description: 'Khởi đầu hành trình học tập bằng cách đăng ký hoặc đăng nhập tài khoản cá nhân.',
+            steps: [
+                'Nhấp vào nút "Đăng ký" trên trang chủ để tạo tài khoản mới',
+                'Nhập đầy đủ thông tin (Họ tên, Email, Mật khẩu) và xác nhận đăng ký',
+                'Chọn "Đăng nhập" nếu bạn đã có tài khoản và nhập thông tin truy cập',
+                'Sau khi đăng nhập thành công, bạn sẽ được tự động chuyển đến bảng điều khiển',
+            ],
+            color: 'text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-950/50',
+        },
         {
             icon: Library,
             title: 'Thư viện học liệu',
@@ -51,6 +63,18 @@ export default function Guide() {
                 'Nhấn phím ESC hoặc nút X để đóng và quay lại giao diện thông thường',
             ],
             color: 'text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/50',
+        },
+        {
+            icon: CreditCard,
+            title: 'Nâng cấp & Thanh toán',
+            description: 'Nâng cấp tài khoản Premium để mở khóa toàn bộ học liệu 3D đặc sắc.',
+            steps: [
+                'Chọn mục "Bảng giá" từ thanh menu bên trái hệ thống',
+                'Lựa chọn gói Premium phù hợp (Tháng, Năm hoặc Trọn đời)',
+                'Quét mã QR MoMo/Chuyển khoản hiển thị trên màn hình thanh toán',
+                'Tài khoản sẽ được tự động kích hoạt ngay lập tức sau khi hoàn tất thanh toán',
+            ],
+            color: 'text-rose-600 dark:text-rose-400 bg-rose-50 dark:bg-rose-950/50',
         },
     ];
 

@@ -24,8 +24,10 @@ import ResetPassword from "./pages/ResetPasswordPage";
 // Admin Pages
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import AdminMaterialsPage from "./pages/admin/AdminMaterialsPage";
+import AdminLessonsPage from "./pages/admin/AdminLessonsPage";
 import AdminUsersPage from "./pages/admin/AdminUsersPage";
 import AdminSchoolsPage from "./pages/admin/AdminSchoolsPage";
+import AdminPaymentsPage from "./pages/admin/AdminPaymentsPage";
 
 // School Pages
 import SchoolDashboard from "./pages/school/SchoolDashboard";
@@ -165,12 +167,20 @@ export const router = createBrowserRouter([
         Component: withAuth(AdminMaterialsPage),
     },
     {
+        path: "/admin/lessons",
+        Component: withAuth(AdminLessonsPage),
+    },
+    {
         path: "/admin/users",
         Component: withAuth(AdminUsersPage),
     },
     {
         path: "/admin/schools",
         Component: withAuth(AdminSchoolsPage),
+    },
+    {
+        path: "/admin/payments",
+        Component: withAuth(AdminPaymentsPage),
     },
     {
         path: "/school/dashboard",

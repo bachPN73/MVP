@@ -1,9 +1,20 @@
 import { Link } from 'react-router';
-import { BookOpen, Sparkles, Library, Maximize2, Search, MousePointer, ArrowLeft } from 'lucide-react';
+import { BookOpen, Sparkles, Library, Maximize2, Search, MousePointer, ArrowLeft, CreditCard, LogIn } from 'lucide-react';
 import ThemeToggle from '../components/ThemeToggle';
 
 export default function GuidePublic() {
     const sections = [
+        {
+            icon: LogIn,
+            title: 'Đăng ký & Đăng nhập',
+            description: 'Khởi đầu hành trình học tập bằng cách đăng ký hoặc đăng nhập tài khoản cá nhân.',
+            steps: [
+                'Nhấp vào nút "Đăng ký" trên trang chủ để tạo tài khoản mới',
+                'Nhập đầy đủ thông tin (Họ tên, Email, Mật khẩu) và xác nhận đăng ký',
+                'Chọn "Đăng nhập" nếu bạn đã có tài khoản và nhập thông tin truy cập',
+                'Sau khi đăng nhập thành công, bạn sẽ được tự động chuyển đến bảng điều khiển',
+            ],
+        },
         {
             icon: Library,
             title: 'Thư viện học liệu',
@@ -46,6 +57,17 @@ export default function GuidePublic() {
                 'Nhấn nút "Chế độ trình chiếu" ở góc trên bên phải',
                 'Sử dụng nút toàn màn hình để hiển thị tốt nhất',
                 'Nhấn ESC hoặc nút X để thoát',
+            ],
+        },
+        {
+            icon: CreditCard,
+            title: 'Nâng cấp & Thanh toán',
+            description: 'Nâng cấp Premium mở khóa tất cả học liệu 3D',
+            steps: [
+                'Đăng nhập tài khoản và chọn mục "Bảng giá" ở menu bên trái',
+                'Chọn gói Premium phù hợp nhu cầu sử dụng của bạn',
+                'Quét mã QR thanh toán hiển thị trên màn hình',
+                'Hệ thống tự động kích hoạt Premium chỉ sau 30 giây',
             ],
         },
     ];

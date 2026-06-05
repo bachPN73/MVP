@@ -97,6 +97,17 @@ export const api = {
         return data;
     },
 
+    updateModel: async (id: string | number, modelData: Partial<ModelInput>): Promise<{ message: string; model: any }> => {
+        const response = await fetch(`${API_URL}/models/${id}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(modelData),
+        });
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.error || 'Failed to update model');
+        return data;
+    },
+
     uploadModelFile: async (file: File): Promise<{ file_url: string; message: string }> => {
         const formData = new FormData();
         formData.append('file', file);
@@ -269,6 +280,116 @@ export const api = {
         });
         const data = await response.json();
         if (!response.ok) throw new Error(data.error || 'Failed to delete school');
+        return data;
+    },
+
+    // Payment APIs
+    createPayment: async (userId: string, planId: string, amount: number): Promise<any> => {
+        const response = await fetch(`${API_URL}/payments`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ userId, planId, amount }),
+        });
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.error || 'Failed to create payment intent');
+        return data;
+    },
+
+    getPayments: async (): Promise<any[]> => {
+        const response = await fetch(`${API_URL}/payments`);
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.error || 'Failed to fetch payments');
+        return data;
+    },
+
+    getUserPayments: async (userId: string): Promise<any[]> => {
+        const response = await fetch(`${API_URL}/payments/user/${userId}`);
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.error || 'Failed to fetch user payments');
+        return data;
+    },
+
+    approvePayment: async (id: string): Promise<{ message: string }> => {
+        const response = await fetch(`${API_URL}/payments/${id}/approve`, {
+            method: 'POST',
+        });
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.error || 'Failed to approve payment');
+        return data;
+    },
+
+    rejectPayment: async (id: string): Promise<{ message: string }> => {
+        const response = await fetch(`${API_URL}/payments/${id}/reject`, {
+            method: 'POST',
+        });
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.error || 'Failed to reject payment');
+        return data;
+    },
+
+    // Quick status check by paymentCode (for realtime auto-polling)
+    checkPaymentByCode: async (paymentCode: string): Promise<{
+        id: string;
+        status: 'pending' | 'approved' | 'rejected';
+        planId: string;
+        amount: number;
+        paymentCode: string;
+    }> => {
+        const response = await fetch(`${API_URL}/payments/check/${encodeURIComponent(paymentCode)}`);
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.error || 'Failed to check payment status');
+        return data;
+    },
+
+    // Simulate payment approval (dev/test only)
+    simulatePaymentApproval: async (paymentId: string): Promise<{ message: string }> => {
+        const response = await fetch(`${API_URL}/payments/${paymentId}/approve`, {
+            method: 'POST',
+        });
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.error || 'Failed to simulate approval');
+        return data;
+    },
+
+    // Lesson APIs
+    getLessons: async (filters?: { subject?: string; grade?: number }): Promise<any[]> => {
+        let url = `${API_URL}/lessons`;
+        const params = new URLSearchParams();
+        if (filters?.subject) params.append('subject', filters.subject);
+        if (filters?.grade) params.append('grade', String(filters.grade));
+        if (params.toString()) url += `?${params.toString()}`;
+
+        const response = await fetch(url);
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.error || 'Failed to fetch lessons');
+        return data;
+    },
+    createLesson: async (lessonData: any): Promise<any> => {
+        const response = await fetch(`${API_URL}/lessons`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(lessonData),
+        });
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.error || 'Failed to create lesson');
+        return data;
+    },
+    updateLesson: async (id: string, lessonData: any): Promise<any> => {
+        const response = await fetch(`${API_URL}/lessons/${id}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(lessonData),
+        });
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.error || 'Failed to update lesson');
+        return data;
+    },
+    deleteLesson: async (id: string): Promise<any> => {
+        const response = await fetch(`${API_URL}/lessons/${id}`, {
+            method: 'DELETE',
+        });
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.error || 'Failed to delete lesson');
         return data;
     }
 };

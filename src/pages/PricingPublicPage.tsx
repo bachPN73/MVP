@@ -60,9 +60,7 @@ export default function PricingPublicPage() {
                             </div>
                             <span className="text-xl font-black text-primary dark:text-indigo-400">Edu Tech</span>
                         </div>
-                        <p className="text-sm text-slate-400 dark:text-slate-500 font-bold">
-                            © 2026 Edu Tech Vietnam. Build for high performance.
-                        </p>
+                        {/* Removed footer copyright text */}
                     </div>
                 </div>
             </footer>

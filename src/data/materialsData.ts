@@ -34,6 +34,7 @@ export interface Material {
         text: string;
         habitat: string;
     };
+    relatedMaterials?: string[];
 }
 
 export interface ModelInput {
@@ -44,6 +45,7 @@ export interface ModelInput {
     tags: string[] | string;
     file_url: string;
     thumbnail: string | null;
+    relatedMaterials?: string[];
 }
 
 export const materials: Material[] = [

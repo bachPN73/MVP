@@ -11,9 +11,10 @@ import { fileURLToPath } from 'url';
 import bcrypt from 'bcryptjs';
 import dotenv from 'dotenv';
 import { GoogleGenerativeAI } from '@google/generative-ai';
+import crypto from 'crypto';
 
 import mongoose from 'mongoose';
-import { User, Material, ResetToken, School, MembershipRequest } from './mongo_models.js';
+import { User, Material, ResetToken, School, MembershipRequest, Payment, Lesson } from './mongo_models.js';
 import { createClient } from '@supabase/supabase-js';
 
 // Load environment variables
@@ -110,6 +111,67 @@ app.use((req, res, next) => {
 });
 
 app.get('/api/ping', (req, res) => res.json({ status: 'ok', time: Date.now() }));
+
+// Session validation middleware
+app.use(async (req, res, next) => {
+    const publicPaths = [
+        '/api/login',
+        '/api/forgot-password',
+        '/api/reset-password',
+        '/api/ping',
+        '/models',
+        '/thumbnails'
+    ];
+    
+    const isPublic = publicPaths.some(p => req.path.startsWith(p));
+    const isRegister = req.path === '/api/users' && req.method === 'POST';
+    
+    if (isPublic || isRegister) {
+        return next();
+    }
+    
+    const sessionToken = req.headers['x-session-token'];
+    const userId = req.headers['x-user-id'];
+    
+    if (userId) {
+        try {
+            const user = await User.findById(userId);
+            if (user && user.role !== 'admin') {
+                if (user.sessionToken && user.sessionToken !== sessionToken) {
+                    return res.status(401).json({ error: 'SESSION_INVALID', message: 'Tài khoản đã đăng nhập ở thiết bị khác' });
+                }
+            }
+        } catch (err) {
+            console.error('[MIDDLEWARE SESSION ERROR]', err.message);
+        }
+    }
+    next();
+});
+
+// Endpoint to check session status
+app.get('/api/check-session', async (req, res) => {
+    const sessionToken = req.headers['x-session-token'];
+    const userId = req.headers['x-user-id'];
+    
+    if (!userId) {
+        return res.status(400).json({ error: 'Missing User ID' });
+    }
+    
+    try {
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).json({ error: 'Người dùng không tồn tại' });
+        }
+        
+        if (user.role !== 'admin' && user.sessionToken && user.sessionToken !== sessionToken) {
+            return res.status(401).json({ error: 'SESSION_INVALID', message: 'Tài khoản đã đăng nhập ở thiết bị khác' });
+        }
+        
+        res.json({ valid: true });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
 
 app.delete('/api/u_remove/:id', async (req, res) => {
     const { id } = req.params;
@@ -340,9 +402,17 @@ app.post('/api/login', async (req, res) => {
         const isMatch = bcrypt.compareSync(password, user.password);
         if (!isMatch) return res.status(401).json({ error: 'Mật khẩu không chính xác' });
 
+        let sessionToken = null;
+        if (user.role !== 'admin') {
+            sessionToken = crypto.randomUUID();
+            user.sessionToken = sessionToken;
+            await user.save();
+        }
+
         const userProfile = user.toObject();
         delete userProfile.password;
         userProfile.id = userProfile._id.toString();
+        userProfile.sessionToken = sessionToken;
         
         res.json({ message: 'Đăng nhập thành công', user: userProfile });
     } catch (err) {
@@ -385,7 +455,8 @@ app.get('/api/models/:id', async (req, res) => {
 app.post('/api/models', async (req, res) => {
     const { 
         title, description, file_url, thumbnail, subject, grade, tags, type,
-        subtitle, category, size, location, visibleInLM, features, funFact, whereItOccurs 
+        subtitle, category, size, location, visibleInLM, features, funFact, whereItOccurs, source,
+        relatedMaterials
     } = req.body;
     let tagsArray = Array.isArray(tags) ? tags : [];
     if (typeof tags === 'string') {
@@ -397,10 +468,16 @@ app.post('/api/models', async (req, res) => {
         try { featuresArray = JSON.parse(features); } catch (e) {}
     }
 
+    let relatedMaterialsArray = Array.isArray(relatedMaterials) ? relatedMaterials : [];
+    if (typeof relatedMaterials === 'string') {
+        try { relatedMaterialsArray = JSON.parse(relatedMaterials); } catch (e) { relatedMaterialsArray = relatedMaterials.split(',').map(r => r.trim()).filter(Boolean); }
+    }
+
     try {
         const newModel = await Material.create({
             title, description, file_url, thumbnail: thumbnail || null, subject, grade, type: type || '3d-model', tags: tagsArray,
-            subtitle, category, size, location, visibleInLM, features: featuresArray, funFact, whereItOccurs
+            subtitle, category, size, location, visibleInLM, features: featuresArray, funFact, whereItOccurs, source,
+            relatedMaterials: relatedMaterialsArray
         });
         res.json({ id: newModel._id, message: 'Lưu học liệu thành công' });
     } catch (err) {
@@ -408,14 +485,90 @@ app.post('/api/models', async (req, res) => {
     }
 });
 
+app.put('/api/models/:id', async (req, res) => {
+    const { id } = req.params;
+    const { 
+        title, description, file_url, thumbnail, subject, grade, tags, type,
+        subtitle, category, size, location, visibleInLM, features, funFact, whereItOccurs, source,
+        relatedMaterials
+    } = req.body;
+
+    let tagsArray = tags;
+    if (tags !== undefined && !Array.isArray(tags)) {
+        if (typeof tags === 'string') {
+            try { tagsArray = JSON.parse(tags); } catch (e) { tagsArray = tags.split(',').map(t => t.trim()).filter(Boolean); }
+        }
+    }
+
+    let featuresArray = features;
+    if (features !== undefined && !Array.isArray(features)) {
+        if (typeof features === 'string') {
+            try { featuresArray = JSON.parse(features); } catch (e) {}
+        }
+    }
+
+    let relatedMaterialsArray = relatedMaterials;
+    if (relatedMaterials !== undefined && !Array.isArray(relatedMaterials)) {
+        if (typeof relatedMaterials === 'string') {
+            try { relatedMaterialsArray = JSON.parse(relatedMaterials); } catch (e) { relatedMaterialsArray = relatedMaterials.split(',').map(r => r.trim()).filter(Boolean); }
+        }
+    }
+
+    try {
+        const updateData = {};
+        if (title !== undefined) updateData.title = title;
+        if (description !== undefined) updateData.description = description;
+        if (file_url !== undefined) updateData.file_url = file_url;
+        if (thumbnail !== undefined) updateData.thumbnail = thumbnail;
+        if (subject !== undefined) updateData.subject = subject;
+        if (grade !== undefined) updateData.grade = Number(grade);
+        if (type !== undefined) updateData.type = type;
+        if (tagsArray !== undefined) updateData.tags = tagsArray;
+        if (subtitle !== undefined) updateData.subtitle = subtitle;
+        if (category !== undefined) updateData.category = category;
+        if (size !== undefined) updateData.size = size;
+        if (location !== undefined) updateData.location = location;
+        if (visibleInLM !== undefined) updateData.visibleInLM = visibleInLM;
+        if (featuresArray !== undefined) updateData.features = featuresArray;
+        if (funFact !== undefined) updateData.funFact = funFact;
+        if (whereItOccurs !== undefined) updateData.whereItOccurs = whereItOccurs;
+        if (source !== undefined) updateData.source = source;
+        if (relatedMaterialsArray !== undefined) updateData.relatedMaterials = relatedMaterialsArray;
+
+        const updated = await Material.findByIdAndUpdate(id, updateData, { new: true });
+        if (!updated) return res.status(404).json({ error: 'Không tìm thấy học liệu' });
+        res.json({ message: 'Cập nhật học liệu thành công!', model: updated });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
 app.post('/api/upload', upload.single('file'), async (req, res) => {
     if (!req.file) return res.status(400).json({ error: 'Không có tệp nào được tải lên' });
-    if (!supabase) return res.status(500).json({ error: 'Supabase chưa được cấu hình' });
 
     try {
         const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
-        const fileName = `models/${uniqueSuffix}${path.extname(req.file.originalname)}`;
-        
+        const fileExt = path.extname(req.file.originalname);
+        const fileBaseName = `${uniqueSuffix}${fileExt}`;
+
+        if (!supabase) {
+            // Local Fallback
+            const modelsDir = path.resolve(DATA_DIR, 'models');
+            if (!fs.existsSync(modelsDir)) {
+                fs.mkdirSync(modelsDir, { recursive: true });
+            }
+            const localPath = path.join(modelsDir, fileBaseName);
+            fs.writeFileSync(localPath, req.file.buffer);
+            console.log(`[LOCAL UPLOAD] Saved model locally at: ${localPath}`);
+            
+            const host = req.get('host');
+            const protocol = req.protocol;
+            const publicUrl = `${protocol}://${host}/models/${fileBaseName}`;
+            
+            return res.json({ file_url: publicUrl, message: 'Tải lên máy cục bộ thành công (Không có Supabase)' });
+        }
+
+        const fileName = `models/${fileBaseName}`;
         const { data, error } = await supabase.storage
             .from(supabaseBucket)
             .upload(fileName, req.file.buffer, {
@@ -431,19 +584,37 @@ app.post('/api/upload', upload.single('file'), async (req, res) => {
 
         res.json({ file_url: publicUrl, message: 'Tải lên Supabase thành công' });
     } catch (err) {
-        console.error('[SUPABASE UPLOAD ERROR]', err.message);
-        res.status(500).json({ error: 'Lỗi khi tải file lên Supabase: ' + err.message });
+        console.error('[UPLOAD ERROR]', err.message);
+        res.status(500).json({ error: 'Lỗi khi tải file lên: ' + err.message });
     }
 });
 
 app.post('/api/upload-thumbnail', upload.single('thumbnail'), async (req, res) => {
     if (!req.file) return res.status(400).json({ error: 'Không có ảnh nào được tải lên' });
-    if (!supabase) return res.status(500).json({ error: 'Supabase chưa được cấu hình' });
 
     try {
         const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
-        const fileName = `thumbnails/${uniqueSuffix}${path.extname(req.file.originalname)}`;
-        
+        const fileExt = path.extname(req.file.originalname);
+        const fileBaseName = `${uniqueSuffix}${fileExt}`;
+
+        if (!supabase) {
+            // Local Fallback
+            const thumbnailsDir = path.resolve(DATA_DIR, 'thumbnails');
+            if (!fs.existsSync(thumbnailsDir)) {
+                fs.mkdirSync(thumbnailsDir, { recursive: true });
+            }
+            const localPath = path.join(thumbnailsDir, fileBaseName);
+            fs.writeFileSync(localPath, req.file.buffer);
+            console.log(`[LOCAL UPLOAD] Saved thumbnail locally at: ${localPath}`);
+            
+            const host = req.get('host');
+            const protocol = req.protocol;
+            const publicUrl = `${protocol}://${host}/thumbnails/${fileBaseName}`;
+            
+            return res.json({ thumbnail_url: publicUrl, message: 'Tải ảnh đại diện lên máy cục bộ thành công (Không có Supabase)' });
+        }
+
+        const fileName = `thumbnails/${fileBaseName}`;
         const { data, error } = await supabase.storage
             .from(supabaseBucket)
             .upload(fileName, req.file.buffer, {
@@ -459,8 +630,8 @@ app.post('/api/upload-thumbnail', upload.single('thumbnail'), async (req, res) =
 
         res.json({ thumbnail_url: publicUrl, message: 'Tải ảnh đại diện lên Supabase thành công' });
     } catch (err) {
-        console.error('[SUPABASE THUMBNAIL ERROR]', err.message);
-        res.status(500).json({ error: 'Lỗi khi tải ảnh lên Supabase: ' + err.message });
+        console.error('[THUMBNAIL UPLOAD ERROR]', err.message);
+        res.status(500).json({ error: 'Lỗi khi tải ảnh lên: ' + err.message });
     }
 });
 
@@ -602,9 +773,29 @@ app.post('/api/ai-search', async (req, res) => {
             try {
                 const genAI = new GoogleGenerativeAI(apiKey);
                 const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
-                const modelSummary = models.map(m => `ID:${m.id} | Title:${m.title} | Subject:${m.subject} | Tags:${JSON.stringify(m.tags)}`).join('\n');
+                const modelSummary = models.map(m => `ID:${m.id} | Title:${m.title} | Subject:${m.subject} | Description:${m.description || ''} | Tags:${JSON.stringify(m.tags)}`).join('\n');
 
-                const prompt = `User: "${query}"\nModels:\n${modelSummary}\nReturn JSON: { "keywords": [], "predicted_subject": "physics/chemistry/biology/null", "intent": "Vietnamese logic", "matched_ids": [] }`;
+                const prompt = `You are a search query assistant for an educational 3D models and materials library.
+Analyze the user search query in Vietnamese/English, understand the intent, extract/expand search terms, predict the subject, and match relevant models from the database.
+
+User Search Query: "${query}"
+
+Available Library Models:
+${modelSummary}
+
+Instructions:
+1. "keywords": Extract key concepts from the query. Expand with synonyms (e.g. "tế bào" -> "cell", "nhân", "ti thể"), standard Vietnamese spelling, accents/non-accents, and English translations.
+2. "predicted_subject": Infer the subject. MUST be exactly one of: "physics", "chemistry", "biology", or null.
+3. "intent": A brief, professional search intent summary in Vietnamese (e.g., "Tìm kiếm mô hình tế bào và các bào quan").
+4. "matched_ids": Select IDs of the library models that match the query or expanded concepts. Order them by relevance (highest match first). Only include models that actually fit the search intent.
+
+Return strictly a valid JSON object matching this schema (do not output any markdown formatting, only the JSON block):
+{
+  "keywords": ["keyword1", "keyword2"],
+  "predicted_subject": "physics" | "chemistry" | "biology" | null,
+  "intent": "Ý định tìm kiếm bằng tiếng Việt",
+  "matched_ids": ["id1", "id2"]
+}`;
                 const result = await model.generateContent(prompt);
                 const responseText = result.response.text().trim();
                 let cleanJson = responseText.replace(/```json\n?/, '').replace(/\n?```/, '');
@@ -651,6 +842,99 @@ app.post('/api/ai-search', async (req, res) => {
 
     } catch (error) {
         res.status(500).json({ error: 'Lỗi hệ thống' });
+    }
+});
+
+// ==========================================
+// LESSONS API ENDPOINTS
+// ==========================================
+
+// Get all lessons (supports filtering by subject and grade)
+app.get('/api/lessons', async (req, res) => {
+    const { subject, grade } = req.query;
+    const query = {};
+    if (subject) query.subject = subject;
+    if (grade) query.grade = Number(grade);
+
+    try {
+        const lessons = await Lesson.find(query)
+            .populate('materials')
+            .sort({ chapter: 1, order: 1, createdAt: -1 });
+
+        const formatted = lessons.map(l => ({
+            ...l.toObject(),
+            id: l._id.toString()
+        }));
+        res.json(formatted);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+// Get a single lesson by ID
+app.get('/api/lessons/:id', async (req, res) => {
+    const { id } = req.params;
+    try {
+        const lesson = await Lesson.findById(id).populate('materials');
+        if (!lesson) return res.status(404).json({ error: 'Không tìm thấy bài học' });
+        const formatted = lesson.toObject();
+        formatted.id = lesson._id.toString();
+        res.json(formatted);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+// Create a new lesson
+app.post('/api/lessons', async (req, res) => {
+    const { title, description, subject, grade, chapter, materials, order } = req.body;
+    try {
+        const newLesson = await Lesson.create({
+            title,
+            description: description || '',
+            subject,
+            grade: Number(grade),
+            chapter: chapter || '',
+            materials: materials || [],
+            order: Number(order || 0)
+        });
+        res.json({ id: newLesson._id, message: 'Tạo bài học thành công!' });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+// Update a lesson (supports bulk adding/modifying the materials array)
+app.put('/api/lessons/:id', async (req, res) => {
+    const { id } = req.params;
+    const { title, description, subject, grade, chapter, materials, order } = req.body;
+    try {
+        const updateData = {};
+        if (title !== undefined) updateData.title = title;
+        if (description !== undefined) updateData.description = description;
+        if (subject !== undefined) updateData.subject = subject;
+        if (grade !== undefined) updateData.grade = Number(grade);
+        if (chapter !== undefined) updateData.chapter = chapter;
+        if (materials !== undefined) updateData.materials = materials;
+        if (order !== undefined) updateData.order = Number(order);
+
+        const updated = await Lesson.findByIdAndUpdate(id, updateData, { new: true });
+        if (!updated) return res.status(404).json({ error: 'Không tìm thấy bài học' });
+        res.json({ message: 'Cập nhật bài học thành công!', lesson: updated });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+// Delete a lesson
+app.delete('/api/lessons/:id', async (req, res) => {
+    const { id } = req.params;
+    try {
+        const deleted = await Lesson.findByIdAndDelete(id);
+        if (!deleted) return res.status(404).json({ error: 'Không tìm thấy bài học' });
+        res.json({ message: 'Xóa bài học thành công!' });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
     }
 });
 
@@ -970,6 +1254,255 @@ app.delete('/api/schools/:id', async (req, res) => {
         res.json({ message: 'Xóa trường học thành công!' });
     } catch (err) {
         res.status(500).json({ error: 'Lỗi hệ thống: ' + err.message });
+    }
+});
+
+// ==========================================
+// PAYMENT AND BANK TRANSFER API ENDPOINTS
+// ==========================================
+
+// POST /api/payments - Create or retrieve a payment intent
+app.post('/api/payments', async (req, res) => {
+    const { userId, planId, amount } = req.body;
+    if (!userId || !planId || amount === undefined) {
+        return res.status(400).json({ error: 'Thiếu thông tin người dùng, gói hoặc số tiền' });
+    }
+
+    try {
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).json({ error: 'Không tìm thấy người dùng' });
+        }
+
+        // Check if there is already a pending payment for the same plan & user
+        const existingPayment = await Payment.findOne({ userId, planId, status: 'pending' });
+        if (existingPayment) {
+            return res.json(existingPayment);
+        }
+
+        // Generate a highly unique and distinct payment code
+        // Format: EDUPAY + PLAN_NAME (uppercase) + LAST_6_CHARS_OF_USER_ID + RANDOM_3_DIGITS
+        const shortUserId = userId.toString().substring(userId.toString().length - 6).toUpperCase();
+        const rand = Math.floor(100 + Math.random() * 900);
+        const planCode = planId.replace(/[^a-zA-Z0-9]/g, '').toUpperCase();
+        const paymentCode = `EDUPAY${planCode}${shortUserId}${rand}`;
+
+        const bankName = process.env.PAYMENT_BANK_ID || 'TPB';
+        const accountNumber = process.env.PAYMENT_ACCOUNT_NO || '00000801691';
+        const accountName = process.env.PAYMENT_ACCOUNT_NAME || 'PHAM NGOC BACH';
+
+        const payment = await Payment.create({
+            userId,
+            planId,
+            amount: Number(amount),
+            paymentCode,
+            status: 'pending',
+            bankName,
+            accountNumber,
+            accountName
+        });
+
+        res.json(payment);
+    } catch (err) {
+        res.status(500).json({ error: 'Lỗi hệ thống khi tạo thanh toán: ' + err.message });
+    }
+});
+
+// GET /api/payments - Get all payments (Admin audit)
+app.get('/api/payments', async (req, res) => {
+    try {
+        const payments = await Payment.find({})
+            .populate('userId', 'name email')
+            .sort({ createdAt: -1 });
+
+        const formatted = payments.map(p => {
+            const pObj = p.toObject();
+            return {
+                ...pObj,
+                id: pObj._id.toString(),
+                userId: pObj.userId?._id?.toString() || '',
+                userName: pObj.userId?.name || 'Không xác định',
+                userEmail: pObj.userId?.email || ''
+            };
+        });
+
+        res.json(formatted);
+    } catch (err) {
+        res.status(500).json({ error: 'Lỗi hệ thống lấy danh sách thanh toán: ' + err.message });
+    }
+});
+
+// GET /api/payments/user/:userId - Get payments of a specific user
+app.get('/api/payments/user/:userId', async (req, res) => {
+    const { userId } = req.params;
+    try {
+        const payments = await Payment.find({ userId }).sort({ createdAt: -1 });
+        const formatted = payments.map(p => ({
+            ...p.toObject(),
+            id: p._id.toString()
+        }));
+        res.json(formatted);
+    } catch (err) {
+        res.status(500).json({ error: 'Lỗi hệ thống: ' + err.message });
+    }
+});
+
+// GET /api/payments/check/:paymentCode - Quick status check by payment code (for frontend polling)
+app.get('/api/payments/check/:paymentCode', async (req, res) => {
+    const { paymentCode } = req.params;
+    if (!paymentCode) {
+        return res.status(400).json({ error: 'Thiếu mã giao dịch' });
+    }
+
+    try {
+        const payment = await Payment.findOne({ paymentCode: paymentCode.toUpperCase() });
+        if (!payment) {
+            return res.status(404).json({ error: 'Không tìm thấy giao dịch' });
+        }
+        res.json({
+            id: payment._id.toString(),
+            status: payment.status,
+            planId: payment.planId,
+            amount: payment.amount,
+            paymentCode: payment.paymentCode,
+            createdAt: payment.createdAt
+        });
+    } catch (err) {
+        res.status(500).json({ error: 'Lỗi hệ thống: ' + err.message });
+    }
+});
+
+app.post('/api/payments/:id/approve', async (req, res) => {
+    const { id } = req.params;
+    try {
+        const payment = await Payment.findById(id);
+        if (!payment) {
+            return res.status(404).json({ error: 'Không tìm thấy thông tin giao dịch' });
+        }
+
+        if (payment.status === 'approved') {
+            return res.status(400).json({ error: 'Giao dịch này đã được phê duyệt trước đó' });
+        }
+
+        // 1. Update payment status
+        payment.status = 'approved';
+        await payment.save();
+
+        // 2. Activate user plan
+        await User.findByIdAndUpdate(payment.userId, { plan: payment.planId });
+
+        res.json({ message: 'Phê duyệt giao dịch và kích hoạt tài khoản thành công!' });
+    } catch (err) {
+        res.status(500).json({ error: 'Lỗi hệ thống phê duyệt: ' + err.message });
+    }
+});
+
+// POST /api/payments/:id/reject - Reject a payment
+app.post('/api/payments/:id/reject', async (req, res) => {
+    const { id } = req.params;
+    try {
+        const payment = await Payment.findById(id);
+        if (!payment) {
+            return res.status(404).json({ error: 'Không tìm thấy thông tin giao dịch' });
+        }
+
+        payment.status = 'rejected';
+        await payment.save();
+
+        res.json({ message: 'Đã từ chối giao dịch thành công!' });
+    } catch (err) {
+        res.status(500).json({ error: 'Lỗi hệ thống từ chối giao dịch: ' + err.message });
+    }
+});
+
+// POST /api/webhooks/payment - Instant payment automatic check (SePay / Casso compatible)
+app.post('/api/webhooks/payment', async (req, res) => {
+    console.log('[PAYMENT WEBHOOK] Received payload:', JSON.stringify(req.body));
+
+    // ── SePay Webhook Signature Verification ──────────────────────────────────
+    const webhookSecret = process.env.WEBHOOK_SECRET;
+    if (webhookSecret && webhookSecret !== 'your-sepay-webhook-secret-here') {
+        // SePay sends the secret in the Authorization header as: "Apikey <secret>"
+        const authHeader = req.headers['authorization'] || '';
+        const tokenHeader = req.headers['x-webhook-token'] || req.headers['x-sepay-token'] || '';
+        const providedSecret = authHeader.startsWith('Apikey ') 
+            ? authHeader.replace('Apikey ', '').trim() 
+            : tokenHeader.trim();
+        
+        if (providedSecret !== webhookSecret) {
+            console.warn('[PAYMENT WEBHOOK] Invalid secret token. Possible spoofed request.');
+            return res.status(401).json({ error: 'Unauthorized: Invalid webhook secret' });
+        }
+        console.log('[PAYMENT WEBHOOK] Secret token verified OK.');
+    }
+    
+    try {
+        let paymentCode = '';
+        let amountPaid = 0;
+
+        // SePay body format parser (standard fields)
+        if (req.body.content !== undefined && req.body.transferAmount !== undefined) {
+            paymentCode = req.body.content || '';
+            amountPaid = Number(req.body.transferAmount);
+            console.log(`[PAYMENT WEBHOOK] SePay format detected. Content: "${paymentCode}", Amount: ${amountPaid}`);
+        }
+        // Casso body format parser
+        else if (req.body.data && Array.isArray(req.body.data) && req.body.data.length > 0) {
+            const tx = req.body.data[0];
+            paymentCode = tx.description || tx.memo || '';
+            amountPaid = Number(tx.amount);
+            console.log(`[PAYMENT WEBHOOK] Casso format detected. Description: "${paymentCode}", Amount: ${amountPaid}`);
+        }
+        // Custom fallbacks
+        else {
+            paymentCode = req.body.code || req.body.memo || req.body.description || req.body.content || '';
+            amountPaid = Number(req.body.amount || 0);
+            console.log(`[PAYMENT WEBHOOK] Generic format. Code: "${paymentCode}", Amount: ${amountPaid}`);
+        }
+
+        if (!paymentCode) {
+            return res.status(400).json({ error: 'Không tìm thấy mã nội dung chuyển khoản trong webhook body' });
+        }
+
+        // Use regex to isolate our pattern: EDUPAY + PLAN + USERID_SHORT + RAND
+        const match = paymentCode.match(/EDUPAY[A-Z0-9]+/i);
+        if (!match) {
+            console.warn(`[PAYMENT WEBHOOK] No EDUPAY code found in content: "${paymentCode}"`);
+            return res.status(400).json({ error: 'Nội dung chuyển khoản không khớp cú pháp EDUPAY' });
+        }
+        
+        const cleanCode = match[0].toUpperCase();
+        console.log(`[PAYMENT WEBHOOK] Extracted paymentCode: ${cleanCode}, Amount: ${amountPaid}`);
+
+        const payment = await Payment.findOne({ paymentCode: cleanCode, status: 'pending' });
+        if (!payment) {
+            console.log(`[PAYMENT WEBHOOK] Payment code ${cleanCode} not found in pending status.`);
+            return res.status(404).json({ error: 'Không tìm thấy giao dịch thanh toán chờ duyệt tương ứng' });
+        }
+
+        // Validate amount — allow slight over-payment (rounding, fees), block underpayment
+        if (amountPaid < payment.amount) {
+            console.warn(`[PAYMENT WEBHOOK] Insufficient amount. Expected: ${payment.amount}, Paid: ${amountPaid}`);
+            return res.status(400).json({ error: `Số tiền chuyển khoản không đủ. Yêu cầu: ${payment.amount}, Nhận được: ${amountPaid}` });
+        }
+
+        // Approve transaction automatically
+        payment.status = 'approved';
+        await payment.save();
+
+        // Kích hoạt gói dịch vụ cho User
+        await User.findByIdAndUpdate(payment.userId, { plan: payment.planId });
+        console.log(`[PAYMENT WEBHOOK SUCCESS] Auto-approved payment ${cleanCode} → User ${payment.userId} → Plan ${payment.planId}`);
+
+        res.json({ 
+            success: true, 
+            message: `Tự động phê duyệt giao dịch và kích hoạt tài khoản gói ${payment.planId} thành công!`,
+            paymentCode: cleanCode,
+            planId: payment.planId
+        });
+    } catch (err) {
+        console.error('[PAYMENT WEBHOOK ERROR]', err.message);
+        res.status(500).json({ error: 'Lỗi máy chủ khi xử lý Webhook thanh toán: ' + err.message });
     }
 });
 

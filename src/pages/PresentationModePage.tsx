@@ -112,9 +112,9 @@ export default function PresentationMode() {
     };
 
     return (
-        <div className="min-h-screen bg-[#07080f] text-slate-100 flex flex-col font-sans select-none overflow-hidden">
+        <div className="min-h-screen bg-[#05060b] text-slate-100 flex flex-col font-sans select-none overflow-hidden">
             {/* Top control bar */}
-            <div className="bg-[#0b0c16]/90 backdrop-blur-md border-b border-white/5 px-6 py-4.5 z-20 relative shadow-lg animate-slideDown">
+            <div className="bg-[#0a0c16]/75 backdrop-blur-xl border-b border-white/5 px-6 py-4.5 z-20 relative shadow-2xl transition-all">
                 <div className="flex items-center justify-between gap-4">
                     <div className="space-y-0.5 max-w-[65%]">
                         <div className="flex items-center gap-2">
@@ -168,10 +168,10 @@ export default function PresentationMode() {
                         style={{ transform: `rotate(${rotation}deg)` }}
                     >
                         {material.type === '3d-model' ? (
-                            <div className={`absolute inset-0 overflow-hidden bg-[#0a0c16] ${isFullscreen ? 'rounded-none border-none' : 'rounded-2xl border border-white/10 shadow-2xl relative'}`}>
-                                <div className="absolute top-4 left-4 z-10 pointer-events-none">
-                                     <span className="flex items-center gap-1.5 px-2.5 py-1.5 bg-slate-950/80 backdrop-blur-md border border-white/10 text-slate-300 text-[10px] font-bold uppercase rounded-lg shadow-sm font-sans">
-                                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                            <div className={`absolute inset-0 overflow-hidden bg-[#05070f] ${isFullscreen ? 'rounded-none border-none' : 'rounded-[2rem] border border-white/10 shadow-[0_0_50px_rgba(99,102,241,0.05)] relative transition-all duration-500'}`}>
+                                <div className="absolute top-5 left-5 z-10 pointer-events-none">
+                                     <span className="flex items-center gap-2 px-3.5 py-2 bg-slate-950/90 backdrop-blur-md border border-white/10 text-slate-300 text-[11px] font-black uppercase rounded-xl shadow-2xl font-mono tracking-wider">
+                                        <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shadow-[0_0_10px_#10b981]" />
                                         Môi trường 3D tương tác
                                     </span>
                                 </div>

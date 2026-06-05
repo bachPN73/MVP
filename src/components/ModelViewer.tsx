@@ -21,45 +21,65 @@ dracoLoader.setDecoderPath('/draco/');
 const gltfLoader = new GLTFLoader();
 gltfLoader.setDRACOLoader(dracoLoader);
 
-function applyPBRUpgrades(scene: THREE.Group | THREE.Object3D) {
+function applyPBRUpgrades(scene: THREE.Group | THREE.Object3D, isAmber: boolean) {
     scene.traverse((child) => {
         if ((child as any).isMesh) {
             const mesh = child as THREE.Mesh;
+            if (!mesh.material) return;
 
-            // Upgrade materials if they are not already Physical Materials
-            if (mesh.material && !(mesh.material as any).isMeshPhysicalMaterial) {
-                const oldMat = mesh.material as any;
-                mesh.material = new THREE.MeshPhysicalMaterial({
-                    map: oldMat.map,
-                    color: oldMat.color,
-                    normalMap: oldMat.normalMap,
-                    roughness: oldMat.roughness || 0.5,
-                    metalness: oldMat.metalness || 0.0,
-                    name: oldMat.name
-                });
-            }
+            const materials = Array.isArray(mesh.material) ? mesh.material : [mesh.material];
 
-            const material = mesh.material as THREE.MeshPhysicalMaterial;
-
-            // Amber materials refinement (Physical PBR)
-            if (material.name?.toLowerCase().includes('amber') ||
-                material.name?.toLowerCase().includes('vỏ') ||
-                mesh.name?.toLowerCase().includes('amber')) {
-
-                material.color.set('#ff9d00');
-                material.emissive.set('#4d2600');
-                material.emissiveIntensity = 0.3;
-                material.roughness = 0.05;
-                material.metalness = 0.0;
-                material.transmission = 1.0;
-                material.ior = 1.55;
-                material.thickness = 3.5;
-                material.transparent = true;
-            } else {
-                if (material.color.r < 0.1 && material.color.g < 0.1 && material.color.b < 0.1) {
-                    material.color.set('#666666');
+            materials.forEach((mat: any) => {
+                if (isAmber) {
+                    // Upgrade to physical material for amber rendering
+                    if (!mat.isMeshPhysicalMaterial) {
+                        const newMat = new THREE.MeshPhysicalMaterial({
+                            map: mat.map,
+                            color: mat.color,
+                            normalMap: mat.normalMap,
+                            roughness: mat.roughness || 0.05,
+                            metalness: mat.metalness || 0.0,
+                            name: mat.name,
+                            transparent: mat.transparent,
+                            opacity: mat.opacity
+                        });
+                        mesh.material = newMat;
+                        mat = newMat;
+                    }
+                    
+                    if (mat.name?.toLowerCase().includes('amber') ||
+                        mat.name?.toLowerCase().includes('vỏ') ||
+                        mesh.name?.toLowerCase().includes('amber')) {
+                        mat.color.set('#ff9d00');
+                        mat.emissive.set('#4d2600');
+                        mat.emissiveIntensity = 0.3;
+                        mat.roughness = 0.05;
+                        mat.metalness = 0.0;
+                        mat.transmission = 1.0;
+                        mat.ior = 1.55;
+                        mat.thickness = 3.5;
+                        mat.transparent = true;
+                    }
+                } else {
+                    // For standard biology models (cells, dna, etc.):
+                    // We want bright, flat, matte colors exactly like in Blender's viewport.
+                    // Keep the original material type (e.g. MeshStandardMaterial) but override roughness/metalness
+                    // to make it matte and non-reflective.
+                    mat.metalness = 0.0;
+                    mat.roughness = 0.95; // Matte finish, removing glossy white specular highlights
+                    
+                    // If it was forced to MeshPhysicalMaterial, turn off transmission/refraction
+                    if (mat.isMeshPhysicalMaterial) {
+                        mat.transmission = 0.0;
+                        mat.thickness = 0.0;
+                    }
+                    
+                    // Keep original colors vibrant
+                    if (mat.color && mat.color.r < 0.1 && mat.color.g < 0.1 && mat.color.b < 0.1) {
+                        mat.color.set('#666666');
+                    }
                 }
-            }
+            });
         }
     });
 }
@@ -111,7 +131,7 @@ function ProgressiveGLTFModel({
 }: {
     url: string;
     onProgress: (pct: number, loadedMb: string, totalMb: string) => void;
-    onLoaded: () => void;
+    onLoaded: (scene: THREE.Group) => void;
     onError: (err: any) => void;
 }) {
     const [scene, setScene] = useState<THREE.Group | null>(null);
@@ -137,14 +157,15 @@ function ProgressiveGLTFModel({
                 if (!isMounted) return;
 
                 // Decompress & Parse GLTF using DRACOLoader
+                const isAmber = url.toLowerCase().includes('amber') || url.toLowerCase().includes('muoi');
                 gltfLoader.parse(
                     arrayBuffer,
                     '',
                     (gltf) => {
                         if (!isMounted) return;
-                        applyPBRUpgrades(gltf.scene);
+                        applyPBRUpgrades(gltf.scene, isAmber);
                         setScene(gltf.scene);
-                        onLoaded();
+                        onLoaded(gltf.scene);
                     },
                     (err) => {
                         if (!isMounted) return;
@@ -164,14 +185,14 @@ function ProgressiveGLTFModel({
         };
     }, [url]);
 
-    if (!scene) return null;
-    return <primitive object={scene} />;
+    return null;
 }
 
 function FBXModel({ url }: { url: string }) {
     const fbx = useFBX(url);
     useEffect(() => {
-        applyPBRUpgrades(fbx);
+        const isAmber = url.toLowerCase().includes('amber') || url.toLowerCase().includes('muoi');
+        applyPBRUpgrades(fbx, isAmber);
     }, [fbx, url]);
     return <primitive object={fbx} />;
 }
@@ -265,11 +286,14 @@ export default function ModelViewer({ modelUrl }: { modelUrl: string }) {
     const [loadedMb, setLoadedMb] = useState("0");
     const [totalMb, setTotalMb] = useState("0");
     const [errorMsg, setErrorMsg] = useState("");
+    const [loadedScene, setLoadedScene] = useState<THREE.Group | null>(null);
 
     const isFBX = modelUrl.toLowerCase().endsWith('.fbx');
+    const isAmber = modelUrl.toLowerCase().includes('amber') || modelUrl.toLowerCase().includes('muoi');
 
     // Reset state on model url change
     useEffect(() => {
+        setLoadedScene(null);
         if (isFBX) {
             setLoadingStage('done');
         } else {
@@ -305,24 +329,26 @@ export default function ModelViewer({ modelUrl }: { modelUrl: string }) {
                         toneMapping: 4,
                     }}
                     onCreated={({ gl }) => {
-                        gl.toneMappingExposure = 0.95;
+                        gl.toneMappingExposure = 1.05; // Slightly brighter exposure for clean cartoon style
                     }}
                 >
-                    <Environment preset="studio" />
-                    <ambientLight intensity={0.5} />
-                    <directionalLight position={[10, 10, 10]} intensity={0.6} />
+                    {isAmber && <Environment preset="studio" />}
+                    <ambientLight intensity={isAmber ? 0.5 : 1.1} />
+                    <directionalLight position={[10, 10, 10]} intensity={isAmber ? 0.6 : 0.9} />
 
                     {!isMobile && (
                         <>
-                            <directionalLight position={[-10, 5, -10]} intensity={0.6} color="#ffffff" />
-                            <pointLight position={[0, -5, 5]} intensity={0.4} color="#ffffff" />
+                            <directionalLight position={[-10, 5, -10]} intensity={isAmber ? 0.6 : 0.5} color="#ffffff" />
+                            <pointLight position={[0, -5, 5]} intensity={isAmber ? 0.4 : 0.3} color="#ffffff" />
                         </>
                     )}
 
-                    <Stage environment={null} intensity={0.4} shadows={false}>
-                        {isFBX ? (
+                    {isFBX ? (
+                        <Stage environment={null} intensity={isAmber ? 0.4 : 0.9} shadows={false}>
                             <FBXModel url={modelUrl} />
-                        ) : (
+                        </Stage>
+                    ) : (
+                        <>
                             <ProgressiveGLTFModel
                                 url={modelUrl}
                                 onProgress={(percent, loaded, total) => {
@@ -333,7 +359,8 @@ export default function ModelViewer({ modelUrl }: { modelUrl: string }) {
                                         setLoadingStage('decoding');
                                     }
                                 }}
-                                onLoaded={() => {
+                                onLoaded={(scene) => {
+                                    setLoadedScene(scene);
                                     setLoadingStage('done');
                                 }}
                                 onError={(err) => {
@@ -341,8 +368,13 @@ export default function ModelViewer({ modelUrl }: { modelUrl: string }) {
                                     setLoadingStage('error');
                                 }}
                             />
-                        )}
-                    </Stage>
+                            {loadedScene && (
+                                <Stage environment={null} intensity={isAmber ? 0.4 : 0.9} shadows={false}>
+                                    <primitive object={loadedScene} />
+                                </Stage>
+                            )}
+                        </>
+                    )}
 
                     <OrbitControls makeDefault enableZoom={true} enablePan={true} zoomSpeed={1.2} />
                 </Canvas>

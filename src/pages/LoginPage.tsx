@@ -22,6 +22,9 @@ export default function Login() {
             setSuccessMessage('Đăng ký thành công! Vui lòng đăng nhập vào tài khoản mới của bạn.');
             // Clear URL param without refreshing
             window.history.replaceState({}, document.title, window.location.pathname);
+        } else if (params.get('session_expired') === 'true') {
+            setErrors({ form: 'Tài khoản của bạn đã được đăng nhập ở thiết bị khác. Vui lòng đăng nhập lại.' });
+            window.history.replaceState({}, document.title, window.location.pathname);
         }
     }, [location]);
 
@@ -63,7 +66,8 @@ export default function Login() {
                 role: result.user.role || 'student',
                 plan: result.user.plan || 'free',
                 schoolId: result.user.schoolId || null,
-                className: result.user.className || ''
+                className: result.user.className || '',
+                sessionToken: result.user.sessionToken || null
             };
 
             localStorage.setItem('edu_tech_user', JSON.stringify(userData));

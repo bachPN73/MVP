@@ -60,8 +60,8 @@ export function Layout({ children }: LayoutProps) {
                 />
             )}
 
-            {/* Main Content Area */}
-            <main className={`flex-1 pt-14 md:pt-0 w-full overflow-x-hidden transition-all duration-300 ${isCollapsed ? 'md:ml-20' : 'md:ml-64'}`}>
+            {/* Main Content Area - adjusted for floating sidebar with gap */}
+            <main className={`flex-1 pt-14 md:pt-0 w-full overflow-x-hidden transition-all duration-300 ease-in-out ${isCollapsed ? 'md:ml-[calc(5rem+1.5rem)]' : 'md:ml-[calc(270px+1.5rem)]'}`}>
                 {children}
             </main>
         </div>

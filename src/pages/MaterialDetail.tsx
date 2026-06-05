@@ -1,8 +1,8 @@
 import { Layout } from '../layout/MainLayout';
 import { useParams, Link, useNavigate } from 'react-router';
 import { materials as mockMaterials, getSubjectName, getTypeName, Material } from '../data/materialsData';
-import { ArrowLeft, Maximize2, Minimize2, BookOpen, Tag, GraduationCap, Loader2, Play, ZoomIn, RotateCcw, Move, Compass, Sparkles } from 'lucide-react';
-import { useState, useEffect, lazy, Suspense, useRef } from 'react';
+import { ArrowLeft, Maximize2, Minimize2, BookOpen, Tag, GraduationCap, Loader2, Play, ZoomIn, RotateCcw, Move, Compass, Sparkles, Search } from 'lucide-react';
+import { useState, useEffect, lazy, Suspense, useRef, useMemo } from 'react';
 import { api, BASE_URL } from '../api';
 import { useTheme } from '../components/ThemeProvider';
 
@@ -63,6 +63,182 @@ export default function MaterialDetail() {
     const [activeTab, setActiveTab] = useState<'info' | 'structure' | 'related'>('info');
     const containerRef = useRef<HTMLDivElement>(null);
 
+    const [allMaterials, setAllMaterials] = useState<Material[]>([]);
+    const [relatedSearch, setRelatedSearch] = useState('');
+
+    const [userRole, setUserRole] = useState('student');
+    const [isEditing, setIsEditing] = useState(false);
+    const [isSaving, setIsSaving] = useState(false);
+    const [errorMsg, setErrorMsg] = useState('');
+    const [editFormData, setEditFormData] = useState({
+        title: '',
+        description: '',
+        subject: 'physics',
+        grade: 10,
+        type: '3d-model',
+        tags: '',
+        subtitle: '',
+        category: '',
+        size: '',
+        location: '',
+        visibleInLM: '',
+        funFact: '',
+        featuresText: '',
+        whereItOccursText: '',
+        whereItOccursHabitat: '',
+        relatedMaterials: [] as string[]
+    });
+
+    useEffect(() => {
+        const loadAllMaterials = async () => {
+            try {
+                const dbModels = await api.getModels();
+                const formatted = dbModels.map((m: any) => ({
+                    id: `db-${m.id}`,
+                    title: m.title,
+                    subject: m.subject,
+                    type: m.type || '3d-model',
+                    description: m.description,
+                    thumbnail: m.thumbnail 
+                        ? (m.thumbnail.startsWith('http') ? m.thumbnail : `${BASE_URL}${m.thumbnail}`)
+                        : '3d-placeholder',
+                    tags: m.tags || [],
+                    grade: m.grade || 10,
+                    file_url: m.file_url 
+                        ? (m.file_url.startsWith('http') ? m.file_url : `${BASE_URL}${m.file_url}`)
+                        : '',
+                    createdAt: m.createdAt || m.created_at,
+                    relatedMaterials: m.relatedMaterials || []
+                }));
+                setAllMaterials([...mockMaterials, ...formatted]);
+            } catch (error) {
+                console.error("Lỗi khi tải danh sách học liệu:", error);
+                setAllMaterials(mockMaterials);
+            }
+        };
+        loadAllMaterials();
+    }, []);
+
+    const allAvailableRelated = useMemo(() => {
+        if (!material) return [];
+        return allMaterials.filter(m => m.id !== material.id);
+    }, [allMaterials, material]);
+
+    const filteredAvailableRelated = useMemo(() => {
+        const query = relatedSearch.toLowerCase().trim();
+        if (!query) return allAvailableRelated;
+        return allAvailableRelated.filter(m => 
+            m.title.toLowerCase().includes(query) || 
+            m.subject.toLowerCase().includes(query)
+        );
+    }, [allAvailableRelated, relatedSearch]);
+
+    const relatedMaterials = useMemo(() => {
+        if (!material) return [];
+        if (material.relatedMaterials && material.relatedMaterials.length > 0) {
+            return material.relatedMaterials
+                .map(relId => allMaterials.find(m => m.id === relId))
+                .filter((m): m is Material => !!m);
+        }
+        return allMaterials
+            .filter(m => m.id !== material.id && m.subject === material.subject)
+            .slice(0, 3);
+    }, [material, allMaterials]);
+
+    useEffect(() => {
+        const stored = localStorage.getItem('edu_tech_user');
+        if (stored) {
+            try {
+                const user = JSON.parse(stored);
+                if (user.role) setUserRole(user.role);
+            } catch (e) {}
+        }
+    }, []);
+
+    const handleStartEdit = () => {
+        if (!material) return;
+        setEditFormData({
+            title: material.title || '',
+            description: material.description || '',
+            subject: material.subject || 'physics',
+            grade: material.grade || 10,
+            type: material.type || '3d-model',
+            tags: material.tags ? material.tags.join(', ') : '',
+            subtitle: material.subtitle || '',
+            category: material.category || '',
+            size: material.size || '',
+            location: material.location || '',
+            visibleInLM: material.visibleInLM || '',
+            funFact: material.funFact || '',
+            featuresText: material.features ? material.features.map((f: any) => `${f.name}: ${f.detail}`).join('\n') : '',
+            whereItOccursText: material.whereItOccurs?.text || '',
+            whereItOccursHabitat: material.whereItOccurs?.habitat || '',
+            relatedMaterials: material.relatedMaterials || []
+        });
+        setRelatedSearch('');
+        setErrorMsg('');
+        setIsEditing(true);
+    };
+
+    const handleSaveEdit = async () => {
+        if (!material || !id) return;
+        setIsSaving(true);
+        setErrorMsg('');
+
+        // Parse featuresText
+        const features = editFormData.featuresText
+            .split('\n')
+            .map(line => {
+                const parts = line.split(':');
+                if (parts.length >= 2) {
+                    return {
+                        name: parts[0].trim(),
+                        detail: parts.slice(1).join(':').trim()
+                    };
+                }
+                return null;
+            })
+            .filter(Boolean);
+
+        const updatedData = {
+            title: editFormData.title,
+            description: editFormData.description,
+            subject: editFormData.subject,
+            grade: Number(editFormData.grade),
+            type: editFormData.type,
+            tags: editFormData.tags.split(',').map(t => t.trim()).filter(Boolean),
+            subtitle: editFormData.subtitle || undefined,
+            category: editFormData.category || undefined,
+            size: editFormData.size || undefined,
+            location: editFormData.location || undefined,
+            visibleInLM: editFormData.visibleInLM || undefined,
+            funFact: editFormData.funFact || undefined,
+            features: features,
+            whereItOccurs: (editFormData.whereItOccursText || editFormData.whereItOccursHabitat) ? {
+                text: editFormData.whereItOccursText,
+                habitat: editFormData.whereItOccursHabitat
+            } : undefined,
+            relatedMaterials: editFormData.relatedMaterials
+        };
+
+        try {
+            const dbId = id.replace('db-', '');
+            await api.updateModel(dbId, updatedData as any);
+            
+            // Update local material state
+            setMaterial({
+                ...material,
+                ...updatedData
+            } as any);
+            setIsEditing(false);
+        } catch (error: any) {
+            console.error("Lỗi khi cập nhật học liệu:", error);
+            setErrorMsg(error.message || "Có lỗi xảy ra khi lưu thay đổi.");
+        } finally {
+            setIsSaving(false);
+        }
+    };
+
     // Infographic Crisp Zoom State
     const [scale, setScale] = useState(1);
     const [position, setPosition] = useState({ x: 0, y: 0 });
@@ -111,7 +287,8 @@ export default function MaterialDetail() {
                                     text: normalizeStr(data.whereItOccurs.text),
                                     habitat: normalizeStr(data.whereItOccurs.habitat)
                                   } 
-                                : undefined
+                                : undefined,
+                            relatedMaterials: data.relatedMaterials || []
                         } as any);
                     }
                 } catch (error) {
@@ -142,7 +319,8 @@ export default function MaterialDetail() {
                                 text: normalizeStr(found.whereItOccurs.text),
                                 habitat: normalizeStr(found.whereItOccurs.habitat)
                               } 
-                            : undefined
+                            : undefined,
+                        relatedMaterials: found.relatedMaterials || []
                     } as any);
                 }
             }
@@ -235,9 +413,7 @@ export default function MaterialDetail() {
         return url;
     };
 
-    const relatedMaterials = mockMaterials
-        .filter(m => m.id !== material.id && m.subject === material.subject)
-        .slice(0, 3);
+    // relatedMaterials is defined above before early returns
     const fileUrl = (material as any).file_url || "";
     const ext = fileUrl.split('.').pop()?.toLowerCase() || '';
     const is3D = ['glb', 'gltf', 'fbx'].includes(ext);
@@ -305,6 +481,36 @@ export default function MaterialDetail() {
                         }`}>
                             {getTypeName(material.type)}
                         </span>
+
+                        {/* Admin Edit Controls */}
+                        {userRole === 'admin' && id && id.startsWith('db-') && (
+                            <div className="ml-2 flex items-center gap-2">
+                                {isEditing ? (
+                                    <>
+                                        <button
+                                            onClick={() => setIsEditing(false)}
+                                            className="px-3 py-1.5 border border-slate-200 dark:border-white/10 text-slate-705 dark:text-slate-200 rounded-lg text-xs font-bold hover:bg-slate-50 dark:hover:bg-slate-800/50 cursor-pointer"
+                                        >
+                                            Hủy
+                                        </button>
+                                        <button
+                                            onClick={handleSaveEdit}
+                                            disabled={isSaving}
+                                            className="flex items-center gap-1.5 px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-bold transition-all shadow-md disabled:opacity-50 cursor-pointer"
+                                        >
+                                            {isSaving ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : 'Lưu'}
+                                        </button>
+                                    </>
+                                ) : (
+                                    <button
+                                        onClick={handleStartEdit}
+                                        className="flex items-center gap-1.5 px-3 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-xs font-bold transition-all shadow-md cursor-pointer"
+                                    >
+                                        Chỉnh sửa
+                                    </button>
+                                )}
+                            </div>
+                        )}
                     </div>
                 </div>
 
@@ -372,33 +578,28 @@ export default function MaterialDetail() {
                                             <img
                                                 src={thumbnailUrl}
                                                 alt=""
-                                                className="absolute inset-0 w-full h-full object-cover filter blur-sm opacity-60"
+                                                className="absolute inset-0 w-full h-full object-cover filter blur-sm scale-102 opacity-50 transition-all duration-700 group-hover:scale-105"
                                             />
                                         )}
 
                                         {/* Overlay */}
-                                        <div className="absolute inset-0 bg-gradient-to-t from-slate-900/70 via-slate-900/30 to-slate-900/10"></div>
+                                        <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-900/40 to-slate-950/20"></div>
 
                                         {/* Play / View button */}
-                                        <div className="relative z-10 flex flex-col items-center gap-4">
-                                            <div className={`
-                                                w-20 h-20 rounded-full flex items-center justify-center
-                                                bg-white/20 backdrop-blur-md border-2 border-white/40
-                                                shadow-2xl shadow-black/20
-                                                hover:bg-white/30 hover:scale-110 transition-all duration-300
-                                            `}>
+                                        <div className="relative z-10 flex flex-col items-center gap-5 p-6 rounded-[2.5rem] bg-slate-900/40 backdrop-blur-xl border border-white/10 shadow-2xl transition-all duration-300 group-hover:scale-102 group-hover:bg-slate-900/50">
+                                            <div className="w-20 h-20 rounded-full flex items-center justify-center bg-primary/25 backdrop-blur-md border-2 border-primary/40 shadow-2xl shadow-primary/20 hover:scale-110 active:scale-95 transition-all duration-300">
                                                 {is3D ? (
-                                                    <Play className="w-8 h-8 text-white ml-1" />
+                                                    <Play className="w-8 h-8 text-white ml-1 animate-pulse" />
                                                 ) : (
                                                     <ZoomIn className="w-8 h-8 text-white" />
                                                 )}
                                             </div>
                                             <div className="text-center px-4">
-                                                <p className="text-white font-bold text-lg drop-shadow-lg">
-                                                    {is3D ? 'Nhấn để tải mô hình 3D' : isPDF ? 'Nhấn để xem tài liệu' : 'Nhấn để xem Infographic'}
+                                                <p className="text-white font-black text-xl tracking-tight drop-shadow-md">
+                                                    {is3D ? 'Nhấn để khám phá 3D' : isPDF ? 'Nhấn để xem tài liệu' : 'Nhấn để xem Infographic'}
                                                 </p>
-                                                <p className="text-white/70 text-sm font-medium mt-1">
-                                                    {is3D ? 'Xoay, zoom và tương tác mô hình' : 'Phóng to, di chuyển để xem chi tiết'}
+                                                <p className="text-slate-350 text-xs font-semibold mt-1">
+                                                    {is3D ? 'Xoay, thu phóng và tương tác mô hình' : 'Phóng to và di chuyển để quan sát'}
                                                 </p>
                                             </div>
                                         </div>
@@ -460,31 +661,28 @@ export default function MaterialDetail() {
                                                 />
 
                                                 {/* Zoom Controls */}
-                                                <div className="absolute bottom-4 right-4 flex items-center gap-2 z-50">
+                                                <div className="absolute bottom-5 right-5 flex items-center gap-2 z-50 p-1.5 bg-slate-900/60 dark:bg-slate-950/60 backdrop-blur-md border border-white/10 rounded-full shadow-2xl">
                                                     <button
                                                         onClick={() => setScale(prev => Math.max(0.5, prev - 0.25))}
-                                                        className="w-10 h-10 bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm rounded-full flex items-center justify-center shadow-lg hover:bg-white dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 font-bold transition-all hover:scale-110 cursor-pointer"
+                                                        className="w-9 h-9 bg-white/10 hover:bg-white/20 border border-white/10 text-white rounded-full flex items-center justify-center text-lg font-bold transition-all hover:scale-105 active:scale-95 cursor-pointer"
                                                         title="Thu nhỏ"
                                                     >
                                                         −
                                                     </button>
-                                                    <button
-                                                        onClick={resetZoom}
-                                                        className="px-3 h-10 bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm rounded-full flex items-center justify-center shadow-lg hover:bg-white dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 text-xs font-bold transition-all hover:scale-105"
-                                                    >
+                                                    <span className="px-3 text-white text-xs font-bold font-mono">
                                                         {Math.round(scale * 100)}%
-                                                    </button>
+                                                    </span>
                                                     <button
                                                         onClick={() => setScale(prev => Math.min(5, prev + 0.25))}
-                                                        className="w-10 h-10 bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm rounded-full flex items-center justify-center shadow-lg hover:bg-white dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 font-bold transition-all hover:scale-110 cursor-pointer"
+                                                        className="w-9 h-9 bg-white/10 hover:bg-white/20 border border-white/10 text-white rounded-full flex items-center justify-center text-lg font-bold transition-all hover:scale-105 active:scale-95 cursor-pointer"
                                                         title="Phóng to"
                                                     >
                                                         +
                                                     </button>
-                                                    {scale > 1 && (
+                                                    {scale !== 1 && (
                                                         <button
                                                             onClick={resetZoom}
-                                                            className="w-10 h-10 bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm rounded-full flex items-center justify-center shadow-lg hover:bg-white dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 transition-all hover:scale-110 cursor-pointer"
+                                                            className="w-9 h-9 bg-rose-500/25 hover:bg-rose-500/35 border border-rose-500/30 text-rose-300 rounded-full flex items-center justify-center transition-all hover:scale-105 active:scale-95 cursor-pointer"
                                                             title="Đặt lại"
                                                         >
                                                             <RotateCcw className="w-4 h-4" />
@@ -540,16 +738,7 @@ export default function MaterialDetail() {
                                         Mô hình sinh học cao cấp
                                     </span>
                                 </div>
-                            ) : (
-                                <div className="px-6 py-3 border-t border-slate-200 dark:border-white/5 bg-white/40 dark:bg-slate-900/40 backdrop-blur-sm flex items-center justify-between rounded-b-2xl">
-                                    <span className="text-[10px] text-slate-400 dark:text-slate-500 font-medium">
-                                        Mã học liệu: {material.id}
-                                    </span>
-                                    <span className="text-[10px] text-slate-400 dark:text-slate-500 font-medium uppercase tracking-wider">
-                                        Học liệu tương tác Edu Tech
-                                    </span>
-                                </div>
-                            )}
+                            ) : null}
                         </div>
                     </div>
 
@@ -560,42 +749,287 @@ export default function MaterialDetail() {
                                 ? (theme === 'light' ? 'bg-white/85 border-stone-200/40 shadow-stone-100/30 text-stone-900' : 'bg-slate-900/85 dark:border-white/10 shadow-black/20 text-white') 
                                 : 'bg-white dark:bg-slate-900 border-slate-200 dark:border-white/10 shadow-md text-slate-900 dark:text-white'
                         } backdrop-blur-md`}>
-                            {/* Sidebar Header: Tiêu đề & Thông số nhanh */}
-                            <div className="mb-4 flex-shrink-0">
-                                <div className="flex items-center gap-2 mb-2.5 flex-wrap">
-                                    <span className={`px-2.5 py-0.5 rounded-lg text-[10px] font-bold uppercase tracking-wider ${
-                                        material.subtitle 
-                                            ? (theme === 'light' ? 'bg-emerald-500/10 text-emerald-700' : 'bg-emerald-500/25 text-emerald-400') 
-                                            : 'bg-indigo-50 dark:bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 border border-indigo-200 dark:border-indigo-500/20'
-                                    }`}>
-                                        {getSubjectName(material.subject)}
-                                    </span>
-                                    <span className={`px-2.5 py-0.5 rounded-lg text-[10px] font-bold uppercase tracking-wider ${
-                                        material.subtitle 
-                                            ? (theme === 'light' ? 'bg-sky-500/10 text-sky-700' : 'bg-sky-500/25 text-sky-400') 
-                                            : 'bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-500/20'
-                                    }`}>
-                                        {getTypeName(material.type)}
-                                    </span>
-                                    <span className="px-2.5 py-0.5 rounded-lg text-[10px] font-bold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 flex items-center gap-0.5">
-                                        <GraduationCap className="w-3.5 h-3.5" />
-                                        Lớp {material.grade}
-                                    </span>
+                            {isEditing ? (
+                                /* ==================== EDIT FORM ==================== */
+                                <div className="flex-1 flex flex-col min-h-0">
+                                    <h3 className="text-sm font-bold uppercase tracking-wider text-indigo-500 dark:text-indigo-400 mb-4 font-sans">
+                                        Chỉnh sửa chi tiết học liệu
+                                    </h3>
+                                    
+                                    {errorMsg && (
+                                        <div className="mb-4 p-3 bg-rose-550/10 border border-rose-500/20 text-rose-600 dark:text-rose-400 rounded-xl text-xs font-semibold">
+                                            {errorMsg}
+                                        </div>
+                                    )}
+
+                                    <div className="flex-1 overflow-y-auto pr-1 space-y-4 font-sans text-xs">
+                                        {/* Tiêu đề */}
+                                        <div className="flex flex-col gap-1.5">
+                                            <label className="font-bold text-slate-400 uppercase tracking-wider">Tiêu đề</label>
+                                            <input 
+                                                type="text" 
+                                                className="p-2.5 bg-slate-50 dark:bg-slate-950/40 border border-slate-200 dark:border-white/10 rounded-xl text-xs font-semibold focus:outline-none w-full text-slate-950 dark:text-white"
+                                                value={editFormData.title}
+                                                onChange={e => setEditFormData({ ...editFormData, title: e.target.value })}
+                                            />
+                                        </div>
+
+                                        {/* Phụ đề */}
+                                        <div className="flex flex-col gap-1.5">
+                                            <label className="font-bold text-slate-400 uppercase tracking-wider">Phụ đề (Subtitle)</label>
+                                            <input 
+                                                type="text" 
+                                                className="p-2.5 bg-slate-50 dark:bg-slate-950/40 border border-slate-200 dark:border-white/10 rounded-xl text-xs font-semibold focus:outline-none w-full text-slate-950 dark:text-white"
+                                                value={editFormData.subtitle}
+                                                onChange={e => setEditFormData({ ...editFormData, subtitle: e.target.value })}
+                                            />
+                                        </div>
+
+                                        {/* Dropdowns: Môn học, Lớp, Loại */}
+                                        <div className="grid grid-cols-3 gap-2">
+                                            <div className="flex flex-col gap-1.5">
+                                                <label className="font-bold text-slate-400 uppercase tracking-wider">Môn học</label>
+                                                <select
+                                                    className="p-2.5 bg-slate-50 dark:bg-slate-950/40 border border-slate-200 dark:border-white/10 rounded-xl text-xs font-semibold focus:outline-none w-full text-slate-950 dark:text-white"
+                                                    value={editFormData.subject}
+                                                    onChange={e => setEditFormData({ ...editFormData, subject: e.target.value })}
+                                                >
+                                                    <option value="physics">Vật lý</option>
+                                                    <option value="chemistry">Hóa học</option>
+                                                    <option value="biology">Sinh học</option>
+                                                </select>
+                                            </div>
+                                            <div className="flex flex-col gap-1.5">
+                                                <label className="font-bold text-slate-400 uppercase tracking-wider">Lớp</label>
+                                                <select
+                                                    className="p-2.5 bg-slate-50 dark:bg-slate-950/40 border border-slate-200 dark:border-white/10 rounded-xl text-xs font-semibold focus:outline-none w-full text-slate-950 dark:text-white"
+                                                    value={editFormData.grade}
+                                                    onChange={e => setEditFormData({ ...editFormData, grade: Number(e.target.value) })}
+                                                >
+                                                    <option value={10}>Lớp 10</option>
+                                                    <option value={11}>Lớp 11</option>
+                                                    <option value={12}>Lớp 12</option>
+                                                </select>
+                                            </div>
+                                            <div className="flex flex-col gap-1.5">
+                                                <label className="font-bold text-slate-400 uppercase tracking-wider">Loại</label>
+                                                <select
+                                                    className="p-2.5 bg-slate-50 dark:bg-slate-950/40 border border-slate-200 dark:border-white/10 rounded-xl text-xs font-semibold focus:outline-none w-full text-slate-950 dark:text-white"
+                                                    value={editFormData.type}
+                                                    onChange={e => setEditFormData({ ...editFormData, type: e.target.value })}
+                                                >
+                                                    <option value="3d-model">Mô hình 3D</option>
+                                                    <option value="infographic">Infographic</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        {/* Phân nhóm & Kích thước */}
+                                        <div className="grid grid-cols-2 gap-3">
+                                            <div className="flex flex-col gap-1.5">
+                                                <label className="font-bold text-slate-400 uppercase tracking-wider">Phân nhóm</label>
+                                                <input 
+                                                    type="text" 
+                                                    className="p-2.5 bg-slate-50 dark:bg-slate-950/40 border border-slate-200 dark:border-white/10 rounded-xl text-xs font-semibold focus:outline-none w-full text-slate-950 dark:text-white"
+                                                    value={editFormData.category}
+                                                    onChange={e => setEditFormData({ ...editFormData, category: e.target.value })}
+                                                />
+                                            </div>
+                                            <div className="flex flex-col gap-1.5">
+                                                <label className="font-bold text-slate-400 uppercase tracking-wider">Kích thước</label>
+                                                <input 
+                                                    type="text" 
+                                                    className="p-2.5 bg-slate-50 dark:bg-slate-950/40 border border-slate-200 dark:border-white/10 rounded-xl text-xs font-semibold focus:outline-none w-full text-slate-950 dark:text-white"
+                                                    value={editFormData.size}
+                                                    onChange={e => setEditFormData({ ...editFormData, size: e.target.value })}
+                                                />
+                                            </div>
+                                        </div>
+
+                                        {/* Phân bố & Khả năng quan sát */}
+                                        <div className="grid grid-cols-2 gap-3">
+                                            <div className="flex flex-col gap-1.5">
+                                                <label className="font-bold text-slate-400 uppercase tracking-wider">Phân bố chính</label>
+                                                <input 
+                                                    type="text" 
+                                                    className="p-2.5 bg-slate-50 dark:bg-slate-950/40 border border-slate-200 dark:border-white/10 rounded-xl text-xs font-semibold focus:outline-none w-full text-slate-950 dark:text-white"
+                                                    value={editFormData.location}
+                                                    onChange={e => setEditFormData({ ...editFormData, location: e.target.value })}
+                                                />
+                                            </div>
+                                            <div className="flex flex-col gap-1.5">
+                                                <label className="font-bold text-slate-400 uppercase tracking-wider">Cách quan sát</label>
+                                                <input 
+                                                    type="text" 
+                                                    className="p-2.5 bg-slate-50 dark:bg-slate-950/40 border border-slate-200 dark:border-white/10 rounded-xl text-xs font-semibold focus:outline-none w-full text-slate-950 dark:text-white"
+                                                    value={editFormData.visibleInLM}
+                                                    onChange={e => setEditFormData({ ...editFormData, visibleInLM: e.target.value })}
+                                                />
+                                            </div>
+                                        </div>
+
+                                        {/* Sự thật thú vị */}
+                                        <div className="flex flex-col gap-1.5">
+                                            <label className="font-bold text-slate-400 uppercase tracking-wider">Sự thật thú vị (Fun Fact)</label>
+                                            <input 
+                                                type="text" 
+                                                className="p-2.5 bg-slate-50 dark:bg-slate-950/40 border border-slate-200 dark:border-white/10 rounded-xl text-xs font-semibold focus:outline-none w-full text-slate-950 dark:text-white"
+                                                value={editFormData.funFact}
+                                                onChange={e => setEditFormData({ ...editFormData, funFact: e.target.value })}
+                                            />
+                                        </div>
+
+                                        {/* Nguồn gốc phân bố (whereItOccurs) */}
+                                        <div className="grid grid-cols-2 gap-3">
+                                            <div className="flex flex-col gap-1.5">
+                                                <label className="font-bold text-slate-400 uppercase tracking-wider">Thông số phân bố (Text)</label>
+                                                <input 
+                                                    type="text" 
+                                                    className="p-2.5 bg-slate-50 dark:bg-slate-950/40 border border-slate-200 dark:border-white/10 rounded-xl text-xs font-semibold focus:outline-none w-full text-slate-950 dark:text-white"
+                                                    value={editFormData.whereItOccursText}
+                                                    onChange={e => setEditFormData({ ...editFormData, whereItOccursText: e.target.value })}
+                                                />
+                                            </div>
+                                            <div className="flex flex-col gap-1.5">
+                                                <label className="font-bold text-slate-400 uppercase tracking-wider">Khu vực phân bố (Habitat)</label>
+                                                <input 
+                                                    type="text" 
+                                                    placeholder="Cách nhau bằng dấu ·"
+                                                    className="p-2.5 bg-slate-50 dark:bg-slate-950/40 border border-slate-200 dark:border-white/10 rounded-xl text-xs font-semibold focus:outline-none w-full text-slate-950 dark:text-white"
+                                                    value={editFormData.whereItOccursHabitat}
+                                                    onChange={e => setEditFormData({ ...editFormData, whereItOccursHabitat: e.target.value })}
+                                                />
+                                            </div>
+                                        </div>
+
+                                        {/* Mô tả chính */}
+                                        <div className="flex flex-col gap-1.5">
+                                            <label className="font-bold text-slate-400 uppercase tracking-wider">Mô tả học liệu</label>
+                                            <textarea 
+                                                rows={3} 
+                                                className="p-2.5 bg-slate-50 dark:bg-slate-950/40 border border-slate-200 dark:border-white/10 rounded-xl text-xs font-semibold focus:outline-none resize-none w-full text-slate-950 dark:text-white"
+                                                value={editFormData.description}
+                                                onChange={e => setEditFormData({ ...editFormData, description: e.target.value })}
+                                            />
+                                        </div>
+
+                                        {/* Từ khóa */}
+                                        <div className="flex flex-col gap-1.5">
+                                            <label className="font-bold text-slate-400 uppercase tracking-wider">Từ khóa (Tags - cách nhau bằng dấu phẩy)</label>
+                                            <input 
+                                                type="text" 
+                                                className="p-2.5 bg-slate-50 dark:bg-slate-950/40 border border-slate-200 dark:border-white/10 rounded-xl text-xs font-semibold focus:outline-none w-full text-slate-950 dark:text-white"
+                                                value={editFormData.tags}
+                                                onChange={e => setEditFormData({ ...editFormData, tags: e.target.value })}
+                                            />
+                                        </div>
+
+                                        {/* Chi tiết cấu trúc */}
+                                        <div className="flex flex-col gap-1.5 font-mono">
+                                            <label className="font-bold text-slate-400 uppercase tracking-wider font-sans">Chi tiết cấu trúc (Mỗi dòng dạng 'Tên: Mô tả')</label>
+                                            <textarea 
+                                                rows={4} 
+                                                placeholder="Màng sinh chất: Bảo vệ tế bào&#10;Nhân tế bào: Chứa DNA"
+                                                className="p-2.5 bg-slate-50 dark:bg-slate-950/40 border border-slate-200 dark:border-white/10 rounded-xl text-xs font-semibold focus:outline-none resize-none w-full text-slate-950 dark:text-white"
+                                                value={editFormData.featuresText}
+                                                onChange={e => setEditFormData({ ...editFormData, featuresText: e.target.value })}
+                                            />
+                                        </div>
+
+                                         {/* Học liệu liên quan */}
+                                         <div className="flex flex-col gap-1.5 font-sans">
+                                             <label className="font-bold text-slate-400 uppercase tracking-wider">
+                                                 Học liệu liên quan ({editFormData.relatedMaterials?.length || 0} đã chọn)
+                                             </label>
+                                             <div className="border border-slate-200 dark:border-white/10 rounded-xl p-3 bg-slate-50 dark:bg-slate-950/40 flex flex-col gap-2">
+                                                 <div className="relative shrink-0">
+                                                     <Search className="absolute left-2 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-400" />
+                                                     <input
+                                                         type="text"
+                                                         placeholder="Tìm học liệu để liên kết..."
+                                                         value={relatedSearch}
+                                                         onChange={(e) => setRelatedSearch(e.target.value)}
+                                                         className="w-full pl-7 pr-4 py-1 bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/10 rounded-lg text-[11px] font-semibold focus:outline-none focus:ring-1 focus:ring-indigo-500 text-slate-955 dark:text-white"
+                                                     />
+                                                 </div>
+                                                 <div className="max-h-[120px] overflow-y-auto divide-y divide-slate-100 dark:divide-white/5 pr-1">
+                                                     {filteredAvailableRelated.map(m => {
+                                                         const isSelected = editFormData.relatedMaterials?.includes(m.id);
+                                                         return (
+                                                             <div
+                                                                 key={m.id}
+                                                                 onClick={() => {
+                                                                     setEditFormData(prev => {
+                                                                         const current = [...(prev.relatedMaterials || [])];
+                                                                         const index = current.indexOf(m.id);
+                                                                         if (index > -1) {
+                                                                             current.splice(index, 1);
+                                                                         } else {
+                                                                             current.push(m.id);
+                                                                         }
+                                                                         return { ...prev, relatedMaterials: current };
+                                                                     });
+                                                                 }}
+                                                                 className="flex items-center gap-2 py-1 px-1.5 hover:bg-slate-100 dark:hover:bg-slate-800/40 rounded-lg cursor-pointer transition-colors"
+                                                             >
+                                                                 <input
+                                                                     type="checkbox"
+                                                                     checked={isSelected}
+                                                                     onChange={() => {}}
+                                                                     className="w-3 h-3 text-indigo-600 rounded cursor-pointer pointer-events-none"
+                                                                 />
+                                                                 <span className="text-[11px] font-semibold text-slate-700 dark:text-slate-200 truncate">{m.title}</span>
+                                                                 <span className="text-[7.5px] font-bold text-slate-400 dark:text-slate-500 ml-auto shrink-0 uppercase tracking-wider">{m.subject === 'biology' ? 'Sinh' : m.subject === 'chemistry' ? 'Hóa' : 'Lý'} · Lớp {m.grade}</span>
+                                                             </div>
+                                                         );
+                                                     })}
+                                                     {filteredAvailableRelated.length === 0 && (
+                                                         <div className="text-center py-4 text-slate-400 text-[11px]">Không tìm thấy học liệu phù hợp.</div>
+                                                     )}
+                                                 </div>
+                                             </div>
+                                         </div>
+                                    </div>
                                 </div>
-                                
-                                <h2 className={`text-xl sm:text-2xl font-black leading-tight tracking-tight font-heading text-slate-900 dark:text-white ${
-                                    material.subtitle ? 'font-serif text-stone-800 dark:text-stone-100' : ''
-                                }`}>
-                                    {material.title}
-                                </h2>
-                                {material.subtitle && (
-                                    <p className={`font-serif italic text-xs sm:text-sm mt-1 leading-relaxed ${
-                                        theme === 'light' ? 'text-emerald-800/85' : 'text-emerald-400/85'
-                                    }`}>
-                                        {material.subtitle}
-                                    </p>
-                                )}
-                            </div>
+                            ) : (
+                                /* ==================== VIEW MODE ==================== */
+                                <>
+                                    {/* Sidebar Header: Tiêu đề & Thông số nhanh */}
+                                    <div className="mb-4 flex-shrink-0">
+                                        <div className="flex items-center gap-2 mb-2.5 flex-wrap">
+                                            <span className={`px-2.5 py-0.5 rounded-lg text-[10px] font-bold uppercase tracking-wider ${
+                                                material.subtitle 
+                                                    ? (theme === 'light' ? 'bg-emerald-500/10 text-emerald-700' : 'bg-emerald-500/25 text-emerald-400') 
+                                                    : 'bg-indigo-50 dark:bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 border border-indigo-200 dark:border-indigo-500/20'
+                                            }`}>
+                                                {getSubjectName(material.subject)}
+                                            </span>
+                                            <span className={`px-2.5 py-0.5 rounded-lg text-[10px] font-bold uppercase tracking-wider ${
+                                                material.subtitle 
+                                                    ? (theme === 'light' ? 'bg-sky-500/10 text-sky-700' : 'bg-sky-500/25 text-sky-400') 
+                                                    : 'bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-500/20'
+                                            }`}>
+                                                {getTypeName(material.type)}
+                                            </span>
+                                            <span className="px-2.5 py-0.5 rounded-lg text-[10px] font-bold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 flex items-center gap-0.5">
+                                                <GraduationCap className="w-3.5 h-3.5" />
+                                                Lớp {material.grade}
+                                            </span>
+                                        </div>
+                                        
+                                        <h2 className={`text-xl sm:text-2xl font-black leading-tight tracking-tight font-heading text-slate-900 dark:text-white ${
+                                            material.subtitle ? 'font-serif text-stone-800 dark:text-stone-100' : ''
+                                        }`}>
+                                            {material.title}
+                                        </h2>
+                                        {material.subtitle && (
+                                            <p className={`font-serif italic text-xs sm:text-sm mt-1 leading-relaxed ${
+                                                theme === 'light' ? 'text-emerald-800/85' : 'text-emerald-400/85'
+                                            }`}>
+                                                {material.subtitle}
+                                            </p>
+                                        )}
+                                    </div>
 
                             {/* Tab Selection Bar */}
                             <div className={`flex border p-1 rounded-2xl mb-4 flex-shrink-0 bg-slate-50 dark:bg-slate-950/60 ${
@@ -912,7 +1346,9 @@ export default function MaterialDetail() {
                                     Xem tất cả thư viện →
                                 </Link>
                             </div>
-                        </div>
+                        </>
+                    )}
+                </div>
                     </div>
                 </div>
             </div>
