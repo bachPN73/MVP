@@ -94,7 +94,7 @@ export default function Dashboard() {
                             setUserClassName(updatedUser.className);
                             setUserSchoolId(updatedUser.schoolId);
 
-                            if (updatedUser.plan?.toLowerCase() === 'school' && updatedUser.schoolId) {
+                            if (updatedUser.role === 'school-admin' && updatedUser.schoolId) {
                                 loadSchoolData(updatedUser.schoolId, updatedUser.id, updatedUser.role);
                             }
                         }
@@ -103,8 +103,8 @@ export default function Dashboard() {
                 .catch(err => console.error("Error syncing profile state on dashboard:", err));
         }
 
-        // 2. Fetch school details if user plan is school and schoolId exists
-        if (currentUser && currentUser.plan?.toLowerCase() === 'school' && currentUser.schoolId) {
+        // 2. Fetch school details if user role is school-admin and schoolId exists
+        if (currentUser && currentUser.role === 'school-admin' && currentUser.schoolId) {
             setUserSchoolId(currentUser.schoolId);
             loadSchoolData(currentUser.schoolId, currentUser.id, currentUser.role);
         }
@@ -199,7 +199,7 @@ export default function Dashboard() {
     ], [allMaterials]);
 
     const isPremiumPlan = ['premium', 'pro', 'school', 'combo', 'basic', 'demo'].includes(userPlan);
-    const isSchoolAdmin = userPlan === 'school' && userRole === 'admin';
+    const isSchoolAdmin = userRole === 'school-admin';
     const planBgClass = isPremiumPlan
         ? 'bg-gradient-to-br from-amber-400 to-orange-550 shadow-orange-500/30'
         : 'bg-gradient-to-br from-indigo-500 to-purple-650 shadow-indigo-500/30';

@@ -43,7 +43,7 @@ export default function ProfilePage() {
                     id: parsed.id || parsed._id || "",
                     name: parsed.name || 'Người dùng',
                     email: parsed.email || '',
-                    role: parsed.role === 'teacher' ? 'Giáo viên' : parsed.role === 'admin' ? (parsed.plan?.toLowerCase() === 'school' ? 'Quản trị Trường' : 'Quản trị Web') : 'Học sinh',
+                    role: parsed.role === 'teacher' ? 'Giáo viên' : parsed.role === 'admin' ? 'Quản trị Web' : parsed.role === 'school-admin' ? 'Quản trị Trường' : 'Học sinh',
                     plan: parsed.plan ? (parsed.plan.charAt(0).toUpperCase() + parsed.plan.slice(1)) : 'Free',
                     schoolId: parsed.schoolId || null,
                     className: parsed.className || ""
@@ -69,7 +69,7 @@ export default function ProfilePage() {
                             id: latest.id || latest._id || "",
                             name: latest.name || 'Người dùng',
                             email: latest.email || '',
-                            role: latest.role === 'teacher' ? 'Giáo viên' : latest.role === 'admin' ? (latest.plan?.toLowerCase() === 'school' ? 'Quản trị Trường' : 'Quản trị Web') : 'Học sinh',
+                            role: latest.role === 'teacher' ? 'Giáo viên' : latest.role === 'admin' ? 'Quản trị Web' : latest.role === 'school-admin' ? 'Quản trị Trường' : 'Học sinh',
                             plan: latest.plan ? (latest.plan.charAt(0).toUpperCase() + latest.plan.slice(1)) : 'Free',
                             schoolId: latest.schoolId || null,
                             className: latest.className || ""

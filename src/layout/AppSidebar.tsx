@@ -68,19 +68,15 @@ export function AppSidebar({ currentPath = '/', isOpen = false, setIsOpen, isCol
     }, [currentPath]);
 
     const getRoleLabel = (role: string, plan: string) => {
-        if (role === 'admin') {
-            return plan.toLowerCase() === 'school' ? 'Quản trị Trường' : 'Quản trị Web';
-        }
+        if (role === 'admin') return 'Quản trị Web';
+        if (role === 'school-admin') return 'Quản trị Trường';
         if (role === 'teacher') return 'Giáo viên';
         return 'Học sinh';
     };
 
     const getRoleBadgeClass = (role: string, plan: string) => {
-        if (role === 'admin') {
-            return plan.toLowerCase() === 'school'
-                ? 'bg-amber-50 text-amber-700 border-amber-200/60 dark:bg-amber-500/10 dark:text-amber-400 dark:border-amber-500/20'
-                : 'bg-red-50 text-red-700 border-red-200/60 dark:bg-red-500/10 dark:text-red-400 dark:border-red-500/20';
-        }
+        if (role === 'admin') return 'bg-red-50 text-red-700 border-red-200/60 dark:bg-red-500/10 dark:text-red-400 dark:border-red-500/20';
+        if (role === 'school-admin') return 'bg-amber-50 text-amber-700 border-amber-200/60 dark:bg-amber-500/10 dark:text-amber-400 dark:border-amber-500/20';
         if (role === 'teacher') return 'bg-emerald-50 text-emerald-700 border-emerald-200/60 dark:bg-emerald-500/10 dark:text-emerald-400 dark:border-emerald-500/20';
         return 'bg-indigo-50 text-indigo-700 border-indigo-200/60 dark:bg-indigo-500/10 dark:text-indigo-400 dark:border-indigo-500/20';
     };
@@ -91,8 +87,8 @@ export function AppSidebar({ currentPath = '/', isOpen = false, setIsOpen, isCol
         { path: '/find-ai', label: 'Find with AI', icon: Sparkles },
         { path: '/pricing-app', label: 'Gói dịch vụ', icon: CreditCard },
         { path: '/guide-app', label: 'Hướng dẫn', icon: BookOpen },
-        ...(userPlan === 'school' && userRole === 'admin' ? [{ path: '/school/dashboard', label: 'Trường học', icon: School }] : []),
-        ...(userRole === 'admin' && userPlan !== 'school' ? [{ path: '/admin/dashboard', label: 'Bảng Admin', icon: ShieldAlert }] : []),
+        ...(userRole === 'school-admin' ? [{ path: '/school/dashboard', label: 'Trường học', icon: School }] : []),
+        ...(userRole === 'admin' ? [{ path: '/admin/dashboard', label: 'Bảng Admin', icon: ShieldAlert }] : []),
     ];
 
     const handleLogout = () => {

@@ -132,19 +132,18 @@ export default function AdminUsersPage() {
                                                 >
                                                     <option value="student">Student</option>
                                                     <option value="teacher">Teacher</option>
+                                                    <option value="school-admin">School Admin</option>
                                                     <option value="admin">Admin</option>
                                                 </select>
                                             ) : (
-                                                user.role === 'admin' ? (
-                                                    user.plan?.toLowerCase() === 'school' ? (
-                                                        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-bold uppercase bg-violet-50 dark:bg-violet-950/40 border border-violet-200/10 text-violet-600 dark:text-violet-400 shadow-sm">
-                                                            <Shield className="w-3.5 h-3.5" /> Quản trị Trường
-                                                        </span>
-                                                    ) : (
-                                                        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-bold uppercase bg-rose-50 dark:bg-rose-950/40 border border-rose-200/10 text-rose-600 dark:text-rose-400 shadow-sm">
-                                                            <ShieldAlert className="w-3.5 h-3.5" /> Quản trị Web
-                                                        </span>
-                                                    )
+                                                user.role === 'school-admin' ? (
+                                                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-bold uppercase bg-violet-50 dark:bg-violet-950/40 border border-violet-200/10 text-violet-600 dark:text-violet-400 shadow-sm">
+                                                        <Shield className="w-3.5 h-3.5" /> Quản trị Trường
+                                                    </span>
+                                                ) : user.role === 'admin' ? (
+                                                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-bold uppercase bg-rose-50 dark:bg-rose-950/40 border border-rose-200/10 text-rose-600 dark:text-rose-400 shadow-sm">
+                                                        <ShieldAlert className="w-3.5 h-3.5" /> Quản trị Web
+                                                    </span>
                                                 ) : (
                                                     <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-bold uppercase bg-slate-50 dark:bg-slate-950/20 border border-slate-200/10 text-slate-600 dark:text-slate-400">
                                                         {user.role || 'User'}
@@ -274,6 +273,7 @@ export default function AdminUsersPage() {
                                                 >
                                                     <option value="student">Student</option>
                                                     <option value="teacher">Teacher</option>
+                                                    <option value="school-admin">School Admin</option>
                                                     <option value="admin">Admin</option>
                                                 </select>
                                                 <select 
@@ -292,12 +292,10 @@ export default function AdminUsersPage() {
                                             </div>
                                         ) : (
                                             <div className="flex flex-col gap-1.5 items-center">
-                                                {user.role === 'admin' ? (
-                                                    user.plan?.toLowerCase() === 'school' ? (
-                                                        <span className="px-2.5 py-0.5 rounded-md text-[9px] font-bold bg-violet-50 dark:bg-violet-950/40 text-violet-600 dark:text-violet-400 border border-violet-200/10 uppercase shadow-sm">QT TRƯỜNG</span>
-                                                    ) : (
-                                                        <span className="px-2.5 py-0.5 rounded-md text-[9px] font-bold bg-rose-50 dark:bg-rose-950/40 text-rose-600 dark:text-rose-400 border border-rose-200/10 uppercase shadow-sm">QT WEB</span>
-                                                    )
+                                                {user.role === 'school-admin' ? (
+                                                    <span className="px-2.5 py-0.5 rounded-md text-[9px] font-bold bg-violet-50 dark:bg-violet-950/40 text-violet-600 dark:text-violet-400 border border-violet-200/10 uppercase shadow-sm">QT TRƯỜNG</span>
+                                                ) : user.role === 'admin' ? (
+                                                    <span className="px-2.5 py-0.5 rounded-md text-[9px] font-bold bg-rose-50 dark:bg-rose-950/40 text-rose-600 dark:text-rose-400 border border-rose-200/10 uppercase shadow-sm">QT WEB</span>
                                                 ) : (
                                                     <span className="px-2.5 py-0.5 rounded-md text-[9px] font-bold bg-slate-50 dark:bg-slate-950/20 text-slate-600 dark:text-slate-400 border border-slate-200/10">{(user.role || 'USER').toUpperCase()}</span>
                                                 )}

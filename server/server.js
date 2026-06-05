@@ -137,7 +137,7 @@ app.use(async (req, res, next) => {
     if (userId) {
         try {
             const user = await User.findById(userId);
-            if (user && user.role !== 'admin') {
+            if (user && user.role !== 'admin' && user.role !== 'school-admin') {
                 if (user.sessionToken && user.sessionToken !== sessionToken) {
                     return res.status(401).json({ error: 'SESSION_INVALID', message: 'Tài khoản đã đăng nhập ở thiết bị khác' });
                 }
@@ -164,7 +164,7 @@ app.get('/api/check-session', async (req, res) => {
             return res.status(404).json({ error: 'Người dùng không tồn tại' });
         }
         
-        if (user.role !== 'admin' && user.sessionToken && user.sessionToken !== sessionToken) {
+        if (user.role !== 'admin' && user.role !== 'school-admin' && user.sessionToken && user.sessionToken !== sessionToken) {
             return res.status(401).json({ error: 'SESSION_INVALID', message: 'Tài khoản đã đăng nhập ở thiết bị khác' });
         }
         
@@ -185,7 +185,7 @@ app.delete('/api/u_remove/:id', async (req, res) => {
             return res.status(404).json({ error: 'Không tìm thấy người dùng' });
         }
         
-        if (user.role === 'admin') {
+        if (user.role === 'admin' || user.role === 'school-admin') {
             console.log(`[USER DELETION] Cannot delete admin user ID: ${id}`);
             return res.status(403).json({ error: 'Không thể xóa tài khoản Admin' });
         }
@@ -206,7 +206,7 @@ app.delete('/api/users/:id', async (req, res) => {
     try {
         const user = await User.findById(id);
         if (!user) return res.status(404).json({ error: 'Không tìm thấy người dùng' });
-        if (user.role === 'admin') return res.status(403).json({ error: 'Không thể xóa tài khoản Admin' });
+        if (user.role === 'admin' || user.role === 'school-admin') return res.status(403).json({ error: 'Không thể xóa tài khoản Admin' });
         await User.findByIdAndDelete(id);
         res.json({ message: 'Xóa người dùng thành công' });
     } catch (err) {
@@ -279,14 +279,14 @@ async function initDb() {
             await User.create({
                 name: 'School Admin Nguyễn Du',
                 email: schoolAdminEmail,
-                role: 'admin',
+                role: 'school-admin',
                 plan: 'school',
                 password: schoolAdminHash,
                 schoolId: demoSchool._id
             });
             console.log('[INFO] Đã tự động tạo tài khoản School Admin mặc định.');
         } else {
-            await User.updateOne({ email: schoolAdminEmail }, { role: 'admin', plan: 'school', schoolId: demoSchool._id });
+            await User.updateOne({ email: schoolAdminEmail }, { role: 'school-admin', plan: 'school', schoolId: demoSchool._id });
         }
 
     } catch (err) {
@@ -404,7 +404,7 @@ app.post('/api/login', async (req, res) => {
         if (!isMatch) return res.status(401).json({ error: 'Mật khẩu không chính xác' });
 
         let sessionToken = null;
-        if (user.role !== 'admin') {
+        if (user.role !== 'admin' && user.role !== 'school-admin') {
             sessionToken = crypto.randomUUID();
             user.sessionToken = sessionToken;
             await user.save();
@@ -968,8 +968,8 @@ app.post('/api/school/join', async (req, res) => {
             return res.status(400).json({ error: 'Tài khoản của bạn đã được liên kết với một trường học' });
         }
 
-        // IF THE USER IS A SCHOOL ADMIN (plan === 'school' && role === 'admin'), link immediately!
-        if (user.role === 'admin' && user.plan === 'school') {
+        // IF THE USER IS A SCHOOL ADMIN (plan === 'school' && role === 'school-admin'), link immediately!
+        if (user.role === 'school-admin' && user.plan === 'school') {
             user.schoolId = school._id;
             await user.save();
             return res.json({ 
@@ -1403,10 +1403,10 @@ app.post('/api/payments/:id/approve', async (req, res) => {
         payment.status = 'approved';
         await payment.save();
 
-        // 2. Activate user plan & upgrade role to admin if school plan
+        // 2. Activate user plan & upgrade role to school-admin if school plan
         const updateFields = { plan: payment.planId };
         if (payment.planId === 'school') {
-            updateFields.role = 'admin';
+            updateFields.role = 'school-admin';
         }
         await User.findByIdAndUpdate(payment.userId, updateFields);
 
@@ -1509,10 +1509,10 @@ app.post('/api/webhooks/payment', async (req, res) => {
         payment.status = 'approved';
         await payment.save();
 
-        // Kích hoạt gói dịch vụ cho User và nâng cấp vai trò lên admin nếu mua gói trường học
+        // Kích hoạt gói dịch vụ cho User và nâng cấp vai trò lên school-admin nếu mua gói trường học
         const updateFields = { plan: payment.planId };
         if (payment.planId === 'school') {
-            updateFields.role = 'admin';
+            updateFields.role = 'school-admin';
         }
         await User.findByIdAndUpdate(payment.userId, updateFields);
         console.log(`[PAYMENT WEBHOOK SUCCESS] Auto-approved payment ${cleanCode} → User ${payment.userId} → Plan ${payment.planId}`);
