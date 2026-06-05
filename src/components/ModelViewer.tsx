@@ -318,7 +318,7 @@ export default function ModelViewer({ modelUrl }: { modelUrl: string }) {
                         gl.toneMappingExposure = 1.05; // Slightly brighter exposure for clean cartoon style
                     }}
                 >
-                    {isAmber ? <Environment preset="studio" /> : <Environment preset="neutral" />}
+                    {isAmber ? <Environment preset="studio" /> : <Environment preset="city" />}
                     <ambientLight intensity={isAmber ? 0.5 : 0.6} />
                     <directionalLight position={[10, 10, 10]} intensity={isAmber ? 0.6 : 1.2} />
 
