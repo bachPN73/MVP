@@ -5,6 +5,7 @@ import { ArrowLeft, Maximize2, Minimize2, BookOpen, Tag, GraduationCap, Loader2,
 import { useState, useEffect, lazy, Suspense, useRef, useMemo } from 'react';
 import { api, BASE_URL } from '../api';
 import { useTheme } from '../components/ThemeProvider';
+import { LatexText } from '../components/LatexText';
 
 const SUBJECT_CONFIGS: Record<string, {
     subjectName: string;
@@ -244,8 +245,6 @@ export default function MaterialDetail() {
     const [position, setPosition] = useState({ x: 0, y: 0 });
     const [isDragging, setIsDragging] = useState(false);
     const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
-    // Detect infographic image orientation
-    const [imgOrientation, setImgOrientation] = useState<'landscape' | 'portrait' | null>(null);
 
     useEffect(() => {
         const fetchMaterial = async () => {
@@ -617,14 +616,14 @@ export default function MaterialDetail() {
                                     /* ======================== ACTIVE VIEWER ======================== */
                                     <>
                                         {is3D ? (
-                                            <div id="3d-viewer-container" className={`absolute inset-0 z-10 ${material.subtitle ? 'bg-transparent' : ''}`}>
+                                            <div id="3d-viewer-container" className={`absolute inset-0 z-10 ${material.subtitle ? 'bg-transparent' : 'bg-black'}`}>
                                                 <Suspense fallback={
                                                     <div className="absolute inset-0 flex flex-col items-center justify-center bg-slate-950 border border-slate-800/80 z-10">
                                                         <Loader2 className="w-12 h-12 text-indigo-500 animate-spin mb-4" />
                                                         <p className="text-slate-300 font-medium tracking-wide">Khởi tạo Engine 3D...</p>
                                                     </div>
                                                 }>
-                                                    <ModelViewer modelUrl={getFullModelUrl(fileUrl)} isDark={theme === 'dark'} />
+                                                    <ModelViewer modelUrl={getFullModelUrl(fileUrl)} />
                                                 </Suspense>
                                                 <div className="absolute bottom-4 left-4 bg-white/90 dark:bg-slate-900/90 backdrop-blur-sm px-4 py-2 rounded-lg text-sm z-50 shadow-md pointer-events-none">
                                                     <p className="text-slate-800 dark:text-slate-200 font-medium">Kéo chuột trái để xoay • Cuộn để zoom</p>
@@ -639,80 +638,101 @@ export default function MaterialDetail() {
                                                 />
                                             </div>
                                         ) : (
-                                            /* ============ INFOGRAPHIC VIEWER with CRISP ZOOM ============ */
+                                            /* ============ INFOGRAPHIC VIEWER – landscape & portrait adaptive ============ */
                                             <div
-                                                className="absolute inset-0 flex items-center justify-center overflow-hidden"
+                                                className="absolute inset-0 overflow-hidden"
                                                 style={{
-                                                    cursor: scale > 1 ? (isDragging ? 'grabbing' : 'grab') : 'zoom-in',
-                                                    background: theme === 'light'
-                                                        ? (imgOrientation === 'landscape' ? '#f8fafc' : '#f1f5f9')
-                                                        : (imgOrientation === 'landscape' ? '#0f172a' : '#020617'),
+                                                    background: 'radial-gradient(ellipse at center, #f8fafc 0%, #e2e8f0 100%)',
                                                 }}
-                                                onWheel={handleWheel}
-                                                onMouseDown={handleMouseDown}
-                                                onMouseMove={handleMouseMove}
-                                                onMouseUp={handleMouseUp}
-                                                onMouseLeave={handleMouseUp}
                                             >
-                                                <img
-                                                    src={getFullModelUrl(fileUrl || material.thumbnail)}
-                                                    alt={material.title}
-                                                    draggable={false}
-                                                    onLoad={(e) => {
-                                                        const img = e.currentTarget;
-                                                        setImgOrientation(img.naturalWidth >= img.naturalHeight ? 'landscape' : 'portrait');
-                                                    }}
-                                                    style={{
-                                                        transform: `translate(${position.x}px, ${position.y}px) scale(${scale})`,
-                                                        transition: isDragging ? 'none' : 'transform 0.2s ease-out',
-                                                        imageRendering: scale > 1 ? '-webkit-optimize-contrast' : 'auto',
-                                                        willChange: 'transform',
-                                                        // Landscape: fill width; Portrait: fill height
-                                                        ...(imgOrientation === 'landscape'
-                                                            ? { width: '100%', height: 'auto', maxHeight: '100%', objectFit: 'contain' }
-                                                            : imgOrientation === 'portrait'
-                                                            ? { height: '100%', width: 'auto', maxWidth: '100%', objectFit: 'contain' }
-                                                            : { maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }
-                                                        ),
-                                                    }}
-                                                    className="select-none block"
-                                                />
+                                                {/* Dark mode background */}
+                                                <div className="absolute inset-0 dark:bg-slate-950 hidden dark:block" />
+
+                                                {/* Scrollable zoom container */}
+                                                <div
+                                                    className="absolute inset-0 flex items-center justify-center overflow-hidden"
+                                                    onWheel={handleWheel}
+                                                    onMouseDown={handleMouseDown}
+                                                    onMouseMove={handleMouseMove}
+                                                    onMouseUp={handleMouseUp}
+                                                    onMouseLeave={handleMouseUp}
+                                                    style={{ cursor: scale > 1 ? (isDragging ? 'grabbing' : 'grab') : 'zoom-in' }}
+                                                >
+                                                    {/* Image wrapper — fills available space while preserving aspect ratio */}
+                                                    <div
+                                                        className="relative flex items-center justify-center w-full h-full"
+                                                        style={{
+                                                            transform: `translate(${position.x}px, ${position.y}px) scale(${scale})`,
+                                                            transition: isDragging ? 'none' : 'transform 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+                                                            willChange: 'transform',
+                                                        }}
+                                                    >
+                                                        <img
+                                                            src={getFullModelUrl(fileUrl || material.thumbnail)}
+                                                            alt={material.title}
+                                                            draggable={false}
+                                                            style={{
+                                                                maxWidth: '100%',
+                                                                maxHeight: '100%',
+                                                                width: 'auto',
+                                                                height: 'auto',
+                                                                objectFit: 'contain',
+                                                                imageRendering: scale > 1.5 ? '-webkit-optimize-contrast' : 'auto',
+                                                                display: 'block',
+                                                                borderRadius: '0.5rem',
+                                                                boxShadow: '0 8px 40px 0 rgba(0,0,0,0.10)',
+                                                            }}
+                                                            className="select-none"
+                                                        />
+                                                    </div>
+                                                </div>
+
+                                                {/* Top-left orientation badge */}
+                                                <div className="absolute top-4 left-4 z-50 pointer-events-none">
+                                                    <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-black/30 backdrop-blur-md text-white/80 text-[10px] font-bold uppercase tracking-widest">
+                                                        🖼️ Infographic
+                                                    </span>
+                                                </div>
 
                                                 {/* Zoom Controls */}
-                                                <div className="absolute bottom-5 right-5 flex items-center gap-2 z-50 p-1.5 bg-slate-900/60 dark:bg-slate-950/60 backdrop-blur-md border border-white/10 rounded-full shadow-2xl">
+                                                <div className="absolute bottom-5 right-5 flex items-center gap-1.5 z-50 p-1.5 bg-slate-900/70 dark:bg-slate-950/80 backdrop-blur-md border border-white/10 rounded-full shadow-2xl">
                                                     <button
                                                         onClick={() => setScale(prev => Math.max(0.5, prev - 0.25))}
-                                                        className="w-9 h-9 bg-white/10 hover:bg-white/20 border border-white/10 text-white rounded-full flex items-center justify-center text-lg font-bold transition-all hover:scale-105 active:scale-95 cursor-pointer"
+                                                        className="w-8 h-8 bg-white/10 hover:bg-white/25 border border-white/10 text-white rounded-full flex items-center justify-center text-base font-bold transition-all hover:scale-105 active:scale-95 cursor-pointer"
                                                         title="Thu nhỏ"
-                                                    >
-                                                        −
-                                                    </button>
-                                                    <span className="px-3 text-white text-xs font-bold font-mono">
+                                                    >−</button>
+                                                    <span className="px-2.5 text-white text-[11px] font-bold font-mono tabular-nums min-w-[44px] text-center">
                                                         {Math.round(scale * 100)}%
                                                     </span>
                                                     <button
-                                                        onClick={() => setScale(prev => Math.min(5, prev + 0.25))}
-                                                        className="w-9 h-9 bg-white/10 hover:bg-white/20 border border-white/10 text-white rounded-full flex items-center justify-center text-lg font-bold transition-all hover:scale-105 active:scale-95 cursor-pointer"
+                                                        onClick={() => setScale(prev => Math.min(6, prev + 0.25))}
+                                                        className="w-8 h-8 bg-white/10 hover:bg-white/25 border border-white/10 text-white rounded-full flex items-center justify-center text-base font-bold transition-all hover:scale-105 active:scale-95 cursor-pointer"
                                                         title="Phóng to"
-                                                    >
-                                                        +
-                                                    </button>
+                                                    >+</button>
                                                     {scale !== 1 && (
                                                         <button
                                                             onClick={resetZoom}
-                                                            className="w-9 h-9 bg-rose-500/25 hover:bg-rose-500/35 border border-rose-500/30 text-rose-300 rounded-full flex items-center justify-center transition-all hover:scale-105 active:scale-95 cursor-pointer"
+                                                            className="w-8 h-8 bg-rose-500/25 hover:bg-rose-500/40 border border-rose-500/30 text-rose-300 rounded-full flex items-center justify-center transition-all hover:scale-105 active:scale-95 cursor-pointer ml-0.5"
                                                             title="Đặt lại"
                                                         >
-                                                            <RotateCcw className="w-4 h-4" />
+                                                            <RotateCcw className="w-3.5 h-3.5" />
                                                         </button>
                                                     )}
                                                 </div>
 
                                                 {/* Pan hint */}
                                                 {scale > 1 && (
-                                                    <div className="absolute bottom-4 left-4 flex items-center gap-2 px-3 py-1.5 bg-black/40 backdrop-blur-md rounded-lg text-white/70 text-xs font-medium pointer-events-none z-50">
-                                                        <Move className="w-3.5 h-3.5" />
+                                                    <div className="absolute bottom-5 left-4 flex items-center gap-2 px-3 py-1.5 bg-black/40 backdrop-blur-md rounded-full text-white/70 text-[11px] font-semibold pointer-events-none z-50">
+                                                        <Move className="w-3 h-3" />
                                                         <span>Kéo để di chuyển</span>
+                                                    </div>
+                                                )}
+
+                                                {/* Scroll hint when at default zoom */}
+                                                {scale === 1 && (
+                                                    <div className="absolute bottom-5 left-4 flex items-center gap-2 px-3 py-1.5 bg-black/30 backdrop-blur-md rounded-full text-white/60 text-[11px] font-semibold pointer-events-none z-50">
+                                                        <ZoomIn className="w-3 h-3" />
+                                                        <span>Cuộn chuột để phóng to</span>
                                                     </div>
                                                 )}
                                             </div>
@@ -1038,13 +1058,13 @@ export default function MaterialDetail() {
                                         <h2 className={`text-xl sm:text-2xl font-black leading-tight tracking-tight font-heading text-slate-900 dark:text-white ${
                                             material.subtitle ? 'font-serif text-stone-800 dark:text-stone-100' : ''
                                         }`}>
-                                            {material.title}
+                                            <LatexText text={material.title} />
                                         </h2>
                                         {material.subtitle && (
                                             <p className={`font-serif italic text-xs sm:text-sm mt-1 leading-relaxed ${
                                                 theme === 'light' ? 'text-emerald-800/85' : 'text-emerald-400/85'
                                             }`}>
-                                                {material.subtitle}
+                                                <LatexText text={material.subtitle} />
                                             </p>
                                         )}
                                     </div>
@@ -1116,7 +1136,7 @@ export default function MaterialDetail() {
                                             <p className={`text-sm leading-relaxed text-slate-700 dark:text-slate-300 font-normal ${
                                                 material.subtitle ? 'font-sans font-light' : ''
                                             }`}>
-                                                {material.description}
+                                                <LatexText text={material.description} />
                                             </p>
                                         </div>
 
@@ -1130,7 +1150,7 @@ export default function MaterialDetail() {
                                                         {cleanLabel(config.category.label)}
                                                     </div>
                                                     <div className="text-stone-800 dark:text-slate-200 text-xs font-semibold">
-                                                        {material.category || 'Mô hình 3D'}
+                                                        <LatexText text={material.category || 'Mô hình 3D'} />
                                                     </div>
                                                 </div>
                                                 <div>
@@ -1138,7 +1158,7 @@ export default function MaterialDetail() {
                                                         {cleanLabel(config.size.label)}
                                                     </div>
                                                     <div className="text-stone-800 dark:text-slate-200 text-xs font-semibold">
-                                                        {material.size || 'N/A'}
+                                                        <LatexText text={material.size || 'N/A'} />
                                                     </div>
                                                 </div>
                                                 <div>
@@ -1146,7 +1166,7 @@ export default function MaterialDetail() {
                                                         {cleanLabel(config.location.label)}
                                                     </div>
                                                     <div className="text-stone-800 dark:text-slate-200 text-xs font-semibold">
-                                                        {material.location || 'N/A'}
+                                                        <LatexText text={material.location || 'N/A'} />
                                                     </div>
                                                 </div>
                                                 <div>
@@ -1157,7 +1177,7 @@ export default function MaterialDetail() {
                                                         {material.id === 'dna' ? (
                                                             <span className="text-[#b53b3b] dark:text-[#f472b6] font-bold">Điện tử</span>
                                                         ) : (
-                                                            <span>{material.visibleInLM || 'Có thể'}</span>
+                                                            <LatexText text={material.visibleInLM || 'Có thể'} />
                                                         )}
                                                     </div>
                                                 </div>
@@ -1176,7 +1196,7 @@ export default function MaterialDetail() {
                                                             key={idx}
                                                             className="px-2.5 py-1 rounded-lg bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 text-xs border border-slate-100 dark:border-white/5 shadow-sm"
                                                         >
-                                                            #{tag}
+                                                            #<LatexText text={tag} />
                                                         </span>
                                                     ))}
                                                 </div>
@@ -1197,7 +1217,7 @@ export default function MaterialDetail() {
                                                     </div>
                                                 </div>
                                                 <p className="text-xs font-serif italic leading-relaxed">
-                                                    "{material.funFact}"
+                                                    "<LatexText text={material.funFact} />"
                                                 </p>
                                             </div>
                                         )}
@@ -1222,10 +1242,10 @@ export default function MaterialDetail() {
                                                             <span className="w-1.5 h-1.5 rounded-full bg-sky-400 border border-sky-300 shadow-sm flex-shrink-0 mt-1.5" />
                                                             <div className="flex-1 min-w-0">
                                                                 <div className={`text-slate-900 dark:text-white font-bold text-xs ${material.subtitle ? 'font-serif' : ''}`}>
-                                                                    {feature.name}
+                                                                    <LatexText text={feature.name} />
                                                                 </div>
                                                                 <div className={`text-slate-500 dark:text-slate-400 text-[11px] mt-0.5 leading-relaxed font-normal ${material.subtitle ? 'font-sans' : ''}`}>
-                                                                    {feature.detail}
+                                                                    <LatexText text={feature.detail} />
                                                                 </div>
                                                             </div>
                                                         </li>
@@ -1248,7 +1268,7 @@ export default function MaterialDetail() {
                                                     </div>
                                                 </div>
                                                 <p className="leading-relaxed mb-3 text-xs font-normal">
-                                                    {material.whereItOccurs.text}
+                                                    <LatexText text={material.whereItOccurs.text} />
                                                 </p>
                                                 <div className={`flex flex-wrap gap-1 pt-2 border-t ${theme === 'light' ? 'border-emerald-100/30' : 'border-emerald-900/25'}`}>
                                                     {material.whereItOccurs.habitat.split('·').map((hab, idx) => (

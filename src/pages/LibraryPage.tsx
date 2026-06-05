@@ -663,15 +663,23 @@ export default function Library() {
                                                     to={`/material/${formattedId}`}
                                                     className="block flex-1 flex flex-col"
                                                 >
-                                                    {/* Thumbnail */}
-                                                    <div className="aspect-video bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-950 flex items-center justify-center overflow-hidden shrink-0 relative library-card-shimmer">
+                                                    {/* Thumbnail — adaptive for landscape & portrait infographics */}
+                                                    <div className={`shrink-0 relative overflow-hidden library-card-shimmer ${
+                                                        material.type === 'infographic'
+                                                            ? 'aspect-[4/3] bg-slate-100 dark:bg-slate-800/60'
+                                                            : 'aspect-video bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-950'
+                                                    } flex items-center justify-center`}>
                                                         {material.thumbnail && material.thumbnail !== '3d-placeholder' ? (
                                                             <img 
                                                                 loading="lazy" 
                                                                 decoding="async" 
                                                                 src={material.thumbnail.startsWith('http') ? material.thumbnail : `${BASE_URL}${material.thumbnail}`} 
-                                                                alt={material.title} 
-                                                                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
+                                                                alt={material.title}
+                                                                className={`transition-transform duration-500 group-hover:scale-105 ${
+                                                                    material.type === 'infographic'
+                                                                        ? 'w-full h-full object-contain p-1'
+                                                                        : 'w-full h-full object-cover'
+                                                                }`}
                                                             />
                                                         ) : (
                                                             <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-indigo-50 to-purple-50 dark:from-indigo-950/30 dark:to-purple-950/30 group-hover:scale-105 transition-transform duration-500">
@@ -717,6 +725,7 @@ export default function Library() {
                                                 </Link>
                                             </div>
                                         );
+
                                     })}
                                 </div>
                             ) : (
@@ -843,10 +852,24 @@ export default function Library() {
                                                 to={`/material/${material.id}`}
                                                 className="block flex-1 flex flex-col"
                                             >
-                                                {/* Thumbnail */}
-                                                <div className="aspect-video bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-950 flex items-center justify-center overflow-hidden shrink-0 relative library-card-shimmer">
+                                                {/* Thumbnail — adaptive for landscape & portrait infographics */}
+                                                <div className={`shrink-0 relative overflow-hidden library-card-shimmer ${
+                                                    material.type === 'infographic'
+                                                        ? 'aspect-[4/3] bg-slate-100 dark:bg-slate-800/60'
+                                                        : 'aspect-video bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-950'
+                                                } flex items-center justify-center`}>
                                                     {material.thumbnail && material.thumbnail !== '3d-placeholder' ? (
-                                                        <img loading="lazy" decoding="async" src={material.thumbnail} alt={material.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                                                        <img
+                                                            loading="lazy"
+                                                            decoding="async"
+                                                            src={material.thumbnail}
+                                                            alt={material.title}
+                                                            className={`transition-transform duration-500 group-hover:scale-105 ${
+                                                                material.type === 'infographic'
+                                                                    ? 'w-full h-full object-contain p-1'
+                                                                    : 'w-full h-full object-cover'
+                                                            }`}
+                                                        />
                                                     ) : (
                                                         <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-indigo-50 to-purple-50 dark:from-indigo-950/30 dark:to-purple-950/30 group-hover:scale-105 transition-transform duration-500">
                                                             <Box className="w-10 h-10 text-indigo-200 dark:text-indigo-800" />

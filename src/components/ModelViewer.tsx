@@ -61,23 +61,9 @@ function applyPBRUpgrades(scene: THREE.Group | THREE.Object3D, isAmber: boolean)
                         mat.transparent = true;
                     }
                 } else {
-                    // For standard biology models (cells, dna, etc.):
-                    // We want bright, flat, matte colors exactly like in Blender's viewport.
-                    // Keep the original material type (e.g. MeshStandardMaterial) but override roughness/metalness
-                    // to make it matte and non-reflective.
-                    mat.metalness = 0.0;
-                    mat.roughness = 0.95; // Matte finish, removing glossy white specular highlights
-                    
-                    // If it was forced to MeshPhysicalMaterial, turn off transmission/refraction
-                    if (mat.isMeshPhysicalMaterial) {
-                        mat.transmission = 0.0;
-                        mat.thickness = 0.0;
-                    }
-                    
-                    // Keep original colors vibrant
-                    if (mat.color && mat.color.r < 0.1 && mat.color.g < 0.1 && mat.color.b < 0.1) {
-                        mat.color.set('#666666');
-                    }
+                    // Keep the original material properties (roughness, metalness, color) 
+                    // from the uploaded model file to preserve its intended look and feel.
+                    // (We do not override roughness to 0.95 or replace black colors with grey)
                 }
             });
         }
@@ -203,32 +189,26 @@ function StreamingLoadingOverlay({
     loadedMb,
     totalMb,
     loadingStage,
-    errorMsg,
-    isDark = true
+    errorMsg
 }: {
     pct: number;
     loadedMb: string;
     totalMb: string;
     loadingStage: 'downloading' | 'decoding' | 'done' | 'error';
     errorMsg?: string;
-    isDark?: boolean;
 }) {
     if (loadingStage === 'done') return null;
 
     return (
-        <div className={`absolute inset-0 flex flex-col items-center justify-center backdrop-blur-md z-30 pointer-events-auto select-none transition-all duration-300 ${
-            isDark ? 'bg-slate-950/80' : 'bg-white/80'
-        }`}>
-            <div className={`max-w-md w-11/12 border rounded-2xl p-6 backdrop-blur-lg shadow-2xl flex flex-col items-center text-center ${
-                isDark ? 'bg-white/5 border-white/10' : 'bg-white/70 border-slate-200'
-            }`}>
+        <div className="absolute inset-0 flex flex-col items-center justify-center bg-slate-950/80 backdrop-blur-md z-30 pointer-events-auto select-none transition-all duration-300">
+            <div className="max-w-md w-11/12 bg-white/5 border border-white/10 rounded-2xl p-6 backdrop-blur-lg shadow-2xl flex flex-col items-center text-center">
                 {loadingStage === 'error' ? (
                     <>
                         <div className="w-14 h-14 rounded-full bg-rose-500/20 border border-rose-500/40 flex items-center justify-center text-rose-400 mb-4 animate-bounce">
                             ⚠️
                         </div>
-                        <h4 className={`font-bold text-lg mb-2 ${isDark ? 'text-white' : 'text-slate-900'}`}>Không thể tải mô hình 3D</h4>
-                        <p className={`text-sm mb-4 leading-relaxed ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
+                        <h4 className="text-white font-bold text-lg mb-2">Không thể tải mô hình 3D</h4>
+                        <p className="text-slate-400 text-sm mb-4 leading-relaxed">
                             {errorMsg || "Lỗi mạng hoặc tệp mô hình đã bị di chuyển khỏi Supabase."}
                         </p>
                         <button
@@ -242,19 +222,19 @@ function StreamingLoadingOverlay({
                     <>
                         {/* Interactive glow spinner */}
                         <div className="relative w-20 h-20 mb-5 flex items-center justify-center">
-                            <div className={`absolute inset-0 rounded-full border-4 ${isDark ? 'border-white/5' : 'border-slate-200/60'}`} />
+                            <div className="absolute inset-0 rounded-full border-4 border-white/5" />
                             <div className="absolute inset-0 rounded-full border-4 border-indigo-500 border-t-transparent animate-spin" />
-                            <div className={`font-bold text-sm ${isDark ? 'text-white' : 'text-slate-700'}`}>
+                            <div className="text-white font-bold text-sm">
                                 {pct >= 0 ? `${pct}%` : "..."}
                             </div>
                         </div>
 
-                        <h4 className={`font-semibold tracking-wide text-sm mb-1 uppercase ${isDark ? 'text-white' : 'text-slate-800'}`}>
+                        <h4 className="text-white font-semibold tracking-wide text-sm mb-1 uppercase">
                             {loadingStage === 'decoding' ? "🛠️ Đang giải nén mô hình..." : "📥 Đang tải mô hình từ Supabase"}
                         </h4>
 
                         {/* Progress Bar container */}
-                        <div className={`w-full h-2.5 rounded-full overflow-hidden mb-4 relative ${isDark ? 'bg-white/10' : 'bg-slate-200'}`}>
+                        <div className="w-full bg-white/10 h-2.5 rounded-full overflow-hidden mb-4 relative">
                             {pct >= 0 ? (
                                 <div
                                     className="h-full bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-full transition-all duration-300 ease-out"
@@ -266,7 +246,7 @@ function StreamingLoadingOverlay({
                         </div>
 
                         {/* Sub-status data stats */}
-                        <div className={`flex items-center gap-6 text-xs ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
+                        <div className="flex items-center gap-6 text-xs text-slate-400">
                             <span className="flex items-center gap-1.5">
                                 <HardDrive className="w-3.5 h-3.5 text-indigo-400" />
                                 {loadedMb} MB / {totalMb === "0" ? "???" : totalMb} MB
@@ -283,7 +263,7 @@ function StreamingLoadingOverlay({
     );
 }
 
-export default function ModelViewer({ modelUrl, isDark = true }: { modelUrl: string; isDark?: boolean }) {
+export default function ModelViewer({ modelUrl }: { modelUrl: string }) {
     const isMobile = window.innerWidth < 768;
 
     // Loading stages & metrics states
@@ -311,15 +291,7 @@ export default function ModelViewer({ modelUrl, isDark = true }: { modelUrl: str
     }, [modelUrl, isFBX]);
 
     return (
-        <div
-            className="relative w-full h-full rounded-2xl overflow-hidden border shadow-2xl transition-colors duration-300"
-            style={{
-                background: isDark
-                    ? 'linear-gradient(135deg, #0f172a 0%, #1e293b 60%, #0f172a 100%)'
-                    : 'linear-gradient(135deg, #f8fafc 0%, #e2e8f0 60%, #f1f5f9 100%)',
-                borderColor: isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.08)',
-            }}
-        >
+        <div className="relative w-full h-full bg-slate-900 rounded-2xl overflow-hidden border border-slate-800 shadow-2xl">
             {/* Real-time Streaming Download Status Layer */}
             {!isFBX && (
                 <StreamingLoadingOverlay
@@ -328,7 +300,6 @@ export default function ModelViewer({ modelUrl, isDark = true }: { modelUrl: str
                     totalMb={totalMb}
                     loadingStage={loadingStage}
                     errorMsg={errorMsg}
-                    isDark={isDark}
                 />
             )}
 
@@ -344,19 +315,17 @@ export default function ModelViewer({ modelUrl, isDark = true }: { modelUrl: str
                         toneMapping: 4,
                     }}
                     onCreated={({ gl }) => {
-                        // Set canvas clear color to match theme
-                        gl.setClearColor(isDark ? 0x0f172a : 0xf1f5f9, 1);
-                        gl.toneMappingExposure = 1.05;
+                        gl.toneMappingExposure = 1.05; // Slightly brighter exposure for clean cartoon style
                     }}
                 >
-                    {isAmber && <Environment preset="studio" />}
-                    <ambientLight intensity={isAmber ? 0.5 : 1.1} />
-                    <directionalLight position={[10, 10, 10]} intensity={isAmber ? 0.6 : 0.9} />
+                    {isAmber ? <Environment preset="studio" /> : <Environment preset="neutral" />}
+                    <ambientLight intensity={isAmber ? 0.5 : 0.6} />
+                    <directionalLight position={[10, 10, 10]} intensity={isAmber ? 0.6 : 1.2} />
 
                     {!isMobile && (
                         <>
-                            <directionalLight position={[-10, 5, -10]} intensity={isAmber ? 0.6 : 0.5} color="#ffffff" />
-                            <pointLight position={[0, -5, 5]} intensity={isAmber ? 0.4 : 0.3} color="#ffffff" />
+                            <directionalLight position={[-10, 5, -10]} intensity={isAmber ? 0.6 : 0.4} color="#ffffff" />
+                            <pointLight position={[0, -5, 5]} intensity={isAmber ? 0.4 : 0.2} color="#ffffff" />
                         </>
                     )}
 

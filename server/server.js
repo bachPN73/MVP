@@ -78,7 +78,7 @@ const upload = multer({
             cb(new Error('Hỗ trợ định dạng .glb, .gltf, .fbx, .pdf, .zip, .jpg, .png, .webp'));
         }
     },
-    limits: { fileSize: 50 * 1024 * 1024 }
+    limits: { fileSize: 100 * 1024 * 1024 }
 });
 
 // Middleware
@@ -101,7 +101,7 @@ app.use(cors({
     credentials: true,
 }));
 
-app.use(express.json({ limit: '10mb' }));
+app.use(express.json({ limit: '100mb' }));
 
 app.use((req, res, next) => {
     const log = `[${new Date().toISOString()}] ${req.method} ${req.url}\n`;

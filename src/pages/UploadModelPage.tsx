@@ -121,6 +121,11 @@ export default function UploadModelPage() {
                     return;
                 }
             }
+
+            if (selectedFile.size > 100 * 1024 * 1024) {
+                setStatus({ type: 'error', message: "Kích thước tệp không được vượt quá 100MB" });
+                return;
+            }
             
             setFile(selectedFile);
             setStatus({ type: null, message: "" });
@@ -255,8 +260,8 @@ export default function UploadModelPage() {
                             </h3>
                             <p className="text-xs md:text-sm text-slate-500 dark:text-slate-400 max-w-md mx-auto">
                                 {formData.type === '3d-model' 
-                                    ? 'Định dạng được hỗ trợ: .glb, .gltf, .fbx (Tối đa 50MB)' 
-                                    : 'Định dạng được hỗ trợ: .jpg, .png, .webp, .pdf (Tối đa 50MB)'}
+                                    ? 'Định dạng được hỗ trợ: .glb, .gltf, .fbx (Tối đa 100MB)' 
+                                    : 'Định dạng được hỗ trợ: .jpg, .png, .webp, .pdf (Tối đa 100MB)'}
                             </p>
                         </div>
                     </div>
