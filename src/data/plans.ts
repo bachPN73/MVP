@@ -21,7 +21,7 @@ export interface Plan {
 export const plans: Plan[] = [
     {
         id: "free",
-        name: "Miễn phí (Free)",
+        name: "Miễn phí",
         price: "0",
         period: "VND / 7 ngày",
         description: "Giáo viên/ học sinh mới trải nghiệm",
@@ -41,7 +41,7 @@ export const plans: Plan[] = [
     },
     {
         id: "demo",
-        name: "Thử nghiệm (Demo)",
+        name: "Thử nghiệm",
         price: "10.000",
         period: "VND / ngày",
         description: "Gói dùng để thanh toán demo trải nghiệm SePay",
@@ -61,7 +61,7 @@ export const plans: Plan[] = [
     },
     {
         id: "basic",
-        name: "Cơ bản (Basic)",
+        name: "Cơ bản",
         price: "59.000",
         period: "VND / tháng",
         description: "Giáo viên cá nhân/học sinh",
@@ -89,7 +89,6 @@ export const plans: Plan[] = [
             "Toàn bộ quyền lợi gói Pro",
             "Kho mô hình 3D nâng cao",
             "Bộ infographic chuyên đề nâng cao",
-            "Mô phỏng thí nghiệm",
             "Hỗ trợ ưu tiên",
             "In một mô hình 3D thực tế",
         ],
@@ -103,15 +102,15 @@ export const plans: Plan[] = [
     },
     {
         id: "pro",
-        name: "Chuyên nghiệp (Pro)",
+        name: "Chuyên nghiệp",
         price: "99.000",
         period: "VND / tháng",
         description: "Giáo viên sử dụng thường xuyên",
         features: [
             "Toàn bộ quyền lợi gói Basic",
-            "Infographic toàn bộ môn khoa học tự nhiên",
-            "Mô hình 3D đầy đủ",
-            "Tải tài nguyên không giới hạn",
+            "Toàn bộ infographic",
+            "Toàn bộ mô hình 3D",
+            "Đề xuất bằng AI",
             "Hỗ trợ qua email",
         ],
         icon: Crown,
@@ -125,7 +124,7 @@ export const plans: Plan[] = [
     },
     {
         id: "school",
-        name: "Trường học (School)",
+        name: "Trường học",
         price: "1.500.000",
         period: "VND / tháng",
         description: "Trường THPT & Tổ bộ môn",

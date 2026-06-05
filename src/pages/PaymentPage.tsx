@@ -274,7 +274,7 @@ export default function PaymentPage() {
 
     // ─── MAIN ─────────────────────────────────────────────────────────────────
     const qrUrl = payment
-        ? `https://img.vietqr.io/image/${payment.bankName}-${payment.accountNumber}-compact2.png?addInfo=${encodeURIComponent(payment.paymentCode)}&accountName=${encodeURIComponent(payment.accountName)}`
+        ? `https://img.vietqr.io/image/${payment.bankName}-${payment.accountNumber}-compact2.png?amount=${payment.amount}&addInfo=${encodeURIComponent(payment.paymentCode)}&accountName=${encodeURIComponent(payment.accountName)}`
         : '';
 
     return (
