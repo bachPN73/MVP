@@ -7,6 +7,16 @@ export default function PricingContent() {
     const currentUser = storedUser ? JSON.parse(storedUser) : null;
     const currentPlan = (currentUser?.plan || "free").toLowerCase();
 
+    const planTiers: Record<string, number> = {
+        free: 0,
+        demo: 1,
+        basic: 2,
+        pro: 3,
+        combo: 4,
+        school: 5
+    };
+    const currentPlanTier = planTiers[currentPlan] || 0;
+
     return (
         <div className="p-3 sm:p-6 max-w-[95rem] mx-auto text-slate-800 dark:text-white">
             {/* Header - Tối ưu cực gọn nhưng đầy đủ khoảng cách để không bị cắt xén */}
@@ -32,6 +42,7 @@ export default function PricingContent() {
                     const Icon = plan.icon;
                     const isFeatured = plan.id === "pro";
                     const isOwned = plan.id.toLowerCase() === currentPlan;
+                    const itemPlanTier = planTiers[plan.id.toLowerCase()] || 0;
                     
                     // Xác định màu sắc cụ thể cho từng gói
                     let themeColor = "";
@@ -182,30 +193,39 @@ export default function PricingContent() {
                                 </div>
 
                                 {/* CTA Button - Đẩy sát đáy, cấu trúc nút phân cấp cực nét */}
-                                {isOwned ? (
-                                    <div className="mt-auto block">
-                                        <button
-                                            disabled
-                                            className={`
-                                                w-full py-3 rounded-xl text-xs font-black transition-all duration-300 font-sans
-                                                ${btnStyle}
-                                            `}
-                                        >
-                                            Gói hiện tại
-                                        </button>
-                                    </div>
-                                ) : (
-                                    <Link to={`/payment/${plan.id}`} className="mt-auto block">
-                                        <button
-                                            className={`
-                                                w-full py-3 rounded-xl text-xs font-black transition-all duration-300 cursor-pointer font-sans
-                                                active:scale-[0.98] ${btnStyle}
-                                            `}
-                                        >
-                                            {plan.id === "free" ? "Trải nghiệm ngay" : "Chọn gói này"}
-                                        </button>
-                                    </Link>
-                                )}
+                                {itemPlanTier < currentPlanTier ? (
+                                     <div className="mt-auto block">
+                                         <button
+                                             disabled
+                                             className="w-full py-3 rounded-xl text-xs font-black transition-all duration-300 font-sans bg-slate-100 dark:bg-slate-800/40 text-slate-400 dark:text-slate-600 cursor-not-allowed border-none opacity-50"
+                                         >
+                                             Gói cấp dưới
+                                         </button>
+                                     </div>
+                                 ) : isOwned ? (
+                                     <div className="mt-auto block">
+                                         <button
+                                             disabled
+                                             className={`
+                                                 w-full py-3 rounded-xl text-xs font-black transition-all duration-300 font-sans
+                                                 ${btnStyle}
+                                             `}
+                                         >
+                                             Gói hiện tại
+                                         </button>
+                                     </div>
+                                 ) : (
+                                     <Link to={`/payment/${plan.id}`} className="mt-auto block">
+                                         <button
+                                             className={`
+                                                 w-full py-3 rounded-xl text-xs font-black transition-all duration-300 cursor-pointer font-sans
+                                                 active:scale-[0.98] ${btnStyle}
+                                             `}
+                                         >
+                                             {plan.id === "free" ? "Trải nghiệm ngay" : "Chọn gói này"}
+                                         </button>
+                                     </Link>
+                                 )}
                             </div>
                         </div>
                     );

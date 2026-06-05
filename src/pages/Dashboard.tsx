@@ -33,10 +33,12 @@ export default function Dashboard() {
                 // Calculate days remaining dynamically from user creation timestamp
                 if (currentUser.createdAt) {
                     const createdDate = new Date(currentUser.createdAt);
-                    const expiryDate = new Date(createdDate.getTime() + 30 * 24 * 60 * 60 * 1000);
+                    const planStr = (currentUser.plan || 'free').toLowerCase();
+                    const durationDays = planStr === 'demo' ? 1 : planStr === 'free' ? 7 : 30;
+                    const expiryDate = new Date(createdDate.getTime() + durationDays * 24 * 60 * 60 * 1000);
                     const diffTime = expiryDate.getTime() - Date.now();
                     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-                    setDaysRemaining(diffDays > 0 ? diffDays : 30);
+                    setDaysRemaining(diffDays > 0 ? diffDays : durationDays);
                 }
             }
         } catch (e) { }
@@ -196,11 +198,71 @@ export default function Dashboard() {
         },
     ], [allMaterials]);
 
-    const isPremiumPlan = ['premium', 'pro', 'school', 'combo'].includes(userPlan);
+    const isPremiumPlan = ['premium', 'pro', 'school', 'combo', 'basic', 'demo'].includes(userPlan);
     const isSchoolAdmin = userPlan === 'school' && userRole === 'admin';
     const planBgClass = isPremiumPlan
         ? 'bg-gradient-to-br from-amber-400 to-orange-550 shadow-orange-500/30'
         : 'bg-gradient-to-br from-indigo-500 to-purple-650 shadow-indigo-500/30';
+
+    const planConfig: Record<string, { label: string; icon: any; colorClass: string; barColor: string; bgClass: string; borderClass: string; textClass: string }> = {
+        free: {
+            label: "FREE",
+            icon: Compass,
+            colorClass: "text-slate-500 dark:text-slate-400 bg-slate-500/10",
+            barColor: "from-slate-400 to-slate-500",
+            bgClass: "bg-slate-500/5 dark:bg-slate-500/10",
+            borderClass: "border-slate-500/20",
+            textClass: "text-slate-800 dark:text-slate-200"
+        },
+        demo: {
+            label: "DEMO",
+            icon: Zap,
+            colorClass: "text-rose-500 bg-rose-500/10",
+            barColor: "from-rose-500 to-pink-500",
+            bgClass: "bg-rose-500/5 dark:bg-rose-500/10",
+            borderClass: "border-rose-500/25",
+            textClass: "text-rose-800 dark:text-rose-400"
+        },
+        basic: {
+            label: "BASIC",
+            icon: Zap,
+            colorClass: "text-blue-500 bg-blue-500/10",
+            barColor: "from-blue-500 to-cyan-500",
+            bgClass: "bg-blue-500/5 dark:bg-blue-500/10",
+            borderClass: "border-blue-500/25",
+            textClass: "text-blue-800 dark:text-blue-400"
+        },
+        pro: {
+            label: "PRO",
+            icon: Crown,
+            colorClass: "text-amber-500 bg-amber-500/10",
+            barColor: "from-amber-400 to-orange-500",
+            bgClass: "bg-amber-500/5 dark:bg-amber-500/10",
+            borderClass: "border-amber-500/25",
+            textClass: "text-amber-800 dark:text-amber-400"
+        },
+        combo: {
+            label: "COMBO",
+            icon: Globe,
+            colorClass: "text-orange-500 bg-orange-500/10",
+            barColor: "from-orange-500 to-amber-505",
+            bgClass: "bg-orange-500/5 dark:bg-orange-500/10",
+            borderClass: "border-orange-500/25",
+            textClass: "text-orange-800 dark:text-orange-400"
+        },
+        school: {
+            label: "SCHOOL",
+            icon: School,
+            colorClass: "text-emerald-500 bg-emerald-500/10",
+            barColor: "from-emerald-500 to-teal-500",
+            bgClass: "bg-emerald-500/5 dark:bg-emerald-500/10",
+            borderClass: "border-emerald-500/25",
+            textClass: "text-emerald-800 dark:text-emerald-400"
+        }
+    };
+
+    const currentPlanConfig = planConfig[userPlan] || planConfig.free;
+    const PlanIcon = currentPlanConfig.icon;
 
     return (
         <Layout>
@@ -413,16 +475,16 @@ export default function Dashboard() {
                                         </div>
                                     </div>
 
-                                    {/* PRO Card */}
-                                    <div className="flex flex-col gap-1.5 px-4 py-2.5 bg-amber-500/5 dark:bg-amber-500/10 border border-amber-500/20 rounded-2xl shadow-sm min-w-[95px] hover:scale-105 active:scale-95 transition-all relative overflow-hidden group">
+                                    {/* Dynamic Plan Card */}
+                                    <div className={`flex flex-col gap-1.5 px-4 py-2.5 ${currentPlanConfig.bgClass} border ${currentPlanConfig.borderClass} rounded-2xl shadow-sm min-w-[95px] hover:scale-105 active:scale-95 transition-all relative overflow-hidden group`}>
                                         <div className="flex items-center gap-2">
-                                            <div className="p-1 rounded-lg bg-amber-500/10 text-amber-500 shrink-0">
-                                                <Crown className="w-3.5 h-3.5" />
+                                            <div className={`p-1 rounded-lg ${currentPlanConfig.colorClass} shrink-0`}>
+                                                <PlanIcon className="w-3.5 h-3.5 text-current" strokeWidth={2.5} />
                                             </div>
-                                            <span className="text-xs font-black text-amber-800 dark:text-amber-400">PRO</span>
+                                            <span className={`text-xs font-black uppercase tracking-wider ${currentPlanConfig.textClass}`}>{currentPlanConfig.label}</span>
                                         </div>
-                                        <div className="w-full h-1.5 bg-amber-500/10 dark:bg-amber-500/20 rounded-full overflow-hidden">
-                                            <div className="h-full bg-gradient-to-r from-amber-400 to-orange-500 rounded-full shadow-[0_0_8px_rgba(245,158,11,0.6)] animate-pulse" style={{ width: '100%' }}></div>
+                                        <div className="w-full h-1.5 bg-slate-100 dark:bg-white/10 rounded-full overflow-hidden animate-pulse-glow">
+                                            <div className={`h-full bg-gradient-to-r ${currentPlanConfig.barColor} rounded-full shadow-[0_0_8px_rgba(245,158,11,0.6)]`} style={{ width: '100%' }}></div>
                                         </div>
                                     </div>
                                 </div>
