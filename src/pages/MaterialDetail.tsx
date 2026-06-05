@@ -1,7 +1,7 @@
 import { Layout } from '../layout/MainLayout';
 import { useParams, Link, useNavigate } from 'react-router';
 import { materials as mockMaterials, getSubjectName, getTypeName, Material } from '../data/materialsData';
-import { ArrowLeft, Maximize2, Minimize2, BookOpen, Tag, GraduationCap, Loader2, Play, ZoomIn, RotateCcw, Move, Compass, Sparkles, Search, Lock, Zap, Download } from 'lucide-react';
+import { ArrowLeft, Maximize2, Minimize2, BookOpen, Tag, GraduationCap, Loader2, Play, ZoomIn, RotateCcw, Move, Compass, Sparkles, Search, Lock, Zap, BookmarkPlus, BookmarkCheck, Clock } from 'lucide-react';
 import { useState, useEffect, lazy, Suspense, useRef, useMemo } from 'react';
 import { api, BASE_URL } from '../api';
 import { useTheme } from '../components/ThemeProvider';
@@ -52,6 +52,17 @@ const SUBJECT_CONFIGS: Record<string, {
 const cleanLabel = (label: string) => label.split(' (')[0];
 
 const ModelViewer = lazy(() => import('../components/ModelViewer'));
+
+// Type for 24h Temporary Vault entries
+interface VaultEntry {
+    id: string;
+    title: string;
+    subject: string;
+    type: string;
+    thumbnail: string;
+    addedAt: number;
+    expiresAt: number; // timestamp ms
+}
 
 export default function MaterialDetail() {
     const { id } = useParams();
@@ -379,46 +390,63 @@ export default function MaterialDetail() {
         setIsDragging(false);
     };
 
-    const handleDownloadResource = () => {
+    // ── 24h Temporary Vault ──────────────────────────────────────────────────
+    const VAULT_KEY = 'edu_tech_pro_vault';
+    const [isInVault, setIsInVault] = useState(false);
+    const [vaultSaveMsg, setVaultSaveMsg] = useState('');
+
+    useEffect(() => {
         if (!material) return;
-        
-        if (userPlan === 'free') {
-            const currentMonth = new Date().toISOString().slice(0, 7);
-            const usageStr = localStorage.getItem('edu_tech_download_usage');
-            let count = 0;
-            
-            if (usageStr) {
-                try {
-                    const usage = JSON.parse(usageStr);
-                    if (usage.month === currentMonth) {
-                        count = usage.count;
-                    }
-                } catch (e) {}
-            }
-            
-            if (count >= 2) {
-                alert("Bạn đã dùng hết 2 lượt tải học liệu miễn phí trong tháng này. Vui lòng nâng cấp gói để tải không giới hạn!");
-                navigate('/pricing');
-                return;
-            }
-            
-            // Increment count
-            const newCount = count + 1;
-            localStorage.setItem('edu_tech_download_usage', JSON.stringify({ month: currentMonth, count: newCount }));
+        const vaultStr = localStorage.getItem(VAULT_KEY);
+        if (vaultStr) {
+            try {
+                const vault: VaultEntry[] = JSON.parse(vaultStr);
+                const now = Date.now();
+                // Clean expired entries
+                const live = vault.filter(e => now < e.expiresAt);
+                setIsInVault(live.some(e => e.id === material.id));
+            } catch (_) {}
         }
-        
-        // Trigger file download
-        const url = fileUrl || (material as any).thumbnail || "";
-        if (!url) return;
-        
-        const fullUrl = getFullModelUrl(url);
-        const link = document.createElement('a');
-        link.href = fullUrl;
-        link.download = material.title || 'hoc-lieu';
-        link.target = '_blank';
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
+    }, [material]);
+
+    const handleSaveToVault = () => {
+        if (!material) return;
+        const isPro = ['pro', 'combo', 'school', 'demo'].includes(userPlan);
+        if (!isPro) {
+            navigate('/pricing');
+            return;
+        }
+
+        const vaultStr = localStorage.getItem(VAULT_KEY);
+        let vault: VaultEntry[] = [];
+        try { vault = vaultStr ? JSON.parse(vaultStr) : []; } catch (_) {}
+
+        const now = Date.now();
+        // Clean expired entries first
+        vault = vault.filter(e => now < e.expiresAt);
+
+        if (isInVault) {
+            // Remove from vault
+            vault = vault.filter(e => e.id !== material.id);
+            setIsInVault(false);
+            setVaultSaveMsg('Đã xóa khỏi kho tạm thời');
+        } else {
+            // Add to vault with 24h expiry
+            const entry: VaultEntry = {
+                id: material.id,
+                title: material.title,
+                subject: material.subject,
+                type: material.type,
+                thumbnail: material.thumbnail || '',
+                addedAt: now,
+                expiresAt: now + 24 * 60 * 60 * 1000,
+            };
+            vault.push(entry);
+            setIsInVault(true);
+            setVaultSaveMsg('✓ Đã lưu! Tự xóa sau 24h');
+        }
+        localStorage.setItem(VAULT_KEY, JSON.stringify(vault));
+        setTimeout(() => setVaultSaveMsg(''), 3000);
     };
 
     if (isLoading) {
@@ -648,7 +676,7 @@ export default function MaterialDetail() {
                                                     <span className="text-emerald-400 font-bold">✓</span> Xem 100+ mô hình 3D
                                                 </div>
                                                 <div className="flex items-center gap-2">
-                                                    <span className="text-emerald-400 font-bold">✓</span> Download infographic
+                                                    <span className="text-emerald-400 font-bold">✓</span> Lưu học liệu 24h vào kho
                                                 </div>
                                                 <div className="flex items-center gap-2">
                                                     <span className="text-emerald-400 font-bold">✓</span> Trợ lý AI học tập 24/7
@@ -1241,22 +1269,40 @@ export default function MaterialDetail() {
                                             </p>
                                         </div>
 
-                                        {/* Download Resource Action Button */}
-                                        {fileUrl && (
-                                            <div className="pt-1">
+                                        {/* 24h Temporary Vault Button */}
+                                        {!isBlocked && (['pro', 'combo', 'school', 'demo'].includes(userPlan) ? (
+                                            <div className="pt-1 space-y-1">
                                                 <button
-                                                    onClick={handleDownloadResource}
-                                                    className={`w-full py-3 px-4 rounded-xl text-white font-black text-xs uppercase tracking-wider transition-all duration-200 hover:shadow-lg active:scale-[0.98] cursor-pointer flex items-center justify-center gap-2 shadow-md ${
-                                                        material.subtitle 
-                                                            ? 'bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 hover:shadow-emerald-500/20' 
-                                                            : 'bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 hover:shadow-indigo-500/20'
+                                                    onClick={handleSaveToVault}
+                                                    className={`w-full py-3 px-4 rounded-xl font-black text-xs uppercase tracking-wider transition-all duration-200 hover:shadow-lg active:scale-[0.98] cursor-pointer flex items-center justify-center gap-2 shadow-md ${
+                                                        isInVault
+                                                            ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 hover:bg-emerald-500/30'
+                                                            : (material.subtitle
+                                                                ? 'bg-gradient-to-r from-violet-500 to-purple-600 hover:from-violet-600 hover:to-purple-700 text-white hover:shadow-violet-500/20'
+                                                                : 'bg-gradient-to-r from-violet-500 to-purple-600 hover:from-violet-600 hover:to-purple-700 text-white hover:shadow-violet-500/20')
                                                     }`}
                                                 >
-                                                    <Download className="w-4 h-4 animate-bounce" />
-                                                    Tải tài nguyên ({is3D ? "Mô hình 3D" : isPDF ? "Tài liệu PDF" : "Infographic"})
+                                                    {isInVault ? <BookmarkCheck className="w-4 h-4" /> : <BookmarkPlus className="w-4 h-4" />}
+                                                    {isInVault ? 'Đã lưu vào kho tạm thời' : 'Lưu vào kho tạm thời (24h)'}
+                                                </button>
+                                                {vaultSaveMsg && (
+                                                    <div className="flex items-center gap-1.5 text-[11px] font-semibold text-emerald-500 dark:text-emerald-400 px-1">
+                                                        <Clock className="w-3 h-3" />
+                                                        {vaultSaveMsg}
+                                                    </div>
+                                                )}
+                                            </div>
+                                        ) : (
+                                            <div className="pt-1">
+                                                <button
+                                                    onClick={() => navigate('/pricing')}
+                                                    className="w-full py-2.5 px-4 rounded-xl border border-violet-300/40 dark:border-violet-500/30 text-violet-600 dark:text-violet-400 font-bold text-xs flex items-center justify-center gap-2 hover:bg-violet-50 dark:hover:bg-violet-950/20 transition-all cursor-pointer"
+                                                >
+                                                    <BookmarkPlus className="w-4 h-4" />
+                                                    Nâng cấp để lưu kho tạm thời
                                                 </button>
                                             </div>
-                                        )}
+                                        ))}
 
                                         {/* Quick Stats Grid for Premium Models */}
                                         {material.subtitle && (

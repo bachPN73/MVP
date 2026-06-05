@@ -1,5 +1,5 @@
 import { Link } from 'react-router';
-import { Home, Library, Sparkles, BookOpen, LogOut, CreditCard, X, ChevronLeft, Sun, Moon, ShieldAlert, School, Zap } from 'lucide-react';
+import { Home, Library, Sparkles, BookOpen, LogOut, CreditCard, X, ChevronLeft, Sun, Moon, ShieldAlert, School, Zap, Archive } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { useTheme } from '../components/ThemeProvider';
 import { api } from '../api';
@@ -87,6 +87,7 @@ export function AppSidebar({ currentPath = '/', isOpen = false, setIsOpen, isCol
         { path: '/find-ai', label: 'Find with AI', icon: Sparkles },
         { path: '/pricing-app', label: 'Gói dịch vụ', icon: CreditCard },
         { path: '/guide-app', label: 'Hướng dẫn', icon: BookOpen },
+        ...(['pro', 'combo', 'school', 'demo'].includes(userPlan) ? [{ path: '/vault', label: 'Kho tạm thời', icon: Archive }] : []),
         ...(userRole === 'school-admin' ? [{ path: '/school/dashboard', label: 'Trường học', icon: School }] : []),
         ...(userRole === 'admin' ? [{ path: '/admin/dashboard', label: 'Bảng Admin', icon: ShieldAlert }] : []),
     ];

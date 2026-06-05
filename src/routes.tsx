@@ -32,6 +32,9 @@ import AdminPaymentsPage from "./pages/admin/AdminPaymentsPage";
 // School Pages
 import SchoolDashboard from "./pages/school/SchoolDashboard";
 
+// Pro Vault Page
+import VaultPage from "./pages/VaultPage";
+
 import NotFound from "./pages/NotFound";
 
 // Loading spinner component that adapts background color to prevent bright flashing (nháy nháy) between routes
@@ -47,7 +50,8 @@ function PageLoader() {
         window.location.pathname.includes('/material/') ||
         window.location.pathname.includes('/payment/') ||
         window.location.pathname.includes('/admin') ||
-        window.location.pathname.includes('/school')
+        window.location.pathname.includes('/school') ||
+        window.location.pathname.includes('/vault')
     );
 
     if (isApp) {
@@ -185,6 +189,10 @@ export const router = createBrowserRouter([
     {
         path: "/school/dashboard",
         Component: withAuth(SchoolDashboard),
+    },
+    {
+        path: "/vault",
+        Component: withAuth(VaultPage),
     },
     {
         path: "*",
