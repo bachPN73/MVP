@@ -1,6 +1,5 @@
 import { AdminLayout } from '../../layout/AdminLayout';
 import { Users, Box, TrendingUp, Activity, ArrowUpRight } from 'lucide-react';
-import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { useState, useEffect } from 'react';
 import { api } from '../../api';
 
@@ -116,93 +115,6 @@ export default function AdminDashboard() {
                 })}
             </div>
 
-            <div className="bg-white dark:bg-slate-900/60 rounded-2xl shadow-sm border border-slate-200 dark:border-white/10 p-6 h-96 transition-all hover:shadow-md animate-fadeIn backdrop-blur-xl">
-                <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-6">
-                    <div>
-                        <h3 className="text-lg font-bold text-slate-900 dark:text-white font-heading">Biểu Đồ Tăng Trưởng</h3>
-                        <p className="text-xs text-slate-500 dark:text-slate-400 font-sans font-semibold">Thống kê người dùng mới & học liệu (6 tháng gần nhất)</p>
-                    </div>
-                    <div className="flex items-center gap-4 text-xs font-sans font-bold">
-                        <div className="flex items-center gap-2">
-                            <span className="w-2.5 h-2.5 rounded-full bg-indigo-500"></span>
-                            <span className="text-slate-600 dark:text-slate-300">Người dùng mới</span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                            <span className="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
-                            <span className="text-slate-600 dark:text-slate-300">Học liệu tải lên</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div className="h-[calc(100%-4.5rem)] w-full">
-                    <ResponsiveContainer width="100%" height="100%">
-                        <AreaChart
-                            data={growthData}
-                            margin={{ top: 10, right: 10, left: -20, bottom: 0 }}
-                        >
-                            <defs>
-                                <linearGradient id="colorUsers" x1="0" y1="0" x2="0" y2="1">
-                                    <stop offset="5%" stopColor="#6366f1" stopOpacity={0.25} />
-                                    <stop offset="95%" stopColor="#6366f1" stopOpacity={0} />
-                                </linearGradient>
-                                <linearGradient id="colorMaterials" x1="0" y1="0" x2="0" y2="1">
-                                    <stop offset="5%" stopColor="#10b981" stopOpacity={0.25} />
-                                    <stop offset="95%" stopColor="#10b981" stopOpacity={0} />
-                                </linearGradient>
-                            </defs>
-                            <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(148, 163, 184, 0.15)" />
-                            <XAxis
-                                dataKey="name"
-                                axisLine={false}
-                                tickLine={false}
-                                tick={{ fill: 'currentColor', fontSize: 11 }}
-                                className="text-slate-400 dark:text-slate-500 font-sans font-bold"
-                                dy={10}
-                            />
-                            <YAxis
-                                axisLine={false}
-                                tickLine={false}
-                                tick={{ fill: 'currentColor', fontSize: 11 }}
-                                className="text-slate-400 dark:text-slate-500 font-sans font-bold"
-                                dx={-10}
-                            />
-                            <Tooltip
-                                contentStyle={{ 
-                                    backgroundColor: 'rgba(15, 23, 42, 0.95)',
-                                    borderColor: 'rgba(255, 255, 255, 0.1)',
-                                    borderRadius: '16px', 
-                                    borderWidth: '1px',
-                                    color: '#ffffff',
-                                    fontFamily: 'var(--font-sans)',
-                                    boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.3)' 
-                                }}
-                                labelStyle={{ fontWeight: 800, color: '#e2e8f0', marginBottom: '4px' }}
-                                itemStyle={{ fontWeight: 650, fontSize: '12px' }}
-                            />
-                            <Area
-                                type="monotone"
-                                dataKey="users"
-                                name="Người dùng mới"
-                                stroke="#6366f1"
-                                strokeWidth={2.5}
-                                fillOpacity={1}
-                                fill="url(#colorUsers)"
-                                activeDot={{ r: 6, strokeWidth: 0, fill: '#4f46e5' }}
-                            />
-                            <Area
-                                type="monotone"
-                                dataKey="materials"
-                                name="Học liệu tải lên"
-                                stroke="#10b981"
-                                strokeWidth={2.5}
-                                fillOpacity={1}
-                                fill="url(#colorMaterials)"
-                                activeDot={{ r: 6, strokeWidth: 0, fill: '#059669' }}
-                            />
-                        </AreaChart>
-                    </ResponsiveContainer>
-                </div>
-            </div>
         </AdminLayout>
     );
 }

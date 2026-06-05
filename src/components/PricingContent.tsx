@@ -3,6 +3,10 @@ import { Link } from "react-router";
 import { plans } from "../data/plans";
 
 export default function PricingContent() {
+    const storedUser = localStorage.getItem("edu_tech_user");
+    const currentUser = storedUser ? JSON.parse(storedUser) : null;
+    const currentPlan = (currentUser?.plan || "free").toLowerCase();
+
     return (
         <div className="p-3 sm:p-6 max-w-[95rem] mx-auto text-slate-800 dark:text-white">
             {/* Header - Tối ưu cực gọn nhưng đầy đủ khoảng cách để không bị cắt xén */}
@@ -23,10 +27,11 @@ export default function PricingContent() {
             </div>
 
             {/* Plans Container - Thiết kế Kính mờ (Glassmorphism) với màu sắc đặc trưng của từng Plan */}
-            <div className="flex overflow-x-auto xl:grid xl:grid-cols-5 gap-5 pb-8 pt-10 snap-x snap-mandatory scrollbar-thin scroll-smooth items-stretch">
+            <div className="flex overflow-x-auto xl:grid xl:grid-cols-6 gap-5 pb-8 pt-10 snap-x snap-mandatory scrollbar-thin scroll-smooth items-stretch">
                 {plans.map((plan) => {
                     const Icon = plan.icon;
                     const isFeatured = plan.id === "pro";
+                    const isOwned = plan.id.toLowerCase() === currentPlan;
                     
                     // Xác định màu sắc cụ thể cho từng gói
                     let themeColor = "";
@@ -36,7 +41,14 @@ export default function PricingContent() {
                     let iconBg = "";
                     let cardBorder = "";
 
-                    if (plan.id === "free") {
+                    if (isOwned) {
+                        themeColor = "text-slate-400 dark:text-slate-500";
+                        borderTop = "border-t-[6px] border-t-slate-400 dark:border-t-slate-600";
+                        shadowHover = "hover:shadow-none";
+                        btnStyle = "bg-slate-100 dark:bg-slate-800 text-slate-400 dark:text-slate-500 cursor-not-allowed border-none shadow-none";
+                        iconBg = "bg-slate-50 dark:bg-slate-900/60 text-slate-400 dark:text-slate-500";
+                        cardBorder = "border-slate-300 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-950/20 opacity-90";
+                    } else if (plan.id === "free") {
                         themeColor = "text-slate-600 dark:text-slate-300";
                         borderTop = "border-t-[6px] border-t-slate-400 dark:border-t-slate-600";
                         shadowHover = "hover:shadow-slate-500/10 dark:hover:shadow-slate-500/5";
@@ -44,6 +56,13 @@ export default function PricingContent() {
                         btnStyle = "border-2 border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 shadow-sm hover:border-slate-400 dark:hover:border-slate-600";
                         iconBg = "bg-slate-100 dark:bg-slate-800/80 text-slate-600 dark:text-slate-300";
                         cardBorder = "border-slate-200 dark:border-white/5 hover:border-slate-300 dark:hover:border-white/10 bg-white/95 dark:bg-slate-900/60";
+                    } else if (plan.id === "demo") {
+                        themeColor = "text-rose-600 dark:text-rose-400";
+                        borderTop = "border-t-[6px] border-t-rose-500";
+                        shadowHover = "hover:shadow-rose-500/15 dark:hover:shadow-rose-500/10";
+                        btnStyle = "border-2 border-rose-500 hover:bg-rose-500/10 text-rose-600 dark:text-rose-400 shadow-sm hover:shadow-[0_4px_15px_rgba(244,63,94,0.15)]";
+                        iconBg = "bg-rose-50 dark:bg-rose-950/60 text-rose-600 dark:text-rose-400";
+                        cardBorder = "border-rose-200 dark:border-rose-500/10 hover:border-rose-400 dark:hover:border-rose-400/50 bg-white/95 dark:bg-slate-900/60";
                     } else if (plan.id === "basic") {
                         themeColor = "text-blue-600 dark:text-blue-400";
                         borderTop = "border-t-[6px] border-t-blue-500/80";
@@ -133,8 +152,12 @@ export default function PricingContent() {
                                     {plan.features.map((feature, idx) => {
                                         // Xác định vòng viền tròn checkmark riêng theo từng Plan
                                         let checkBadge = "";
-                                        if (plan.id === "free") {
+                                        if (isOwned) {
+                                            checkBadge = "bg-slate-100 dark:bg-slate-800 text-slate-400 dark:text-slate-500 border-slate-200 dark:border-slate-700/50";
+                                        } else if (plan.id === "free") {
                                             checkBadge = "bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 border-slate-200 dark:border-slate-700";
+                                        } else if (plan.id === "demo") {
+                                            checkBadge = "bg-rose-50 dark:bg-rose-950/40 text-rose-600 dark:text-rose-400 border-rose-200 dark:border-rose-900/50";
                                         } else if (plan.id === "basic") {
                                             checkBadge = "bg-blue-50 dark:bg-blue-950/40 text-blue-600 dark:text-blue-400 border-blue-200 dark:border-blue-900/50";
                                         } else if (plan.id === "combo") {
@@ -150,7 +173,7 @@ export default function PricingContent() {
                                                 <div className={`w-5 h-5 rounded-full flex items-center justify-center shrink-0 mt-0.5 border shadow-sm transition-transform duration-300 group-hover:scale-105 ${checkBadge}`}>
                                                     <Check className="w-3 h-3" strokeWidth={3.5} />
                                                 </div>
-                                                <span className={`text-xs sm:text-[13px] text-slate-700 dark:text-slate-200 leading-relaxed font-semibold`}>
+                                                <span className={`text-xs sm:text-[13px] text-slate-700 dark:text-slate-200 leading-relaxed font-semibold ${isOwned ? 'text-slate-400 dark:text-slate-500 line-through opacity-70' : ''}`}>
                                                     {feature}
                                                 </span>
                                             </div>
@@ -159,16 +182,30 @@ export default function PricingContent() {
                                 </div>
 
                                 {/* CTA Button - Đẩy sát đáy, cấu trúc nút phân cấp cực nét */}
-                                <Link to={`/payment/${plan.id}`} className="mt-auto block">
-                                    <button
-                                        className={`
-                                            w-full py-3 rounded-xl text-xs font-black transition-all duration-300 cursor-pointer font-sans
-                                            active:scale-[0.98] ${btnStyle}
-                                        `}
-                                    >
-                                        Chọn gói này
-                                    </button>
-                                </Link>
+                                {isOwned ? (
+                                    <div className="mt-auto block">
+                                        <button
+                                            disabled
+                                            className={`
+                                                w-full py-3 rounded-xl text-xs font-black transition-all duration-300 font-sans
+                                                ${btnStyle}
+                                            `}
+                                        >
+                                            Gói hiện tại
+                                        </button>
+                                    </div>
+                                ) : (
+                                    <Link to={`/payment/${plan.id}`} className="mt-auto block">
+                                        <button
+                                            className={`
+                                                w-full py-3 rounded-xl text-xs font-black transition-all duration-300 cursor-pointer font-sans
+                                                active:scale-[0.98] ${btnStyle}
+                                            `}
+                                        >
+                                            {plan.id === "free" ? "Trải nghiệm ngay" : "Chọn gói này"}
+                                        </button>
+                                    </Link>
+                                )}
                             </div>
                         </div>
                     );

@@ -222,6 +222,11 @@ export default function AdminMaterialsPage() {
                 }
             }
 
+            if (selectedFile.size > 100 * 1024 * 1024) {
+                setStatus({ type: 'error', message: "Kích thước tệp không được vượt quá 100MB" });
+                return;
+            }
+
             setFile(selectedFile);
             setStatus({ type: null, message: "" });
         }
@@ -479,8 +484,8 @@ export default function AdminMaterialsPage() {
                                         </h3>
                                         <p className="text-slate-400 dark:text-slate-500 text-[11px] font-semibold leading-relaxed">
                                             {formData.type === '3d-model' 
-                                                ? "Hỗ trợ .glb, .gltf, .fbx, .zip (Max 50MB)" 
-                                                : "Hỗ trợ .jpg, .png, .webp, .pdf (Max 20MB)"}
+                                                ? "Hỗ trợ .glb, .gltf, .fbx, .zip (Max 100MB)" 
+                                                : "Hỗ trợ .jpg, .png, .webp, .pdf (Max 100MB)"}
                                         </p>
                                     </div>
                                 </div>
