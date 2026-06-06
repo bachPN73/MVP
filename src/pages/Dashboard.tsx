@@ -670,7 +670,7 @@ export default function Dashboard() {
                                         </Link>
                                     </div>
 
-                                    <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 flex-grow min-h-0 overflow-y-auto pr-1">
+                                    <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 flex-grow min-h-0 xl:overflow-y-auto overflow-visible pr-1">
                                         {recentMaterials.map((material) => {
                                             const materialHoverClass = 
                                                 material.subject === 'physics' ? 'hover:shadow-blue-500/8 hover:border-blue-500/25 dark:hover:border-blue-500/30' :

@@ -101,19 +101,19 @@ export function AppSidebar({ currentPath = '/', isOpen = false, setIsOpen, isCol
         <aside 
             className={`fixed left-0 top-0 md:left-3 md:top-3 md:h-[calc(100vh-1.5rem)] h-full bg-sidebar/95 backdrop-blur-3xl text-sidebar-foreground flex flex-col shadow-2xl z-50 transition-all duration-300 ease-in-out md:translate-x-0 md:rounded-2xl md:border border-sidebar-border
             ${isOpen ? 'translate-x-0' : '-translate-x-full'} 
-            ${isCollapsed ? 'w-20' : 'w-[270px]'}`}
+            ${isCollapsed ? 'md:w-20 w-[270px]' : 'w-[270px]'}`}
         >
             {/* Inner container to hold and clip content to rounded borders safely */}
             <div className="w-full h-full flex flex-col overflow-hidden rounded-[inherit]">
                 {/* ===== Logo Section — Premium Branding ===== */}
-                <div className={`border-b border-sidebar-border flex items-center transition-all duration-300 ease-in-out ${isCollapsed ? 'p-5 justify-center' : 'px-6 py-5 justify-between'}`}>
+                <div className={`border-b border-sidebar-border flex items-center transition-all duration-300 ease-in-out ${isCollapsed ? 'md:p-5 md:justify-center px-6 py-5 justify-between' : 'px-6 py-5 justify-between'}`}>
                     <div className="flex items-center select-none">
                         <div className="w-11 h-11 rounded-2xl bg-gradient-to-tr from-indigo-500 via-purple-500 to-cyan-400 flex items-center justify-center text-white font-black text-lg shadow-[0_0_24px_rgba(79,70,229,0.25)] hover:shadow-[0_0_32px_rgba(79,70,229,0.45)] hover:scale-105 active:scale-95 transition-all shrink-0">
                             ET
                         </div>
                         
                         <div className={`overflow-hidden transition-all duration-300 ease-in-out flex flex-col
-                            ${isCollapsed ? 'max-w-0 opacity-0 invisible ml-0' : 'max-w-[180px] opacity-100 visible ml-3.5'}`}>
+                            ${isCollapsed ? 'md:max-w-0 md:opacity-0 md:invisible md:ml-0 max-w-[180px] opacity-100 visible ml-3.5' : 'max-w-[180px] opacity-100 visible ml-3.5'}`}>
                             <h1 className={`text-xl font-black uppercase tracking-tight leading-none whitespace-nowrap ${
                                 theme === 'light' 
                                     ? 'text-slate-900' 
@@ -156,7 +156,7 @@ export function AppSidebar({ currentPath = '/', isOpen = false, setIsOpen, isCol
                             <Link
                                 key={item.path}
                                 to={item.path}
-                                className={`sidebar-nav-glow premium-sidebar-item group flex items-center rounded-2xl relative transition-all duration-300 ease-in-out ${isActive ? `active ${activeClass}` : inactiveClass} ${isCollapsed ? 'justify-center px-0 gap-0 py-3.5' : 'px-4 py-3.5 gap-3.5'}`}
+                                className={`sidebar-nav-glow premium-sidebar-item group flex items-center rounded-2xl relative transition-all duration-300 ease-in-out ${isActive ? `active ${activeClass}` : inactiveClass} ${isCollapsed ? 'md:justify-center md:px-0 md:gap-0 py-3.5 px-4 gap-3.5' : 'px-4 py-3.5 gap-3.5'}`}
                             >
                                 <div className={`p-2 rounded-xl transition-all duration-200 shrink-0 ${
                                     isActive 
@@ -167,7 +167,7 @@ export function AppSidebar({ currentPath = '/', isOpen = false, setIsOpen, isCol
                                 </div>
                                 
                                 <div className={`overflow-hidden transition-all duration-300 ease-in-out flex-1 text-left
-                                    ${isCollapsed ? 'max-w-0 opacity-0 invisible' : 'max-w-[150px] opacity-100 visible'}`}>
+                                    ${isCollapsed ? 'md:max-w-0 md:opacity-0 md:invisible max-w-[150px] opacity-100 visible' : 'max-w-[150px] opacity-100 visible'}`}>
                                     <span className={`text-sm font-extrabold tracking-wide whitespace-nowrap transition-all duration-200 ${isActive ? 'translate-x-0.5' : 'group-hover:translate-x-0.5'}`}>
                                         {item.label}
                                     </span>
@@ -191,7 +191,7 @@ export function AppSidebar({ currentPath = '/', isOpen = false, setIsOpen, isCol
                         }`}>
                             <button
                                 onClick={toggleTheme}
-                                className={`sidebar-nav-glow group flex items-center rounded-xl relative w-full transition-all duration-300 ease-in-out ${isCollapsed ? 'justify-center px-0 gap-0 py-3' : 'px-4 py-3 gap-3.5'} ${
+                                className={`sidebar-nav-glow group flex items-center rounded-xl relative w-full transition-all duration-300 ease-in-out ${isCollapsed ? 'md:justify-center md:px-0 md:gap-0 py-3 px-4 gap-3.5' : 'px-4 py-3 gap-3.5'} ${
                                     theme === 'light' 
                                         ? 'text-slate-600 hover:text-indigo-600 hover:bg-white/80' 
                                         : 'text-white/50 hover:text-white hover:bg-white/[0.04]'
@@ -210,7 +210,7 @@ export function AppSidebar({ currentPath = '/', isOpen = false, setIsOpen, isCol
                                 </div>
                                 
                                 <div className={`overflow-hidden transition-all duration-300 ease-in-out flex-1 text-left
-                                    ${isCollapsed ? 'max-w-0 opacity-0 invisible' : 'max-w-[150px] opacity-100 visible'}`}>
+                                    ${isCollapsed ? 'md:max-w-0 md:opacity-0 md:invisible max-w-[150px] opacity-100 visible' : 'max-w-[150px] opacity-100 visible'}`}>
                                     <span className="text-sm font-bold tracking-wide whitespace-nowrap">
                                         {theme === 'light' ? 'Giao diện Tối' : 'Giao diện Sáng'}
                                     </span>
@@ -233,10 +233,10 @@ export function AppSidebar({ currentPath = '/', isOpen = false, setIsOpen, isCol
                             ? 'bg-slate-50/90 border border-slate-200/50 shadow-sm' 
                             : 'glass-card shadow-[0_0_20px_rgba(0,0,0,0.15)]'
                     }`}>
-                        <div className={`flex items-center transition-all duration-300 ease-in-out ${isCollapsed ? 'flex-col gap-3' : 'justify-between gap-3'}`}>
+                        <div className={`flex items-center transition-all duration-300 ease-in-out ${isCollapsed ? 'md:flex-col md:gap-3 justify-between gap-3' : 'justify-between gap-3'}`}>
                             <Link 
                                 to="/profile" 
-                                className={`flex items-center flex-1 min-w-0 relative group transition-all duration-300 ease-in-out ${isCollapsed ? 'flex-col gap-0' : 'gap-3'}`}
+                                className={`flex items-center flex-1 min-w-0 relative group transition-all duration-300 ease-in-out ${isCollapsed ? 'md:flex-col md:gap-0 gap-3' : 'gap-3'}`}
                             >
                                 {/* Avatar with online indicator */}
                                 <div className="relative shrink-0 select-none">
@@ -250,7 +250,7 @@ export function AppSidebar({ currentPath = '/', isOpen = false, setIsOpen, isCol
                                 </div>
 
                                 <div className={`overflow-hidden transition-all duration-300 ease-in-out flex flex-col flex-1
-                                    ${isCollapsed ? 'max-w-0 opacity-0 invisible ml-0 h-0' : 'max-w-[150px] opacity-100 visible ml-0'}`}>
+                                    ${isCollapsed ? 'md:max-w-0 md:opacity-0 md:invisible md:ml-0 md:h-0 max-w-[150px] opacity-100 visible ml-0' : 'max-w-[150px] opacity-100 visible ml-0'}`}>
                                     <p className={`font-black text-sm truncate leading-tight ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>{userName}</p>
                                     {/* Role badge with color */}
                                     <span className={`inline-flex items-center mt-1.5 px-2 py-0.5 rounded-md text-[9px] font-black uppercase tracking-widest leading-none border w-max ${getRoleBadgeClass(userRole, userPlan)}`}>
@@ -265,7 +265,7 @@ export function AppSidebar({ currentPath = '/', isOpen = false, setIsOpen, isCol
                                 </span>
                             </Link>
                             
-                            <div className={`transition-all duration-300 ease-in-out ${isCollapsed ? 'w-full flex justify-center border-t border-sidebar-border/50 pt-2.5' : ''}`}>
+                            <div className={`transition-all duration-300 ease-in-out ${isCollapsed ? 'md:w-full md:flex md:justify-center md:border-t md:border-sidebar-border/50 md:pt-2.5' : ''}`}>
                                 <button
                                     onClick={handleLogout}
                                     className={`p-2.5 rounded-xl transition-all active:scale-90 shrink-0 relative group ${
