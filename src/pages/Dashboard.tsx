@@ -754,45 +754,45 @@ export default function Dashboard() {
 
                                     {/* Top Branding Label */}
                                     <div className="flex flex-col items-center gap-1.5 shrink-0">
-                                        <span className="text-[10px] font-black uppercase tracking-[0.25em] text-amber-400">Edu Tech 3D</span>
-                                        <h2 className="text-base font-black text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-amber-250 to-orange-400 tracking-tight uppercase leading-none font-heading mt-1 flex items-center gap-1">
-                                            <Sparkles className="w-4 h-4 text-amber-400 animate-pulse" />
+                                        <span className="text-[10px] font-black uppercase tracking-[0.25em] text-yellow-300 drop-shadow-md">Edu Tech 3D</span>
+                                        <h2 className="text-base font-black text-transparent bg-clip-text bg-gradient-to-r from-yellow-100 via-yellow-200 to-amber-300 tracking-tight uppercase leading-none font-heading mt-1 flex items-center gap-1 filter drop-shadow-[0_2px_4px_rgba(0,0,0,0.4)]">
+                                            <Sparkles className="w-4 h-4 text-yellow-300 animate-pulse" />
                                             Không gian tương tác
                                         </h2>
                                     </div>
 
                                     {/* Main 3D Brand Logo Graphic */}
-                                    <div className="my-5 relative w-full aspect-square max-w-[170px] p-3 flex items-center justify-center rounded-3xl overflow-hidden border border-amber-500/30 shadow-2xl bg-white group-hover:scale-105 transition-transform duration-700 shadow-amber-500/10">
+                                    <div className="my-4 relative w-full aspect-square max-w-[210px] p-1.5 flex items-center justify-center rounded-3xl overflow-hidden border-2 border-amber-400/40 shadow-2xl bg-white group-hover:scale-105 transition-transform duration-700 shadow-amber-500/20">
                                         <img 
                                             src="/edutech_logo_new.jpg" 
                                             alt="Edu Tech Brand Logo" 
-                                            className="w-full h-full object-contain rounded-xl"
+                                            className="w-full h-full object-contain rounded-2xl"
                                         />
                                     </div>
 
                                     {/* Bottom Details / Meta */}
                                     <div className="w-full space-y-3.5 shrink-0">
                                         {/* Wish Banner */}
-                                        <div className="bg-gradient-to-br from-amber-500/15 via-red-650/15 to-transparent border border-amber-500/25 rounded-2xl p-4 shadow-inner relative overflow-hidden group/wish">
+                                        <div className="bg-gradient-to-br from-amber-500/20 via-red-650/20 to-black/25 border border-amber-400/40 rounded-2xl p-4 shadow-inner relative overflow-hidden group/wish">
                                             {/* Decorative tiny lights */}
-                                            <div className="absolute top-1 right-1 w-1.5 h-1.5 bg-amber-400 rounded-full animate-ping"></div>
+                                            <div className="absolute top-1 right-1 w-1.5 h-1.5 bg-yellow-400 rounded-full animate-ping"></div>
                                             
-                                            <h3 className="text-xs font-black text-amber-300 uppercase tracking-widest flex items-center justify-center gap-1 mb-1.5">
+                                            <h3 className="text-xs font-black text-yellow-300 uppercase tracking-widest flex items-center justify-center gap-1 mb-1.5 filter drop-shadow-sm">
                                                 🎓 Chúc Thi Tốt! 🎓
                                             </h3>
-                                            <p className="text-[11px] font-bold text-slate-100 leading-relaxed">
+                                            <p className="text-[11px] font-bold text-white leading-relaxed">
                                                 Bình tĩnh, tự tin, làm bài thật tốt để bứt phá và về đích thành công rực rỡ! 🎯🏆
                                             </p>
                                         </div>
 
-                                        <p className="text-[10px] text-slate-300 leading-relaxed font-semibold">
+                                        <p className="text-[11px] text-amber-100/90 leading-relaxed font-bold">
                                             Học liệu 3D & AI đồng hành cùng sĩ tử trong mọi kỳ thi thử thách.
                                         </p>
                                         
-                                        <div className="pt-2.5 border-t border-white/10 flex flex-col gap-1 text-[9px] font-black text-slate-400 uppercase tracking-widest leading-none">
-                                            <div>Phiên bản Premium v2.5.0</div>
-                                            <div className="text-amber-450 mt-1 flex items-center justify-center gap-1.5">
-                                                <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-ping"></span>
+                                        <div className="pt-2.5 border-t border-white/15 flex flex-col gap-1.5 text-[10px] font-black text-slate-200 uppercase tracking-widest leading-none">
+                                            <div className="opacity-90">Phiên bản Premium v2.5.0</div>
+                                            <div className="text-yellow-300 mt-1 flex items-center justify-center gap-1.5 font-black">
+                                                <span className="w-2 h-2 rounded-full bg-yellow-400 animate-ping"></span>
                                                 Đồng hành cùng sĩ tử về đích
                                             </div>
                                         </div>
