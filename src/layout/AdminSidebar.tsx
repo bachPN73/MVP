@@ -1,5 +1,5 @@
 import { Link } from 'react-router';
-import { LayoutDashboard, Users, Box, LogOut, X, Sun, Moon, BookOpen, School, CreditCard } from 'lucide-react';
+import { LayoutDashboard, Users, Box, LogOut, X, Sun, Moon, BookOpen, School, CreditCard, Settings2 } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { useTheme } from '../components/ThemeProvider';
 
@@ -30,6 +30,7 @@ export function AdminSidebar({ currentPath = '/admin/dashboard', isOpen = false,
         { path: '/admin/users', label: 'Quản lý người dùng', icon: Users },
         { path: '/admin/schools', label: 'Quản lý trường học', icon: School },
         { path: '/admin/payments', label: 'Quản lý thanh toán', icon: CreditCard },
+        { path: '/admin/ai-config', label: 'AI & Phân quyền', icon: Settings2 },
     ];
 
     const handleLogout = () => {

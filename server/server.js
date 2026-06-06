@@ -14,7 +14,7 @@ import { GoogleGenerativeAI } from '@google/generative-ai';
 import crypto from 'crypto';
 
 import mongoose from 'mongoose';
-import { User, Material, ResetToken, School, MembershipRequest, Payment, Lesson } from './mongo_models.js';
+import { User, Material, ResetToken, School, MembershipRequest, Payment, Lesson, SystemConfig } from './mongo_models.js';
 import { createClient } from '@supabase/supabase-js';
 
 // Load environment variables
@@ -244,6 +244,14 @@ async function initDb() {
             console.log('[INFO] Đã tự động tạo tài khoản admin mặc định.');
         } else {
             await User.updateOne({ email: adminEmail }, { password: hash, role: 'admin' });
+        }
+
+        // Seed default AI limits config
+        const defaultAILimits = { free: 3, demo: 10, basic: 20, pro: 50, combo: 50, school: 100 };
+        const existingAIConfig = await SystemConfig.findOne({ key: 'ai_limits' });
+        if (!existingAIConfig) {
+            await SystemConfig.create({ key: 'ai_limits', value: defaultAILimits });
+            console.log('[INFO] Đã tạo cấu hình AI limits mặc định.');
         }
 
         // Seed School "THPT Nguyễn Du"
@@ -491,7 +499,7 @@ app.put('/api/models/:id', async (req, res) => {
     const { 
         title, description, file_url, thumbnail, subject, grade, tags, type,
         subtitle, category, size, location, visibleInLM, features, funFact, whereItOccurs, source,
-        relatedMaterials
+        relatedMaterials, requiredPlan
     } = req.body;
 
     let tagsArray = tags;
@@ -535,6 +543,8 @@ app.put('/api/models/:id', async (req, res) => {
         if (whereItOccurs !== undefined) updateData.whereItOccurs = whereItOccurs;
         if (source !== undefined) updateData.source = source;
         if (relatedMaterialsArray !== undefined) updateData.relatedMaterials = relatedMaterialsArray;
+        // requiredPlan: null means no restriction, string means minimum plan required
+        if (requiredPlan !== undefined) updateData.requiredPlan = requiredPlan === '' ? null : requiredPlan;
 
         const updated = await Material.findByIdAndUpdate(id, updateData, { new: true });
         if (!updated) return res.status(404).json({ error: 'Không tìm thấy học liệu' });
@@ -747,13 +757,168 @@ app.post('/api/reset-password', async (req, res) => {
     }
 });
 
-// AI SEARCH ENDPOINT
+// ==========================================
+// ADMIN: AI CONFIG & PLAN PERMISSIONS API
+// ==========================================
+
+// Helper: get current AI limits from DB (with in-memory cache for performance)
+let aiLimitsCache = null;
+let aiLimitsCacheTime = 0;
+const AI_LIMITS_CACHE_TTL = 60 * 1000; // 1 minute
+
+async function getAILimits() {
+    const now = Date.now();
+    if (aiLimitsCache && now - aiLimitsCacheTime < AI_LIMITS_CACHE_TTL) {
+        return aiLimitsCache;
+    }
+    const config = await SystemConfig.findOne({ key: 'ai_limits' });
+    const defaults = { free: 3, demo: 10, basic: 20, pro: 50, combo: 50, school: 100 };
+    aiLimitsCache = config ? { ...defaults, ...config.value } : defaults;
+    aiLimitsCacheTime = now;
+    return aiLimitsCache;
+}
+
+// GET /api/admin/ai-config — Lấy config giới hạn AI theo gói
+app.get('/api/admin/ai-config', async (req, res) => {
+    try {
+        const limits = await getAILimits();
+        res.json({ limits });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+// PUT /api/admin/ai-config — Admin cập nhật config giới hạn AI
+app.put('/api/admin/ai-config', async (req, res) => {
+    const userId = req.headers['x-user-id'];
+    if (!userId) return res.status(401).json({ error: 'Không có quyền truy cập' });
+
+    try {
+        const user = await User.findById(userId);
+        if (!user || user.role !== 'admin') {
+            return res.status(403).json({ error: 'Chỉ Admin mới có thể thay đổi cấu hình' });
+        }
+
+        const { limits } = req.body;
+        if (!limits || typeof limits !== 'object') {
+            return res.status(400).json({ error: 'Dữ liệu không hợp lệ' });
+        }
+
+        // Validate: all values must be numbers (-1 = unlimited)
+        for (const [plan, val] of Object.entries(limits)) {
+            if (typeof val !== 'number' || (!Number.isInteger(val)) || val < -1) {
+                return res.status(400).json({ error: `Giá trị không hợp lệ cho gói "${plan}": phải là số nguyên >= -1` });
+            }
+        }
+
+        await SystemConfig.findOneAndUpdate(
+            { key: 'ai_limits' },
+            { value: limits },
+            { upsert: true, new: true }
+        );
+
+        // Invalidate cache
+        aiLimitsCache = null;
+        aiLimitsCacheTime = 0;
+
+        console.log('[ADMIN] AI limits updated:', limits);
+        res.json({ message: 'Cập nhật cấu hình AI thành công', limits });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+// ==========================================
+// AI SEARCH ENDPOINT (with server-side rate limiting)
+// ==========================================
+
+// In-memory rate-limit store: Map<key, { date: string, count: number }>
+// key = userId (authenticated) or ip (guest)
+// date = 'YYYY-MM-DD' in Asia/Ho_Chi_Minh timezone — resets at 00:00 daily
+const aiRateLimitStore = new Map();
+
+function getVNDateString() {
+    return new Date().toLocaleDateString('sv-SE', { timeZone: 'Asia/Ho_Chi_Minh' }); // 'YYYY-MM-DD'
+}
+
+function checkAndIncrementAIUsage(key, limit) {
+    const today = getVNDateString();
+    const entry = aiRateLimitStore.get(key);
+
+    if (!entry || entry.date !== today) {
+        // New day — reset counter
+        aiRateLimitStore.set(key, { date: today, count: 1 });
+        return { allowed: true, count: 1, limit };
+    }
+
+    if (limit !== -1 && entry.count >= limit) {
+        return { allowed: false, count: entry.count, limit };
+    }
+
+    entry.count += 1;
+    aiRateLimitStore.set(key, entry);
+    return { allowed: true, count: entry.count, limit };
+}
+
+function getAIUsageCount(key) {
+    const today = getVNDateString();
+    const entry = aiRateLimitStore.get(key);
+    if (!entry || entry.date !== today) return 0;
+    return entry.count;
+}
+
+// Cleanup old entries every hour
+setInterval(() => {
+    const today = getVNDateString();
+    for (const [key, entry] of aiRateLimitStore.entries()) {
+        if (entry.date !== today) aiRateLimitStore.delete(key);
+    }
+}, 60 * 60 * 1000);
+
 const aiSearchCache = new Map();
 app.post('/api/ai-search', async (req, res) => {
     const { query } = req.body;
     if (!query?.trim()) return res.status(400).json({ error: 'Vui lòng nhập nội dung tìm kiếm' });
 
     try {
+        // --- Server-side rate limiting ---
+        const userId = req.headers['x-user-id'];
+        const clientIp = req.headers['x-forwarded-for']?.split(',')[0]?.trim() || req.socket.remoteAddress || 'unknown';
+        const rateLimitKey = userId || `ip:${clientIp}`;
+
+        // Get user plan
+        let userPlan = 'free';
+        if (userId) {
+            try {
+                const user = await User.findById(userId).select('plan role');
+                if (user) {
+                    // Admin and school-admin have no limits
+                    if (user.role === 'admin' || user.role === 'school-admin') {
+                        userPlan = 'unlimited';
+                    } else {
+                        userPlan = (user.plan || 'free').toLowerCase();
+                    }
+                }
+            } catch (e) {
+                console.warn('[AI Rate Limit] Could not fetch user:', e.message);
+            }
+        }
+
+        const limits = await getAILimits();
+        const planLimit = userPlan === 'unlimited' ? -1 : (limits[userPlan] ?? limits['free'] ?? 3);
+        const usageResult = checkAndIncrementAIUsage(rateLimitKey, planLimit);
+
+        if (!usageResult.allowed) {
+            return res.status(429).json({
+                error: 'RATE_LIMIT_EXCEEDED',
+                message: `Bạn đã dùng hết ${usageResult.limit} lượt AI hôm nay. Hạn mức sẽ được đặt lại lúc 00:00.`,
+                count: usageResult.count,
+                limit: usageResult.limit,
+                plan: userPlan
+            });
+        }
+        // --- End rate limiting ---
+
         const cacheKey = query.toLowerCase().trim();
         if (aiSearchCache.has(cacheKey)) return res.json(aiSearchCache.get(cacheKey));
 

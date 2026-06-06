@@ -40,6 +40,10 @@ const modelSchema = new mongoose.Schema({
     grade: Number,
     type: { type: String, default: '3d-model' },
     tags: { type: [String], default: [] },
+    // Access control: which plan is required to view this material
+    // null = no restriction (everyone can view)
+    // 'basic' | 'pro' | 'combo' | 'school' | 'demo' = requires that plan or higher
+    requiredPlan: { type: String, default: null },
     // Premium details fields
     subtitle: String,
     category: String,
@@ -73,12 +77,21 @@ const paymentSchema = new mongoose.Schema({
     accountName: { type: String, default: 'PHAM NGOC BACH' }
 }, { timestamps: true });
 
+// SystemConfig: stores global admin-configurable settings as key-value pairs
+// Key 'ai_limits' stores an object like: { free: 3, demo: 10, basic: 20, pro: 50, combo: 50, school: 100 }
+// A value of -1 means unlimited.
+const systemConfigSchema = new mongoose.Schema({
+    key: { type: String, unique: true, required: true },
+    value: { type: mongoose.Schema.Types.Mixed, required: true }
+}, { timestamps: true });
+
 export const User = mongoose.model('User', userSchema);
 export const Material = mongoose.model('Material', modelSchema);
 export const ResetToken = mongoose.model('ResetToken', resetTokenSchema);
 export const School = mongoose.model('School', schoolSchema);
 export const MembershipRequest = mongoose.model('MembershipRequest', membershipRequestSchema);
 export const Payment = mongoose.model('Payment', paymentSchema);
+export const SystemConfig = mongoose.model('SystemConfig', systemConfigSchema);
 
 const lessonSchema = new mongoose.Schema({
     title: { type: String, required: true },

@@ -1,6 +1,6 @@
 import { Layout } from '../layout/MainLayout';
 import { useState, useEffect, useMemo, useCallback, useRef } from 'react';
-import { Search, Filter, BookOpen, Trash2, X, ChevronLeft, ChevronRight, ChevronDown, Layers, Atom, FlaskConical, Sprout, Sparkles, Box, PlayCircle, GraduationCap, Plus, Edit3, Save, Loader2, CheckSquare, Edit } from 'lucide-react';
+import { Search, Filter, BookOpen, Trash2, X, ChevronLeft, ChevronRight, ChevronDown, Layers, Atom, FlaskConical, Sprout, Sparkles, Box, PlayCircle, GraduationCap, Plus, Edit3, Save, Loader2, CheckSquare, Edit, Lock } from 'lucide-react';
 import { Link, useSearchParams } from 'react-router';
 import { materials as mockMaterials, getSubjectName, Material, formatRelativeTime } from '../data/materialsData';
 import { api, BASE_URL } from '../api';
@@ -269,6 +269,18 @@ export default function Library() {
         }
     }, []);
 
+    // Plan hierarchy: higher index = more access
+    const PLAN_HIERARCHY = ['free', 'demo', 'basic', 'combo', 'pro', 'school'];
+
+    // Returns true if userPlan has access to content requiring requiredPlan
+    const hasAccess = (requiredPlan: string | null | undefined): boolean => {
+        if (!requiredPlan) return true; // No restriction
+        if (isAdmin) return true;       // Admin always has access
+        const userLevel = PLAN_HIERARCHY.indexOf(userPlan);
+        const requiredLevel = PLAN_HIERARCHY.indexOf(requiredPlan);
+        return userLevel >= requiredLevel;
+    };
+
     const fetchModels = async () => {
         try {
             const dbModels = await api.getModels();
@@ -287,7 +299,8 @@ export default function Library() {
                 file_url: m.file_url 
                     ? (m.file_url.startsWith('http') ? m.file_url : `${BASE_URL}${m.file_url}`)
                     : '',
-                createdAt: m.createdAt || m.created_at
+                createdAt: m.createdAt || m.created_at,
+                requiredPlan: m.requiredPlan || null,
             }));
 
             setAllMaterials([...mockMaterials, ...formattedModels]);
@@ -828,13 +841,53 @@ export default function Library() {
                         </div>
                     ) : filteredMaterials.length > 0 ? (
                         <div ref={gridRef}>
+                                {/* ===== Plan Legend / Chú thích gói ===== */}
+                                <div className="flex flex-wrap items-center gap-2 mb-4 px-1">
+                                    <span className="text-[10px] font-black uppercase tracking-widest text-slate-400 dark:text-slate-500 mr-1">Yêu cầu gói:</span>
+                                    <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-[10px] font-black bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 border border-slate-200 dark:border-white/10">
+                                        <span className="w-1.5 h-1.5 rounded-full bg-slate-400 inline-block" />
+                                        Miễn phí
+                                    </span>
+                                    <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-[10px] font-black bg-rose-50 dark:bg-rose-950/30 text-rose-600 dark:text-rose-400 border border-rose-200 dark:border-rose-800">
+                                        <span className="w-1.5 h-1.5 rounded-full bg-rose-500 inline-block" />
+                                        Thử nghiệm
+                                    </span>
+                                    <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-[10px] font-black bg-blue-50 dark:bg-blue-950/30 text-blue-600 dark:text-blue-400 border border-blue-200 dark:border-blue-800">
+                                        <span className="w-1.5 h-1.5 rounded-full bg-blue-500 inline-block" />
+                                        Cơ bản
+                                    </span>
+                                    <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-[10px] font-black bg-orange-50 dark:bg-orange-950/30 text-orange-600 dark:text-orange-400 border border-orange-200 dark:border-orange-800">
+                                        <span className="w-1.5 h-1.5 rounded-full bg-orange-500 inline-block" />
+                                        Combo
+                                    </span>
+                                    <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-[10px] font-black bg-violet-50 dark:bg-violet-950/30 text-violet-600 dark:text-violet-400 border border-violet-200 dark:border-violet-800">
+                                        <span className="w-1.5 h-1.5 rounded-full bg-violet-500 inline-block" />
+                                        Pro
+                                    </span>
+                                    <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-[10px] font-black bg-emerald-50 dark:bg-emerald-950/30 text-emerald-600 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800">
+                                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 inline-block" />
+                                        Trường học
+                                    </span>
+                                    <span className="text-[10px] text-slate-400 dark:text-slate-500 italic ml-1">— Học liệu ở ché sẽ yêu cầu nâng cấp gói để xem.</span>
+                                </div>
+
                             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 sm:gap-5">
-                                {paginatedMaterials.map((material) => {
+                                                {paginatedMaterials.map((material) => {
                                     const subjectStyle = getSubjectStyle(material.subject);
+                                    const matRequiredPlan = (material as any).requiredPlan;
+                                    const isLocked = !hasAccess(matRequiredPlan);
+                                    const planLabels: Record<string, string> = {
+                                        demo: 'Gói Thử nghiệm', basic: 'Gói Cơ bản',
+                                        combo: 'Gói Combo', pro: 'Gói Pro', school: 'Gói Trường học'
+                                    };
                                     return (
                                         <div
                                             key={material.id}
-                                            className={`bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-white/[0.06] rounded-2xl flex flex-col overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1.5 relative group ${subjectStyle.glow}`}
+                                            className={`bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-white/[0.06] rounded-2xl flex flex-col overflow-hidden transition-all duration-300 relative group ${
+                                                isLocked
+                                                    ? 'opacity-80 cursor-not-allowed'
+                                                    : `hover:shadow-xl hover:-translate-y-1.5 ${subjectStyle.glow}`
+                                            }`}
                                         >
                                             {/* Delete button for admin - only for DB models */}
                                             {isAdmin && material.id.startsWith('db-') && (
@@ -851,84 +904,145 @@ export default function Library() {
                                                 </button>
                                             )}
 
-                                            <Link
-                                                to={`/material/${material.id}`}
-                                                className="block flex-1 flex flex-col"
-                                            >
-                                                {/* Thumbnail — adaptive for landscape & portrait infographics */}
-                                                <div className={`shrink-0 relative overflow-hidden library-card-shimmer ${
-                                                    material.type === 'infographic'
-                                                        ? 'aspect-[4/3] bg-slate-100 dark:bg-slate-800/60'
-                                                        : 'aspect-video bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-950'
-                                                } flex items-center justify-center`}>
-                                                    {material.thumbnail && material.thumbnail !== '3d-placeholder' ? (
-                                                        <img
-                                                            loading="lazy"
-                                                            decoding="async"
-                                                            src={material.thumbnail}
-                                                            alt={material.title}
-                                                            className={`transition-transform duration-500 group-hover:scale-105 ${
-                                                                material.type === 'infographic'
-                                                                    ? 'w-full h-full object-contain p-1'
-                                                                    : 'w-full h-full object-cover'
-                                                            }`}
-                                                        />
-                                                    ) : (
-                                                        <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-indigo-50 to-purple-50 dark:from-indigo-950/30 dark:to-purple-950/30 group-hover:scale-105 transition-transform duration-500">
-                                                            <Box className="w-10 h-10 text-indigo-200 dark:text-indigo-800" />
-                                                        </div>
-                                                    )}
-                                                    {/* Gradient overlay at bottom for better badge visibility */}
-                                                    <div className="absolute bottom-0 left-0 right-0 h-8 bg-gradient-to-t from-black/20 to-transparent pointer-events-none"></div>
-
-                                                    {/* Floating type & subject badges */}
-                                                    <div className="absolute top-2.5 left-2.5 flex gap-1.5">
-                                                        <span className={`px-2.5 py-1 rounded-lg text-[9px] font-black shadow-sm uppercase tracking-wider leading-none ${subjectStyle.badge}`}>
-                                                            {getSubjectName(material.subject)}
-                                                        </span>
-                                                        <span className="px-2.5 py-1 bg-white/90 dark:bg-slate-950/90 backdrop-blur-md rounded-lg text-[9px] font-black text-slate-700 dark:text-slate-300 shadow-sm uppercase tracking-wider leading-none">
-                                                            {material.type === '3d-model' ? '3D' : 'INFO'}
-                                                        </span>
+                                            {/* LOCK OVERLAY for restricted materials */}
+                                            {isLocked && (
+                                                <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-slate-900/60 dark:bg-slate-950/70 backdrop-blur-[3px] rounded-2xl">
+                                                    <div className="w-12 h-12 bg-amber-500/20 border border-amber-400/30 rounded-2xl flex items-center justify-center mb-2 shadow-lg">
+                                                        <Lock className="w-6 h-6 text-amber-400" />
                                                     </div>
+                                                    <p className="text-xs font-black text-white text-center px-3">
+                                                        Yêu cầu {planLabels[matRequiredPlan] || matRequiredPlan}
+                                                    </p>
+                                                    <Link
+                                                        to="/pricing"
+                                                        onClick={e => e.stopPropagation()}
+                                                        className="mt-2 px-3 py-1 bg-amber-500 hover:bg-amber-400 text-white text-[10px] font-black rounded-lg transition-colors"
+                                                    >
+                                                        Nâng cấp
+                                                    </Link>
+                                                </div>
+                                            )}
 
-                                                    {/* Play overlay */}
-                                                    <div className="absolute inset-0 bg-slate-900/30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 backdrop-blur-[1px]">
-                                                        <PlayCircle className="w-11 h-11 text-white drop-shadow-md" strokeWidth={1.5} />
+                                            {isLocked ? (
+                                                // Non-clickable version for locked materials
+                                                <div className="block flex-1 flex flex-col">
+                                                    <div className={`shrink-0 relative overflow-hidden library-card-shimmer filter blur-[2px] ${
+                                                        material.type === 'infographic'
+                                                            ? 'aspect-[4/3] bg-slate-100 dark:bg-slate-800/60'
+                                                            : 'aspect-video bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-950'
+                                                    } flex items-center justify-center`}>
+                                                        {material.thumbnail && material.thumbnail !== '3d-placeholder' ? (
+                                                            <img loading="lazy" decoding="async" src={material.thumbnail} alt={material.title} className="w-full h-full object-cover" />
+                                                        ) : (
+                                                            <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-indigo-50 to-purple-50 dark:from-indigo-950/30 dark:to-purple-950/30">
+                                                                <Box className="w-10 h-10 text-indigo-200 dark:text-indigo-800" />
+                                                            </div>
+                                                        )}
+                                                    </div>
+                                                    <div className="p-3.5 sm:p-4 flex-1 flex flex-col filter blur-[1px]">
+                                                        <h3 className="font-black mb-1 text-sm sm:text-base line-clamp-2 leading-snug text-slate-800 dark:text-slate-100 font-heading">{material.title}</h3>
+                                                        <p className="text-[11px] sm:text-xs text-slate-500 dark:text-slate-400 line-clamp-2 font-medium leading-relaxed">{material.description}</p>
                                                     </div>
                                                 </div>
+                                            ) : (
+                                                <Link
+                                                    to={`/material/${material.id}`}
+                                                    className="block flex-1 flex flex-col"
+                                                >
+                                                    {/* Thumbnail — adaptive for landscape & portrait infographics */}
+                                                    <div className={`shrink-0 relative overflow-hidden library-card-shimmer ${
+                                                        material.type === 'infographic'
+                                                            ? 'aspect-[4/3] bg-slate-100 dark:bg-slate-800/60'
+                                                            : 'aspect-video bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-950'
+                                                    } flex items-center justify-center`}>
+                                                        {material.thumbnail && material.thumbnail !== '3d-placeholder' ? (
+                                                            <img
+                                                                loading="lazy"
+                                                                decoding="async"
+                                                                src={material.thumbnail}
+                                                                alt={material.title}
+                                                                className={`transition-transform duration-500 group-hover:scale-105 ${
+                                                                    material.type === 'infographic'
+                                                                        ? 'w-full h-full object-contain p-1'
+                                                                        : 'w-full h-full object-cover'
+                                                                }`}
+                                                            />
+                                                        ) : (
+                                                            <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-indigo-50 to-purple-50 dark:from-indigo-950/30 dark:to-purple-950/30 group-hover:scale-105 transition-transform duration-500">
+                                                                <Box className="w-10 h-10 text-indigo-200 dark:text-indigo-800" />
+                                                            </div>
+                                                        )}
+                                                        {/* Gradient overlay at bottom */}
+                                                        <div className="absolute bottom-0 left-0 right-0 h-8 bg-gradient-to-t from-black/20 to-transparent pointer-events-none"></div>
 
-                                                {/* Card body */}
-                                                <div className="p-3.5 sm:p-4 flex-1 flex flex-col">
-                                                    <div>
-                                                        <h3 className="font-black mb-1 sm:mb-1.5 text-sm sm:text-base line-clamp-2 leading-snug text-slate-800 dark:text-slate-100 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors font-heading">{material.title}</h3>
-                                                        <p className="text-[11px] sm:text-xs text-slate-500 dark:text-slate-400 line-clamp-2 font-medium leading-relaxed">
-                                                            {material.description}
-                                                        </p>
-                                                    </div>
+                                                        {/* Floating type & subject badges — top left */}
+                                                        <div className="absolute top-2.5 left-2.5 flex gap-1.5">
+                                                            <span className={`px-2.5 py-1 rounded-lg text-[9px] font-black shadow-sm uppercase tracking-wider leading-none ${subjectStyle.badge}`}>
+                                                                {getSubjectName(material.subject)}
+                                                            </span>
+                                                            <span className="px-2.5 py-1 bg-white/90 dark:bg-slate-950/90 backdrop-blur-md rounded-lg text-[9px] font-black text-slate-700 dark:text-slate-300 shadow-sm uppercase tracking-wider leading-none">
+                                                                {material.type === '3d-model' ? '3D' : 'INFO'}
+                                                            </span>
+                                                        </div>
 
-                                                    {/* Footer */}
-                                                    <div className="mt-auto pt-3 border-t border-slate-100 dark:border-white/5 flex items-center justify-between text-[10px] font-bold text-slate-400 dark:text-slate-500 mt-3">
-                                                        <span className="flex items-center gap-1 uppercase tracking-wider">
-                                                            <GraduationCap className="w-3 h-3" /> Khối {material.grade}
-                                                        </span>
-                                                        <span>{formatRelativeTime(material.createdAt)}</span>
-                                                    </div>
-
-                                                    {/* Tags */}
-                                                    {Array.isArray(material.tags) && material.tags.length > 0 && (
-                                                        <div className="flex flex-wrap gap-1 mt-2">
-                                                            {material.tags.slice(0, 2).map((tag, index) => (
-                                                                <span
-                                                                    key={index}
-                                                                    className="text-[10px] px-2 py-0.5 rounded-md bg-slate-50 dark:bg-white/[0.04] text-slate-500 dark:text-slate-400 truncate max-w-[90px] sm:max-w-[120px] font-medium border border-slate-100/50 dark:border-white/[0.04]"
-                                                                >
-                                                                    {tag}
+                                                        {/* Plan access badge — top right */}
+                                                        {(() => {
+                                                            const PLAN_BADGE: Record<string, { label: string; cls: string }> = {
+                                                                '':       { label: 'Mi\u1ec5n ph\u00ed',    cls: 'bg-slate-700/80 text-slate-200 border-slate-500/30' },
+                                                                'demo':   { label: 'Th\u1eed nghi\u1ec7m', cls: 'bg-rose-600/85 text-white border-rose-400/30' },
+                                                                'basic':  { label: 'C\u01a1 b\u1ea3n',     cls: 'bg-blue-600/85 text-white border-blue-400/30' },
+                                                                'combo':  { label: 'Combo',       cls: 'bg-orange-500/85 text-white border-orange-300/30' },
+                                                                'pro':    { label: 'Pro',          cls: 'bg-violet-600/85 text-white border-violet-400/30' },
+                                                                'school': { label: 'Tr\u01b0\u1eddng h\u1ecdc', cls: 'bg-emerald-600/85 text-white border-emerald-400/30' },
+                                                            };
+                                                            const key = matRequiredPlan || '';
+                                                            const badge = PLAN_BADGE[key] || PLAN_BADGE[''];
+                                                            return (
+                                                                <span className={`absolute top-2.5 right-2.5 px-2 py-0.5 rounded-md text-[9px] font-black backdrop-blur-sm border shadow-sm leading-none ${badge.cls}`}>
+                                                                    {badge.label}
                                                                 </span>
-                                                            ))}
+                                                            );
+                                                        })()}
+
+                                                        {/* Play overlay */}
+                                                        <div className="absolute inset-0 bg-slate-900/30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 backdrop-blur-[1px]">
+                                                            <PlayCircle className="w-11 h-11 text-white drop-shadow-md" strokeWidth={1.5} />
                                                         </div>
-                                                    )}
-                                                </div>
-                                            </Link>
+                                                    </div>
+
+                                                    {/* Card body */}
+                                                    <div className="p-3.5 sm:p-4 flex-1 flex flex-col">
+                                                        <div>
+                                                            <h3 className="font-black mb-1 sm:mb-1.5 text-sm sm:text-base line-clamp-2 leading-snug text-slate-800 dark:text-slate-100 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors font-heading">{material.title}</h3>
+                                                            <p className="text-[11px] sm:text-xs text-slate-500 dark:text-slate-400 line-clamp-2 font-medium leading-relaxed">
+                                                                {material.description}
+                                                            </p>
+                                                        </div>
+
+                                                        {/* Footer */}
+                                                        <div className="mt-auto pt-3 border-t border-slate-100 dark:border-white/5 flex items-center justify-between text-[10px] font-bold text-slate-400 dark:text-slate-500 mt-3">
+                                                            <span className="flex items-center gap-1 uppercase tracking-wider">
+                                                                <GraduationCap className="w-3 h-3" /> Khối {material.grade}
+                                                            </span>
+                                                            <span>{formatRelativeTime(material.createdAt)}</span>
+                                                        </div>
+
+                                                        {/* Tags */}
+                                                        {Array.isArray(material.tags) && material.tags.length > 0 && (
+                                                            <div className="flex flex-wrap gap-1 mt-2">
+                                                                {material.tags.slice(0, 2).map((tag, index) => (
+                                                                    <span
+                                                                        key={index}
+                                                                        className="text-[10px] px-2 py-0.5 rounded-md bg-slate-50 dark:bg-white/[0.04] text-slate-500 dark:text-slate-400 truncate max-w-[90px] sm:max-w-[120px] font-medium border border-slate-100/50 dark:border-white/[0.04]"
+                                                                    >
+                                                                        {tag}
+                                                                    </span>
+                                                                ))}
+                                                            </div>
+                                                        )}
+                                                    </div>
+                                                </Link>
+                                            )}
                                         </div>
                                     );
                                 })}

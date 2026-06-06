@@ -13,16 +13,24 @@ export default function FindWithAI() {
 
     const [userPlan, setUserPlan] = useState('free');
     const [aiCount, setAiCount] = useState(0);
+    const [aiLimit, setAiLimit] = useState<number>(3); // Default: will be updated from server
+    const [isRateLimited, setIsRateLimited] = useState(false);
 
     useEffect(() => {
+        // Load user plan from localStorage
         const stored = localStorage.getItem('edu_tech_user');
+        let currentPlan = 'free';
         if (stored) {
             try {
                 const user = JSON.parse(stored);
-                if (user.plan) setUserPlan(user.plan.toLowerCase());
+                if (user.plan) {
+                    currentPlan = user.plan.toLowerCase();
+                    setUserPlan(currentPlan);
+                }
             } catch (e) {}
         }
 
+        // Load AI usage count from localStorage (for display only — actual enforcement is server-side)
         const usageStr = localStorage.getItem('edu_tech_ai_usage');
         const today = new Date().toDateString();
         if (usageStr) {
@@ -39,6 +47,16 @@ export default function FindWithAI() {
             localStorage.setItem('edu_tech_ai_usage', JSON.stringify({ date: today, count: 0 }));
             setAiCount(0);
         }
+
+        // Fetch the actual plan limit from server
+        api.getAIConfig().then(data => {
+            const planLimit = data.limits?.[currentPlan];
+            if (planLimit !== undefined) setAiLimit(planLimit);
+        }).catch(() => {
+            // Fallback defaults if server unavailable
+            const fallback: Record<string, number> = { free: 3, demo: 10, basic: 20, pro: 50, combo: 50, school: 100 };
+            setAiLimit(fallback[currentPlan] ?? 3);
+        });
     }, []);
 
     // AI Insight state
@@ -57,7 +75,9 @@ export default function FindWithAI() {
     const handleSearch = async () => {
         if (!query.trim()) return;
 
-        if (userPlan === 'free' && aiCount >= 3) {
+        // Optimistic check (not authoritative — server will enforce)
+        if (aiLimit !== -1 && aiCount >= aiLimit) {
+            setIsRateLimited(true);
             return;
         }
 
@@ -66,6 +86,7 @@ export default function FindWithAI() {
         setAiInsight('');
         setAiKeywords([]);
         setAiSubject(null);
+        setIsRateLimited(false);
 
         try {
             const response = await api.aiSearch(query);
@@ -89,17 +110,26 @@ export default function FindWithAI() {
             setAiInsight(response.ai_insight || '');
             setAiKeywords(response.keywords || []);
 
-            if (userPlan === 'free') {
-                const today = new Date().toDateString();
-                const newCount = aiCount + 1;
-                localStorage.setItem('edu_tech_ai_usage', JSON.stringify({ date: today, count: newCount }));
-                setAiCount(newCount);
-            }
+            // Update local usage counter for display
+            const today = new Date().toDateString();
+            const newCount = aiCount + 1;
+            localStorage.setItem('edu_tech_ai_usage', JSON.stringify({ date: today, count: newCount }));
+            setAiCount(newCount);
+
             setAiSubject(response.predicted_subject || null);
-        } catch (error) {
+        } catch (error: any) {
             console.error('AI Search error:', error);
-            setResults([]);
-            setAiInsight('Có lỗi xảy ra khi tìm kiếm. Vui lòng thử lại.');
+            // Handle server-side rate limit
+            if (error.code === 'RATE_LIMIT_EXCEEDED') {
+                setIsRateLimited(true);
+                if (error.limit !== undefined) setAiLimit(error.limit);
+                if (error.count !== undefined) setAiCount(error.count);
+                setResults([]);
+                setAiInsight('');
+            } else {
+                setResults([]);
+                setAiInsight('Có lỗi xảy ra khi tìm kiếm. Vui lòng thử lại.');
+            }
         } finally {
             setIsSearching(false);
         }
@@ -163,24 +193,30 @@ export default function FindWithAI() {
                                 <div className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 font-semibold">
                                     {query.length} / 500 ký tự
                                 </div>
-                                {userPlan === 'free' && (
-                                    <div className={`text-xs font-bold ${aiCount >= 3 ? 'text-rose-500 animate-pulse' : 'text-indigo-600 dark:text-indigo-400'}`}>
-                                        {aiCount >= 3 ? (
+                                {/* AI Usage Counter — shown for all plans except admin/unlimited */}
+                                {aiLimit !== -1 && (
+                                    <div className={`text-xs font-bold ${isRateLimited || aiCount >= aiLimit ? 'text-rose-500 animate-pulse' : 'text-indigo-600 dark:text-indigo-400'}`}>
+                                        {isRateLimited || aiCount >= aiLimit ? (
                                             <span>
-                                                ⚠️ Đã dùng hết 3 lượt AI hôm nay. {' '}
-                                                <Link to="/pricing" className="text-indigo-650 dark:text-indigo-400 underline hover:text-indigo-800">
+                                                ⚠️ Đã dùng hết {aiLimit} lượt AI hôm nay. Hạn mức tự động đặt lại lúc 00:00.{' '}
+                                                <Link to="/pricing" className="text-indigo-600 dark:text-indigo-400 underline hover:text-indigo-800">
                                                     Nâng cấp gói ngay!
                                                 </Link>
                                             </span>
                                         ) : (
-                                            `🤖 Số lượt AI hôm nay: ${aiCount}/3 (Còn ${3 - aiCount} lượt)`
+                                            `🤖 Lượt AI hôm nay: ${aiCount}/${aiLimit} (Còn ${aiLimit - aiCount} lượt)`
                                         )}
+                                    </div>
+                                )}
+                                {aiLimit === -1 && (
+                                    <div className="text-xs font-bold text-emerald-600 dark:text-emerald-400">
+                                        ✨ Không giới hạn lượt AI
                                     </div>
                                 )}
                             </div>
                             <button
                                 onClick={handleSearch}
-                                disabled={!query.trim() || isSearching || (userPlan === 'free' && aiCount >= 3)}
+                                disabled={!query.trim() || isSearching || (aiLimit !== -1 && (isRateLimited || aiCount >= aiLimit))}
                                 className="w-full sm:w-auto px-8 py-3.5 bg-gradient-to-r from-indigo-500 via-purple-500 to-emerald-500 text-white rounded-2xl font-bold hover:shadow-[0_4px_20px_rgba(99,102,241,0.4)] hover:scale-[1.02] active:scale-[0.98] transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 disabled:hover:shadow-none flex items-center justify-center gap-2 cursor-pointer shadow-md"
                             >
                                 {isSearching ? (

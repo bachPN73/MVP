@@ -5,6 +5,21 @@ export const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3099';
 const API_URL = `${BASE_URL}/api`;
 console.log('DEBUG: API_URL is', API_URL);
 
+// Helper: trả về auth headers từ localStorage (sessionToken + userId)
+function getAuthHeaders(): Record<string, string> {
+    try {
+        const stored = localStorage.getItem('edu_tech_user');
+        if (stored) {
+            const user = JSON.parse(stored);
+            const headers: Record<string, string> = {};
+            if (user.id || user._id) headers['x-user-id'] = user.id || user._id;
+            if (user.sessionToken) headers['x-session-token'] = user.sessionToken;
+            return headers;
+        }
+    } catch (e) {}
+    return {};
+}
+
 export const api = {
     // User APIs
     getUsers: async (): Promise<User[]> => {
@@ -153,11 +168,53 @@ export const api = {
     }> => {
         const response = await fetch(`${API_URL}/ai-search`, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 'Content-Type': 'application/json', ...getAuthHeaders() },
             body: JSON.stringify({ query }),
         });
         const data = await response.json();
+        // 429 = rate limit — throw with special error code so UI can distinguish
+        if (response.status === 429) {
+            const err: any = new Error(data.message || 'Đã hết lượt AI hôm nay');
+            err.code = 'RATE_LIMIT_EXCEEDED';
+            err.limit = data.limit;
+            err.count = data.count;
+            err.plan = data.plan;
+            throw err;
+        }
         if (!response.ok) throw new Error(data.error || 'AI search failed');
+        return data;
+    },
+
+    // Admin: AI Config APIs
+    getAIConfig: async (): Promise<{ limits: Record<string, number> }> => {
+        const response = await fetch(`${API_URL}/admin/ai-config`, {
+            headers: { ...getAuthHeaders() },
+        });
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.error || 'Failed to fetch AI config');
+        return data;
+    },
+
+    updateAIConfig: async (limits: Record<string, number>): Promise<{ message: string; limits: Record<string, number> }> => {
+        const response = await fetch(`${API_URL}/admin/ai-config`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json', ...getAuthHeaders() },
+            body: JSON.stringify({ limits }),
+        });
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.error || 'Failed to update AI config');
+        return data;
+    },
+
+    // Update a material's requiredPlan (used by admin permission page)
+    updateMaterialPlan: async (id: string | number, requiredPlan: string | null): Promise<{ message: string }> => {
+        const response = await fetch(`${API_URL}/models/${id}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json', ...getAuthHeaders() },
+            body: JSON.stringify({ requiredPlan }),
+        });
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.error || 'Failed to update material plan');
         return data;
     },
 

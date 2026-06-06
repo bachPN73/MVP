@@ -28,6 +28,7 @@ import AdminLessonsPage from "./pages/admin/AdminLessonsPage";
 import AdminUsersPage from "./pages/admin/AdminUsersPage";
 import AdminSchoolsPage from "./pages/admin/AdminSchoolsPage";
 import AdminPaymentsPage from "./pages/admin/AdminPaymentsPage";
+import AdminAIConfigPage from "./pages/admin/AdminAIConfigPage";
 
 // School Pages
 import SchoolDashboard from "./pages/school/SchoolDashboard";
@@ -185,6 +186,10 @@ export const router = createBrowserRouter([
     {
         path: "/admin/payments",
         Component: withAuth(AdminPaymentsPage),
+    },
+    {
+        path: "/admin/ai-config",
+        Component: withAuth(AdminAIConfigPage),
     },
     {
         path: "/school/dashboard",
