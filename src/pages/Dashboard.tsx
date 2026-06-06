@@ -755,14 +755,14 @@ export default function Dashboard() {
                                     {/* Top Branding Label */}
                                     <div className="flex flex-col items-center gap-1.5 shrink-0">
                                         <span className="text-[10px] font-black uppercase tracking-[0.25em] text-yellow-300 drop-shadow-md">Edu Tech 3D</span>
-                                        <h2 className="text-base font-black text-transparent bg-clip-text bg-gradient-to-r from-yellow-100 via-yellow-200 to-amber-300 tracking-tight uppercase leading-none font-heading mt-1 flex items-center gap-1 filter drop-shadow-[0_2px_4px_rgba(0,0,0,0.4)]">
-                                            <Sparkles className="w-4 h-4 text-yellow-300 animate-pulse" />
+                                        <h2 className="text-base font-black text-transparent bg-clip-text bg-gradient-to-r from-yellow-100 via-yellow-200 to-amber-300 tracking-tight uppercase leading-normal font-heading mt-1 py-1.5 px-1 overflow-visible flex items-center gap-1 filter drop-shadow-[0_2px_4px_rgba(0,0,0,0.4)]">
+                                            <Sparkles className="w-4 h-4 text-yellow-300 animate-pulse shrink-0" />
                                             Không gian tương tác
                                         </h2>
                                     </div>
 
                                     {/* Main 3D Brand Logo Graphic */}
-                                    <div className="my-4 relative w-full aspect-square max-w-[210px] p-1.5 flex items-center justify-center rounded-3xl overflow-hidden border-2 border-amber-400/40 shadow-2xl bg-white group-hover:scale-105 transition-transform duration-700 shadow-amber-500/20">
+                                    <div className="my-4 relative w-full aspect-square max-w-[240px] p-1 flex items-center justify-center rounded-3xl overflow-hidden border-2 border-amber-400/40 shadow-2xl bg-white group-hover:scale-105 transition-transform duration-700 shadow-amber-500/20">
                                         <img 
                                             src="/edutech_logo_new.jpg" 
                                             alt="Edu Tech Brand Logo" 
