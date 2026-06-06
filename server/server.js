@@ -12,6 +12,8 @@ import bcrypt from 'bcryptjs';
 import dotenv from 'dotenv';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import crypto from 'crypto';
+import { OAuth2Client } from 'google-auth-library';
+import nodemailer from 'nodemailer';
 
 import mongoose from 'mongoose';
 import { User, Material, ResetToken, School, MembershipRequest, Payment, Lesson, SystemConfig } from './mongo_models.js';
@@ -402,6 +404,60 @@ app.post('/api/users', async (req, res) => {
     }
 });
 
+// Initialize Google OAuth Client
+const googleClient = process.env.GOOGLE_CLIENT_ID ? new OAuth2Client(process.env.GOOGLE_CLIENT_ID) : null;
+
+app.post('/api/auth/google', async (req, res) => {
+    const { credential } = req.body;
+    if (!credential) return res.status(400).json({ error: 'Thiếu thông tin xác thực Google' });
+    if (!googleClient) return res.status(500).json({ error: 'Chưa cấu hình Google Client ID trên Server' });
+
+    try {
+        const ticket = await googleClient.verifyIdToken({
+            idToken: credential,
+            audience: process.env.GOOGLE_CLIENT_ID,
+        });
+        const payload = ticket.getPayload();
+        if (!payload || !payload.email) return res.status(400).json({ error: 'Token Google không hợp lệ' });
+
+        const email = payload.email;
+        let user = await User.findOne({ email });
+
+        if (!user) {
+            const salt = bcrypt.genSaltSync(10);
+            const randomPassword = crypto.randomBytes(16).toString('hex');
+            const hashPassword = bcrypt.hashSync(randomPassword, salt);
+            user = await User.create({
+                name: payload.name || 'Người dùng Google',
+                email: email,
+                role: 'student',
+                plan: 'free',
+                password: hashPassword
+            });
+            console.log('[AUTH] New user registered via Google:', email);
+        }
+
+        let sessionToken = null;
+        if (user.role !== 'admin' && user.role !== 'school-admin') {
+            sessionToken = crypto.randomUUID();
+            user.sessionToken = sessionToken;
+            await user.save();
+        }
+
+        res.json({
+            message: 'Đăng nhập Google thành công',
+            session_token: sessionToken,
+            user_id: user._id,
+            user_name: user.name,
+            user_role: user.role,
+            user_plan: user.plan
+        });
+    } catch (err) {
+        console.error('[AUTH ERROR] Google login failed:', err);
+        res.status(500).json({ error: 'Xác thực Google thất bại: ' + err.message });
+    }
+});
+
 app.post('/api/login', async (req, res) => {
     const { email, password } = req.body;
     try {
@@ -722,14 +778,30 @@ app.post('/api/forgot-password', async (req, res) => {
         await ResetToken.deleteMany({ email });
         await ResetToken.create({ email, token: resetCode, expires_at: expiresAt });
 
-        console.log(`[DEMO] Mã reset cho ${email}: ${resetCode}`);
+        if (process.env.EMAIL_USER && process.env.EMAIL_PASS) {
+            const transporter = nodemailer.createTransport({
+                service: 'gmail',
+                auth: { user: process.env.EMAIL_USER, pass: process.env.EMAIL_PASS }
+            });
+            await transporter.sendMail({
+                from: process.env.EMAIL_USER,
+                to: email,
+                subject: 'Mã khôi phục mật khẩu - Hệ thống Học tập',
+                text: `Xin chào ${user.name},\n\nMã khôi phục mật khẩu của bạn là: ${resetCode}\nMã này có hiệu lực trong 15 phút.\n\nNếu bạn không yêu cầu, vui lòng bỏ qua email này.`,
+                html: `<h3>Xin chào ${user.name},</h3><p>Mã khôi phục mật khẩu của bạn là: <strong style="font-size:24px;color:blue;letter-spacing:4px;">${resetCode}</strong></p><p>Mã này có hiệu lực trong 15 phút.</p><br><p>Nếu bạn không yêu cầu, vui lòng bỏ qua email này.</p>`
+            });
+            console.log(`[AUTH] Reset code sent via email to ${email}`);
+        } else {
+            console.log(`[DEMO] Cấu hình EMAIL_USER và EMAIL_PASS trống! Mã reset cho ${email}: ${resetCode}`);
+        }
+
         res.json({
-            message: 'Mã xác nhận đã được tạo. Kiểm tra console/email.',
-            ...(process.env.NODE_ENV !== 'production' && { reset_code: resetCode }),
+            message: 'Mã xác nhận đã được gửi. Vui lòng kiểm tra hộp thư email của bạn.',
             user_name: user.name
         });
     } catch (err) {
-        res.status(500).json({ error: err.message });
+        console.error('[AUTH] Forgot password error:', err);
+        res.status(500).json({ error: 'Lỗi gửi email: Vui lòng kiểm tra lại cấu hình Email.' });
     }
 });
 
@@ -936,12 +1008,10 @@ app.post('/api/ai-search', async (req, res) => {
         const apiKey = process.env.GEMINI_API_KEY;
 
         if (apiKey && apiKey !== 'YOUR_API_KEY_HERE') {
-            try {
-                const genAI = new GoogleGenerativeAI(apiKey);
-                const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
-                const modelSummary = models.map(m => `ID:${m.id} | Title:${m.title} | Subject:${m.subject} | Description:${m.description || ''} | Tags:${JSON.stringify(m.tags)}`).join('\n');
+            const genAI = new GoogleGenerativeAI(apiKey);
+            const modelSummary = models.map(m => `ID:${m.id} | Title:${m.title} | Subject:${m.subject} | Description:${m.description || ''} | Tags:${JSON.stringify(m.tags)}`).join('\n');
 
-                const prompt = `You are a search query assistant for an educational 3D models and materials library.
+            const prompt = `You are a search query assistant for an educational 3D models and materials library.
 Analyze the user search query in Vietnamese/English, understand the intent, extract/expand search terms, predict the subject, and match relevant models from the database.
 
 User Search Query: "${query}"
@@ -962,12 +1032,30 @@ Return strictly a valid JSON object matching this schema (do not output any mark
   "intent": "Ý định tìm kiếm bằng tiếng Việt",
   "matched_ids": ["id1", "id2"]
 }`;
-                const result = await model.generateContent(prompt);
-                const responseText = result.response.text().trim();
-                let cleanJson = responseText.replace(/```json\n?/, '').replace(/\n?```/, '');
-                aiAnalysis = JSON.parse(cleanJson);
-            } catch (e) {
-                console.error('[AI Search] Gemini error:', e.message);
+
+            const fallbackModels = [
+                'gemini-3.1-flash-lite',
+                'gemini-3.5-flash',
+                'gemini-3-flash',
+                'gemini-2.5-flash-lite',
+                'gemini-2.5-flash',
+                'gemma-4-31b-it',
+                'gemma-4-26b-a4b-it'
+            ];
+
+            for (const modelName of fallbackModels) {
+                try {
+                    console.log(`[AI Search] Trying model: ${modelName}`);
+                    const model = genAI.getGenerativeModel({ model: modelName });
+                    const result = await model.generateContent(prompt);
+                    const responseText = result.response.text().trim();
+                    let cleanJson = responseText.replace(/```json\n?/, '').replace(/\n?```/, '');
+                    aiAnalysis = JSON.parse(cleanJson);
+                    console.log(`[AI Search] Success with model: ${modelName}`);
+                    break;
+                } catch (e) {
+                    console.error(`[AI Search] Model ${modelName} failed:`, e.message);
+                }
             }
         }
 

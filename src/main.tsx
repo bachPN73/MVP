@@ -76,10 +76,16 @@ window.fetch = async (input, init) => {
     return response;
 };
 
+import { GoogleOAuthProvider } from '@react-oauth/google';
+
+const googleClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID || 'your_google_client_id';
+
 createRoot(document.getElementById("root")!).render(
     <React.StrictMode>
         <ErrorBoundary>
-            <App />
+            <GoogleOAuthProvider clientId={googleClientId}>
+                <App />
+            </GoogleOAuthProvider>
         </ErrorBoundary>
     </React.StrictMode>
 );

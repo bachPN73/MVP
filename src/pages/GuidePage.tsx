@@ -29,7 +29,7 @@ export default function Guide() {
         },
         {
             icon: Sparkles,
-            title: 'Find with AI',
+            title: 'AI tìm kiếm',
             description: 'Tìm kiếm học liệu thông minh bằng ngôn ngữ tự nhiên thông qua AI.',
             steps: [
                 'Mô tả chủ đề bạn muốn tìm bằng tiếng Việt tự nhiên',

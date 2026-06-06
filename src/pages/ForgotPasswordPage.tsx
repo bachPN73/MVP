@@ -141,31 +141,7 @@ export default function ForgotPassword() {
                                 </div>
                             </div>
 
-                            {/* Demo mode: show reset code */}
-                            <div className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-950/60 dark:to-indigo-950/60 border border-blue-200 dark:border-blue-900/50 rounded-2xl p-5">
-                                <p className="text-xs text-blue-600 dark:text-blue-400 font-bold uppercase tracking-wider mb-2">
-                                    🔑 Mã xác nhận (Demo Mode)
-                                </p>
-                                <div className="flex items-center justify-between">
-                                    <span className="text-3xl font-mono font-bold tracking-[0.3em] text-blue-700 dark:text-blue-300">
-                                        {resetCode}
-                                    </span>
-                                    <button
-                                        onClick={handleCopy}
-                                        className="p-2 hover:bg-slate-200/50 dark:hover:bg-white/5 rounded-xl transition-colors cursor-pointer"
-                                        title="Sao chép mã"
-                                    >
-                                        {copied ? (
-                                            <Check className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
-                                        ) : (
-                                            <Copy className="w-5 h-5 text-blue-600 dark:text-blue-400" />
-                                        )}
-                                    </button>
-                                </div>
-                                <p className="text-[10px] text-blue-500 dark:text-blue-400/60 font-semibold mt-2">
-                                    Mã có hiệu lực trong vòng 15 phút tiếp theo
-                                </p>
-                            </div>
+                            {/* Mã xác nhận sẽ được gửi qua email */}
 
                             {/* Go to reset page */}
                             <Link

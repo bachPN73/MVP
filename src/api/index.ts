@@ -86,6 +86,20 @@ export const api = {
         return data;
     },
 
+    loginWithGoogle: async (credential: string): Promise<any> => {
+        const response = await fetch(`${API_URL}/auth/google`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ credential }),
+        });
+        const data = await response.json();
+        if (!response.ok) {
+            throw new Error(data.error || 'Google login error');
+        }
+        return data;
+    },
+
+
     // Model APIs
     getModels: async (): Promise<any[]> => {
         const response = await fetch(`${API_URL}/models`);

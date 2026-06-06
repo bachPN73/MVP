@@ -140,7 +140,7 @@ export default function AdminAIConfigPage() {
                     Cấu hình AI & Phân Quyền
                 </h1>
                 <p className="text-slate-500 dark:text-slate-400 text-xs md:text-sm font-sans font-semibold mt-1">
-                    Quản lý số lượt Find with AI theo gói và phân quyền truy cập học liệu
+                    Quản lý số lượt AI tìm kiếm theo gói và phân quyền truy cập học liệu
                 </p>
             </div>
 
@@ -155,7 +155,7 @@ export default function AdminAIConfigPage() {
                     }`}
                 >
                     <Sparkles className="w-3.5 h-3.5" />
-                    Giới hạn Find with AI
+                    Giới hạn AI tìm kiếm
                 </button>
                 <button
                     onClick={() => setActiveTab('permissions')}
@@ -181,7 +181,7 @@ export default function AdminAIConfigPage() {
                                 <Sparkles className="w-6 h-6 text-white" />
                             </div>
                             <div>
-                                <h2 className="text-lg font-bold text-slate-900 dark:text-white font-heading">Số lượt Find with AI theo gói</h2>
+                                <h2 className="text-lg font-bold text-slate-900 dark:text-white font-heading">Số lượt AI tìm kiếm theo gói</h2>
                                 <p className="text-sm text-slate-500 dark:text-slate-400 mt-0.5">
                                     Đặt số lượt tìm kiếm AI tối đa mỗi ngày cho từng gói. Nhập <code className="px-1.5 py-0.5 bg-slate-100 dark:bg-slate-800 rounded text-xs font-mono">-1</code> để không giới hạn.
                                     Lượt sẽ được đặt lại lúc <strong>00:00 (giờ Việt Nam)</strong> mỗi ngày.

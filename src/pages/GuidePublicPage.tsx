@@ -28,7 +28,7 @@ export default function GuidePublic() {
         },
         {
             icon: Sparkles,
-            title: 'Find with AI',
+            title: 'AI tìm kiếm',
             description: 'Tìm học liệu phù hợp bằng AI',
             steps: [
                 'Mô tả nội dung bạn muốn tìm bằng văn bản tự nhiên',
@@ -188,7 +188,7 @@ export default function GuidePublic() {
                             <div>
                                 <h4 className="font-semibold font-heading mb-1 text-slate-900 dark:text-white">Tìm kiếm hiệu quả</h4>
                                 <p className="text-sm text-slate-500 dark:text-slate-400">
-                                    Sử dụng từ khóa cụ thể và mô tả chi tiết khi dùng Find with AI để có kết quả tốt nhất
+                                    Sử dụng từ khóa cụ thể và mô tả chi tiết khi dùng AI tìm kiếm để có kết quả tốt nhất
                                 </p>
                             </div>
                         </div>
@@ -224,7 +224,7 @@ export default function GuidePublic() {
                             <div>
                                 <h4 className="font-semibold font-heading mb-1 text-slate-900 dark:text-white">Thử các ví dụ</h4>
                                 <p className="text-sm text-slate-500 dark:text-slate-400">
-                                    Nhấp vào các gợi ý tìm kiếm trong Find with AI để xem cách sử dụng hiệu quả
+                                    Nhấp vào các gợi ý tìm kiếm trong AI tìm kiếm để xem cách sử dụng hiệu quả
                                 </p>
                             </div>
                         </div>
@@ -235,7 +235,7 @@ export default function GuidePublic() {
                 <div className="bg-gradient-to-br from-secondary to-green-600 dark:from-emerald-950 dark:to-teal-950 rounded-2xl p-8 text-white text-center shadow-lg shadow-emerald-500/10">
                     <h3 className="text-2xl font-bold font-heading mb-3">Sẵn sàng bắt đầu?</h3>
                     <p className="text-green-100 dark:text-slate-300 mb-6 text-lg">
-                        Đăng ký tài khoản miễn phí để khám phá thư viện học liệu và tính năng Find with AI
+                        Đăng ký tài khoản miễn phí để khám phá thư viện học liệu và tính năng AI tìm kiếm
                     </p>
                     <Link
                         to="/register"

@@ -166,7 +166,7 @@ export default function FindWithAI() {
                         <Sparkles className="w-10 h-10 text-white relative z-10 animate-pulse-slow" />
                     </div>
                     <h1 className="text-3xl sm:text-4xl font-extrabold mb-3 tracking-tight bg-gradient-to-r from-indigo-600 via-purple-600 to-emerald-600 dark:from-indigo-400 dark:via-purple-400 dark:to-emerald-400 bg-clip-text text-transparent font-heading">
-                        Find with AI
+                        AI tìm kiếm
                     </h1>
                     <p className="text-base sm:text-lg text-slate-600 dark:text-slate-300 max-w-2xl mx-auto font-medium">
                         Mô tả nội dung bạn muốn tìm kiếm, AI sẽ thông minh phân tích ngữ cảnh, trích xuất chủ đề và đề xuất học liệu phù hợp nhất

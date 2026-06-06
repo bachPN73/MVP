@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router';
 import { BookOpen, Mail, Lock, Eye, EyeOff, ArrowRight, CheckCircle2 } from 'lucide-react';
+import { GoogleLogin } from '@react-oauth/google';
 import { api } from '../api';
 import ThemeToggle from '../components/ThemeToggle';
 
@@ -27,6 +28,29 @@ export default function Login() {
             window.history.replaceState({}, document.title, window.location.pathname);
         }
     }, [location]);
+
+    const handleGoogleSuccess = async (credentialResponse: any) => {
+        setIsLoading(true);
+        setErrors({});
+        setSuccessMessage(null);
+        try {
+            const result = await api.loginWithGoogle(credentialResponse.credential);
+            const userData = {
+                id: result.user_id,
+                email: '', 
+                name: result.user_name,
+                role: result.user_role,
+                plan: result.user_plan,
+                sessionToken: result.session_token
+            };
+            localStorage.setItem('edu_tech_user', JSON.stringify(userData));
+            navigate('/dashboard');
+        } catch (error: any) {
+            setErrors({ form: error.message || 'Đăng nhập Google thất bại.' });
+        } finally {
+            setIsLoading(false);
+        }
+    };
 
     const validateForm = () => {
         const newErrors: { email?: string; password?: string } = {};
@@ -246,6 +270,20 @@ export default function Login() {
                                  <div className="relative flex justify-center text-xs uppercase tracking-wider font-extrabold text-slate-400 dark:text-slate-500">
                                      <span className="px-4 bg-white dark:bg-slate-900">hoặc</span>
                                  </div>
+                             </div>
+
+                             {/* Google Login */}
+                             <div className="flex justify-center mb-6">
+                                 <GoogleLogin
+                                     onSuccess={handleGoogleSuccess}
+                                     onError={() => {
+                                         setErrors({ form: 'Lỗi khi đăng nhập bằng Google. Vui lòng thử lại.' });
+                                     }}
+                                     theme="outline"
+                                     size="large"
+                                     text="signin_with"
+                                     shape="rectangular"
+                                 />
                              </div>
 
                              {/* Sign up link */}

@@ -534,7 +534,7 @@ export default function MaterialDetail() {
                                 &gt;
                             </span>
                             <span className={`text-sm font-bold truncate max-w-[200px] sm:max-w-[300px] md:max-w-[400px] font-heading ${
-                                material.subtitle ? 'text-stone-800 dark:text-stone-100 font-serif' : 'text-slate-900 dark:text-white'
+                                material.subtitle ? 'text-stone-800 dark:text-stone-100' : 'text-slate-900 dark:text-white'
                             }`}>
                                 {material.title}
                             </span>
@@ -634,10 +634,10 @@ export default function MaterialDetail() {
                                         <div className={`text-[10px] font-semibold uppercase tracking-[0.2em] mb-1 ${theme === 'light' ? 'text-stone-500/70' : 'text-stone-400/70'}`}>
                                             PHẦN NÀY TẬP TRUNG VÀO
                                         </div>
-                                        <h2 className={`text-3xl sm:text-4xl font-bold font-serif tracking-wide drop-shadow-sm ${theme === 'light' ? 'text-stone-900' : 'text-white'}`}>
+                                        <h2 className={`text-3xl sm:text-4xl font-bold font-heading tracking-wide drop-shadow-sm ${theme === 'light' ? 'text-stone-900' : 'text-white'}`}>
                                             {material.title}
                                         </h2>
-                                        <p className={`text-sm sm:text-lg font-serif italic mt-1 tracking-wide drop-shadow-sm ${theme === 'light' ? 'text-emerald-800/80' : 'text-emerald-400/80'}`}>
+                                        <p className={`text-sm sm:text-lg font-heading italic mt-1 tracking-wide drop-shadow-sm ${theme === 'light' ? 'text-emerald-800/80' : 'text-emerald-400/80'}`}>
                                             {material.subtitle}
                                         </p>
                                     </div>
@@ -1185,12 +1185,12 @@ export default function MaterialDetail() {
                                         </div>
                                         
                                         <h2 className={`text-xl sm:text-2xl font-black leading-tight tracking-tight font-heading text-slate-900 dark:text-white ${
-                                            material.subtitle ? 'font-serif text-stone-800 dark:text-stone-100' : ''
+                                            material.subtitle ? 'text-stone-800 dark:text-stone-100' : ''
                                         }`}>
                                             <LatexText text={material.title} />
                                         </h2>
                                         {material.subtitle && (
-                                            <p className={`font-serif italic text-xs sm:text-sm mt-1 leading-relaxed ${
+                                            <p className={`font-heading italic text-xs sm:text-sm mt-1 leading-relaxed ${
                                                 theme === 'light' ? 'text-emerald-800/85' : 'text-emerald-400/85'
                                             }`}>
                                                 <LatexText text={material.subtitle} />
@@ -1380,7 +1380,7 @@ export default function MaterialDetail() {
                                                         {cleanLabel(config.funFact.label)}
                                                     </div>
                                                 </div>
-                                                <p className="text-xs font-serif italic leading-relaxed">
+                                                <p className="text-xs font-heading italic leading-relaxed">
                                                     "<LatexText text={material.funFact} />"
                                                 </p>
                                             </div>
@@ -1405,7 +1405,7 @@ export default function MaterialDetail() {
                                                         <li key={idx} className="flex gap-2.5 items-start">
                                                             <span className="w-1.5 h-1.5 rounded-full bg-sky-400 border border-sky-300 shadow-sm flex-shrink-0 mt-1.5" />
                                                             <div className="flex-1 min-w-0">
-                                                                <div className={`text-slate-900 dark:text-white font-bold text-xs ${material.subtitle ? 'font-serif' : ''}`}>
+                                                                <div className={`text-slate-900 dark:text-white font-bold text-xs ${material.subtitle ? 'font-heading' : ''}`}>
                                                                     <LatexText text={feature.name} />
                                                                 </div>
                                                                 <div className={`text-slate-500 dark:text-slate-400 text-[11px] mt-0.5 leading-relaxed font-normal ${material.subtitle ? 'font-sans' : ''}`}>

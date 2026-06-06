@@ -31,7 +31,7 @@ export default function Landing() {
         },
         {
             icon: Sparkles,
-            title: 'Find with AI',
+            title: 'AI tìm kiếm',
             description: 'Tìm kiếm học liệu phù hợp bằng AI từ mô tả văn bản',
             color: 'from-green-500 to-green-600',
         },
@@ -68,7 +68,7 @@ export default function Landing() {
     ];
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-blue-100/50 via-slate-50 to-green-100/40 dark:from-slate-950 dark:via-slate-950 dark:to-slate-900 text-slate-900 dark:text-slate-100 transition-colors duration-300">
+        <div className="min-h-screen bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 transition-colors duration-300">
             {/* Header */}
             <header className={`fixed top-4 left-4 right-4 z-50 transition-all duration-350 ${
                 scrolled 
@@ -142,54 +142,51 @@ export default function Landing() {
 
             {/* Hero Section */}
             <section className="relative pt-32 pb-20 md:pt-44 md:pb-28 lg:pt-56 lg:pb-36 overflow-hidden">
-                <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))] dark:opacity-[0.12] opacity-[0.05]"></div>
-
-                {/* Glowing neon blobs */}
-                <div className="absolute top-10 right-10 w-[450px] h-[450px] bg-indigo-500/10 dark:bg-indigo-500/20 rounded-full blur-3xl -z-10 animate-pulse-slow"></div>
-                <div className="absolute bottom-10 left-10 w-[400px] h-[400px] bg-emerald-500/5 dark:bg-emerald-500/10 rounded-full blur-3xl -z-10 animate-pulse-slow" style={{ animationDelay: '2s' }}></div>
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[550px] h-[550px] bg-primary/5 dark:bg-primary/10 rounded-full blur-3xl -z-10 animate-pulse-slow" style={{ animationDelay: '1s' }}></div>
+                <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))] dark:opacity-[0.05] opacity-[0.03]"></div>
 
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
                     <div className="flex flex-col lg:flex-row items-center gap-10 lg:gap-24">
                         {/* Left Column: Text Content */}
                         <div className="flex-1 text-center lg:text-left">
-                            <div className="inline-flex items-center gap-2 px-4 py-2 bg-indigo-50 dark:bg-indigo-950/50 border border-indigo-200/50 dark:border-indigo-500/30 text-indigo-850 dark:text-indigo-300 rounded-full mb-6 animate-in fade-in slide-in-from-left-4 shadow-sm font-bold">
-                                <Sparkles className="w-3.5 h-3.5 text-indigo-600 dark:text-indigo-400" />
-                                <span className="text-xs sm:text-sm font-bold tracking-wide uppercase">Nền tảng học tập THPT Việt Nam</span>
+                            <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-indigo-50 dark:bg-indigo-950/50 border border-indigo-200/50 dark:border-indigo-500/30 text-indigo-700 dark:text-indigo-300 rounded-full mb-5 animate-in fade-in slide-in-from-left-4 shadow-sm">
+                                <Sparkles className="w-3 h-3 text-indigo-600 dark:text-indigo-400" />
+                                <span className="text-[11px] sm:text-xs font-bold tracking-widest uppercase">Nền tảng học tập THPT Việt Nam</span>
                             </div>
 
-                            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black mb-8 tracking-tighter leading-[1.05] text-slate-900 dark:text-white max-w-3xl">
-                                Khoa học Tự nhiên
-                                <span className="block mt-3 bg-gradient-to-r from-indigo-900 via-purple-800 to-indigo-950 dark:from-indigo-400 dark:via-purple-400 dark:to-cyan-400 bg-clip-text text-transparent drop-shadow-sm leading-tight">
+                            <h1 className="font-black mb-6 tracking-tight leading-[1.08] text-slate-900 dark:text-white">
+                                <span className="block text-3xl sm:text-4xl md:text-5xl xl:text-6xl whitespace-nowrap pb-1 w-fit mb-1">
+                                    Khoa học Tự nhiên
+                                </span>
+                                <span className="block text-3xl sm:text-4xl md:text-5xl xl:text-6xl whitespace-nowrap mt-1 bg-gradient-to-r from-indigo-600 via-purple-600 to-violet-700 dark:from-indigo-400 dark:via-purple-400 dark:to-cyan-400 bg-clip-text text-transparent pb-3 pt-1 w-fit">
                                     Tương tác & Sống động
                                 </span>
                             </h1>
 
-                            <p className="text-base sm:text-lg text-slate-750 dark:text-slate-200 mx-auto lg:mx-0 mb-8 sm:mb-10 leading-relaxed max-w-2xl font-bold">
-                                Biến những bài giảng nhàm chán thành trải nghiệm thị giác tuyệt vời với mô hình 3D và infographic.
-                                Tiếp thu kiến thức Vật lý, Hóa học, Sinh học một cách tự nhiên nhất.
+                            <p className="text-sm sm:text-base text-slate-600 dark:text-slate-300 mx-auto lg:mx-0 mb-8 leading-relaxed max-w-lg font-semibold">
+                                Biến những bài giảng nhàm chán thành trải nghiệm thị giác tuyệt
+                                vời với mô hình 3D và infographic. Tiếp thu kiến thức Vật lý, Hóa học, Sinh học một cách tự nhiên nhất.
                             </p>
 
-                            <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3 sm:gap-4">
+                            <div className="flex flex-row items-center justify-center lg:justify-start gap-3">
                                 <Link
                                     to="/register"
-                                    className="w-full sm:w-auto px-8 py-4 bg-primary hover:bg-primary/95 text-white rounded-2xl font-bold transition-all flex items-center justify-center gap-2 text-lg shadow-lg shadow-primary/30 hover:shadow-xl animate-pulse-glow hover:-translate-y-1 active:scale-95 cursor-pointer"
+                                    className="px-7 py-3.5 bg-primary hover:bg-primary/90 text-white rounded-2xl font-bold transition-all flex items-center gap-2 text-base shadow-lg shadow-primary/30 hover:shadow-xl hover:-translate-y-0.5 active:scale-95 cursor-pointer"
                                 >
                                     Đăng ký ngay
-                                    <ChevronRight className="w-5 h-5" />
+                                    <ChevronRight className="w-4 h-4" />
                                 </Link>
 
                                 <Link
                                     to="/login"
-                                    className="w-full sm:w-auto px-8 py-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/10 text-slate-700 dark:text-slate-200 rounded-2xl font-bold hover:border-slate-300 dark:hover:border-white/20 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-all flex items-center justify-center gap-2 text-lg shadow-sm cursor-pointer"
+                                    className="px-7 py-3.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/10 text-slate-700 dark:text-slate-200 rounded-2xl font-bold hover:border-slate-300 dark:hover:border-white/20 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-all flex items-center gap-2 text-base shadow-sm cursor-pointer"
                                 >
                                     Đăng nhập
                                 </Link>
                             </div>
 
                             {/* Subject badges */}
-                            <div className="flex flex-wrap items-center justify-center lg:justify-start gap-2 sm:gap-3 mt-10 sm:mt-12">
-                                <span className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 font-bold uppercase tracking-wider w-full lg:w-auto mb-2 lg:mb-0 lg:mr-2">Khám phá:</span>
+                            <div className="flex flex-wrap items-center justify-center lg:justify-start gap-2 mt-8">
+                                <span className="text-[11px] text-slate-500 dark:text-slate-400 font-bold uppercase tracking-wider mr-1">Khám phá:</span>
                                 {subjects.map((subject) => {
                                     const Icon = subject.icon;
                                     const subjectGradient = 
@@ -200,12 +197,12 @@ export default function Landing() {
                                         <button
                                             key={subject.name}
                                             onClick={() => setSelectedSubject(subject)}
-                                            className="flex items-center gap-2.5 px-4.5 py-2.5 bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-white/10 rounded-2xl shadow-sm hover:border-indigo-500 hover:shadow-[0_10px_20px_rgba(99,102,241,0.15)] transition-all hover:scale-105 active:scale-95 group cursor-pointer"
+                                            className="flex items-center gap-2 px-4 py-2 bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-white/10 rounded-xl shadow-sm hover:border-indigo-500 hover:shadow-[0_6px_16px_rgba(99,102,241,0.12)] transition-all hover:scale-105 active:scale-95 group cursor-pointer"
                                         >
-                                            <div className={`w-6 h-6 bg-gradient-to-br ${subjectGradient} rounded-xl flex items-center justify-center shadow-md group-hover:rotate-12 transition-transform`}>
-                                                <Icon className="w-3.5 h-3.5 text-white" strokeWidth={2.5} />
+                                            <div className={`w-5 h-5 bg-gradient-to-br ${subjectGradient} rounded-lg flex items-center justify-center shadow-sm group-hover:rotate-12 transition-transform`}>
+                                                <Icon className="w-3 h-3 text-white" strokeWidth={2.5} />
                                             </div>
-                                            <span className="font-extrabold text-[13px] text-slate-800 dark:text-slate-200 tracking-wide">{subject.name}</span>
+                                            <span className="font-extrabold text-xs text-slate-800 dark:text-slate-200 tracking-wide">{subject.name}</span>
                                         </button>
                                     );
                                 })}
@@ -304,50 +301,51 @@ export default function Landing() {
             )}
 
             {/* About Us Section */}
-            <section ref={aboutUsRef} className="py-20 md:py-32 bg-white dark:bg-slate-950 relative overflow-hidden transition-colors duration-300">
+            <section ref={aboutUsRef} className="py-20 md:py-32 border-t border-slate-100 dark:border-white/5 relative overflow-hidden">
+                <div className="absolute left-0 top-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-blue-500/5 dark:bg-blue-500/10 rounded-full blur-3xl -z-10 pointer-events-none"></div>
                 <div className="max-w-7xl mx-auto px-4 sm:px-6">
                     <div className="flex flex-col md:flex-row gap-12 sm:gap-16 lg:gap-24 items-center">
-                        <div className="flex-1 relative w-full">
-                            <div className="aspect-square rounded-full bg-gradient-to-tr from-green-50 to-blue-50 dark:from-emerald-950/20 dark:to-indigo-950/20 absolute -inset-10 blur-3xl -z-10 opacity-70"></div>
-                            <div className="grid grid-cols-2 gap-3 sm:gap-6">
-                                <img src="/Image.png" alt="Education" className="w-full aspect-[4/5] object-cover rounded-2xl sm:rounded-[2rem] shadow-xl mt-6 sm:mt-12 transition-transform hover:scale-105 duration-500 border-4 border-white dark:border-slate-900" />
-                                <img src="/vietnamese-classroom.png" alt="Classroom" className="w-full aspect-[4/5] object-cover rounded-2xl sm:rounded-[2rem] shadow-xl transition-transform hover:scale-105 duration-500 border-4 border-white dark:border-slate-900" />
+                        <div className="flex-1 relative w-full group">
+                            <div className="aspect-square rounded-full bg-gradient-to-tr from-emerald-100 to-indigo-100 dark:from-emerald-900/30 dark:to-indigo-900/30 absolute -inset-6 blur-3xl -z-10 opacity-50 group-hover:opacity-70 transition-opacity duration-700"></div>
+                            <div className="grid grid-cols-2 gap-4 sm:gap-6 relative z-10">
+                                <img src="/Image.png" alt="Education" className="w-full aspect-[4/5] object-cover rounded-3xl shadow-lg shadow-slate-200/50 dark:shadow-none mt-8 sm:mt-12 group-hover:-translate-y-2 transition-transform duration-700 border border-slate-100 dark:border-white/10" />
+                                <img src="/vietnamese-classroom.png" alt="Classroom" className="w-full aspect-[4/5] object-cover rounded-3xl shadow-lg shadow-slate-200/50 dark:shadow-none group-hover:-translate-y-2 transition-transform duration-700 delay-100 border border-slate-100 dark:border-white/10" />
                             </div>
                             {/* Floating label */}
-                            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white/95 dark:bg-slate-900/95 backdrop-blur px-6 py-3 rounded-2xl shadow-2xl border border-slate-200/50 dark:border-white/10 text-center hidden sm:block">
-                                <p className="text-primary dark:text-indigo-450 font-black text-2xl">VN STEM</p>
-                                <p className="text-[10px] font-extrabold text-slate-500 dark:text-slate-400 uppercase tracking-widest">Digital Platform</p>
+                            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md px-8 py-4 rounded-3xl shadow-xl shadow-slate-200/50 dark:shadow-none border border-slate-100 dark:border-white/10 text-center hidden sm:block z-20 hover:scale-105 transition-transform duration-500">
+                                <p className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-violet-600 dark:from-indigo-400 dark:to-cyan-400 font-black text-3xl tracking-tight mb-1">VN STEM</p>
+                                <p className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-[0.2em]">Nền tảng số</p>
                             </div>
                         </div>
 
-                        <div className="flex-1 text-center md:text-left animate-in fade-in duration-500">
-                            <div className="inline-flex items-center gap-2 px-3 py-1 bg-green-50 dark:bg-emerald-950/40 text-green-800 dark:text-emerald-300 rounded-full mb-6 border border-green-200/50 dark:border-emerald-500/20 shadow-sm font-bold">
-                                <Globe2 className="w-4 h-4 text-green-600 dark:text-emerald-400" />
-                                <span className="text-xs font-bold uppercase tracking-wider px-1">Về Chúng Tôi</span>
+                        <div className="flex-1 text-center md:text-left">
+                            <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-emerald-50 dark:bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 rounded-full mb-6 border border-emerald-200/50 dark:border-emerald-500/20 shadow-sm">
+                                <Globe2 className="w-3.5 h-3.5" />
+                                <span className="text-[11px] sm:text-xs font-bold uppercase tracking-widest">Về Chúng Tôi</span>
                             </div>
-                            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black mb-6 text-slate-950 dark:text-white leading-[1.15] tracking-tight">
+                            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black mb-6 text-slate-900 dark:text-white leading-[1.1] tracking-tight">
                                 Edu Tech - Sứ mệnh chuyển đổi số giáo dục
                             </h2>
-                            <p className="text-base sm:text-lg text-slate-850 dark:text-slate-200 mb-8 leading-relaxed font-bold">
+                            <p className="text-base sm:text-lg text-slate-600 dark:text-slate-300 mb-10 leading-relaxed font-medium">
                                 Được thành lập với mong muốn mang công nghệ 3D và AI tiên tiến vào các lớp học phổ thông, Edu Tech là nền tảng cung cấp học liệu trực quan chất lượng cao tại Việt Nam.
                             </p>
-                            <div className="space-y-6 mt-8">
-                                <div className="flex flex-col sm:flex-row gap-4 items-center sm:items-start group">
-                                    <div className="w-12 h-12 rounded-2xl bg-blue-50 dark:bg-indigo-950/50 flex items-center justify-center shrink-0 border border-blue-200/50 dark:border-indigo-500/20 group-hover:scale-110 transition-transform shadow-sm">
-                                        <Lightbulb className="w-6 h-6 text-blue-600 dark:text-indigo-400" />
+                            <div className="space-y-8">
+                                <div className="flex flex-col sm:flex-row gap-5 items-center sm:items-start group/item">
+                                    <div className="w-14 h-14 rounded-2xl bg-indigo-50 dark:bg-indigo-500/10 flex items-center justify-center shrink-0 border border-indigo-100 dark:border-indigo-500/20 group-hover/item:scale-110 group-hover/item:bg-indigo-100 dark:group-hover/item:bg-indigo-500/20 transition-all duration-300">
+                                        <Lightbulb className="w-6 h-6 text-indigo-600 dark:text-indigo-400" />
                                     </div>
                                     <div>
-                                        <h4 className="text-xl font-bold text-slate-900 dark:text-slate-200 mb-2">Tầm nhìn</h4>
-                                        <p className="text-slate-700 dark:text-slate-400 text-[15px] sm:text-base font-semibold">Trở thành bách khoa toàn thư 3D lớn nhất cho giáo dục trung học tại Việt Nam.</p>
+                                        <h4 className="text-xl font-bold text-slate-900 dark:text-slate-100 mb-2 tracking-tight">Tầm nhìn</h4>
+                                        <p className="text-slate-600 dark:text-slate-400 leading-relaxed font-medium">Trở thành bách khoa toàn thư 3D lớn nhất cho giáo dục trung học tại Việt Nam, khơi dậy đam mê khoa học.</p>
                                     </div>
                                 </div>
-                                <div className="flex flex-col sm:flex-row gap-4 items-center sm:items-start group">
-                                    <div className="w-12 h-12 rounded-2xl bg-emerald-50 dark:bg-emerald-950/50 flex items-center justify-center shrink-0 border border-emerald-200/50 dark:border-emerald-500/20 group-hover:scale-110 transition-transform shadow-sm">
+                                <div className="flex flex-col sm:flex-row gap-5 items-center sm:items-start group/item">
+                                    <div className="w-14 h-14 rounded-2xl bg-emerald-50 dark:bg-emerald-500/10 flex items-center justify-center shrink-0 border border-emerald-100 dark:border-emerald-500/20 group-hover/item:scale-110 group-hover/item:bg-emerald-100 dark:group-hover/item:bg-emerald-500/20 transition-all duration-300">
                                         <Users className="w-6 h-6 text-emerald-600 dark:text-emerald-400" />
                                     </div>
                                     <div>
-                                        <h4 className="text-xl font-bold text-slate-900 dark:text-slate-200 mb-2">Giá trị cốt lõi</h4>
-                                        <p className="text-slate-700 dark:text-slate-400 text-[15px] sm:text-base font-semibold">Lấy học sinh làm trung tâm, giáo dục không giới hạn sự sáng tạo và tương tác.</p>
+                                        <h4 className="text-xl font-bold text-slate-900 dark:text-slate-100 mb-2 tracking-tight">Giá trị cốt lõi</h4>
+                                        <p className="text-slate-600 dark:text-slate-400 leading-relaxed font-medium">Lấy học sinh làm trung tâm, giáo dục không giới hạn sự sáng tạo, đề cao tính tương tác thực tiễn.</p>
                                     </div>
                                 </div>
                             </div>
@@ -357,11 +355,11 @@ export default function Landing() {
             </section>
 
             {/* Features Section */}
-            <section className="max-w-7xl mx-auto px-4 sm:px-6 py-20 md:py-32">
+            <section className="max-w-7xl mx-auto px-4 sm:px-6 py-20 md:py-32 relative">
+                <div className="absolute top-40 right-10 w-[600px] h-[600px] bg-indigo-500/5 dark:bg-indigo-500/10 rounded-full blur-3xl -z-10 pointer-events-none"></div>
                 <div className="text-center mb-16 md:mb-20">
-                    <h2 className="text-3xl sm:text-4xl md:text-5xl font-black mb-4 text-slate-950 dark:text-white tracking-tight">Tính năng nổi bật</h2>
-                    <div className="w-20 h-1.5 bg-primary mx-auto rounded-full mb-6"></div>
-                    <p className="text-base sm:text-lg text-slate-750 dark:text-slate-350 max-w-2xl mx-auto font-bold">
+                    <h2 className="text-3xl sm:text-4xl md:text-5xl font-black mb-5 text-slate-900 dark:text-white tracking-tight">Tính năng nổi bật</h2>
+                    <p className="text-base sm:text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto font-medium leading-relaxed">
                         Công cụ học tập hiện đại giúp học sinh và giáo viên dễ dàng tiếp cận kiến thức nhanh chóng
                     </p>
                 </div>
@@ -370,12 +368,13 @@ export default function Landing() {
                     {features.map((feature, index) => {
                         const Icon = feature.icon;
                         return (
-                            <div key={index} className="group bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-white/5 rounded-3xl p-8 hover:shadow-2xl dark:hover:shadow-[0_20px_50px_rgba(0,0,0,0.3)] transition-all hover:-translate-y-2 border-b-4 hover:border-b-primary duration-300">
-                                <div className={`w-14 h-14 sm:w-16 sm:h-16 bg-gradient-to-br ${feature.color} rounded-2xl flex items-center justify-center mb-6 shadow-lg rotate-3 group-hover:rotate-0 transition-transform duration-500`}>
+                            <div key={index} className="group bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-white/10 rounded-[2rem] p-8 hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.05)] dark:hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.4)] transition-all hover:-translate-y-2 duration-300 relative overflow-hidden">
+                                <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-transparent to-slate-50 dark:to-slate-800/50 rounded-bl-full -z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                                <div className={`w-14 h-14 sm:w-16 sm:h-16 bg-gradient-to-br ${feature.color} rounded-2xl flex items-center justify-center mb-6 shadow-md shadow-${feature.color.split('-')[1]}-500/20 group-hover:scale-110 group-hover:-rotate-3 transition-transform duration-500`}>
                                     <Icon className="w-7 h-7 sm:w-8 sm:h-8 text-white" />
                                 </div>
-                                <h3 className="text-2xl font-black mb-3 text-slate-900 dark:text-slate-200">{feature.title}</h3>
-                                <p className="text-slate-700 dark:text-slate-400 leading-relaxed font-semibold text-[15px] sm:text-base">
+                                <h3 className="text-2xl font-bold mb-3 text-slate-900 dark:text-slate-100 tracking-tight">{feature.title}</h3>
+                                <p className="text-slate-600 dark:text-slate-400 leading-relaxed font-medium">
                                     {feature.description}
                                 </p>
                             </div>
@@ -385,39 +384,42 @@ export default function Landing() {
             </section>
 
             {/* CTA Section */}
-            <section className="max-w-7xl mx-auto px-4 sm:px-6 py-20">
-                <div className="relative bg-slate-900 dark:bg-slate-950 rounded-[2.5rem] p-8 sm:p-12 md:p-20 text-white text-center shadow-2xl overflow-hidden group border border-white/5">
-                    {/* Animated background circles */}
-                    <div className="absolute top-0 right-0 -translate-y-1/2 translate-x-1/2 w-96 h-96 bg-primary/20 rounded-full blur-3xl"></div>
-                    <div className="absolute bottom-0 left-0 translate-y-1/2 -translate-x-1/2 w-80 h-80 bg-blue-600/20 rounded-full blur-3xl"></div>
+            <section className="max-w-7xl mx-auto px-4 sm:px-6 py-10 md:py-20">
+                <div className="relative bg-gradient-to-br from-indigo-600 via-purple-600 to-indigo-800 dark:from-indigo-900 dark:via-purple-900 dark:to-indigo-950 rounded-[2.5rem] p-10 sm:p-16 md:p-20 text-white text-center shadow-2xl overflow-hidden group border border-indigo-400/20">
+                    {/* Decorative patterns */}
+                    <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center opacity-10"></div>
+                    <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-white/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3 group-hover:scale-110 transition-transform duration-700"></div>
+                    <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-cyan-400/20 rounded-full blur-3xl translate-y-1/3 -translate-x-1/3 group-hover:scale-110 transition-transform duration-700"></div>
 
-                    <h2 className="text-3xl sm:text-4xl md:text-5xl font-black mb-6 relative z-10 leading-tight">
-                        Sẵn sàng bứt phá <br className="sm:hidden" /> kiến thức?
-                    </h2>
-                    <p className="text-lg sm:text-xl text-slate-300 mb-10 max-w-2xl mx-auto relative z-10 font-medium">
-                        Tham gia Edu Tech và khám phá cách học Khoa học Tự nhiên hiện đại,
-                        tương tác và hiệu quả nhất ngay hôm nay
-                    </p>
-                    <div className="relative z-10 flex flex-col sm:flex-row items-center justify-center gap-4">
-                        <Link
-                            to="/register"
-                            className="w-full sm:w-auto px-10 py-5 bg-white text-primary rounded-2xl font-black hover:bg-slate-50 transition-all text-lg shadow-xl hover:-translate-y-1 active:scale-95 cursor-pointer"
-                        >
-                            Đăng ký miễn phí
-                        </Link>
-                        <Link
-                            to="/login"
-                            className="w-full sm:w-auto px-10 py-5 bg-transparent border border-white/25 hover:border-white/50 text-white rounded-2xl font-black hover:bg-white/5 transition-all text-lg shadow-lg hover:-translate-y-1 active:scale-95 cursor-pointer"
-                        >
-                            Đăng nhập
-                        </Link>
+                    <div className="relative z-10 flex flex-col items-center">
+                        <h2 className="text-4xl sm:text-5xl md:text-6xl font-black mb-6 leading-[1.1] tracking-tight text-white drop-shadow-md">
+                            Sẵn sàng bứt phá <br className="sm:hidden" /> kiến thức?
+                        </h2>
+                        <p className="text-lg sm:text-xl text-indigo-100 mb-10 max-w-2xl font-medium leading-relaxed drop-shadow-sm">
+                            Tham gia Edu Tech và khám phá cách học Khoa học Tự nhiên hiện đại,
+                            tương tác và hiệu quả nhất ngay hôm nay
+                        </p>
+                        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 w-full sm:w-auto">
+                            <Link
+                                to="/register"
+                                className="w-full sm:w-auto px-10 py-4 bg-white text-indigo-700 rounded-2xl font-bold hover:bg-indigo-50 hover:shadow-xl hover:shadow-white/20 transition-all text-lg active:scale-95 cursor-pointer"
+                            >
+                                Đăng ký miễn phí
+                            </Link>
+                            <Link
+                                to="/login"
+                                className="w-full sm:w-auto px-10 py-4 bg-indigo-700/50 backdrop-blur-md border border-indigo-300/30 hover:bg-indigo-700/70 text-white rounded-2xl font-bold transition-all text-lg hover:shadow-lg active:scale-95 cursor-pointer"
+                            >
+                                Đăng nhập
+                            </Link>
+                        </div>
+                        <p className="text-indigo-200/80 text-[11px] sm:text-xs mt-8 font-bold uppercase tracking-widest">Không yêu cầu thẻ tín dụng • Truy cập tức thì</p>
                     </div>
-                    <p className="text-slate-400 text-xs sm:text-sm mt-8 relative z-10 font-bold uppercase tracking-widest">No Card Required • Instant Access</p>
                 </div>
             </section>
 
             {/* Footer */}
-            <footer className="bg-slate-50 dark:bg-slate-950 border-t border-slate-200 dark:border-white/5 mt-20 md:mt-32 transition-colors duration-300">
+            <footer className="border-t border-slate-100 dark:border-white/5 mt-10 md:mt-20">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12 md:py-16">
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
                         <div className="col-span-1 md:col-span-2">
