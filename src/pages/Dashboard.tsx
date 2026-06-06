@@ -746,41 +746,54 @@ export default function Dashboard() {
 
                             {/* RIGHT COLUMN: 3/12 — Premium Brand Logo Card */}
                             <div className="xl:col-span-3 flex flex-col gap-4 h-full min-h-0">
-                                <div className="group relative overflow-hidden rounded-3xl bg-gradient-to-b from-indigo-950 via-slate-950 to-slate-900 border border-white/10 shadow-2xl flex flex-col items-center justify-between p-6 flex-grow min-h-[460px] text-center select-none">
+                                <div className="group relative overflow-hidden rounded-3xl bg-gradient-to-b from-[#3b0712] via-[#7f1d1d] to-[#451a03] border border-amber-500/25 shadow-2xl flex flex-col items-center justify-between p-6 flex-grow min-h-[460px] text-center select-none hover:border-amber-500/40 hover:shadow-amber-500/10 transition-all duration-300">
                                     {/* Glowing Orbs in background */}
-                                    <div className="absolute -top-12 -left-12 w-28 h-28 bg-indigo-500/10 rounded-full blur-2xl pointer-events-none animate-pulse"></div>
-                                    <div className="absolute -bottom-12 -right-12 w-28 h-28 bg-purple-500/10 rounded-full blur-2xl pointer-events-none animate-pulse"></div>
+                                    <div className="absolute -top-12 -left-12 w-28 h-28 bg-red-500/20 rounded-full blur-2xl pointer-events-none animate-pulse"></div>
+                                    <div className="absolute -bottom-12 -right-12 w-28 h-28 bg-amber-500/20 rounded-full blur-2xl pointer-events-none animate-pulse"></div>
                                     <div className="absolute inset-0 bg-grid-pattern opacity-[0.03] pointer-events-none"></div>
 
                                     {/* Top Branding Label */}
                                     <div className="flex flex-col items-center gap-1.5 shrink-0">
-                                        <span className="text-[10px] font-black uppercase tracking-[0.25em] text-indigo-400">Edu Tech 3D</span>
-                                        <h2 className="text-base font-black text-white tracking-tight uppercase leading-none font-heading">
+                                        <span className="text-[10px] font-black uppercase tracking-[0.25em] text-amber-400">Edu Tech 3D</span>
+                                        <h2 className="text-base font-black text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-amber-250 to-orange-400 tracking-tight uppercase leading-none font-heading mt-1 flex items-center gap-1">
+                                            <Sparkles className="w-4 h-4 text-amber-400 animate-pulse" />
                                             Không gian tương tác
                                         </h2>
                                     </div>
 
                                     {/* Main 3D Brand Logo Graphic */}
-                                    <div className="my-6 relative w-full aspect-square max-w-[200px] flex items-center justify-center rounded-2xl overflow-hidden border border-white/10 shadow-xl bg-white/[0.02] backdrop-blur-md">
+                                    <div className="my-5 relative w-full aspect-square max-w-[170px] p-3 flex items-center justify-center rounded-3xl overflow-hidden border border-amber-500/30 shadow-2xl bg-white group-hover:scale-105 transition-transform duration-700 shadow-amber-500/10">
                                         <img 
-                                            src="/edu_tech_brand_logo.png" 
+                                            src="/edutech_logo_new.jpg" 
                                             alt="Edu Tech Brand Logo" 
-                                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 animate-float"
+                                            className="w-full h-full object-contain rounded-xl"
                                         />
-                                        {/* Soft inner glow */}
-                                        <div className="absolute inset-0 ring-1 ring-white/10 rounded-2xl pointer-events-none"></div>
                                     </div>
 
                                     {/* Bottom Details / Meta */}
-                                    <div className="w-full space-y-3 shrink-0">
-                                        <p className="text-[11px] text-slate-400 leading-relaxed font-semibold">
-                                            Chào mừng bạn đến với kỷ nguyên học liệu 3D tương tác. Nền tảng học tập thông minh tích hợp công nghệ AI.
+                                    <div className="w-full space-y-3.5 shrink-0">
+                                        {/* Wish Banner */}
+                                        <div className="bg-gradient-to-br from-amber-500/15 via-red-650/15 to-transparent border border-amber-500/25 rounded-2xl p-4 shadow-inner relative overflow-hidden group/wish">
+                                            {/* Decorative tiny lights */}
+                                            <div className="absolute top-1 right-1 w-1.5 h-1.5 bg-amber-400 rounded-full animate-ping"></div>
+                                            
+                                            <h3 className="text-xs font-black text-amber-300 uppercase tracking-widest flex items-center justify-center gap-1 mb-1.5">
+                                                🎓 Chúc Thi Tốt! 🎓
+                                            </h3>
+                                            <p className="text-[11px] font-bold text-slate-100 leading-relaxed">
+                                                Bình tĩnh, tự tin, làm bài thật tốt để bứt phá và về đích thành công rực rỡ! 🎯🏆
+                                            </p>
+                                        </div>
+
+                                        <p className="text-[10px] text-slate-300 leading-relaxed font-semibold">
+                                            Học liệu 3D & AI đồng hành cùng sĩ tử trong mọi kỳ thi thử thách.
                                         </p>
-                                        <div className="pt-3 border-t border-white/5 flex flex-col gap-1.5 text-[9px] font-black text-slate-500 uppercase tracking-widest leading-none">
+                                        
+                                        <div className="pt-2.5 border-t border-white/10 flex flex-col gap-1 text-[9px] font-black text-slate-400 uppercase tracking-widest leading-none">
                                             <div>Phiên bản Premium v2.5.0</div>
-                                            <div className="text-teal-400 mt-1 flex items-center justify-center gap-1.5">
-                                                <span className="w-1.5 h-1.5 rounded-full bg-teal-400 animate-ping"></span>
-                                                Hệ thống hoạt động tốt
+                                            <div className="text-amber-450 mt-1 flex items-center justify-center gap-1.5">
+                                                <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-ping"></span>
+                                                Đồng hành cùng sĩ tử về đích
                                             </div>
                                         </div>
                                     </div>
