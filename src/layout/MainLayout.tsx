@@ -60,9 +60,11 @@ export function Layout({ children }: LayoutProps) {
                 />
             )}
 
-            {/* Main Content Area - adjusted for floating sidebar with gap */}
-            <main className={`flex-1 pt-14 md:pt-0 w-full overflow-x-hidden transition-all duration-300 ease-in-out ${isCollapsed ? 'md:ml-[calc(5rem+1.5rem)]' : 'md:ml-[calc(270px+1.5rem)]'}`}>
-                {children}
+            {/* Main Content Area - wrapped in a premium aligned card container on desktop */}
+            <main className={`flex-1 min-h-screen md:h-screen md:min-h-0 flex flex-col p-0 pt-14 md:p-3 md:pl-6 md:pt-3 w-full overflow-hidden transition-all duration-300 ease-in-out ${isCollapsed ? 'md:ml-20' : 'md:ml-[270px]'}`}>
+                <div className="flex-1 w-full h-full bg-card md:rounded-2xl md:border border-sidebar-border shadow-xl overflow-y-auto flex flex-col relative custom-scrollbar">
+                    {children}
+                </div>
             </main>
         </div>
     );

@@ -302,7 +302,8 @@ export default function MaterialDetail() {
                                     habitat: normalizeStr(data.whereItOccurs.habitat)
                                   } 
                                 : undefined,
-                            relatedMaterials: data.relatedMaterials || []
+                            relatedMaterials: data.relatedMaterials || [],
+                            requiredPlan: data.requiredPlan
                         } as any);
                     }
                 } catch (error) {
@@ -496,14 +497,30 @@ export default function MaterialDetail() {
     const isPDF = ext === 'pdf';
     const config = SUBJECT_CONFIGS[material.subject as keyof typeof SUBJECT_CONFIGS] || SUBJECT_CONFIGS.physics;
     const isPremiumMaterial = id ? !id.toLowerCase().includes('demo') : true;
-    const isBlocked = isPremiumMaterial && userPlan === 'free';
+    
+    // Check explicit requiredPlan or fallback to premium fields check
+    let isBlocked = isPremiumMaterial && userPlan === 'free';
+    const requiredPlan = (material as any).requiredPlan;
+    
+    if (requiredPlan === null || requiredPlan === 'free' || requiredPlan === '') {
+        isBlocked = false;
+    } else if (requiredPlan) {
+        isBlocked = userPlan === 'free';
+    } else if (id && id.startsWith('db-')) {
+        // Fallback for custom uploaded models without explicit requiredPlan: 
+        // If they have no premium fields, they are free.
+        const hasPremiumFields = !!(material.subtitle || material.category || material.size || material.location || material.visibleInLM || material.funFact || (material.features && material.features.length > 0) || material.whereItOccurs);
+        if (!hasPremiumFields) {
+            isBlocked = false;
+        }
+    }
 
     return (
         <Layout>
-            <div className={`transition-colors duration-500 w-full h-auto lg:h-screen lg:overflow-hidden flex flex-col ${
+            <div className={`transition-colors duration-500 w-full h-auto lg:h-full lg:overflow-hidden flex flex-col ${
                 material.subtitle 
                     ? (theme === 'light' ? 'bg-[#f4ebe1]/60 text-stone-900' : 'bg-slate-950 text-slate-100') 
-                    : 'bg-background text-foreground'
+                    : 'bg-card text-foreground'
             }`}>
                 {/* Fixed Top Header Bar */}
                 <div className={`h-16 flex-shrink-0 flex items-center justify-between px-4 sm:px-6 md:px-8 border-b transition-colors duration-500 z-20 ${
@@ -614,7 +631,7 @@ export default function MaterialDetail() {
                                                   material.id === 'plant-cell' ? '#7fb069' :
                                                   material.id === 'animal-cell' ? '#e8859a' :
                                                   material.id === 'white-blood-cell' ? '#c8a2d8' : '#f0a868'
-                                              } 14%, #fbf7ec) 0%, #f3ead7 55%, #e8ddc4 100%)`,
+                                              } 10%, #f8fafc) 0%, #f1f5f9 55%, #e2e8f0 100%)`,
                                           }
                                         : material.subtitle && theme === 'dark'
                                         ? {

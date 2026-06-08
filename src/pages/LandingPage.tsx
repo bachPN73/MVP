@@ -167,7 +167,7 @@ export default function Landing() {
                                 vời với mô hình 3D và infographic. Tiếp thu kiến thức Vật lý, Hóa học, Sinh học một cách tự nhiên nhất.
                             </p>
 
-                            <div className="flex flex-row items-center justify-center lg:justify-start gap-3">
+                            <div className="flex flex-row flex-wrap items-center justify-center lg:justify-start gap-3">
                                 <Link
                                     to="/register"
                                     className="px-7 py-3.5 bg-primary hover:bg-primary/90 text-white rounded-2xl font-bold transition-all flex items-center gap-2 text-base shadow-lg shadow-primary/30 hover:shadow-xl hover:-translate-y-0.5 active:scale-95 cursor-pointer"
@@ -181,6 +181,14 @@ export default function Landing() {
                                     className="px-7 py-3.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/10 text-slate-700 dark:text-slate-200 rounded-2xl font-bold hover:border-slate-300 dark:hover:border-white/20 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-all flex items-center gap-2 text-base shadow-sm cursor-pointer"
                                 >
                                     Đăng nhập
+                                </Link>
+                                
+                                <Link
+                                    to="/intro-deck"
+                                    className="px-7 py-3.5 bg-indigo-50 dark:bg-indigo-900/40 border border-indigo-200 dark:border-indigo-500/30 text-indigo-700 dark:text-indigo-300 rounded-2xl font-bold hover:bg-indigo-100 dark:hover:bg-indigo-800/50 transition-all flex items-center gap-2 text-base shadow-sm cursor-pointer"
+                                >
+                                    <Sparkles className="w-4 h-4" />
+                                    Giới thiệu 3 Phút (Slide)
                                 </Link>
                             </div>
 

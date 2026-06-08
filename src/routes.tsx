@@ -20,6 +20,7 @@ import PricingPublic from "./pages/PricingPublicPage";
 import Payment from "./pages/PaymentPage";
 import ForgotPassword from "./pages/ForgotPasswordPage";
 import ResetPassword from "./pages/ResetPasswordPage";
+import PresentationIntroPage from "./pages/PresentationIntroPage";
 
 // Admin Pages
 import AdminDashboard from "./pages/admin/AdminDashboard";
@@ -142,6 +143,10 @@ export const router = createBrowserRouter([
     {
         path: "/presentation/:id",
         Component: withAuth(PresentationMode),
+    },
+    {
+        path: "/intro-deck",
+        Component: withSuspense(PresentationIntroPage),
     },
     {
         path: "/guide-app",

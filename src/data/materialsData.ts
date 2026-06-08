@@ -35,6 +35,7 @@ export interface Material {
         habitat: string;
     };
     relatedMaterials?: string[];
+    requiredPlan?: string | null;
 }
 
 export interface ModelInput {
@@ -75,7 +76,8 @@ export const materials: Material[] = [
         tags: ["Sinh học", "Tế bào", "Thực vật"],
         grade: 10,
         file_url: "/models/plant-cell.glb",
-        createdAt: new Date(Date.now() - 3 * 3600 * 1000).toISOString()
+        createdAt: new Date(Date.now() - 3 * 3600 * 1000).toISOString(),
+        requiredPlan: null
     },
     {
         id: "animal-cell",
@@ -103,7 +105,8 @@ export const materials: Material[] = [
         tags: ["Sinh học", "Tế bào", "Động vật"],
         grade: 10,
         file_url: "/models/animal-cell.glb",
-        createdAt: new Date(Date.now() - 6 * 3600 * 1000).toISOString()
+        createdAt: new Date(Date.now() - 6 * 3600 * 1000).toISOString(),
+        requiredPlan: null
     },
     {
         id: "white-blood-cell",
