@@ -30,13 +30,13 @@ export function Layout({ children }: LayoutProps) {
     return (
         <div className="flex min-h-screen bg-background relative text-foreground transition-colors duration-300">
             {/* Mobile Header */}
-            <header className="md:hidden fixed top-0 left-0 right-0 h-14 bg-sidebar flex items-center justify-between px-4 z-40 border-b border-sidebar-border shadow-sm">
-                <div className="font-bold text-sidebar-foreground text-lg tracking-tight">Edu Tech</div>
+            <header className="md:hidden fixed top-0 left-0 right-0 h-14 bg-sidebar flex items-center justify-between px-4 z-40 border-b border-sidebar-border shadow-md">
+                <div className="font-bold text-white text-lg tracking-tight">Edu Tech</div>
                 <div className="flex items-center gap-2">
-                    <ThemeToggle variant="ghost" className="text-sidebar-foreground hover:bg-sidebar-accent rounded-lg" />
+                    <ThemeToggle variant="ghost" className="text-white hover:bg-white/10 rounded-xl" />
                     <button
                         onClick={() => setIsSidebarOpen(true)}
-                        className="text-sidebar-foreground p-2 hover:bg-sidebar-accent rounded-lg transition-colors"
+                        className="text-white p-2 hover:bg-white/10 rounded-xl transition-colors"
                     >
                         <Menu className="w-6 h-6" />
                     </button>
@@ -62,7 +62,7 @@ export function Layout({ children }: LayoutProps) {
 
             {/* Main Content Area - wrapped in a premium aligned card container on desktop */}
             <main className={`flex-1 min-h-screen md:h-screen md:min-h-0 flex flex-col p-0 pt-14 md:p-3 md:pl-6 md:pt-3 w-full overflow-hidden transition-all duration-300 ease-in-out ${isCollapsed ? 'md:ml-20' : 'md:ml-[270px]'}`}>
-                <div className="flex-1 w-full h-full bg-card md:rounded-lg md:border border-sidebar-border shadow-sm overflow-y-auto flex flex-col relative custom-scrollbar">
+                <div className="flex-1 w-full h-full bg-card md:rounded-2xl md:border border-sidebar-border shadow-xl overflow-y-auto flex flex-col relative custom-scrollbar">
                     {children}
                 </div>
             </main>

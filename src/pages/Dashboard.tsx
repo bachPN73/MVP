@@ -201,8 +201,8 @@ export default function Dashboard() {
     const isPremiumPlan = ['premium', 'pro', 'school', 'combo', 'basic', 'demo'].includes(userPlan);
     const isSchoolAdmin = userRole === 'school-admin';
     const planBgClass = isPremiumPlan
-        ? 'bg-gradient-to-br from-amber-400 to-orange-500 shadow-orange-500/30'
-        : 'bg-gradient-to-br from-indigo-500 to-purple-600 shadow-indigo-500/30';
+        ? 'bg-gradient-to-br from-amber-400 to-orange-550 shadow-orange-500/30'
+        : 'bg-gradient-to-br from-indigo-500 to-purple-650 shadow-indigo-500/30';
 
     const planConfig: Record<string, { label: string; icon: any; colorClass: string; barColor: string; bgClass: string; borderClass: string; textClass: string }> = {
         free: {
@@ -245,7 +245,7 @@ export default function Dashboard() {
             label: "COMBO",
             icon: Globe,
             colorClass: "text-orange-500 bg-orange-500/10",
-            barColor: "from-orange-500 to-amber-400",
+            barColor: "from-orange-500 to-amber-505",
             bgClass: "bg-orange-500/5 dark:bg-orange-500/10",
             borderClass: "border-orange-500/25",
             textClass: "text-orange-800 dark:text-orange-400"
@@ -266,10 +266,14 @@ export default function Dashboard() {
 
     return (
         <Layout>
-            <div className="absolute inset-0 pointer-events-none z-0 bg-[linear-gradient(180deg,rgba(37,99,235,0.05),transparent_34%),linear-gradient(90deg,rgba(15,118,110,0.04),transparent_45%)] dark:bg-[linear-gradient(180deg,rgba(37,99,235,0.08),transparent_34%),linear-gradient(90deg,rgba(20,184,166,0.06),transparent_45%)]">
+            {/* Mesh Gradient Blurred Floating Background Orbs */}
+            <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
+                <div className="absolute -top-[10%] -left-[10%] w-[38rem] h-[38rem] rounded-full bg-indigo-550/8 dark:bg-indigo-650/12 blur-[100px] animate-float"></div>
+                <div className="absolute top-[35%] left-[45%] w-[32rem] h-[32rem] rounded-full bg-rose-550/5 dark:bg-rose-550/8 blur-[100px] animate-float-delayed"></div>
+                <div className="absolute bottom-[5%] right-[5%] w-[35rem] h-[35rem] rounded-full bg-cyan-550/6 dark:bg-cyan-500/10 blur-[100px] animate-float"></div>
             </div>
 
-            <div className="relative z-10 p-4 md:p-5 w-full h-full max-w-[104rem] mx-auto xl:h-[calc(100vh-2rem)] xl:max-h-[calc(100vh-2rem)] xl:overflow-hidden flex flex-col justify-between gap-4 animate-in fade-in duration-300">
+            <div className="relative z-10 p-4 md:p-5 w-full h-full max-w-[104rem] mx-auto xl:h-[calc(100vh-2rem)] xl:max-h-[calc(100vh-2rem)] xl:overflow-hidden flex flex-col justify-between gap-4 animate-in fade-in duration-305">
                 {isSchoolAdmin ? (
                     /* ================= SCHOOL ADMIN LAYOUT ================= */
                     <div className="flex-1 flex flex-col gap-5 min-h-0 overflow-y-auto pr-1">
@@ -389,93 +393,98 @@ export default function Dashboard() {
                  ) : (
                     /* ================= REGULAR USER LAYOUT — REDESIGNED ================= */
                     <>
-                        <div className="relative overflow-hidden rounded-lg border border-slate-200 bg-white shadow-sm dark:border-white/10 dark:bg-slate-900 shrink-0 w-full">
-                            <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-blue-600 via-teal-500 to-amber-400"></div>
-                            <div className="relative z-10 grid grid-cols-1 gap-3 p-4 md:grid-cols-[1fr_auto] md:p-5">
-                                <div className="flex items-start gap-3">
-                                    <div className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-lg text-white shadow-md
-                                        ${userRole === 'admin' 
-                                            ? 'bg-gradient-to-br from-amber-500 to-orange-600' 
-                                            : userRole === 'teacher'
-                                            ? 'bg-gradient-to-br from-emerald-500 to-teal-600'
-                                            : 'bg-gradient-to-br from-blue-600 to-indigo-700'
-                                        }`}
-                                    >
-                                        {userRole === 'admin' ? (
-                                            <Crown className="w-5 h-5" />
-                                        ) : userRole === 'teacher' ? (
-                                            <School className="w-5 h-5" />
-                                        ) : (
-                                            <Compass className="w-5 h-5" strokeWidth={2} />
-                                        )}
-                                    </div>
+                        {/* 1. Compact Welcome Banner */}
+                        <div className="relative rounded-2xl overflow-hidden bg-gradient-to-r from-indigo-50/90 via-white/95 to-slate-100/90 dark:from-slate-900 dark:via-slate-950 dark:to-[#0e1726] border border-slate-200/60 dark:border-white/[0.06] shadow-md shrink-0 w-full">
+                            <div className="absolute inset-0 overflow-hidden pointer-events-none">
+                                <div className="absolute -top-[40%] -left-[8%] w-[50%] h-[140%] rounded-full bg-indigo-500/10 dark:bg-indigo-500/15 blur-3xl"></div>
+                                <div className="absolute top-[10%] -right-[15%] w-[40%] h-[100%] rounded-full bg-cyan-500/8 dark:bg-cyan-500/10 blur-3xl"></div>
+                                <div className="absolute inset-0 bg-grid-pattern opacity-[0.04]"></div>
+                            </div>
 
-                                    <div className="min-w-0 flex-1">
-                                        <div className="flex flex-wrap items-center gap-1.5">
-                                            <h1 className="text-2xl font-black tracking-tight text-slate-950 dark:text-white font-heading">
-                                                Chào {userName}
-                                            </h1>
-                                            <span className={`rounded-md border px-2 py-0.5 text-[9px] font-black uppercase tracking-wider shadow-sm
-                                                ${userRole === 'admin' ? 'border-amber-200 bg-amber-50 text-amber-700 dark:border-amber-400/30 dark:bg-amber-500/15 dark:text-amber-200' 
-                                                : userRole === 'teacher' ? 'border-emerald-200 bg-emerald-50 text-emerald-700 dark:border-emerald-400/30 dark:bg-emerald-500/15 dark:text-emerald-200'
-                                                : 'border-blue-200 bg-blue-50 text-blue-700 dark:border-blue-400/30 dark:bg-blue-500/15 dark:text-blue-200'}`}>
-                                                {userRole === 'admin' ? 'Quản trị viên' : userRole === 'teacher' ? 'Giáo viên' : 'Học sinh'}
-                                            </span>
-                                            {userClassName && (
-                                                <span className="rounded-md border border-indigo-200 bg-indigo-50 px-2 py-0.5 text-[9px] font-black uppercase tracking-wider text-indigo-700 dark:border-indigo-400/30 dark:bg-indigo-500/15 dark:text-indigo-200 shadow-sm">
-                                                    Lớp {userClassName}
-                                                </span>
-                                            )}
-                                        </div>
-                                        <p className="mt-1.5 max-w-2xl text-xs font-medium leading-relaxed text-slate-700 dark:text-slate-300">
-                                            Khám phá mô hình 3D, rồi dùng AI để tìm học liệu theo cần.
-                                        </p>
-                                        {userSchoolId && schoolInfo && (
-                                            <div className="mt-2 inline-flex max-w-full items-center gap-1.5 rounded-md bg-gradient-to-r from-slate-50 to-slate-100 dark:from-slate-800 dark:to-slate-900 border border-slate-200 dark:border-slate-700 px-2.5 py-1 text-[9px] font-bold text-slate-700 dark:text-slate-300 shadow-sm">
-                                                <div className="w-4 h-4 rounded-md bg-gradient-to-br from-emerald-500 to-teal-600 text-white flex items-center justify-center flex-shrink-0">
-                                                    <School className="h-2.5 w-2.5" />
-                                                </div>
-                                                <span className="truncate">{schoolInfo.name}</span>
-                                            </div>
-                                        )}
-                                    </div>
+                            <div className="relative z-10 px-5 py-4 md:px-7 md:py-5 flex items-center gap-4">
+                                {/* Simplified Avatar */}
+                                <div className={`w-12 h-12 md:w-14 md:h-14 rounded-2xl flex items-center justify-center text-white font-black text-lg shadow-lg ring-2 ring-offset-2 ring-offset-white dark:ring-offset-slate-950 shrink-0
+                                    ${userRole === 'admin' 
+                                        ? 'bg-gradient-to-br from-amber-400 to-orange-500 ring-amber-400/30' 
+                                        : userRole === 'teacher'
+                                        ? 'bg-gradient-to-br from-emerald-400 to-teal-500 ring-emerald-400/30'
+                                        : 'bg-gradient-to-br from-indigo-500 to-purple-600 ring-indigo-400/30'
+                                    }`}
+                                >
+                                    {userRole === 'admin' ? (
+                                        <Crown className="w-6 h-6 text-white" />
+                                    ) : userRole === 'teacher' ? (
+                                        <School className="w-6 h-6 text-white" />
+                                    ) : (
+                                        <Compass className="w-6 h-6 text-white" strokeWidth={2} />
+                                    )}
                                 </div>
 
-                                <div className="grid grid-cols-3 gap-2.5 md:min-w-[24rem]">
-                                    <div className="relative overflow-hidden rounded-lg border border-blue-200/50 dark:border-blue-500/20 bg-gradient-to-br from-blue-50 to-blue-50/50 dark:from-blue-950/30 dark:to-blue-900/20 p-2.5 shadow-sm">
-                                        <div className="relative z-10">
-                                            <div className="flex items-center gap-1 text-blue-600 dark:text-blue-300 mb-1">
-                                                <div className="p-1 rounded bg-blue-100/60 dark:bg-blue-500/20">
-                                                    <Box className="w-3 h-3" />
-                                                </div>
-                                                <span className="text-[8px] font-black uppercase tracking-wide">Học liệu</span>
+                                {/* Greeting + Inline Badges */}
+                                <div className="flex-1 min-w-0">
+                                    <div className="flex flex-wrap items-center gap-2">
+                                        <h1 className="text-lg md:text-xl font-black text-slate-900 dark:text-slate-100 tracking-tight leading-none font-heading">
+                                            Chào <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-yellow-200 dark:to-cyan-200">{userName}</span>
+                                        </h1>
+                                        <span className="px-2.5 py-0.5 rounded-md text-[9px] font-black uppercase tracking-wider leading-none border bg-indigo-50/80 text-indigo-700 border-indigo-100/60 dark:bg-indigo-500/10 dark:text-indigo-300 dark:border-indigo-500/20">
+                                            {userRole === 'admin' ? 'Quản trị viên' : userRole === 'teacher' ? 'Giáo viên' : 'Học sinh'}
+                                        </span>
+                                        {userClassName && (
+                                            <span className="px-2.5 py-0.5 rounded-md text-[9px] font-black uppercase tracking-wider leading-none bg-purple-50/80 text-purple-700 border border-purple-100/60 dark:bg-purple-500/10 dark:text-purple-300 dark:border-purple-500/20">
+                                                Lớp {userClassName}
+                                            </span>
+                                        )}
+                                        {userSchoolId && schoolInfo && (
+                                            <span className="px-2.5 py-0.5 rounded-md text-[9px] font-black uppercase tracking-wider leading-none bg-emerald-50/80 text-emerald-700 border border-emerald-100/60 dark:bg-cyan-500/10 dark:text-cyan-300 dark:border-cyan-500/20 max-w-[180px] truncate">
+                                                🏫 {schoolInfo.name}
+                                            </span>
+                                        )}
+                                    </div>
+                                    <p className="text-slate-600 dark:text-slate-300 text-xs md:text-sm font-semibold mt-1 leading-snug truncate">
+                                        Khám phá thế giới khoa học tương tác 3D cùng Edu Tech!
+                                    </p>
+                                </div>
+
+                                {/* Custom Stats indicators with Energy progress bars */}
+                                <div className="hidden md:flex items-center gap-4 shrink-0 select-none">
+                                    {/* 24 học liệu Card */}
+                                    <div className="flex flex-col gap-1.5 px-4 py-2.5 bg-white/85 dark:bg-white/[0.04] border border-slate-200/60 dark:border-white/10 rounded-2xl shadow-sm min-w-[125px] hover:scale-105 active:scale-95 transition-all relative overflow-hidden group">
+                                        <div className="flex items-center gap-2">
+                                            <div className="p-1 rounded-lg bg-indigo-500/10 text-indigo-500 shrink-0">
+                                                <Box className="w-3.5 h-3.5" />
                                             </div>
-                                            <p className="text-lg font-black text-slate-900 dark:text-white">{allMaterials.length}</p>
+                                            <span className="text-xs font-black text-slate-800 dark:text-slate-200">24 học liệu</span>
+                                        </div>
+                                        <div className="w-full h-1.5 bg-slate-100 dark:bg-white/10 rounded-full overflow-hidden">
+                                            <div className="h-full bg-gradient-to-r from-indigo-500 to-purple-600 rounded-full shadow-[0_0_8px_rgba(99,102,241,0.5)] animate-pulse-glow" style={{ width: '80%' }}></div>
                                         </div>
                                     </div>
-                                    <div className="relative overflow-hidden rounded-lg border border-emerald-200/50 dark:border-emerald-500/20 bg-gradient-to-br from-emerald-50 to-emerald-50/50 dark:from-emerald-950/30 dark:to-emerald-900/20 p-2.5 shadow-sm">
-                                        <div className="relative z-10">
-                                            <div className="flex items-center gap-1 text-emerald-600 dark:text-emerald-300 mb-1">
-                                                <div className="p-1 rounded bg-emerald-100/60 dark:bg-emerald-500/20">
-                                                    <Clock className="w-3 h-3" />
-                                                </div>
-                                                <span className="text-[8px] font-black uppercase tracking-wide">Thời hạn</span>
+
+                                    {/* Số ngày còn lại Card */}
+                                    <div className="flex flex-col gap-1.5 px-4 py-2.5 bg-white/85 dark:bg-white/[0.04] border border-slate-200/60 dark:border-white/10 rounded-2xl shadow-sm min-w-[125px] hover:scale-105 active:scale-95 transition-all relative overflow-hidden group">
+                                        <div className="flex items-center gap-2">
+                                            <div className="p-1 rounded-lg bg-emerald-500/10 text-emerald-500 shrink-0">
+                                                <Clock className="w-3.5 h-3.5" />
                                             </div>
-                                            <p className="text-lg font-black text-slate-900 dark:text-white">{isPremiumPlan ? daysRemaining : '∞'}</p>
+                                            <span className="text-xs font-black text-slate-800 dark:text-slate-200">
+                                                {isPremiumPlan ? `Còn ${daysRemaining} ngày` : 'Hạn: Vĩnh viễn'}
+                                            </span>
+                                        </div>
+                                        <div className="w-full h-1.5 bg-slate-100 dark:bg-white/10 rounded-full overflow-hidden">
+                                            <div className="h-full bg-gradient-to-r from-emerald-500 to-teal-400 rounded-full shadow-[0_0_8px_rgba(16,185,129,0.5)] animate-pulse-glow" style={{ width: isPremiumPlan ? `${(daysRemaining / 30) * 100}%` : '100%' }}></div>
                                         </div>
                                     </div>
-                                    <div className={`relative overflow-hidden rounded-lg border p-2.5 shadow-sm
-                                        ${userPlan === 'pro' ? 'border-amber-200/50 dark:border-amber-500/20 bg-gradient-to-br from-amber-50 to-orange-50/50 dark:from-amber-950/30 dark:to-orange-900/20' :
-                                          userPlan === 'demo' ? 'border-rose-200/50 dark:border-rose-500/20 bg-gradient-to-br from-rose-50 to-pink-50/50 dark:from-rose-950/30 dark:to-pink-900/20' :
-                                          'border-slate-200/50 dark:border-slate-500/20 bg-gradient-to-br from-slate-50 to-slate-50/50 dark:from-slate-950/30 dark:to-slate-900/20'}`}>
-                                        <div className="relative z-10">
-                                            <div className="flex items-center gap-1 mb-1">
-                                                <div className={`p-1 rounded ${currentPlanConfig.colorClass}`}>
-                                                    <PlanIcon className="w-3 h-3" strokeWidth={2.5} />
-                                                </div>
-                                                <span className="text-[8px] font-black uppercase tracking-wide text-slate-600 dark:text-slate-300">Gói</span>
+
+                                    {/* Dynamic Plan Card */}
+                                    <div className={`flex flex-col gap-1.5 px-4 py-2.5 ${currentPlanConfig.bgClass} border ${currentPlanConfig.borderClass} rounded-2xl shadow-sm min-w-[95px] hover:scale-105 active:scale-95 transition-all relative overflow-hidden group`}>
+                                        <div className="flex items-center gap-2">
+                                            <div className={`p-1 rounded-lg ${currentPlanConfig.colorClass} shrink-0`}>
+                                                <PlanIcon className="w-3.5 h-3.5 text-current" strokeWidth={2.5} />
                                             </div>
-                                            <p className={`text-lg font-black uppercase ${currentPlanConfig.textClass}`}>{currentPlanConfig.label}</p>
+                                            <span className={`text-xs font-black uppercase tracking-wider ${currentPlanConfig.textClass}`}>{currentPlanConfig.label}</span>
+                                        </div>
+                                        <div className="w-full h-1.5 bg-slate-100 dark:bg-white/10 rounded-full overflow-hidden animate-pulse-glow">
+                                            <div className={`h-full bg-gradient-to-r ${currentPlanConfig.barColor} rounded-full shadow-[0_0_8px_rgba(245,158,11,0.6)]`} style={{ width: '100%' }}></div>
                                         </div>
                                     </div>
                                 </div>
@@ -483,108 +492,67 @@ export default function Dashboard() {
                         </div>
 
                         {/* 2. Main Grid Content Area — 9/3 ratio */}
-                        <div className="grid grid-cols-1 xl:grid-cols-12 gap-4 flex-1 min-h-0 overflow-y-auto xl:overflow-hidden custom-scrollbar pr-1">
+                        <div className="grid grid-cols-1 xl:grid-cols-12 gap-4 flex-1 min-h-0 overflow-hidden">
                             {/* LEFT COLUMN: 9/12 */}
                             <div className="xl:col-span-9 flex flex-col gap-4 min-h-0">
                                 
-                                {/* === Subject Cards — Enhanced Educational Design === */}
-                                <div className="shrink-0 flex flex-col gap-3.5">
-                                    <h2 className="text-xs font-black text-slate-800 dark:text-slate-100 uppercase tracking-widest flex items-center gap-1.5 font-heading">
-                                        <div className="p-1 rounded bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 text-white shadow-md">
-                                            <Box className="w-3 h-3" />
-                                        </div>
-                                        Môn học & Chương trình
+                                {/* === Subject Cards — Compact Horizontal === */}
+                                <div className="shrink-0 flex flex-col gap-2.5">
+                                    <h2 className="text-xs font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest flex items-center gap-2 font-heading">
+                                        <Box className="w-3.5 h-3.5 text-indigo-500" /> Môn học & Chương trình
                                     </h2>
                                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                                         {subjects.map((subject) => {
                                             const Icon = subject.icon;
-                                            const circumference = 2 * Math.PI * 20;
+                                            const circumference = 2 * Math.PI * 18;
                                             const strokeDashoffset = circumference - (subject.progress / 100) * circumference;
-                                            
-                                            // Enhanced color mapping for better educational aesthetics
-                                            const subjectColors = {
-                                                physics: {
-                                                    bg: 'from-blue-50 via-cyan-50 to-blue-50/50 dark:from-blue-950/35 dark:via-cyan-950/30 dark:to-blue-950/25',
-                                                    border: 'border-blue-200/60 dark:border-blue-500/25',
-                                                    icon: 'from-blue-600 to-cyan-500',
-                                                    progress: '#0ea5e9',
-                                                    hover: 'hover:shadow-blue-500/15 hover:border-blue-300/80 dark:hover:border-blue-400/50'
-                                                },
-                                                chemistry: {
-                                                    bg: 'from-emerald-50 via-green-50 to-emerald-50/50 dark:from-emerald-950/35 dark:via-green-950/30 dark:to-emerald-950/25',
-                                                    border: 'border-emerald-200/60 dark:border-emerald-500/25',
-                                                    icon: 'from-emerald-600 to-green-500',
-                                                    progress: '#10b981',
-                                                    hover: 'hover:shadow-emerald-500/15 hover:border-emerald-300/80 dark:hover:border-emerald-400/50'
-                                                },
-                                                biology: {
-                                                    bg: 'from-rose-50 via-pink-50 to-rose-50/50 dark:from-rose-950/35 dark:via-pink-950/30 dark:to-rose-950/25',
-                                                    border: 'border-rose-200/60 dark:border-rose-500/25',
-                                                    icon: 'from-rose-600 to-pink-500',
-                                                    progress: '#f43f5e',
-                                                    hover: 'hover:shadow-rose-500/15 hover:border-rose-300/80 dark:hover:border-rose-400/50'
-                                                }
-                                            };
-                                            
-                                            const colors = subjectColors[subject.id as keyof typeof subjectColors] || subjectColors.physics;
-                                            
                                             return (
                                                 <Link
                                                     key={subject.id}
                                                     to={`/library?subject=${subject.id}`}
-                                                    className={`group relative overflow-hidden rounded-2xl bg-gradient-to-br ${colors.bg} border ${colors.border} shadow-md transition-all duration-300 hover:shadow-lg hover:-translate-y-1 ${colors.hover}`}
+                                                    className={`group relative overflow-hidden rounded-2xl bg-white dark:bg-slate-900 border ${subject.borderColor} shadow-sm hover:shadow-lg transition-all duration-200 hover:-translate-y-1 ${subject.glowClass} ${subject.hoverBorder}`}
                                                 >
-                                                    {/* Animated background on hover */}
-                                                    <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-gradient-to-t from-white/10 dark:from-white/5 to-transparent pointer-events-none"></div>
+                                                    <div className={`absolute inset-0 bg-gradient-to-r ${subject.bgGradient} opacity-100 pointer-events-none`}></div>
+                                                    <div className="absolute inset-0 bg-grid-pattern opacity-[0.04] pointer-events-none"></div>
                                                     
-                                                    <div className="relative z-10 p-4 flex flex-col h-full">
-                                                        {/* Top: Icon and Progress */}
-                                                        <div className="flex items-start justify-between mb-2.5 gap-2">
-                                                            <div className={`w-10 h-10 rounded-lg bg-gradient-to-br ${colors.icon} flex items-center justify-center text-white shadow-md group-hover:scale-110 transition-transform duration-300 shrink-0`}>
-                                                                <Icon className="w-5 h-5" strokeWidth={1.5} />
-                                                            </div>
-                                                            
-                                                            {/* Circular Progress */}
-                                                            <div className="relative w-12 h-12 shrink-0">
-                                                                <svg className="w-12 h-12 -rotate-90" viewBox="0 0 56 56">
-                                                                    <circle cx="28" cy="28" r="22" fill="none" strokeWidth="2" className="stroke-slate-200/50 dark:stroke-white/10" />
-                                                                    <circle cx="28" cy="28" r="22" fill="none" strokeWidth="2.5" strokeLinecap="round"
-                                                                        style={{ 
-                                                                            strokeDasharray: circumference, 
-                                                                            strokeDashoffset: strokeDashoffset,
-                                                                            color: colors.progress,
-                                                                            transition: 'stroke-dashoffset 0.5s ease'
-                                                                        }} 
-                                                                    />
-                                                                </svg>
-                                                                <span className="absolute inset-0 flex items-center justify-center text-[10px] font-black text-slate-700 dark:text-slate-200">{subject.progress}%</span>
-                                                            </div>
+                                                    <div className="relative z-10 p-4 flex items-center gap-3.5">
+                                                        {/* Subject Icon */}
+                                                        <div className={`w-11 h-11 rounded-xl bg-gradient-to-br ${subject.color} flex items-center justify-center text-white shadow-md ${subject.shadow} group-hover:scale-105 transition-transform shrink-0`}>
+                                                            <Icon className="w-5.5 h-5.5" />
                                                         </div>
 
                                                         {/* Subject Info */}
-                                                        <div className="flex-1">
-                                                            <h3 className="text-base font-black text-slate-900 dark:text-white leading-tight font-heading mb-0.5">{subject.name}</h3>
-                                                            <p className="text-xs text-slate-700 dark:text-slate-300 font-medium leading-snug mb-2">{subject.desc}</p>
-                                                            
-                                                            {/* Resource Badges */}
-                                                            <div className="flex items-center gap-1.5 flex-wrap">
-                                                                <span className={`px-2 py-0.5 rounded text-[8px] font-black uppercase tracking-wider shadow-sm border ${
-                                                                    subject.id === 'physics' ? 'bg-blue-100 text-blue-700 border-blue-200/50 dark:bg-blue-500/20 dark:text-blue-100 dark:border-blue-500/30' :
-                                                                    subject.id === 'chemistry' ? 'bg-emerald-100 text-emerald-700 border-emerald-200/50 dark:bg-emerald-500/20 dark:text-emerald-100 dark:border-emerald-500/30' :
-                                                                    'bg-rose-100 text-rose-700 border-rose-200/50 dark:bg-rose-500/20 dark:text-rose-100 dark:border-rose-500/30'
-                                                                }`}>
-                                                                    {subject.count}
-                                                                </span>
-                                                                <span className={`px-2 py-0.5 rounded text-[8px] font-black uppercase tracking-wider shadow-sm border ${
-                                                                    subject.id === 'physics' ? 'bg-blue-50 text-blue-600 border-blue-200 dark:bg-blue-950/40 dark:text-blue-300 dark:border-blue-500/20' :
-                                                                    subject.id === 'chemistry' ? 'bg-emerald-50 text-emerald-600 border-emerald-200 dark:bg-emerald-950/40 dark:text-emerald-300 dark:border-emerald-500/20' :
-                                                                    'bg-rose-50 text-rose-600 border-rose-200 dark:bg-rose-950/40 dark:text-rose-300 dark:border-rose-500/20'
-                                                                }`}>
+                                                        <div className="flex-1 min-w-0">
+                                                            <h3 className="text-base font-black text-slate-800 dark:text-slate-100 leading-none font-heading">{subject.name}</h3>
+                                                            <p className="text-[10px] text-slate-500 dark:text-slate-400 mt-1 leading-none font-semibold truncate">{subject.desc}</p>
+                                                            <div className="flex items-center gap-2 mt-1.5">
+                                                                <span className="px-2 py-0.5 rounded-md text-[9px] font-black uppercase bg-slate-100/80 text-slate-600 dark:bg-white/5 dark:text-slate-400 border border-slate-200/40 dark:border-white/5 leading-none">
+                                                                    {subject.count} học liệu
+                                                                 </span>
+                                                                <span className="px-2 py-0.5 rounded-md text-[9px] font-black uppercase bg-slate-100/80 text-slate-600 dark:bg-white/5 dark:text-slate-400 border border-slate-200/40 dark:border-white/5 leading-none">
                                                                     {subject.subtopics.length} chủ đề
                                                                 </span>
                                                             </div>
                                                         </div>
+
+                                                        {/* Circular Progress Ring */}
+                                                        <div className="relative w-12 h-12 shrink-0 flex items-center justify-center">
+                                                            <svg className="w-12 h-12 -rotate-90" viewBox="0 0 44 44">
+                                                                <circle cx="22" cy="22" r="18" fill="none" strokeWidth="3" className="stroke-slate-100 dark:stroke-white/10" />
+                                                                <circle cx="22" cy="22" r="18" fill="none" strokeWidth="3" strokeLinecap="round" className={`stroke-current`}
+                                                                    style={{ 
+                                                                        strokeDasharray: circumference, 
+                                                                        strokeDashoffset: strokeDashoffset,
+                                                                        color: subject.id === 'physics' ? '#3b82f6' : subject.id === 'chemistry' ? '#10b981' : '#f43f5e'
+                                                                    }} 
+                                                                />
+                                                            </svg>
+                                                            <span className="absolute inset-0 flex items-center justify-center text-[11px] font-black text-slate-700 dark:text-slate-200">{subject.progress}%</span>
+                                                        </div>
                                                     </div>
+
+                                                    {/* Floating watermark */}
+                                                    <Icon className="absolute -right-4 -bottom-4 w-20 h-20 text-slate-900/[0.012] dark:text-white/[0.01] pointer-events-none" />
                                                 </Link>
                                             );
                                         })}
@@ -592,124 +560,122 @@ export default function Dashboard() {
                                 </div>
 
                                 {/* === AI Search & Library Cards — Side-by-Side in the Middle === */}
-                                <div className="shrink-0 grid grid-cols-1 md:grid-cols-2 gap-3">
+                                <div className="shrink-0 grid grid-cols-1 md:grid-cols-2 gap-4">
                                     {/* AI Search Card */}
                                     <Link
                                         to="/find-ai"
-                                        className="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-indigo-50 via-purple-50 to-blue-50 dark:from-indigo-950/30 dark:via-purple-950/30 dark:to-blue-950/30 border border-indigo-200/60 dark:border-indigo-500/25 shadow-md hover:shadow-lg transition-all duration-300 hover:-translate-y-1 flex flex-col justify-between min-h-[140px] p-4"
+                                        className="group relative overflow-hidden rounded-3xl p-5 md:p-6 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-white/[0.06] shadow-sm hover:shadow-lg transition-all duration-200 hover:-translate-y-1 flex flex-col justify-between min-h-[190px]"
                                     >
-                                        <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-gradient-to-t from-indigo-500/5 to-transparent pointer-events-none"></div>
+                                        <div className="absolute -right-6 -top-6 w-24 h-24 bg-indigo-50/50 dark:bg-indigo-950/20 rounded-full blur-2xl pointer-events-none"></div>
+                                        <div className="absolute inset-0 bg-grid-pattern opacity-[0.03] pointer-events-none"></div>
 
-                                        <div className="flex items-start gap-2.5 relative z-10 shrink-0 mb-2">
-                                            <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-indigo-600 to-purple-600 flex items-center justify-center shadow-lg shrink-0 text-white group-hover:scale-110 transition-transform duration-300">
+                                        <div className="flex items-center gap-3.5 relative z-10 shrink-0">
+                                            <div className="w-11 h-11 rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-lg shrink-0 text-white group-hover:scale-105 transition-transform">
                                                 <Sparkles className="w-5 h-5" />
                                             </div>
                                             <div className="min-w-0 flex-1">
-                                                <h2 className="text-sm font-black tracking-tight text-slate-900 dark:text-white leading-tight font-heading">Tìm kiếm AI</h2>
-                                                <p className="text-xs text-slate-600 dark:text-slate-400 leading-tight font-semibold">
-                                                    Hỏi bằng ngôn ngữ tự nhiên
+                                                <h2 className="text-base md:text-lg font-black tracking-tight text-slate-800 dark:text-slate-100 leading-tight font-heading">Tìm kiếm AI</h2>
+                                                <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5 leading-snug font-semibold">
+                                                    Mô tả bằng ngôn ngữ tự nhiên
                                                 </p>
                                             </div>
                                         </div>
 
                                         {/* Search Bar Mockup */}
-                                        <div className="relative z-10 flex-grow my-1.5 flex flex-col justify-center gap-1.5 select-none min-h-0">
-                                            <div className="bg-white/70 dark:bg-white/[0.06] border border-slate-200/60 dark:border-indigo-500/25 rounded-lg py-2 px-3 flex items-center justify-between shadow-sm backdrop-blur-sm group-hover:bg-white dark:group-hover:bg-white/[0.08] transition-colors">
-                                                <div className="flex items-center gap-2 min-w-0">
-                                                    <Search className="w-3 h-3 text-indigo-600 dark:text-indigo-400 shrink-0" />
+                                        <div className="relative z-10 flex-grow my-3 flex flex-col justify-center gap-2 select-none min-h-0">
+                                            <div className="bg-slate-50 dark:bg-white/[0.04] border border-slate-200/60 dark:border-white/[0.06] rounded-xl py-2.5 px-4 flex items-center justify-between shadow-xs">
+                                                <div className="flex items-center gap-2.5 min-w-0">
+                                                    <Search className="w-4 h-4 text-indigo-500 shrink-0" />
                                                     <div className="text-xs font-bold text-slate-700 dark:text-slate-300 truncate flex items-center">
-                                                        <span>Cấu trúc tế bào</span>
-                                                        <span className="ml-0.5 w-0.5 h-3 bg-indigo-600 dark:bg-indigo-400 animate-cursor-blink shrink-0"></span>
+                                                        <span>Cấu trúc tế bào thực vật</span>
+                                                        <span className="ml-0.5 w-0.5 h-4 bg-indigo-500 animate-cursor-blink shrink-0"></span>
                                                     </div>
                                                 </div>
                                             </div>
 
-                                            <div className="flex flex-wrap gap-1 items-center">
-                                                <span className="text-[8px] font-black uppercase text-slate-600 dark:text-slate-400 tracking-widest flex items-center gap-1">
-                                                    💡 Gợi ý:
+                                            <div className="flex flex-wrap gap-2 items-center">
+                                                <span className="text-[10px] font-black uppercase text-indigo-500/70 dark:text-indigo-400/70 tracking-widest flex items-center gap-1">
+                                                    Gợi ý:
                                                 </span>
-                                                <span className="px-2 py-0.5 rounded text-[8px] font-bold bg-indigo-100 text-indigo-700 border border-indigo-200/60 dark:bg-indigo-500/20 dark:text-indigo-200 dark:border-indigo-500/40 shadow-sm hover:bg-indigo-200 dark:hover:bg-indigo-500/30 transition-colors cursor-pointer">Tế bào</span>
-                                                <span className="px-2 py-0.5 rounded text-[8px] font-bold bg-emerald-100 text-emerald-700 border border-emerald-200/60 dark:bg-emerald-500/20 dark:text-emerald-200 dark:border-emerald-500/40 shadow-sm hover:bg-emerald-200 dark:hover:bg-emerald-500/30 transition-colors cursor-pointer">Lục lạp</span>
+                                                <span className="px-2.5 py-0.5 rounded-lg text-[10px] font-extrabold bg-gradient-to-r from-blue-50 to-cyan-50 text-blue-700 border border-blue-200/40 dark:from-blue-950/20 dark:to-cyan-950/20 dark:text-cyan-300 dark:border-cyan-500/15 shadow-xs">🧬 Tế bào</span>
+                                                <span className="px-2.5 py-0.5 rounded-lg text-[10px] font-extrabold bg-gradient-to-r from-emerald-50 to-teal-50 text-emerald-700 border border-emerald-200/40 dark:from-emerald-950/20 dark:to-teal-950/20 dark:text-emerald-300 dark:border-emerald-500/15 shadow-xs">🍀 Lục lạp</span>
                                             </div>
                                         </div>
 
-                                        <span className="inline-flex items-center text-xs font-black uppercase tracking-wider text-indigo-700 dark:text-indigo-300 bg-indigo-100/80 dark:bg-indigo-500/20 px-3 py-1.5 rounded-lg group-hover:bg-indigo-200 dark:group-hover:bg-indigo-500/30 transition-colors w-max shrink-0 relative z-10 shadow-sm border border-indigo-200/60 dark:border-indigo-500/30">
-                                            Tìm kiếm <ChevronRight className="w-3 h-3 ml-0.5 group-hover:translate-x-0.5 transition-transform" />
+                                        <span className="inline-flex items-center text-xs font-black uppercase tracking-wider text-indigo-600 dark:text-indigo-400 bg-indigo-50/80 dark:bg-indigo-950/40 px-4 py-2 rounded-xl group-hover:bg-indigo-100 dark:group-hover:bg-indigo-900/30 transition-colors w-max shrink-0 relative z-10 shadow-xs border border-indigo-100/55 dark:border-indigo-900/20">
+                                            Tìm kiếm ngay <ChevronRight className="w-3.5 h-3.5 ml-0.5 group-hover:translate-x-0.5 transition-transform" />
                                         </span>
                                     </Link>
 
                                     {/* Library Card */}
                                     <Link
                                         to="/library"
-                                        className="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-teal-50 via-cyan-50 to-emerald-50 dark:from-teal-950/30 dark:via-cyan-950/30 dark:to-emerald-950/30 border border-teal-200/60 dark:border-teal-500/25 shadow-md hover:shadow-lg transition-all duration-300 hover:-translate-y-1 flex flex-col justify-between min-h-[140px] p-4"
+                                        className="group relative overflow-hidden rounded-3xl p-5 md:p-6 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-white/[0.06] shadow-sm hover:shadow-lg transition-all duration-200 hover:-translate-y-1 flex flex-col justify-between min-h-[190px]"
                                     >
-                                        <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-gradient-to-t from-teal-500/5 to-transparent pointer-events-none"></div>
+                                        <div className="absolute -right-6 -top-6 w-24 h-24 bg-blue-50/50 dark:bg-blue-950/20 rounded-full blur-2xl pointer-events-none"></div>
 
-                                        <div className="flex items-start gap-2.5 relative z-10 shrink-0 mb-2">
-                                            <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-teal-600 to-cyan-600 flex items-center justify-center shadow-lg shrink-0 text-white group-hover:scale-110 transition-transform duration-300">
+                                        <div className="flex items-center gap-3.5 relative z-10 shrink-0">
+                                            <div className="w-11 h-11 rounded-2xl bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center shadow-lg shrink-0 text-white group-hover:scale-105 transition-transform">
                                                 <Library className="w-5 h-5" />
                                             </div>
-                                            <div className="min-w-0 flex-1">
-                                                <h2 className="text-sm font-black tracking-tight text-slate-900 dark:text-white font-heading leading-tight">Thư Viện</h2>
-                                                <p className="text-xs text-slate-600 dark:text-slate-400 leading-tight font-semibold">
-                                                    {allMaterials.length} mô hình 3D
+                                            <div className="min-w-0">
+                                                <h2 className="text-base md:text-lg font-black tracking-tight text-slate-800 dark:text-slate-100 font-heading leading-tight">Thư Viện</h2>
+                                                <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5 leading-snug font-semibold">
+                                                    {allMaterials.length} mô hình 3D tương tác
                                                 </p>
                                             </div>
                                         </div>
 
-                                        {/* Beautiful category icons */}
-                                        <div className="flex items-center gap-2 my-2 relative z-10 shrink-0 select-none justify-center">
-                                            {/* Phòng học */}
-                                            <div className="flex flex-col items-center gap-1">
-                                                <div className="w-8 h-8 rounded-lg bg-blue-100 dark:bg-blue-500/20 text-blue-600 dark:text-blue-300 border border-blue-200 dark:border-blue-500/30 flex items-center justify-center group-hover:scale-110 transition-transform">
-                                                    <Library className="w-4 h-4" />
+                                        {/* Beautiful glowing icons representing library, books, documents */}
+                                        <div className="flex items-center gap-6 md:gap-8 my-3 relative z-10 shrink-0 select-none justify-center">
+                                            {/* Thư viện chính */}
+                                            <div className="flex flex-col items-center gap-1.5">
+                                                <div className="w-13 h-13 rounded-2xl bg-blue-500/10 text-blue-500 border border-blue-500/20 dark:border-blue-500/30 flex items-center justify-center shadow-[0_0_12px_rgba(59,130,246,0.2)] group-hover:scale-110 active:scale-95 transition-all">
+                                                    <Library className="w-5 h-5" />
                                                 </div>
-                                                <span className="text-[7px] font-black text-slate-700 dark:text-slate-300 uppercase tracking-wider">Phòng</span>
+                                                <span className="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider">Phòng học</span>
                                             </div>
 
-                                            {/* Sách 3D */}
-                                            <div className="flex flex-col items-center gap-1">
-                                                <div className="w-8 h-8 rounded-lg bg-amber-100 dark:bg-amber-500/20 text-amber-600 dark:text-amber-300 border border-amber-200 dark:border-amber-500/30 flex items-center justify-center group-hover:scale-110 transition-transform">
-                                                    <BookOpen className="w-4 h-4" />
+                                            {/* Sách giáo khoa / Vở */}
+                                            <div className="flex flex-col items-center gap-1.5">
+                                                <div className="w-13 h-13 rounded-2xl bg-purple-500/10 text-purple-500 border border-purple-500/20 dark:border-purple-500/30 flex items-center justify-center shadow-[0_0_12px_rgba(168,85,247,0.2)] group-hover:scale-110 active:scale-95 transition-all">
+                                                    <BookOpen className="w-5 h-5" />
                                                 </div>
-                                                <span className="text-[7px] font-black text-slate-700 dark:text-slate-300 uppercase tracking-wider">Sách</span>
+                                                <span className="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider">Sách 3D</span>
                                             </div>
 
-                                            {/* Bộ sưu tập */}
-                                            <div className="flex flex-col items-center gap-1">
-                                                <div className="w-8 h-8 rounded-lg bg-emerald-100 dark:bg-emerald-500/20 text-emerald-600 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-500/30 flex items-center justify-center group-hover:scale-110 transition-transform">
-                                                    <BookMarked className="w-4 h-4" />
+                                            {/* Đã lưu / Đánh dấu */}
+                                            <div className="flex flex-col items-center gap-1.5">
+                                                <div className="w-13 h-13 rounded-2xl bg-emerald-500/10 text-emerald-500 border border-emerald-500/20 dark:border-emerald-500/30 flex items-center justify-center shadow-[0_0_12px_rgba(16,185,129,0.2)] group-hover:scale-110 active:scale-95 transition-all">
+                                                    <BookMarked className="w-5 h-5" />
                                                 </div>
-                                                <span className="text-[7px] font-black text-slate-700 dark:text-slate-300 uppercase tracking-wider">Bộ sưu</span>
+                                                <span className="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider">Bộ sưu tập</span>
                                             </div>
                                         </div>
 
-                                        <span className="inline-flex items-center text-xs font-black uppercase tracking-wider text-teal-700 dark:text-teal-300 bg-teal-100/80 dark:bg-teal-500/20 px-3 py-1.5 rounded-lg group-hover:bg-teal-200 dark:group-hover:bg-teal-500/30 transition-colors w-max shrink-0 relative z-10 shadow-sm border border-teal-200/60 dark:border-teal-500/40">
-                                            Thư viện <ChevronRight className="w-3 h-3 ml-0.5 group-hover:translate-x-0.5 transition-transform" />
+                                        <span className="inline-flex items-center text-xs font-black uppercase tracking-wider text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-950/50 px-4 py-2 rounded-xl group-hover:bg-blue-100 dark:group-hover:bg-blue-900/30 transition-colors w-max shrink-0 relative z-10 shadow-xs border border-blue-100/55 dark:border-blue-900/25">
+                                            Mở thư viện <ChevronRight className="w-3.5 h-3.5 ml-0.5 group-hover:translate-x-0.5 transition-transform" />
                                         </span>
                                     </Link>
                                 </div>
 
-                                {/* === Continue Learning — Section === */}
-                                <div className="flex-1 flex flex-col min-h-0 gap-2">
+                                {/* === Continue Learning — Shorter & Squarer (Pushed Down) === */}
+                                <div className="flex-1 flex flex-col min-h-0 gap-2.5">
                                     <div className="flex items-center justify-between shrink-0">
-                                        <h2 className="text-xs font-black text-slate-800 dark:text-slate-100 uppercase tracking-widest flex items-center gap-1.5 font-heading">
-                                            <div className="p-1 rounded bg-gradient-to-br from-emerald-500 to-teal-600 text-white shadow-md">
-                                                <Clock className="w-3 h-3" />
-                                            </div>
-                                            Tiếp tục học tập
+                                        <h2 className="text-xs font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest flex items-center gap-2 font-heading">
+                                            <Clock className="w-3.5 h-3.5 text-emerald-500" /> Tiếp tục học tập
                                         </h2>
-                                        <Link to="/library" className="text-xs font-black text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 uppercase tracking-wider transition-colors">
-                                            Xem tất cả →
+                                        <Link to="/library" className="text-xs font-bold text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 transition-colors">
+                                            Xem tất cả &rarr;
                                         </Link>
                                     </div>
 
-                                    <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 flex-grow min-h-0 xl:overflow-y-auto overflow-visible pr-1">
+                                    <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 flex-grow min-h-0 xl:overflow-y-auto overflow-visible pr-1">
                                         {recentMaterials.map((material) => {
                                             const materialHoverClass = 
-                                                material.subject === 'physics' ? 'hover:shadow-blue-500/10 hover:border-blue-500/25 dark:hover:border-blue-500/30' :
-                                                material.subject === 'chemistry' ? 'hover:shadow-emerald-500/10 hover:border-emerald-500/25 dark:hover:border-emerald-500/30' :
-                                                'hover:shadow-rose-500/10 hover:border-rose-500/25 dark:hover:border-rose-500/30';
+                                                material.subject === 'physics' ? 'hover:shadow-blue-500/8 hover:border-blue-500/25 dark:hover:border-blue-500/30' :
+                                                material.subject === 'chemistry' ? 'hover:shadow-emerald-500/8 hover:border-emerald-500/25 dark:hover:border-emerald-500/30' :
+                                                'hover:shadow-rose-500/8 hover:border-rose-500/25 dark:hover:border-rose-500/30';
 
                                             const subjectBadgeClass = 
                                                 material.subject === 'physics' ? 'bg-gradient-to-r from-blue-500 to-cyan-400 text-white' :
@@ -722,10 +688,10 @@ export default function Dashboard() {
                                                 <Link
                                                     key={material.id}
                                                     to={`/material/${material.id}`}
-                                                    className={`group flex flex-col bg-white dark:bg-slate-900 border border-slate-200/70 dark:border-white/[0.08] rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-0.5 h-fit min-h-0 ${materialHoverClass}`}
+                                                    className={`group flex flex-col bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-white/[0.06] rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1 h-fit min-h-0 ${materialHoverClass}`}
                                                 >
-                                                    {/* Compact aspect ratio */}
-                                                    <div className="relative aspect-square bg-slate-100 dark:bg-slate-950 overflow-hidden shrink-0 library-card-shimmer">
+                                                    {/* Square aspect ratio w-full (aspect-[4/3] to be compact and square-ish) */}
+                                                    <div className="relative aspect-[4/3] bg-slate-100 dark:bg-slate-950 overflow-hidden shrink-0 library-card-shimmer">
                                                         {material.thumbnail && material.thumbnail !== '3d-placeholder' ? (
                                                             <img
                                                                 loading="lazy"
@@ -736,39 +702,39 @@ export default function Dashboard() {
                                                             />
                                                         ) : (
                                                             <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-indigo-50 to-purple-50 dark:from-indigo-950/30 dark:to-purple-950/30">
-                                                                <Box className="w-6 h-6 text-indigo-200 dark:text-indigo-800" />
+                                                                <Box className="w-10 h-10 text-indigo-200 dark:text-indigo-800" />
                                                             </div>
                                                         )}
 
                                                         {/* Badges */}
-                                                        <div className="absolute top-1 left-1 flex gap-0.5">
-                                                            <span className={`px-1 py-0.5 rounded text-[6px] font-black shadow-sm uppercase tracking-wider leading-none ${subjectBadgeClass}`}>
+                                                        <div className="absolute top-2 left-2 flex gap-1">
+                                                            <span className={`px-2 py-0.5 rounded-md text-[8px] font-black shadow-sm uppercase tracking-wider leading-none ${subjectBadgeClass}`}>
                                                                 {getSubjectName(material.subject)}
                                                             </span>
-                                                            <span className="px-1 py-0.5 bg-white/90 dark:bg-slate-950/90 backdrop-blur-md rounded text-[6px] font-black text-slate-700 dark:text-slate-300 shadow-sm uppercase tracking-wider leading-none">
+                                                            <span className="px-2 py-0.5 bg-white/90 dark:bg-slate-950/90 backdrop-blur-md rounded-md text-[8px] font-black text-slate-700 dark:text-slate-300 shadow-sm uppercase tracking-wider leading-none">
                                                                 {material.type === '3d-model' ? '3D' : 'INFO'}
                                                             </span>
                                                         </div>
 
                                                         {/* Play overlay */}
                                                         <div className="absolute inset-0 bg-slate-900/30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200 backdrop-blur-[1px]">
-                                                            <PlayCircle className="w-6 h-6 text-white drop-shadow-md" strokeWidth={1.5} />
+                                                            <PlayCircle className="w-10 h-10 text-white drop-shadow-md" strokeWidth={1.5} />
                                                         </div>
                                                     </div>
 
-                                                    {/* Compact info section */}
-                                                    <div className="p-1.5 flex flex-col justify-between flex-1">
+                                                    {/* Shorter info section, no description to make it short and clean */}
+                                                    <div className="p-3 flex flex-col justify-between">
                                                         <div>
-                                                            <h3 className="font-extrabold text-slate-800 dark:text-slate-100 text-[9px] line-clamp-2 group-hover:text-indigo-500 dark:group-hover:text-indigo-400 transition-colors leading-tight font-heading">
+                                                            <h3 className="font-extrabold text-slate-800 dark:text-slate-100 text-xs md:text-sm line-clamp-1 group-hover:text-indigo-500 dark:group-hover:text-indigo-400 transition-colors leading-tight font-heading">
                                                                 {material.title}
                                                             </h3>
                                                         </div>
 
-                                                        <div className="pt-1 mt-1 border-t border-slate-100 dark:border-white/5 flex items-center justify-between text-[7px] font-bold text-slate-400 dark:text-slate-500 shrink-0">
-                                                            <span className="flex items-center gap-0.5">
-                                                                <SubjectIcon className="w-2 h-2" /> K{material.grade}
+                                                        <div className="pt-2 mt-2 border-t border-slate-100 dark:border-white/5 flex items-center justify-between text-[9px] font-bold text-slate-400 dark:text-slate-500 shrink-0">
+                                                            <span className="flex items-center gap-1">
+                                                                <SubjectIcon className="w-2.5 h-2.5" /> KHỐI {material.grade}
                                                             </span>
-                                                            <span className="line-clamp-1">{formatRelativeTime(material.createdAt)}</span>
+                                                            <span>{formatRelativeTime(material.createdAt)}</span>
                                                         </div>
                                                     </div>
                                                 </Link>
@@ -778,97 +744,59 @@ export default function Dashboard() {
                                 </div>
                             </div>
 
-                            <div className="xl:col-span-3 flex flex-col gap-3 h-full min-h-0">
-                                {/* EduTech Brand Card */}
-                                <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-indigo-50 to-blue-50 dark:from-indigo-950/30 dark:to-blue-950/30 border border-indigo-200/60 dark:border-indigo-500/25 p-4 shadow-md">
-                                    <div className="absolute inset-0 opacity-0 hover:opacity-100 transition-opacity duration-300 bg-gradient-to-t from-indigo-500/5 to-transparent pointer-events-none"></div>
-                                    
-                                    <div className="relative z-10 flex items-center gap-3 mb-3">
-                                        <div className="h-12 w-12 overflow-hidden rounded-lg border-2 border-indigo-200 dark:border-indigo-500/30 bg-white dark:bg-slate-800 shadow-md">
-                                            <img 
-                                                src="/edutech_logo_new.jpg" 
-                                                alt="Edu Tech Brand Logo" 
-                                                className="h-full w-full object-contain"
-                                            />
-                                        </div>
-                                        <div className="min-w-0 flex-1">
-                                            <p className="text-[9px] font-black uppercase tracking-widest text-indigo-600 dark:text-indigo-300">Edu Tech 3D</p>
-                                            <h2 className="text-base font-black tracking-tight text-slate-900 dark:text-white">Không gian học</h2>
-                                        </div>
-                                    </div>
-                                    <div className="relative z-10 border-t border-indigo-200 dark:border-indigo-500/20 pt-3">
-                                        <div className="flex items-center justify-between gap-2 mb-1.5">
-                                            <span className="text-xs font-bold text-indigo-700 dark:text-indigo-300 uppercase tracking-wider">Gói hiện tại</span>
-                                            <span className={`rounded-lg px-2 py-1 text-[8px] font-black uppercase tracking-wider ${currentPlanConfig.colorClass} shadow-sm border ${currentPlanConfig.borderClass}`}>
-                                                {currentPlanConfig.label}
-                                            </span>
-                                        </div>
-                                        <div className="h-2 rounded-full bg-slate-200 dark:bg-white/10 overflow-hidden shadow-sm">
-                                            <div className={`h-full rounded-full bg-gradient-to-r ${currentPlanConfig.barColor} shadow-lg transition-all duration-500`} style={{ width: '100%' }}></div>
-                                        </div>
-                                    </div>
-                                </div>
+                            {/* RIGHT COLUMN: 3/12 — Premium Brand Logo Card */}
+                            <div className="xl:col-span-3 flex flex-col gap-4 h-full min-h-0">
+                                <div className="group relative overflow-hidden rounded-3xl bg-gradient-to-b from-amber-50/90 via-orange-50/80 to-rose-50/90 dark:from-[#3b0712] dark:via-[#7f1d1d] dark:to-[#451a03] border border-amber-200/70 dark:border-amber-500/25 shadow-xl flex flex-col items-center justify-between p-6 flex-grow min-h-[460px] text-center select-none hover:border-amber-400/50 dark:hover:border-amber-500/40 hover:shadow-amber-500/10 dark:hover:shadow-amber-500/20 transition-all duration-300">
+                                    {/* Glowing Orbs in background */}
+                                    <div className="absolute -top-12 -left-12 w-28 h-28 bg-orange-300/15 dark:bg-red-500/20 rounded-full blur-2xl pointer-events-none animate-pulse"></div>
+                                    <div className="absolute -bottom-12 -right-12 w-28 h-28 bg-amber-300/15 dark:bg-amber-500/20 rounded-full blur-2xl pointer-events-none animate-pulse"></div>
+                                    <div className="absolute inset-0 bg-grid-pattern opacity-[0.03] pointer-events-none"></div>
 
-                                {/* Today's Learning Tips Card */}
-                                <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-emerald-50 to-teal-50 dark:from-emerald-950/30 dark:to-teal-950/30 border border-emerald-200/60 dark:border-emerald-500/25 p-4 shadow-md flex-1 min-h-[240px]">
-                                    <div className="absolute inset-0 opacity-0 hover:opacity-100 transition-opacity duration-300 bg-gradient-to-t from-emerald-500/5 to-transparent pointer-events-none"></div>
-                                    
-                                    <div className="relative z-10 flex items-center justify-between gap-2 mb-3">
-                                        <div>
-                                            <p className="text-[8px] font-black uppercase tracking-widest text-emerald-600 dark:text-emerald-300">💡 Gợi ý</p>
-                                            <h2 className="mt-1 text-base font-black tracking-tight text-slate-900 dark:text-white">Phiên 25 phút</h2>
-                                        </div>
-                                        <ShieldCheck className="h-5 w-5 text-emerald-600 dark:text-emerald-300 shrink-0" />
+                                    {/* Top Branding Label */}
+                                    <div className="flex flex-col items-center gap-1.5 shrink-0">
+                                        <span className="text-[10px] font-black uppercase tracking-[0.25em] text-amber-700 dark:text-yellow-300 drop-shadow-xs dark:drop-shadow-md">Edu Tech 3D</span>
+                                        <h2 className="text-base font-black text-transparent bg-clip-text bg-gradient-to-r from-amber-600 to-rose-700 dark:from-yellow-100 dark:via-yellow-200 dark:to-amber-300 tracking-tight uppercase leading-normal font-heading mt-1 py-1.5 px-1 overflow-visible flex items-center gap-1 filter drop-shadow-none dark:drop-shadow-[0_2px_4px_rgba(0,0,0,0.4)]">
+                                            <Sparkles className="w-4 h-4 text-amber-600 dark:text-yellow-300 animate-pulse shrink-0" />
+                                            Không gian tương tác
+                                        </h2>
                                     </div>
 
-                                    <div className="relative z-10 divide-y divide-emerald-200 dark:divide-emerald-500/20">
-                                        {/* Tip 1 */}
-                                        <div className="py-2.5">
-                                            <div className="flex items-start gap-2">
-                                                <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-100 dark:bg-blue-500/20 text-blue-600 dark:text-blue-300 shrink-0 shadow-sm">
-                                                    <PlayCircle className="h-4 w-4" />
-                                                </span>
-                                                <div className="min-w-0 flex-1">
-                                                    <p className="text-xs font-black text-slate-900 dark:text-white leading-snug">Mở mô hình gần đây</p>
-                                                    <p className="mt-0.5 text-[10px] font-medium text-slate-600 dark:text-slate-400">Bắt đầu bằng quan sát.</p>
-                                                </div>
-                                            </div>
+                                    {/* Main 3D Brand Logo Graphic */}
+                                    <div className="my-4 relative w-full aspect-square max-w-[240px] p-1 flex items-center justify-center rounded-3xl overflow-hidden border-2 border-amber-300/40 dark:border-amber-400/40 shadow-md dark:shadow-2xl bg-white group-hover:scale-105 transition-transform duration-700 shadow-amber-500/5 dark:shadow-amber-500/20">
+                                        <img 
+                                            src="/edutech_logo_new.jpg" 
+                                            alt="Edu Tech Brand Logo" 
+                                            className="w-full h-full object-contain rounded-2xl"
+                                        />
+                                    </div>
+
+                                    {/* Bottom Details / Meta */}
+                                    <div className="w-full space-y-3.5 shrink-0">
+                                        {/* Wish Banner */}
+                                        <div className="bg-gradient-to-br from-amber-500/10 via-rose-500/10 to-transparent dark:from-amber-500/20 dark:via-red-650/20 dark:to-black/25 border border-amber-300 dark:border-amber-400/40 rounded-2xl p-4 shadow-sm dark:shadow-inner relative overflow-hidden group/wish">
+                                            {/* Decorative tiny lights */}
+                                            <div className="absolute top-1 right-1 w-1.5 h-1.5 bg-rose-600 dark:bg-yellow-400 rounded-full animate-ping"></div>
+                                            
+                                            <h3 className="text-xs font-black text-rose-900 dark:text-yellow-300 uppercase tracking-widest flex items-center justify-center gap-1 mb-1.5 filter drop-shadow-xs dark:drop-shadow-sm">
+                                                🎓 Chúc Thi Tốt! 🎓
+                                            </h3>
+                                            <p className="text-[11px] font-bold text-slate-900 dark:text-white leading-relaxed">
+                                                Bình tĩnh, tự tin, làm bài thật tốt để bứt phá và về đích thành công rực rỡ! 🎯🏆
+                                            </p>
                                         </div>
+
+                                        <p className="text-[11px] text-amber-950 dark:text-amber-100/90 leading-relaxed font-bold">
+                                            Học liệu 3D & AI đồng hành cùng sĩ tử trong mọi kỳ thi thử thách.
+                                        </p>
                                         
-                                        {/* Tip 2 */}
-                                        <div className="py-2.5">
-                                            <div className="flex items-start gap-2">
-                                                <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-purple-100 dark:bg-purple-500/20 text-purple-600 dark:text-purple-300 shrink-0 shadow-sm">
-                                                    <Sparkles className="h-4 w-4" />
-                                                </span>
-                                                <div className="min-w-0 flex-1">
-                                                    <p className="text-xs font-black text-slate-900 dark:text-white leading-snug">Đặt câu hỏi cho AI</p>
-                                                    <p className="mt-0.5 text-[10px] font-medium text-slate-600 dark:text-slate-400">Tìm học liệu cùng chủ đề.</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        
-                                        {/* Tip 3 */}
-                                        <div className="py-2.5">
-                                            <div className="flex items-start gap-2">
-                                                <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-amber-100 dark:bg-amber-500/20 text-amber-600 dark:text-amber-300 shrink-0 shadow-sm">
-                                                    <BookMarked className="h-4 w-4" />
-                                                </span>
-                                                <div>
-                                                    <p className="text-xs font-black text-slate-900 dark:text-white">Lưu nội dung ôn</p>
-                                                    <p className="mt-0.5 text-[10px] font-medium text-slate-500 dark:text-slate-400">Giữ lại mô hình quan trọng.</p>
-                                                </div>
+                                        <div className="pt-2.5 border-t border-slate-200 dark:border-white/15 flex flex-col gap-1.5 text-[10px] font-black text-slate-600 dark:text-slate-200 uppercase tracking-widest leading-none">
+                                            <div className="opacity-90">Phiên bản Premium v2.5.0</div>
+                                            <div className="text-rose-900 dark:text-yellow-300 mt-1 flex items-center justify-center gap-1.5 font-black">
+                                                <span className="w-2 h-2 rounded-full bg-rose-600 dark:bg-yellow-400 animate-ping"></span>
+                                                Đồng hành cùng sĩ tử về đích
                                             </div>
                                         </div>
                                     </div>
-
-                                    <Link
-                                        to={recentMaterials[0] ? `/material/${recentMaterials[0].id}` : '/library'}
-                                        className="mt-3 inline-flex w-full items-center justify-center gap-2 rounded-lg bg-slate-950 px-3 py-2 text-xs font-black text-white hover:bg-blue-700 dark:bg-white dark:text-slate-950 dark:hover:bg-blue-100"
-                                    >
-                                        Bắt đầu ôn
-                                        <ChevronRight className="h-3 w-3" />
-                                    </Link>
                                 </div>
                             </div>
                         </div>
