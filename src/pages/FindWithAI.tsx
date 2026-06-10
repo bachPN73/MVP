@@ -54,7 +54,7 @@ export default function FindWithAI() {
             if (planLimit !== undefined) setAiLimit(planLimit);
         }).catch(() => {
             // Fallback defaults if server unavailable
-            const fallback: Record<string, number> = { free: 3, demo: 10, basic: 20, pro: 50, combo: 50, school: 100 };
+            const fallback: Record<string, number> = { free: 3, basic: 20, pro: 50, combo: 50, school: 100 };
             setAiLimit(fallback[currentPlan] ?? 3);
         });
     }, []);

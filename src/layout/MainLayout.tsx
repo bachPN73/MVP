@@ -31,12 +31,12 @@ export function Layout({ children }: LayoutProps) {
         <div className="flex min-h-screen bg-background relative text-foreground transition-colors duration-300">
             {/* Mobile Header */}
             <header className="md:hidden fixed top-0 left-0 right-0 h-14 bg-sidebar flex items-center justify-between px-4 z-40 border-b border-sidebar-border shadow-md">
-                <div className="font-bold text-white text-lg tracking-tight">Edu Tech</div>
+                <div className="font-bold text-slate-900 dark:text-white text-lg tracking-tight">Edu Tech</div>
                 <div className="flex items-center gap-2">
-                    <ThemeToggle variant="ghost" className="text-white hover:bg-white/10 rounded-xl" />
+                    <ThemeToggle variant="ghost" className="text-slate-700 dark:text-white hover:bg-slate-100 dark:hover:bg-white/10 rounded-xl" />
                     <button
                         onClick={() => setIsSidebarOpen(true)}
-                        className="text-white p-2 hover:bg-white/10 rounded-xl transition-colors"
+                        className="text-slate-900 dark:text-white p-2 hover:bg-slate-100 dark:hover:bg-white/10 rounded-xl transition-colors"
                     >
                         <Menu className="w-6 h-6" />
                     </button>

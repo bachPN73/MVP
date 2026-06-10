@@ -10,7 +10,6 @@ import { plans } from '../../data/plans';
 // Plan display info
 const PLAN_META: Record<string, { label: string; color: string; bg: string; border: string }> = {
     free:   { label: 'Miễn phí',        color: 'text-slate-600 dark:text-slate-300',   bg: 'bg-slate-100 dark:bg-slate-800',      border: 'border-slate-300 dark:border-slate-600' },
-    demo:   { label: 'Thử nghiệm',      color: 'text-rose-600 dark:text-rose-400',     bg: 'bg-rose-50 dark:bg-rose-950/30',      border: 'border-rose-300 dark:border-rose-700' },
     basic:  { label: 'Cơ bản',          color: 'text-blue-600 dark:text-blue-400',     bg: 'bg-blue-50 dark:bg-blue-950/30',      border: 'border-blue-300 dark:border-blue-700' },
     pro:    { label: 'Chuyên nghiệp',   color: 'text-violet-600 dark:text-violet-400', bg: 'bg-violet-50 dark:bg-violet-950/30', border: 'border-violet-300 dark:border-violet-700' },
     combo:  { label: 'Combo Pro + In',  color: 'text-orange-600 dark:text-orange-400', bg: 'bg-orange-50 dark:bg-orange-950/30', border: 'border-orange-300 dark:border-orange-700' },
@@ -18,11 +17,10 @@ const PLAN_META: Record<string, { label: string; color: string; bg: string; bord
 };
 
 // Plan hierarchy: higher index = more access
-const PLAN_HIERARCHY = ['free', 'demo', 'basic', 'combo', 'pro', 'school'];
+const PLAN_HIERARCHY = ['free', 'basic', 'combo', 'pro', 'school'];
 
 const PLAN_OPTIONS = [
     { value: '', label: 'Không giới hạn (mọi gói)' },
-    { value: 'demo', label: 'Thử nghiệm trở lên' },
     { value: 'basic', label: 'Cơ bản trở lên' },
     { value: 'combo', label: 'Combo trở lên' },
     { value: 'pro', label: 'Chuyên nghiệp trở lên' },
@@ -34,7 +32,7 @@ export default function AdminAIConfigPage() {
 
     // ---- AI Config State ----
     const [limits, setLimits] = useState<Record<string, number>>({
-        free: 3, demo: 10, basic: 20, pro: 50, combo: 50, school: 100
+        free: 3, basic: 20, pro: 50, combo: 50, school: 100
     });
     const [limitsDraft, setLimitsDraft] = useState<Record<string, number>>({ ...limits });
     const [aiLoading, setAiLoading] = useState(true);

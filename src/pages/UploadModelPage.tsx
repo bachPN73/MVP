@@ -88,6 +88,7 @@ export default function UploadModelPage() {
         grade: 10,
         type: "3d-model",
         tags: "",
+        source: "",
         // Premium fields
         subtitle: "",
         category: "",
@@ -410,6 +411,18 @@ export default function UploadModelPage() {
                                 className="p-3 bg-slate-50 dark:bg-slate-950/60 rounded-xl border border-slate-200 dark:border-white/10 focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none text-slate-900 dark:text-white transition-all text-sm"
                                 value={formData.tags}
                                 onChange={(e) => setFormData({ ...formData, tags: e.target.value })}
+                            />
+                        </div>
+
+                        {/* Source */}
+                        <div className="flex flex-col gap-1.5">
+                            <label className="text-xs font-semibold tracking-wider text-slate-400 dark:text-slate-500 uppercase">Nguồn / Tác giả thiết kế</label>
+                            <input
+                                type="text"
+                                placeholder="Ví dụ: BachPham, Sketchfab, Turbosquid..."
+                                className="p-3 bg-slate-50 dark:bg-slate-950/60 rounded-xl border border-slate-200 dark:border-white/10 focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none text-slate-900 dark:text-white transition-all text-sm font-medium"
+                                value={formData.source}
+                                onChange={(e) => setFormData({ ...formData, source: e.target.value })}
                             />
                         </div>
 

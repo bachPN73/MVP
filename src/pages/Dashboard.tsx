@@ -34,7 +34,7 @@ export default function Dashboard() {
                 if (currentUser.createdAt) {
                     const createdDate = new Date(currentUser.createdAt);
                     const planStr = (currentUser.plan || 'free').toLowerCase();
-                    const durationDays = planStr === 'demo' ? 1 : planStr === 'free' ? 7 : 30;
+                    const durationDays = planStr === 'free' ? 7 : 30;
                     const expiryDate = new Date(createdDate.getTime() + durationDays * 24 * 60 * 60 * 1000);
                     const diffTime = expiryDate.getTime() - Date.now();
                     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
@@ -198,7 +198,7 @@ export default function Dashboard() {
         },
     ], [allMaterials]);
 
-    const isPremiumPlan = ['premium', 'pro', 'school', 'combo', 'basic', 'demo'].includes(userPlan);
+    const isPremiumPlan = ['premium', 'pro', 'school', 'combo', 'basic'].includes(userPlan);
     const isSchoolAdmin = userRole === 'school-admin';
     const planBgClass = isPremiumPlan
         ? 'bg-gradient-to-br from-amber-400 to-orange-550 shadow-orange-500/30'
@@ -213,15 +213,6 @@ export default function Dashboard() {
             bgClass: "bg-slate-500/5 dark:bg-slate-500/10",
             borderClass: "border-slate-500/20",
             textClass: "text-slate-800 dark:text-slate-200"
-        },
-        demo: {
-            label: "DEMO",
-            icon: Zap,
-            colorClass: "text-rose-500 bg-rose-500/10",
-            barColor: "from-rose-500 to-pink-500",
-            bgClass: "bg-rose-500/5 dark:bg-rose-500/10",
-            borderClass: "border-rose-500/25",
-            textClass: "text-rose-800 dark:text-rose-400"
         },
         basic: {
             label: "BASIC",

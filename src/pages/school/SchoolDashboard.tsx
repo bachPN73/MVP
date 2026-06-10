@@ -328,7 +328,7 @@ export default function SchoolDashboard() {
                             </div>
                         </div>
                         <a 
-                            href="mailto:support@edutech.vn?subject=Yêu%20cầu%20nâng%20cấp%20Quota%20Trường%20học"
+                            href="mailto:netangedutech@gmail.com?subject=Yêu%20cầu%20nâng%20cấp%20Quota%20Trường%20học"
                             className="bg-red-500 hover:bg-red-600 text-white font-black text-xs uppercase tracking-widest px-6 py-3.5 rounded-2xl shadow-lg shadow-red-500/20 active:scale-95 transition-all text-center shrink-0"
                         >
                             Liên hệ nâng cấp

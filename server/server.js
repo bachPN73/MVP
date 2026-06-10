@@ -249,7 +249,7 @@ async function initDb() {
         }
 
         // Seed default AI limits config
-        const defaultAILimits = { free: 3, demo: 10, basic: 20, pro: 50, combo: 50, school: 100 };
+        const defaultAILimits = { free: 3, basic: 20, pro: 50, combo: 50, school: 100 };
         const existingAIConfig = await SystemConfig.findOne({ key: 'ai_limits' });
         if (!existingAIConfig) {
             await SystemConfig.create({ key: 'ai_limits', value: defaultAILimits });
@@ -843,8 +843,7 @@ async function getAILimits() {
     if (aiLimitsCache && now - aiLimitsCacheTime < AI_LIMITS_CACHE_TTL) {
         return aiLimitsCache;
     }
-    const config = await SystemConfig.findOne({ key: 'ai_limits' });
-    const defaults = { free: 3, demo: 10, basic: 20, pro: 50, combo: 50, school: 100 };
+    const defaults = { free: 3, basic: 20, pro: 50, combo: 50, school: 100 };
     aiLimitsCache = config ? { ...defaults, ...config.value } : defaults;
     aiLimitsCacheTime = now;
     return aiLimitsCache;
@@ -1529,6 +1528,27 @@ app.delete('/api/schools/:id', async (req, res) => {
 // PAYMENT AND BANK TRANSFER API ENDPOINTS
 // ==========================================
 
+// Function to automatically reject pending payments older than 30 minutes
+async function checkAndExpirePayments() {
+    try {
+        const expiryTime = new Date(Date.now() - 30 * 60 * 1000);
+        const result = await Payment.updateMany(
+            { status: 'pending', createdAt: { $lt: expiryTime } },
+            { $set: { status: 'rejected' } }
+        );
+        if (result.modifiedCount > 0) {
+            console.log(`[PAYMENT AUTO-EXPIRY] Marked ${result.modifiedCount} pending payments as rejected (older than 30 mins).`);
+        }
+    } catch (err) {
+        console.error('[PAYMENT AUTO-EXPIRY ERROR] Failed to auto-expire payments:', err.message);
+    }
+}
+
+// Start background periodic check every 1 minute
+setInterval(checkAndExpirePayments, 60 * 1000);
+// Run once immediately on startup/reload
+checkAndExpirePayments();
+
 // POST /api/payments - Create or retrieve a payment intent
 app.post('/api/payments', async (req, res) => {
     const { userId, planId, amount } = req.body;
@@ -1537,6 +1557,7 @@ app.post('/api/payments', async (req, res) => {
     }
 
     try {
+        await checkAndExpirePayments();
         const user = await User.findById(userId);
         if (!user) {
             return res.status(404).json({ error: 'Không tìm thấy người dùng' });
@@ -1579,6 +1600,7 @@ app.post('/api/payments', async (req, res) => {
 // GET /api/payments - Get all payments (Admin audit)
 app.get('/api/payments', async (req, res) => {
     try {
+        await checkAndExpirePayments();
         const payments = await Payment.find({})
             .populate('userId', 'name email')
             .sort({ createdAt: -1 });
@@ -1604,6 +1626,7 @@ app.get('/api/payments', async (req, res) => {
 app.get('/api/payments/user/:userId', async (req, res) => {
     const { userId } = req.params;
     try {
+        await checkAndExpirePayments();
         const payments = await Payment.find({ userId }).sort({ createdAt: -1 });
         const formatted = payments.map(p => ({
             ...p.toObject(),
@@ -1623,6 +1646,7 @@ app.get('/api/payments/check/:paymentCode', async (req, res) => {
     }
 
     try {
+        await checkAndExpirePayments();
         const payment = await Payment.findOne({ paymentCode: paymentCode.toUpperCase() });
         if (!payment) {
             return res.status(404).json({ error: 'Không tìm thấy giao dịch' });

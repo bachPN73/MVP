@@ -270,7 +270,7 @@ export default function Library() {
     }, []);
 
     // Plan hierarchy: higher index = more access
-    const PLAN_HIERARCHY = ['free', 'demo', 'basic', 'combo', 'pro', 'school'];
+    const PLAN_HIERARCHY = ['free', 'basic', 'combo', 'pro', 'school'];
 
     // Returns true if userPlan has access to content requiring requiredPlan
     const hasAccess = (requiredPlan: string | null | undefined): boolean => {
@@ -877,7 +877,7 @@ export default function Library() {
                                     const matRequiredPlan = (material as any).requiredPlan;
                                     const isLocked = !hasAccess(matRequiredPlan);
                                     const planLabels: Record<string, string> = {
-                                        demo: 'Gói Thử nghiệm', basic: 'Gói Cơ bản',
+                                        basic: 'Gói Cơ bản',
                                         combo: 'Gói Combo', pro: 'Gói Pro', school: 'Gói Trường học'
                                     };
                                     return (
@@ -989,7 +989,6 @@ export default function Library() {
                                                         {(() => {
                                                             const PLAN_BADGE: Record<string, { label: string; cls: string }> = {
                                                                 '':       { label: 'Mi\u1ec5n ph\u00ed',    cls: 'bg-slate-700/80 text-slate-200 border-slate-500/30' },
-                                                                'demo':   { label: 'Th\u1eed nghi\u1ec7m', cls: 'bg-rose-600/85 text-white border-rose-400/30' },
                                                                 'basic':  { label: 'C\u01a1 b\u1ea3n',     cls: 'bg-blue-600/85 text-white border-blue-400/30' },
                                                                 'combo':  { label: 'Combo',       cls: 'bg-orange-500/85 text-white border-orange-300/30' },
                                                                 'pro':    { label: 'Pro',          cls: 'bg-violet-600/85 text-white border-violet-400/30' },

@@ -133,15 +133,12 @@ export default function Landing() {
                         className="group flex items-center gap-3 text-left"
                         onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
                     >
-                        <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-600 text-white shadow-sm shadow-blue-600/25 transition-transform group-hover:-translate-y-0.5">
-                            <BookOpen className="h-5 w-5" />
+                        <span className="flex h-14 w-14 items-center justify-center rounded-lg overflow-hidden transition-transform group-hover:-translate-y-0.5">
+                            <img src="/logo.png" alt="Logo" className="w-full h-full object-cover" />
                         </span>
                         <span>
                             <span className="block text-lg font-black leading-none tracking-tight text-slate-950 dark:text-white">
                                 Edu Tech
-                            </span>
-                            <span className="mt-1 block text-[10px] font-bold uppercase tracking-[0.18em] text-slate-500 dark:text-slate-400">
-                                Science Learning
                             </span>
                         </span>
                     </button>
@@ -536,8 +533,8 @@ export default function Landing() {
             <footer className="border-t border-slate-200 bg-white py-10 dark:border-white/10 dark:bg-slate-950">
                 <div className="mx-auto flex max-w-7xl flex-col gap-6 px-4 sm:px-6 md:flex-row md:items-center md:justify-between lg:px-8">
                     <div className="flex items-center gap-3">
-                        <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-600 text-white">
-                            <BookOpen className="h-5 w-5" />
+                        <div className="flex h-14 w-14 items-center justify-center rounded-lg overflow-hidden">
+                            <img src="/logo.png" alt="Logo" className="w-full h-full object-cover" />
                         </div>
                         <div>
                             <div className="font-black tracking-tight text-slate-950 dark:text-white">Edu Tech</div>

@@ -99,7 +99,8 @@ export default function MaterialDetail() {
         featuresText: '',
         whereItOccursText: '',
         whereItOccursHabitat: '',
-        relatedMaterials: [] as string[]
+        relatedMaterials: [] as string[],
+        source: ''
     });
 
     useEffect(() => {
@@ -187,7 +188,8 @@ export default function MaterialDetail() {
             featuresText: material.features ? material.features.map((f: any) => `${f.name}: ${f.detail}`).join('\n') : '',
             whereItOccursText: material.whereItOccurs?.text || '',
             whereItOccursHabitat: material.whereItOccurs?.habitat || '',
-            relatedMaterials: material.relatedMaterials || []
+            relatedMaterials: material.relatedMaterials || [],
+            source: (material as any).source || ''
         });
         setRelatedSearch('');
         setErrorMsg('');
@@ -232,7 +234,8 @@ export default function MaterialDetail() {
                 text: editFormData.whereItOccursText,
                 habitat: editFormData.whereItOccursHabitat
             } : undefined,
-            relatedMaterials: editFormData.relatedMaterials
+            relatedMaterials: editFormData.relatedMaterials,
+            source: editFormData.source || undefined
         };
 
         try {
@@ -303,7 +306,8 @@ export default function MaterialDetail() {
                                   } 
                                 : undefined,
                             relatedMaterials: data.relatedMaterials || [],
-                            requiredPlan: data.requiredPlan
+                            requiredPlan: data.requiredPlan,
+                            source: normalizeStr(data.source)
                         } as any);
                     }
                 } catch (error) {
@@ -335,7 +339,8 @@ export default function MaterialDetail() {
                                 habitat: normalizeStr(found.whereItOccurs.habitat)
                               } 
                             : undefined,
-                        relatedMaterials: found.relatedMaterials || []
+                        relatedMaterials: found.relatedMaterials || [],
+                        source: normalizeStr(found.source)
                     } as any);
                 }
             }
@@ -396,6 +401,23 @@ export default function MaterialDetail() {
     const [isInVault, setIsInVault] = useState(false);
     const [vaultSaveMsg, setVaultSaveMsg] = useState('');
 
+    // States for Vault Period grouping
+    const [periods, setPeriods] = useState<any[]>([]);
+    const [showPeriodModal, setShowPeriodModal] = useState(false);
+    const [newPeriodName, setNewPeriodName] = useState('');
+    const [selectedPeriodId, setSelectedPeriodId] = useState<string | undefined>(undefined);
+
+    const loadVaultPeriods = () => {
+        try {
+            const raw = localStorage.getItem('edu_tech_vault_periods');
+            if (raw) {
+                setPeriods(JSON.parse(raw));
+            } else {
+                setPeriods([]);
+            }
+        } catch (_) {}
+    };
+
     useEffect(() => {
         if (!material) return;
         const vaultStr = localStorage.getItem(VAULT_KEY);
@@ -412,27 +434,44 @@ export default function MaterialDetail() {
 
     const handleSaveToVault = () => {
         if (!material) return;
-        const isPro = ['pro', 'combo', 'school', 'demo'].includes(userPlan);
+        const isPro = ['pro', 'combo', 'school'].includes(userPlan);
         if (!isPro) {
             navigate('/pricing');
             return;
         }
 
+        loadVaultPeriods();
+
+        // Get current period association if already saved
+        const vaultStr = localStorage.getItem(VAULT_KEY);
+        let vault: VaultEntry[] = [];
+        try { vault = vaultStr ? JSON.parse(vaultStr) : []; } catch (_) {}
+        const currentEntry = vault.find(e => e.id === material.id);
+
+        if (currentEntry) {
+            setSelectedPeriodId(currentEntry.periodId);
+        } else {
+            setSelectedPeriodId(undefined);
+        }
+
+        setShowPeriodModal(true);
+    };
+
+    const performSaveToVault = (periodId: string | undefined) => {
+        if (!material) return;
         const vaultStr = localStorage.getItem(VAULT_KEY);
         let vault: VaultEntry[] = [];
         try { vault = vaultStr ? JSON.parse(vaultStr) : []; } catch (_) {}
 
         const now = Date.now();
-        // Clean expired entries first
         vault = vault.filter(e => now < e.expiresAt);
 
-        if (isInVault) {
-            // Remove from vault
-            vault = vault.filter(e => e.id !== material.id);
-            setIsInVault(false);
-            setVaultSaveMsg('Đã xóa khỏi kho tạm thời');
+        const existingIdx = vault.findIndex(e => e.id === material.id);
+
+        if (existingIdx > -1) {
+            vault[existingIdx].periodId = periodId;
+            setVaultSaveMsg('Đã cập nhật tiết học');
         } else {
-            // Add to vault with 24h expiry
             const entry: VaultEntry = {
                 id: material.id,
                 title: material.title,
@@ -441,13 +480,49 @@ export default function MaterialDetail() {
                 thumbnail: material.thumbnail || '',
                 addedAt: now,
                 expiresAt: now + 24 * 60 * 60 * 1000,
+                periodId: periodId
             };
             vault.push(entry);
             setIsInVault(true);
-            setVaultSaveMsg('✓ Đã lưu! Tự xóa sau 24h');
+            setVaultSaveMsg('✓ Đã lưu vào kho!');
         }
+
         localStorage.setItem(VAULT_KEY, JSON.stringify(vault));
+        setShowPeriodModal(false);
         setTimeout(() => setVaultSaveMsg(''), 3000);
+    };
+
+    const performRemoveFromVault = () => {
+        if (!material) return;
+        const vaultStr = localStorage.getItem(VAULT_KEY);
+        let vault: VaultEntry[] = [];
+        try { vault = vaultStr ? JSON.parse(vaultStr) : []; } catch (_) {}
+
+        vault = vault.filter(e => e.id !== material.id);
+        localStorage.setItem(VAULT_KEY, JSON.stringify(vault));
+        setIsInVault(false);
+        setVaultSaveMsg('Đã xóa khỏi kho tạm thời');
+        setShowPeriodModal(false);
+        setTimeout(() => setVaultSaveMsg(''), 3000);
+    };
+
+    const handleCreatePeriodFromModal = (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!newPeriodName.trim()) return;
+
+        const newPeriod = {
+            id: 'period-' + Date.now(),
+            name: newPeriodName.trim(),
+            createdAt: Date.now()
+        };
+
+        const updatedPeriods = [...periods, newPeriod];
+        setPeriods(updatedPeriods);
+        localStorage.setItem('edu_tech_vault_periods', JSON.stringify(updatedPeriods));
+        setNewPeriodName('');
+
+        // Automatically save material to this newly created period
+        performSaveToVault(newPeriod.id);
     };
 
     if (isLoading) {
@@ -915,14 +990,36 @@ export default function MaterialDetail() {
                                 <div className={`px-6 py-4 border-t flex items-center justify-between rounded-b-2xl ${
                                     theme === 'light' ? 'border-stone-200/40 bg-white/40' : 'border-white/5 bg-slate-900/40'
                                 }`}>
-                                    <span className={`text-xs font-medium ${theme === 'light' ? 'text-stone-400' : 'text-slate-500'}`}>
-                                        Mã học liệu: {material.id}
+                                    <span className={`text-xs ${theme === 'light' ? 'text-stone-500' : 'text-slate-400'}`}>
+                                        Mã học liệu: <span className="font-semibold">{material.id}</span> {(material as any).source && (
+                                            <>
+                                                {" • "}
+                                                <span className={`font-bold ${theme === 'light' ? 'text-stone-700' : 'text-slate-200'}`}>
+                                                    Thiết kế: {(material as any).source}
+                                                </span>
+                                            </>
+                                        )}
                                     </span>
                                     <span className={`text-xs font-medium uppercase tracking-wider ${theme === 'light' ? 'text-stone-400' : 'text-slate-500'}`}>
                                         Mô hình sinh học cao cấp
                                     </span>
                                 </div>
-                            ) : null}
+                            ) : (
+                                <div className={`px-6 py-4 border-t flex items-center justify-between rounded-b-2xl ${
+                                    theme === 'light' ? 'border-stone-200 bg-slate-50' : 'border-white/5 bg-slate-900/40'
+                                }`}>
+                                    <span className={`text-xs ${theme === 'light' ? 'text-stone-500' : 'text-slate-400'}`}>
+                                        Mã học liệu: <span className="font-semibold">{material.id}</span> {(material as any).source && (
+                                            <>
+                                                {" • "}
+                                                <span className={`font-bold ${theme === 'light' ? 'text-stone-700' : 'text-slate-200'}`}>
+                                                    Thiết kế: {(material as any).source}
+                                                </span>
+                                            </>
+                                        )}
+                                    </span>
+                                </div>
+                            )}
                         </div>
                     </div>
 
@@ -1108,6 +1205,17 @@ export default function MaterialDetail() {
                                             />
                                         </div>
 
+                                        {/* Nguồn / Tác giả thiết kế */}
+                                        <div className="flex flex-col gap-1.5">
+                                            <label className="font-bold text-slate-400 uppercase tracking-wider">Nguồn / Tác giả thiết kế</label>
+                                            <input 
+                                                type="text" 
+                                                className="p-2.5 bg-slate-50 dark:bg-slate-950/40 border border-slate-200 dark:border-white/10 rounded-xl text-xs font-semibold focus:outline-none w-full text-slate-950 dark:text-white"
+                                                value={editFormData.source}
+                                                onChange={e => setEditFormData({ ...editFormData, source: e.target.value })}
+                                            />
+                                        </div>
+
                                         {/* Chi tiết cấu trúc */}
                                         <div className="flex flex-col gap-1.5 font-mono">
                                             <label className="font-bold text-slate-400 uppercase tracking-wider font-sans">Chi tiết cấu trúc (Mỗi dòng dạng 'Tên: Mô tả')</label>
@@ -1286,8 +1394,9 @@ export default function MaterialDetail() {
                                             </p>
                                         </div>
 
+
                                         {/* 24h Temporary Vault Button */}
-                                        {!isBlocked && (['pro', 'combo', 'school', 'demo'].includes(userPlan) ? (
+                                        {!isBlocked && (['pro', 'combo', 'school'].includes(userPlan) ? (
                                             <div className="pt-1 space-y-1">
                                                 <button
                                                     onClick={handleSaveToVault}
@@ -1571,6 +1680,94 @@ export default function MaterialDetail() {
                     </div>
                 </div>
             </div>
+            {showPeriodModal && (
+                <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+                    <div className="bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-white/10 rounded-3xl p-6 max-w-md w-full shadow-2xl space-y-4 animate-in zoom-in-95 duration-200 text-slate-800 dark:text-white">
+                        <div className="flex items-center justify-between pb-2 border-b border-slate-100 dark:border-white/5">
+                            <h3 className="font-extrabold text-lg flex items-center gap-2 font-heading">
+                                <Archive className="w-5 h-5 text-indigo-550" />
+                                Lưu vào Kho tạm thời
+                            </h3>
+                            <button 
+                                onClick={() => setShowPeriodModal(false)}
+                                className="p-1 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-400 hover:text-slate-650 rounded-xl"
+                            >
+                                <X className="w-5 h-5" />
+                            </button>
+                        </div>
+
+                        <p className="text-xs text-slate-500 dark:text-slate-400 font-semibold leading-relaxed">
+                            Chọn tiết học để phân loại học liệu. Học liệu trong kho tạm thời sẽ tự động xóa sau 24 giờ.
+                        </p>
+
+                        <div className="space-y-2 max-h-52 overflow-y-auto pr-1">
+                            <button
+                                onClick={() => performSaveToVault(undefined)}
+                                className={`w-full text-left px-4 py-3 rounded-xl text-xs font-bold border transition-all flex items-center justify-between ${
+                                    selectedPeriodId === undefined
+                                        ? 'border-indigo-500 bg-indigo-50/50 dark:bg-indigo-950/20 text-indigo-650 dark:text-indigo-400'
+                                        : 'border-slate-250 dark:border-white/5 hover:bg-slate-50 dark:hover:bg-slate-800/50'
+                                }`}
+                            >
+                                <span className="flex items-center gap-2">
+                                    <Archive className="w-4 h-4 text-slate-450" />
+                                    Chưa phân loại (Mặc định)
+                                </span>
+                                {selectedPeriodId === undefined && <span className="text-[10px] uppercase font-black">Hiện tại</span>}
+                            </button>
+
+                            {periods.map(p => (
+                                <button
+                                    key={p.id}
+                                    onClick={() => performSaveToVault(p.id)}
+                                    className={`w-full text-left px-4 py-3 rounded-xl text-xs font-bold border transition-all flex items-center justify-between ${
+                                        selectedPeriodId === p.id
+                                            ? 'border-indigo-500 bg-indigo-50/50 dark:bg-indigo-950/20 text-indigo-655 dark:text-indigo-400'
+                                            : 'border-slate-250 dark:border-white/5 hover:bg-slate-50 dark:hover:bg-slate-800/50'
+                                    }`}
+                                >
+                                    <span className="flex items-center gap-2">
+                                        <Folder className="w-4 h-4 text-violet-500" />
+                                        {p.name}
+                                    </span>
+                                    {selectedPeriodId === p.id && <span className="text-[10px] uppercase font-black">Hiện tại</span>}
+                                </button>
+                            ))}
+                        </div>
+
+                        <form onSubmit={handleCreatePeriodFromModal} className="pt-3 border-t border-slate-100 dark:border-white/5 space-y-2">
+                            <label className="block text-[10px] font-black uppercase text-slate-450 tracking-wider">Tạo tiết học mới & lưu:</label>
+                            <div className="flex gap-2">
+                                <input
+                                    type="text"
+                                    placeholder="Tên tiết học mới..."
+                                    value={newPeriodName}
+                                    onChange={e => setNewPeriodName(e.target.value)}
+                                    className="flex-1 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-white/5 rounded-xl px-3 py-2 text-xs font-semibold focus:outline-none focus:border-indigo-500 text-slate-850 dark:text-white"
+                                />
+                                <button
+                                    type="submit"
+                                    className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-black uppercase tracking-wider transition-all flex items-center gap-1 shrink-0"
+                                >
+                                    <Plus className="w-3.5 h-3.5" /> Tạo & Lưu
+                                </button>
+                            </div>
+                        </form>
+
+                        {isInVault && (
+                            <div className="pt-2">
+                                <button
+                                    onClick={performRemoveFromVault}
+                                    className="w-full py-2.5 rounded-xl border border-red-200 dark:border-red-500/20 text-red-600 dark:text-red-400 bg-red-50/50 dark:bg-red-950/10 hover:bg-red-100 dark:hover:bg-red-950/20 text-xs font-black uppercase tracking-wider transition-all flex items-center justify-center gap-1.5"
+                                >
+                                    <Trash2 className="w-4 h-4" />
+                                    Xóa khỏi kho tạm thời
+                                </button>
+                            </div>
+                        )}
+                    </div>
+                </div>
+            )}
         </Layout>
     );
 }

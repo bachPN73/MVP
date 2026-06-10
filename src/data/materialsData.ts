@@ -36,6 +36,7 @@ export interface Material {
     };
     relatedMaterials?: string[];
     requiredPlan?: string | null;
+    source?: string;
 }
 
 export interface ModelInput {
@@ -47,6 +48,7 @@ export interface ModelInput {
     file_url: string;
     thumbnail: string | null;
     relatedMaterials?: string[];
+    source?: string;
 }
 
 export const materials: Material[] = [
@@ -77,7 +79,8 @@ export const materials: Material[] = [
         grade: 10,
         file_url: "/models/plant-cell.glb",
         createdAt: new Date(Date.now() - 3 * 3600 * 1000).toISOString(),
-        requiredPlan: null
+        requiredPlan: null,
+        source: "3D Science Lab"
     },
     {
         id: "animal-cell",

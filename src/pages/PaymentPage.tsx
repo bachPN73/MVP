@@ -89,7 +89,6 @@ export default function PaymentPage() {
 
     const plans: Record<string, any> = {
         free:   { name: "Miễn phí (Free)",     price: 0,       desc: "Giáo viên/ học sinh mới trải nghiệm", color: "from-slate-500 to-gray-600",    badge: "FREE",   accent: "#64748b" },
-        demo:   { name: "Thử nghiệm (Demo)",   price: 10000,   desc: "Gói dùng để thanh toán demo trải nghiệm SePay", color: "from-rose-500 to-pink-500", badge: "DEMO",   accent: "#f43f5e" },
         basic:  { name: "Cơ bản (Basic)",      price: 59000,   desc: "Giáo viên cá nhân/học sinh",          color: "from-indigo-500 to-purple-600", badge: "BASIC",  accent: "#6366f1" },
         combo:  { name: "Combo Pro + In 3D",   price: 189000,  desc: "In một mô hình 3D (<= 150 g)",        color: "from-rose-500 to-orange-500",   badge: "COMBO",  accent: "#f43f5e" },
         pro:    { name: "Chuyên nghiệp (Pro)", price: 99000,   desc: "Giáo viên sử dụng thường xuyên",      color: "from-violet-500 to-purple-600", badge: "PRO",    accent: "#8b5cf6" },
@@ -497,9 +496,9 @@ export default function PaymentPage() {
                                 <div className="bg-white dark:bg-slate-900/80 border border-slate-200/60 dark:border-white/[0.06] rounded-[1.25rem] shadow-sm backdrop-blur-xl px-4 py-3 flex items-center gap-4 flex-wrap">
                                     <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 shrink-0">Hỗ trợ:</p>
                                     {[
-                                        { href: "https://zalo.me/", icon: <MessageCircle className="w-3.5 h-3.5" />, label: "Zalo", cls: "text-blue-600 hover:bg-blue-50" },
-                                        { href: "tel:0123456789", icon: <Phone className="w-3.5 h-3.5" />, label: "0123 456 789", cls: "text-emerald-600 hover:bg-emerald-50" },
-                                        { href: "mailto:support@edutech.vn", icon: <Mail className="w-3.5 h-3.5" />, label: "support@edutech.vn", cls: "text-indigo-600 hover:bg-indigo-50" },
+                                        { href: "https://zalo.me/0336189329", icon: <MessageCircle className="w-3.5 h-3.5" />, label: "Zalo: 0336189329", cls: "text-blue-600 hover:bg-blue-50" },
+                                        { href: "tel:0982143958", icon: <Phone className="w-3.5 h-3.5" />, label: "098 214 39 58", cls: "text-emerald-600 hover:bg-emerald-50" },
+                                        { href: "mailto:netangedutech@gmail.com", icon: <Mail className="w-3.5 h-3.5" />, label: "netangedutech@gmail.com", cls: "text-indigo-600 hover:bg-indigo-50" },
                                     ].map(c => (
                                         <a key={c.href} href={c.href} target="_blank" rel="noreferrer"
                                             className={`flex items-center gap-1.5 text-xs font-bold ${c.cls} dark:text-slate-300 px-2.5 py-1.5 rounded-lg transition-colors`}>

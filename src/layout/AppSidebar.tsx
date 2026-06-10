@@ -108,8 +108,8 @@ export function AppSidebar({ currentPath = '/', isOpen = false, setIsOpen, isCol
                 {/* ===== Logo Section — Premium Branding ===== */}
                 <div className={`border-b border-sidebar-border flex items-center transition-all duration-300 ease-in-out ${isCollapsed ? 'md:p-5 md:justify-center px-6 py-5 justify-between' : 'px-6 py-5 justify-between'}`}>
                     <div className="flex items-center select-none">
-                        <div className="w-11 h-11 rounded-2xl bg-gradient-to-tr from-indigo-500 via-purple-500 to-cyan-400 flex items-center justify-center text-white font-black text-lg shadow-[0_0_24px_rgba(79,70,229,0.25)] hover:shadow-[0_0_32px_rgba(79,70,229,0.45)] hover:scale-105 active:scale-95 transition-all shrink-0">
-                            ET
+                        <div className="w-14 h-14 rounded-2xl overflow-hidden shadow-[0_0_24px_rgba(79,70,229,0.2)] hover:shadow-[0_0_32px_rgba(79,70,229,0.4)] hover:scale-105 active:scale-95 transition-all shrink-0">
+                            <img src="/logo.png" alt="Logo" className="w-full h-full object-cover" />
                         </div>
                         
                         <div className={`overflow-hidden transition-all duration-300 ease-in-out flex flex-col
