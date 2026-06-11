@@ -783,9 +783,9 @@ app.post('/api/forgot-password', async (req, res) => {
         if (process.env.EMAIL_USER && process.env.EMAIL_PASS) {
             const transporter = nodemailer.createTransport({
                 host: 'smtp.gmail.com',
-                port: 465,
-                secure: true,
-                family: 4, // Force IPv4 to bypass ENETUNREACH IPv6 issues on Render
+                port: 587,
+                secure: false, // false for port 587 (STARTTLS)
+                family: 4, // Force IPv4
                 auth: { user: process.env.EMAIL_USER, pass: process.env.EMAIL_PASS }
             });
             await transporter.sendMail({
