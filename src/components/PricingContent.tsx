@@ -38,7 +38,7 @@ export default function PricingContent() {
             </div>
 
             {/* Plans Container - Thiết kế Kính mờ (Glassmorphism) với màu sắc đặc trưng của từng Plan */}
-            <div className="flex overflow-x-auto md:grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4 xl:gap-3 pb-8 pt-10 snap-x snap-mandatory scrollbar-thin scroll-smooth items-stretch">
+            <div className="flex overflow-x-auto md:grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 xl:gap-3 pb-8 pt-10 snap-x snap-mandatory scrollbar-thin scroll-smooth items-stretch justify-center">
                 {plans.map((plan) => {
                     const Icon = plan.icon;
                     const isFeatured = plan.id === "pro";

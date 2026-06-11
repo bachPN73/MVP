@@ -142,6 +142,16 @@ export default function ForgotPassword() {
                             </div>
 
                             {/* Mã xác nhận sẽ được gửi qua email */}
+                            <div className="p-4 bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-900/50 rounded-2xl flex items-start gap-3">
+                                <div className="text-sm">
+                                    <p className="font-bold text-amber-800 dark:text-amber-300">
+                                        ⚠️ LƯU Ý QUAN TRỌNG:
+                                    </p>
+                                    <p className="text-amber-700 dark:text-amber-400/80 mt-1 font-medium leading-relaxed">
+                                        Nếu không thấy email trong Hộp thư đến, mã khôi phục rất có thể nằm trong mục <strong className="font-bold text-red-600 dark:text-red-400 uppercase">Spam (Thư rác)</strong>. Vui lòng kiểm tra kỹ!
+                                    </p>
+                                </div>
+                            </div>
 
                             {/* Go to reset page */}
                             <Link
