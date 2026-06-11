@@ -988,40 +988,58 @@ export default function MaterialDetail() {
                             </div>
 
                             {/* Minimal bottom layout status to reduce clutter */}
-                            {material.subtitle ? (
-                                <div className={`px-6 py-4 border-t flex items-center justify-between rounded-b-2xl ${
-                                    theme === 'light' ? 'border-stone-200/40 bg-white/40' : 'border-white/5 bg-slate-900/40'
-                                }`}>
-                                    <span className={`text-xs ${theme === 'light' ? 'text-stone-500' : 'text-slate-400'}`}>
-                                        Mã học liệu: <span className="font-semibold">{material.id}</span> {(material as any).source && (
+                            <div className={`px-6 py-4 border-t flex items-center justify-between rounded-b-2xl ${
+                                material.subtitle
+                                    ? (theme === 'light' ? 'border-stone-200/40 bg-white/40' : 'border-white/5 bg-slate-900/40')
+                                    : (theme === 'light' ? 'border-stone-200 bg-slate-50' : 'border-white/5 bg-slate-900/40')
+                            }`}>
+                                <span className={`text-xs ${theme === 'light' ? 'text-stone-500' : 'text-slate-400'} flex items-center flex-wrap gap-y-2`}>
+                                    Mã học liệu: <span className="font-semibold">{material.id}</span> {(material as any).source && (
+                                        <>
+                                            {" • "}
+                                            <span className={`font-bold ${theme === 'light' ? 'text-stone-700' : 'text-slate-200'}`}>
+                                                Thiết kế: {(material as any).source}
+                                            </span>
+                                        </>
+                                    )}
+                                    {!isBlocked && (
+                                        (['pro', 'combo', 'school', 'admin'].includes(userPlan) || userRole === 'admin') ? (
                                             <>
-                                                {" • "}
-                                                <span className={`font-bold ${theme === 'light' ? 'text-stone-700' : 'text-slate-200'}`}>
-                                                    Thiết kế: {(material as any).source}
-                                                </span>
+                                                <button
+                                                    onClick={handleSaveToVault}
+                                                    className={`ml-3 px-3 py-1 rounded-lg text-[10px] font-extrabold uppercase tracking-wider transition-all duration-200 active:scale-[0.98] cursor-pointer inline-flex items-center gap-1.5 shadow-sm border ${
+                                                        isInVault
+                                                            ? 'bg-emerald-500/10 text-emerald-650 dark:text-emerald-400 border-emerald-500/30 hover:bg-emerald-500/20'
+                                                            : 'bg-indigo-600 hover:bg-indigo-700 text-white border-transparent hover:shadow-md'
+                                                    }`}
+                                                >
+                                                    {isInVault ? <BookmarkCheck className="w-3.5 h-3.5" /> : <BookmarkPlus className="w-3.5 h-3.5" />}
+                                                    {isInVault ? 'Đã lưu kho tạm thời' : 'Lưu kho tạm thời'}
+                                                </button>
+                                                {vaultSaveMsg && (
+                                                    <span className="ml-2 inline-flex items-center gap-1 text-[10px] font-semibold text-emerald-600 dark:text-emerald-400">
+                                                        <Clock className="w-3 h-3" />
+                                                        {vaultSaveMsg}
+                                                    </span>
+                                                )}
                                             </>
-                                        )}
-                                    </span>
+                                        ) : (
+                                            <button
+                                                onClick={() => navigate('/pricing')}
+                                                className="ml-3 px-3 py-1 rounded-lg text-[10px] font-extrabold uppercase tracking-wider transition-all duration-200 active:scale-[0.98] cursor-pointer inline-flex items-center gap-1.5 shadow-sm border border-violet-300/40 dark:border-violet-500/30 text-violet-600 dark:text-violet-400 hover:bg-violet-50 dark:hover:bg-violet-950/20"
+                                            >
+                                                <BookmarkPlus className="w-3.5 h-3.5" />
+                                                Lưu kho tạm thời
+                                            </button>
+                                        )
+                                    )}
+                                </span>
+                                {material.subtitle && (
                                     <span className={`text-xs font-medium uppercase tracking-wider ${theme === 'light' ? 'text-stone-400' : 'text-slate-500'}`}>
                                         Mô hình sinh học cao cấp
                                     </span>
-                                </div>
-                            ) : (
-                                <div className={`px-6 py-4 border-t flex items-center justify-between rounded-b-2xl ${
-                                    theme === 'light' ? 'border-stone-200 bg-slate-50' : 'border-white/5 bg-slate-900/40'
-                                }`}>
-                                    <span className={`text-xs ${theme === 'light' ? 'text-stone-500' : 'text-slate-400'}`}>
-                                        Mã học liệu: <span className="font-semibold">{material.id}</span> {(material as any).source && (
-                                            <>
-                                                {" • "}
-                                                <span className={`font-bold ${theme === 'light' ? 'text-stone-700' : 'text-slate-200'}`}>
-                                                    Thiết kế: {(material as any).source}
-                                                </span>
-                                            </>
-                                        )}
-                                    </span>
-                                </div>
-                            )}
+                                )}
+                            </div>
                         </div>
                     </div>
 
@@ -1397,40 +1415,7 @@ export default function MaterialDetail() {
                                         </div>
 
 
-                                        {/* 24h Temporary Vault Button */}
-                                        {!isBlocked && (['pro', 'combo', 'school', 'admin'].includes(userPlan) || userRole === 'admin' ? (
-                                            <div className="pt-1 space-y-1">
-                                                <button
-                                                    onClick={handleSaveToVault}
-                                                    className={`w-full py-3 px-4 rounded-xl font-black text-xs uppercase tracking-wider transition-all duration-200 hover:shadow-lg active:scale-[0.98] cursor-pointer flex items-center justify-center gap-2 shadow-md ${
-                                                        isInVault
-                                                            ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 hover:bg-emerald-500/30'
-                                                            : (material.subtitle
-                                                                ? 'bg-gradient-to-r from-violet-500 to-purple-600 hover:from-violet-600 hover:to-purple-700 text-white hover:shadow-violet-500/20'
-                                                                : 'bg-gradient-to-r from-violet-500 to-purple-600 hover:from-violet-600 hover:to-purple-700 text-white hover:shadow-violet-500/20')
-                                                    }`}
-                                                >
-                                                    {isInVault ? <BookmarkCheck className="w-4 h-4" /> : <BookmarkPlus className="w-4 h-4" />}
-                                                    {isInVault ? 'Đã lưu vào kho tạm thời' : 'Lưu vào kho tạm thời (24h)'}
-                                                </button>
-                                                {vaultSaveMsg && (
-                                                    <div className="flex items-center gap-1.5 text-[11px] font-semibold text-emerald-500 dark:text-emerald-400 px-1">
-                                                        <Clock className="w-3 h-3" />
-                                                        {vaultSaveMsg}
-                                                    </div>
-                                                )}
-                                            </div>
-                                        ) : (
-                                            <div className="pt-1">
-                                                <button
-                                                    onClick={() => navigate('/pricing')}
-                                                    className="w-full py-2.5 px-4 rounded-xl border border-violet-300/40 dark:border-violet-500/30 text-violet-600 dark:text-violet-400 font-bold text-xs flex items-center justify-center gap-2 hover:bg-violet-50 dark:hover:bg-violet-950/20 transition-all cursor-pointer"
-                                                >
-                                                    <BookmarkPlus className="w-4 h-4" />
-                                                    Nâng cấp để lưu kho tạm thời
-                                                </button>
-                                            </div>
-                                        ))}
+
 
                                         {/* Quick Stats Grid for Premium Models */}
                                         {material.subtitle && (
