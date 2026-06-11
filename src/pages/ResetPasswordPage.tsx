@@ -152,6 +152,17 @@ export default function ResetPassword() {
                         </p>
                     </div>
 
+                    <div className="mb-6 p-4 bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-900/50 rounded-2xl flex items-start gap-3 animate-in fade-in duration-500 text-left">
+                        <div className="text-sm">
+                            <p className="font-bold text-amber-800 dark:text-amber-300">
+                                ⚠️ TÌM MÃ KHÔI PHỤC Ở ĐÂU?
+                            </p>
+                            <p className="text-amber-700 dark:text-amber-400/80 mt-1 font-medium leading-relaxed">
+                                Nếu không thấy email trong Hộp thư đến, mã khôi phục rất có thể đã bị lọc vào mục <strong className="font-bold text-red-600 dark:text-red-400 uppercase">Spam (Thư rác)</strong>. Vui lòng kiểm tra kỹ!
+                            </p>
+                        </div>
+                    </div>
+
                     {error && (
                         <div className="mb-5 p-4 bg-red-50 dark:bg-red-950/50 text-red-600 dark:text-red-400 border border-red-200 dark:border-red-900/50 rounded-2xl text-sm font-semibold text-center animate-in fade-in duration-300">
                             {error}
