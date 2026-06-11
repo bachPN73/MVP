@@ -172,7 +172,7 @@ export default function Landing() {
                             to="/register"
                             className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-bold text-white shadow-sm shadow-blue-600/25 hover:bg-blue-700"
                         >
-                            Bắt đầu
+                            Đăng kí/ Bắt đầu
                         </Link>
                         <div className="ml-2 border-l border-slate-200 pl-2 dark:border-white/10">
                             <ThemeToggle variant="glass" />
