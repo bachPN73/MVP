@@ -61,6 +61,10 @@ export default function SchoolDashboard() {
     const [showQrModal, setShowQrModal] = useState(false);
     const [copiedLink, setCopiedLink] = useState(false);
 
+    // Active members state
+    const [members, setMembers] = useState<any[]>([]);
+    const [membersLoading, setMembersLoading] = useState(false);
+
     // Advanced Config Modal state
     const [isConfigModalOpen, setIsConfigModalOpen] = useState(false);
     const [configForm, setConfigForm] = useState({
@@ -115,11 +119,43 @@ export default function SchoolDashboard() {
             // Fetch pending requests
             const pendingRequests = await api.getMembershipRequests(schoolId);
             setRequests(pendingRequests);
+
+            // Fetch current school members
+            await fetchMembers(schoolId);
         } catch (err: any) {
             console.error(err);
             setErrorMsg(err.message || 'Lỗi khi tải thông tin trường học.');
         } finally {
             setLoading(false);
+        }
+    };
+
+    const fetchMembers = async (schoolId: string) => {
+        setMembersLoading(true);
+        try {
+            const list = await api.getSchoolMembers(schoolId);
+            setMembers(list);
+        } catch (err: any) {
+            console.error('Error fetching members:', err);
+        } finally {
+            setMembersLoading(false);
+        }
+    };
+
+    const handleKickMember = async (memberId: string, memberName: string) => {
+        if (!school) return;
+        if (!window.confirm(`Bạn có chắc chắn muốn xóa thành viên "${memberName}" khỏi trường không? Gói dịch vụ của họ sẽ được khôi phục về trạng thái trước khi tham gia.`)) return;
+        
+        setActionLoading(true);
+        setErrorMsg('');
+        try {
+            const res = await api.kickSchoolMembers([memberId], school._id);
+            setSuccessMsg(res.message || 'Đã xóa thành viên thành công.');
+            await fetchSchoolData();
+        } catch (err: any) {
+            setErrorMsg(err.message || 'Xóa thành viên thất bại.');
+        } finally {
+            setActionLoading(false);
         }
     };
 
@@ -645,7 +681,7 @@ export default function SchoolDashboard() {
                                                     </span>
                                                 </td>
                                                 <td className="p-4">
-                                                    <span className="text-slate-700 dark:text-slate-300 font-mono text-sm font-semibold">
+                                                    <span className="text-slate-775 dark:text-slate-300 font-mono text-sm font-semibold">
                                                         {r.requestedClass || '—'}
                                                     </span>
                                                 </td>
@@ -720,6 +756,97 @@ export default function SchoolDashboard() {
                             </table>
                         )}
                     </div>
+                </div>
+
+                {/* School Active Members Section */}
+                <div className="bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-white/10 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.02)] dark:shadow-none overflow-hidden backdrop-blur-md transition-all">
+                    
+                    {/* Header */}
+                    <div className="p-6 border-b border-slate-200 dark:border-white/5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-slate-50/30 dark:bg-white/[0.01]">
+                        <div>
+                            <h2 className="text-lg font-black text-slate-900 dark:text-white flex items-center gap-2">
+                                Danh sách Thành viên Hiện tại
+                                <span className="bg-indigo-500/20 text-indigo-600 dark:text-indigo-400 text-xs px-2.5 py-0.5 rounded-full font-bold border border-indigo-500/20">
+                                    {members.length} thành viên
+                                </span>
+                            </h2>
+                            <p className="text-xs text-slate-500 dark:text-slate-400 font-medium mt-1">
+                                Quản lý danh sách giáo viên và học sinh đã gia nhập và đang sử dụng bản quyền của trường.
+                            </p>
+                        </div>
+                    </div>
+
+                    {/* Table / List */}
+                    <div className="overflow-x-auto">
+                        {membersLoading ? (
+                            <div className="p-12 text-center text-slate-500 dark:text-slate-400 flex flex-col items-center gap-4">
+                                <div className="w-8 h-8 border-3 border-indigo-500 border-t-transparent rounded-full animate-spin" />
+                                <span className="text-sm font-semibold tracking-wider font-mono uppercase text-indigo-600 dark:text-indigo-400/80">Đang tải danh sách...</span>
+                            </div>
+                        ) : members.length === 0 ? (
+                            <div className="p-16 text-center text-slate-500 dark:text-slate-400 flex flex-col items-center gap-3">
+                                <div className="w-14 h-14 rounded-2xl bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 flex items-center justify-center">
+                                    <Users className="w-6 h-6 text-slate-400" />
+                                </div>
+                                <h3 className="font-bold text-slate-900 dark:text-white text-base">Chưa có thành viên nào</h3>
+                                <p className="text-xs text-slate-500 dark:text-slate-400 max-w-sm mt-1">
+                                    Trường học hiện chưa có thành viên nào hoạt động.
+                                </p>
+                            </div>
+                        ) : (
+                            <table className="w-full text-left border-collapse">
+                                <thead>
+                                    <tr className="border-b border-slate-200 dark:border-white/5 bg-slate-50/[0.01] dark:bg-white/[0.005]">
+                                        <th className="p-4 text-xs font-black uppercase tracking-wider text-slate-500 dark:text-slate-400">Họ và tên</th>
+                                        <th className="p-4 text-xs font-black uppercase tracking-wider text-slate-500 dark:text-slate-400">Vai trò</th>
+                                        <th className="p-4 text-xs font-black uppercase tracking-wider text-slate-500 dark:text-slate-400">Lớp học</th>
+                                        <th className="p-4 text-xs font-black uppercase tracking-wider text-slate-500 dark:text-slate-400">Gói hiện tại</th>
+                                        <th className="p-4 text-xs font-black uppercase tracking-wider text-slate-500 dark:text-slate-400">Gói cũ</th>
+                                        <th className="p-4 text-right text-xs font-black uppercase tracking-wider text-slate-500 dark:text-slate-400">Thao tác</th>
+                                    </tr>
+                                </thead>
+                                <tbody className="divide-y divide-slate-200 dark:divide-white/5">
+                                    {members.map((m) => (
+                                        <tr key={m.id} className="hover:bg-slate-50/50 dark:hover:bg-white/[0.02] transition-colors">
+                                            <td className="p-4">
+                                                <div className="flex flex-col">
+                                                    <span className="font-bold text-slate-900 dark:text-white text-sm">{m.name}</span>
+                                                    <span className="text-slate-500 dark:text-slate-400 text-xs mt-0.5">{m.email}</span>
+                                                </div>
+                                            </td>
+                                            <td className="p-4">
+                                                <span className={`text-[10px] font-black uppercase tracking-wider px-2.5 py-1 rounded-full border
+                                                    ${m.role === 'teacher' 
+                                                        ? 'bg-indigo-500/10 border-indigo-500/20 text-indigo-500 dark:text-indigo-400' 
+                                                        : 'bg-teal-500/10 border-teal-500/20 text-teal-650 dark:text-teal-400'}`}>
+                                                    {m.role === 'teacher' ? 'Giáo viên' : 'Học sinh'}
+                                                </span>
+                                            </td>
+                                            <td className="p-4">
+                                                <span className="text-slate-700 dark:text-slate-300 font-mono text-sm font-semibold">
+                                                    {m.className || '—'}
+                                                </span>
+                                            </td>
+                                            <td className="p-4 capitalize text-xs font-semibold text-slate-700 dark:text-slate-350">
+                                                {m.plan}
+                                            </td>
+                                            <td className="p-4 capitalize text-xs font-semibold text-slate-500">
+                                                {m.previousPlan || 'free'}
+                                            </td>
+                                            <td className="p-4 text-right">
+                                                <button
+                                                    onClick={() => handleKickMember(m.id, m.name)}
+                                                    className="px-3 py-1.5 hover:bg-red-500 hover:text-white text-red-500 dark:text-red-400 border border-red-500/20 hover:border-transparent rounded-xl text-xs font-black uppercase tracking-wider transition-all"
+                                                >
+                                                    Mời ra
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        )}
+                    </div>
 
                 </div>
 
@@ -750,13 +877,18 @@ export default function SchoolDashboard() {
 
                         {/* QR Image Frame */}
                         <div className="p-4 bg-slate-50 dark:bg-slate-950/40 rounded-2xl border border-slate-150 dark:border-white/5 inline-block mx-auto">
-                            <div className="bg-white p-3 rounded-xl shadow-inner relative group">
-                                <img
-                                    src={qrUrl}
-                                    alt="Mã QR tham gia"
-                                    className="w-48 h-48 mx-auto"
-                                    loading="lazy"
-                                />
+                            <div className="bg-white p-3 rounded-xl shadow-inner relative group flex items-center justify-center min-w-[216px] min-h-[216px]">
+                                {joinUrl ? (
+                                    <QRCodeSVG 
+                                        value={joinUrl} 
+                                        size={192}
+                                        className="mx-auto" 
+                                        level="H"
+                                        includeMargin={false}
+                                    />
+                                ) : (
+                                    <div className="w-48 h-48 animate-pulse bg-slate-100 rounded-lg"></div>
+                                )}
                             </div>
                         </div>
 

@@ -283,6 +283,24 @@ export const api = {
         return data;
     },
 
+    getSchoolMembers: async (schoolId: string): Promise<any[]> => {
+        const response = await fetch(`${API_URL}/school/members?schoolId=${schoolId}`);
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.error || 'Failed to fetch school members');
+        return data;
+    },
+
+    kickSchoolMembers: async (memberIds: string[], schoolId: string): Promise<{ message: string }> => {
+        const response = await fetch(`${API_URL}/school/members/kick`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ memberIds, schoolId }),
+        });
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.error || 'Failed to kick members');
+        return data;
+    },
+
     approveRequests: async (requestIds: string[], schoolId: string): Promise<{ message: string }> => {
         const response = await fetch(`${API_URL}/school/requests/approve`, {
             method: 'POST',

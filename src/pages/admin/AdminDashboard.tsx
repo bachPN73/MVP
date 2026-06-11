@@ -97,8 +97,8 @@ export default function AdminDashboard() {
                 {statCards.map((stat, index) => {
                     const Icon = stat.icon;
                     return (
-                        <div key={index} className="bg-white dark:bg-slate-900/60 rounded-2xl p-4 md:p-6 shadow-sm border border-slate-200 dark:border-white/10 hover:shadow-md hover:border-slate-300 dark:hover:border-white/20 transition-all flex flex-col justify-between relative group overflow-hidden">
-                            <div className="absolute -top-12 -right-12 w-24 h-24 bg-slate-50 dark:bg-slate-900/50 rounded-full blur-xl group-hover:scale-110 transition-transform" />
+                        <div key={index} className="bg-white dark:bg-slate-900/50 rounded-[1.5rem] p-5 md:p-6 shadow-[0_2px_10px_rgba(0,0,0,0.02)] border border-slate-200/60 dark:border-white/10 hover:shadow-[0_8px_30px_rgba(0,0,0,0.04)] hover:border-slate-300 dark:hover:border-white/20 transition-all flex flex-col justify-between relative group overflow-hidden">
+                            <div className="absolute -top-12 -right-12 w-24 h-24 bg-slate-50 dark:bg-slate-800/50 rounded-full blur-2xl group-hover:scale-150 transition-transform duration-500" />
                             
                             <div className="flex justify-between items-start mb-4 relative z-10">
                                 <div className={`p-2.5 rounded-xl border ${stat.bg}`}>
@@ -106,9 +106,9 @@ export default function AdminDashboard() {
                                 </div>
                                 <ArrowUpRight className="w-4 h-4 text-slate-300 dark:text-slate-600 group-hover:text-slate-400 dark:group-hover:text-slate-400 transition-colors" />
                             </div>
-                            <div className="relative z-10">
-                                <h3 className="text-2xl md:text-3xl font-extrabold text-slate-900 dark:text-white mb-0.5 md:mb-1 font-heading">{stat.value}</h3>
-                                <p className="text-[10px] md:text-xs text-slate-500 dark:text-slate-400 font-sans font-extrabold uppercase tracking-wider line-clamp-1">{stat.title}</p>
+                            <div className="relative z-10 mt-2">
+                                <h3 className="text-3xl font-extrabold text-slate-900 dark:text-white mb-1 font-heading tracking-tight">{stat.value}</h3>
+                                <p className="text-[11px] text-slate-500 dark:text-slate-400 font-sans font-bold uppercase tracking-wider line-clamp-1">{stat.title}</p>
                             </div>
                         </div>
                     );

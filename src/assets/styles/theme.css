@@ -2,43 +2,43 @@
 
 :root {
     --font-size: 16px;
-    --background: #f6f8fb;
-    --foreground: #0f172a;
+    --background: #f1f5f9; /* Soft, soothing slate-100 background */
+    --foreground: #334155; /* Softer text color (slate-700) to reduce glare */
     --card: #ffffff;
-    --card-foreground: #020617;
+    --card-foreground: #1e293b;
     --popover: #ffffff;
-    --popover-foreground: #020617;
-    --primary: #2563eb;
+    --popover-foreground: #1e293b;
+    --primary: #3b82f6;
     --primary-foreground: #ffffff;
-    --secondary: #0f766e;
+    --secondary: #0d9488;
     --secondary-foreground: #ffffff;
-    --muted: #e8eef6;
+    --muted: #f1f5f9;
     --muted-foreground: #64748b;
-    --accent: #eaf2ff;
+    --accent: #eff6ff;
     --accent-foreground: #1d4ed8;
     --destructive: #ef4444;
     --destructive-foreground: #ffffff;
-    --border: #d8e0eb;
-    --input: #f8fafc;
+    --border: rgba(15, 23, 42, 0.08); /* Optimized, subtle translucent border */
+    --input: rgba(15, 23, 42, 0.05);
     --input-background: #ffffff;
-    --switch-background: #94a3b8;
+    --switch-background: #cbd5e1;
     --font-weight-medium: 500;
     --font-weight-normal: 400;
-    --ring: #2563eb;
-    --chart-1: #2563eb;
-    --chart-2: #0f766e;
+    --ring: rgba(59, 130, 246, 0.5);
+    --chart-1: #3b82f6;
+    --chart-2: #0d9488;
     --chart-3: #f59e0b;
-    --chart-4: #7c3aed;
-    --chart-5: #e11d48;
-    --radius: 0.5rem;
-    --sidebar: #ffffff;
-    --sidebar-foreground: #0f172a;
-    --sidebar-primary: #2563eb;
+    --chart-4: #8b5cf6;
+    --chart-5: #f43f5e;
+    --radius: 0.75rem;
+    --sidebar: #f8fafc;
+    --sidebar-foreground: #334155;
+    --sidebar-primary: #3b82f6;
     --sidebar-primary-foreground: #ffffff;
     --sidebar-accent: #eff6ff;
     --sidebar-accent-foreground: #1d4ed8;
-    --sidebar-border: #d8e0eb;
-    --sidebar-ring: #2563eb;
+    --sidebar-border: rgba(15, 23, 42, 0.06);
+    --sidebar-ring: rgba(59, 130, 246, 0.5);
 
     --slate-50: #f8fafc;
     --slate-100: #f1f5f9;
@@ -203,6 +203,7 @@
     }
 
     /**
+
   * Default typography styles for HTML elements (h1-h4, p, label, button, input).
   * These are in @layer base, so Tailwind utility classes (like text-sm, text-lg) automatically override them.
   */

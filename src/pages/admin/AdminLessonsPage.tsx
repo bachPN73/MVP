@@ -457,17 +457,17 @@ export default function AdminLessonsPage() {
             )}
 
             {/* Lessons List table */}
-            <div className="bg-transparent md:bg-white md:dark:bg-slate-900/60 md:border md:border-slate-200 md:dark:border-white/10 md:rounded-2xl overflow-hidden md:shadow-sm backdrop-blur-xl animate-fadeIn">
+            <div className="bg-white dark:bg-slate-900/40 rounded-2xl border border-slate-200/60 dark:border-white/10 overflow-hidden shadow-[0_2px_10px_rgba(0,0,0,0.02)] animate-fadeIn">
                 <div className="overflow-x-auto">
                     <table className="w-full text-left border-collapse font-sans">
                         <thead>
-                            <tr className="bg-slate-50/50 dark:bg-slate-950/20 border-b border-slate-200 dark:border-white/10">
-                                <th className="px-6 py-4.5 text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest">Tiêu đề bài học / Chương</th>
-                                <th className="px-6 py-4.5 text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest">Môn Học</th>
-                                <th className="px-6 py-4.5 text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest">Lớp</th>
-                                <th className="px-6 py-4.5 text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest">Số Học Liệu</th>
-                                <th className="px-6 py-4.5 text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest">Thứ Tự</th>
-                                <th className="px-6 py-4.5 text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest text-right">Hành Động</th>
+                            <tr className="bg-slate-50/50 dark:bg-slate-800/20 border-b border-slate-200/60 dark:border-white/10">
+                                <th className="px-6 py-4 text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest">Tiêu đề bài học / Chương</th>
+                                <th className="px-6 py-4 text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest">Môn Học</th>
+                                <th className="px-6 py-4 text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest">Lớp</th>
+                                <th className="px-6 py-4 text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest">Số Học Liệu</th>
+                                <th className="px-6 py-4 text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest">Thứ Tự</th>
+                                <th className="px-6 py-4 text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest text-right">Hành Động</th>
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-slate-100 dark:divide-white/5 font-semibold text-slate-700 dark:text-slate-200 text-sm">
@@ -490,8 +490,8 @@ export default function AdminLessonsPage() {
                                 filteredLessons.map((lesson) => {
                                     const lessonId = lesson.id || lesson._id;
                                     return (
-                                        <tr key={lessonId} className="hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors group">
-                                            <td className="px-6 py-4.5">
+                                        <tr key={lessonId} className="hover:bg-slate-50/80 dark:hover:bg-slate-800/30 transition-colors group">
+                                            <td className="px-6 py-5">
                                                 <div className="flex items-center gap-3.5">
                                                     <div className="w-10 h-10 rounded-xl bg-indigo-50 dark:bg-indigo-950/40 flex items-center justify-center text-indigo-600 dark:text-indigo-400 border border-indigo-200/10">
                                                         <BookOpen className="w-4.5 h-4.5" />
@@ -508,7 +508,7 @@ export default function AdminLessonsPage() {
                                                     </div>
                                                 </div>
                                             </td>
-                                            <td className="px-6 py-4.5">
+                                            <td className="px-6 py-5">
                                                 <span className={`inline-flex items-center px-2.5 py-0.5 rounded-lg text-[10px] font-extrabold uppercase tracking-wide border ${
                                                     lesson.subject === 'physics' 
                                                         ? 'bg-indigo-50 dark:bg-indigo-950/40 border-indigo-200/10 text-indigo-600 dark:text-indigo-400' 
@@ -519,16 +519,16 @@ export default function AdminLessonsPage() {
                                                     {lesson.subject === 'physics' ? 'Vật lý' : lesson.subject === 'chemistry' ? 'Hóa học' : 'Sinh học'}
                                                 </span>
                                             </td>
-                                            <td className="px-6 py-4.5 text-xs font-bold text-slate-900 dark:text-white">Lớp {lesson.grade}</td>
-                                            <td className="px-6 py-4.5">
+                                            <td className="px-6 py-5 text-xs font-bold text-slate-900 dark:text-white">Lớp {lesson.grade}</td>
+                                            <td className="px-6 py-5">
                                                 <span className="text-xs font-extrabold text-slate-650 bg-slate-100 dark:bg-slate-950 border border-slate-200/50 dark:border-white/5 px-2.5 py-1 rounded-md">
                                                     {lesson.materials ? lesson.materials.length : 0} học liệu
                                                 </span>
                                             </td>
-                                            <td className="px-6 py-4.5 text-xs font-bold text-slate-500 dark:text-slate-400">
+                                            <td className="px-6 py-5 text-xs font-bold text-slate-500 dark:text-slate-400">
                                                 {lesson.order || 0}
                                             </td>
-                                            <td className="px-6 py-4.5 text-right whitespace-nowrap">
+                                            <td className="px-6 py-5 text-right whitespace-nowrap">
                                                 <div className="flex items-center justify-end gap-1.5">
                                                     <button
                                                         onClick={() => handleEdit(lesson)}

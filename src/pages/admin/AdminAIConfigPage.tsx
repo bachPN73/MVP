@@ -305,7 +305,7 @@ export default function AdminAIConfigPage() {
                         ))}
                     </div>
 
-                    <div className="bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-white/10 rounded-2xl shadow-sm overflow-hidden">
+                    <div className="bg-white dark:bg-slate-900/40 border border-slate-200/60 dark:border-white/10 rounded-2xl shadow-[0_2px_10px_rgba(0,0,0,0.02)] overflow-hidden">
                         <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-violet-500 to-indigo-500 rounded-t-2xl" />
 
                         {/* Filters */}
@@ -355,7 +355,7 @@ export default function AdminAIConfigPage() {
                         ) : (
                             <>
                                 {/* Table Header */}
-                                <div className="hidden md:grid grid-cols-[2fr_1fr_1fr_200px_36px] gap-4 px-5 py-3 border-b border-slate-100 dark:border-white/5 text-[10px] font-bold uppercase tracking-widest text-slate-400 dark:text-slate-500">
+                                <div className="hidden md:grid grid-cols-[2fr_1fr_1fr_200px_36px] gap-4 px-6 py-4 bg-slate-50/50 dark:bg-slate-800/20 border-b border-slate-200/60 dark:border-white/10 text-[10px] font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400">
                                     <span>Tên học liệu</span>
                                     <span>Môn / Lớp</span>
                                     <span>Loại</span>
@@ -379,7 +379,7 @@ export default function AdminAIConfigPage() {
                                             const planMeta = currentPlan ? PLAN_META[currentPlan] : null;
 
                                             return (
-                                                <div key={matId} className="grid grid-cols-1 md:grid-cols-[2fr_1fr_1fr_200px_36px] gap-3 md:gap-4 px-5 py-4 hover:bg-slate-50/50 dark:hover:bg-slate-800/20 transition-colors items-center">
+                                                <div key={matId} className="grid grid-cols-1 md:grid-cols-[2fr_1fr_1fr_200px_36px] gap-3 md:gap-4 px-6 py-5 hover:bg-slate-50/80 dark:hover:bg-slate-800/30 transition-colors items-center group">
                                                     {/* Name */}
                                                     <div className="flex items-center gap-3 min-w-0">
                                                         {m.thumbnail ? (

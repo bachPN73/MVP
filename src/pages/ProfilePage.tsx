@@ -1,6 +1,7 @@
 import { Layout } from "../layout/MainLayout";
 import { useState, useEffect } from "react";
-import { User, Mail, Shield, Key, CreditCard, ChevronRight, Lock, School, Sparkles, AlertTriangle } from "lucide-react";
+import { User, Mail, Shield, Key, CreditCard, ChevronRight, Lock, School, Sparkles, AlertTriangle, QrCode, X } from "lucide-react";
+import { Scanner } from '@yudiel/react-qr-scanner';
 import { Link, useNavigate } from "react-router";
 import Button from "../components/Button";
 import { api } from "../api";
@@ -33,6 +34,7 @@ export default function ProfilePage() {
     const [joinError, setJoinError] = useState("");
     const [schoolName, setSchoolName] = useState("");
     const [schoolInfo, setSchoolInfo] = useState<any>(null);
+    const [showScanner, setShowScanner] = useState(false);
 
     useEffect(() => {
         const stored = localStorage.getItem('edu_tech_user');
@@ -107,10 +109,10 @@ export default function ProfilePage() {
         }
     }, [navigate]);
 
-    // Auto-fill invite code from URL query parameters (e.g. ?code=NGUYENDU2026) and focus
+    // Auto-fill invite code from URL query parameters (e.g. ?join=NGUYENDU2026) and focus
     useEffect(() => {
         const params = new URLSearchParams(window.location.search);
-        const codeParam = params.get('code');
+        const codeParam = params.get('join') || params.get('code');
         if (codeParam) {
             setSchoolCode(codeParam.toUpperCase());
             setTimeout(() => {
@@ -358,6 +360,7 @@ export default function ProfilePage() {
                             </div>
                         </div>
 
+
                         {/* Organization / School Invite Joining */}
                         <div id="join-school-section" className="bg-white dark:bg-slate-900/60 border border-slate-200/80 dark:border-white/10 rounded-2xl p-6 shadow-sm text-slate-900 dark:text-white backdrop-blur-md transition-all duration-300">
                             <h3 className="text-lg font-bold font-heading mb-5 flex items-center gap-2.5">
@@ -404,113 +407,22 @@ export default function ProfilePage() {
                             ) : (
                                 <div className="space-y-4">
                                     <p className="text-xs text-slate-400 font-medium leading-relaxed">
-                                        Tài khoản trường học cho phép bạn sử dụng bản quyền Premium được cấp bởi nhà trường. Nhập Mã mời của trường học bạn dưới đây để gửi yêu cầu phê duyệt gia nhập.
+                                        Liên kết tài khoản với trường học để nhận gói Pro miễn phí và truy cập toàn bộ tài liệu premium được cấp bởi nhà trường.
                                     </p>
-
-                                    {joinSuccess && (
-                                        <div className="p-3 bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-semibold rounded-xl flex items-center gap-2">
-                                            <Sparkles className="w-4 h-4 shrink-0" />
-                                            <span>{joinSuccess}</span>
+                                    {/* CTA card linking to the full join-school page */}
+                                    <Link
+                                        to="/join-school"
+                                        className="group flex items-center gap-4 p-4 bg-gradient-to-r from-indigo-50 to-violet-50 dark:from-indigo-500/10 dark:to-violet-500/10 border border-indigo-200 dark:border-indigo-500/20 rounded-xl hover:border-indigo-400 dark:hover:border-indigo-400/40 transition-all duration-200 hover:shadow-md hover:shadow-indigo-500/10"
+                                    >
+                                        <div className="p-3 bg-indigo-100 dark:bg-indigo-500/20 rounded-xl text-indigo-600 dark:text-indigo-400 group-hover:scale-105 transition-transform shrink-0">
+                                            <School className="w-5 h-5" />
                                         </div>
-                                    )}
-
-                                    {joinError && (
-                                        <div className="p-3 bg-red-500/10 border border-red-500/20 text-red-400 text-xs font-semibold rounded-xl flex items-center gap-2">
-                                            <AlertTriangle className="w-4 h-4 shrink-0" />
-                                            <span>{joinError}</span>
+                                        <div className="flex-1 min-w-0">
+                                            <p className="text-sm font-bold text-indigo-700 dark:text-indigo-300">Tham gia Trường học →</p>
+                                            <p className="text-xs text-indigo-500 dark:text-indigo-400/70 mt-0.5">Nhập mã mời hoặc quét QR · Nhận gói Pro miễn phí</p>
                                         </div>
-                                    )}
-
-                                    <form onSubmit={async (e) => {
-                                        e.preventDefault();
-                                        if (!schoolCode.trim()) return;
-                                        setJoinLoading(true);
-                                        setJoinError("");
-                                        setJoinSuccess("");
-                                        try {
-                                            const res = await api.joinSchool(
-                                                schoolCode.trim().toUpperCase(),
-                                                requestedRole,
-                                                requestedClass,
-                                                user.id
-                                            ) as any;
-                                            setJoinSuccess(res.message);
-                                            setSchoolCode("");
-                                            setRequestedClass("");
-                                            
-                                            // If auto-approved/linked immediately (like for school admins), update localStorage and reload
-                                            if (res.success && res.user) {
-                                                const stored = localStorage.getItem('edu_tech_user');
-                                                if (stored) {
-                                                    const currentUser = JSON.parse(stored);
-                                                    const updatedUser = {
-                                                        ...currentUser,
-                                                        role: res.user.role,
-                                                        plan: res.user.plan,
-                                                        schoolId: res.user.schoolId,
-                                                        className: res.user.className
-                                                    };
-                                                    localStorage.setItem('edu_tech_user', JSON.stringify(updatedUser));
-                                                }
-                                                setTimeout(() => {
-                                                    window.location.reload();
-                                                }, 1000);
-                                            }
-                                        } catch (err: any) {
-                                            setJoinError(err.message || "Gửi yêu cầu gia nhập thất bại. Vui lòng kiểm tra lại mã.");
-                                        } finally {
-                                            setJoinLoading(false);
-                                        }
-                                    }} className="space-y-4 pt-2">
-                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                            <div className="flex flex-col gap-1.5">
-                                                <label className="text-xs font-semibold tracking-wider text-slate-400 dark:text-slate-500 uppercase">Mã mời trường học</label>
-                                                <input
-                                                    type="text"
-                                                    required
-                                                    placeholder="Ví dụ: NGUYENDU2026"
-                                                    value={schoolCode}
-                                                    onChange={(e) => setSchoolCode(e.target.value.toUpperCase())}
-                                                    className="p-3 bg-slate-50 dark:bg-slate-950/60 rounded-xl border border-slate-200 dark:border-white/10 outline-none text-slate-900 dark:text-white focus:border-indigo-500 text-sm uppercase font-mono tracking-wider"
-                                                />
-                                            </div>
-                                            <div className="flex flex-col gap-1.5">
-                                                <label className="text-xs font-semibold tracking-wider text-slate-400 dark:text-slate-500 uppercase">Vai trò ứng tuyển</label>
-                                                <select
-                                                    value={requestedRole}
-                                                    onChange={(e) => setRequestedRole(e.target.value as 'teacher' | 'student')}
-                                                    className="p-3 bg-slate-50 dark:bg-slate-950/60 rounded-xl border border-slate-200 dark:border-white/10 outline-none text-slate-900 dark:text-white focus:border-indigo-500 text-sm"
-                                                >
-                                                    <option value="student">Học sinh</option>
-                                                    <option value="teacher">Giáo viên</option>
-                                                </select>
-                                            </div>
-                                        </div>
-
-                                        {requestedRole === 'student' && (
-                                            <div className="flex flex-col gap-1.5">
-                                                <label className="text-xs font-semibold tracking-wider text-slate-400 dark:text-slate-500 uppercase">Lớp học</label>
-                                                <input
-                                                    type="text"
-                                                    required={requestedRole === 'student'}
-                                                    placeholder="Ví dụ: 12A1, 10A5..."
-                                                    value={requestedClass}
-                                                    onChange={(e) => setRequestedClass(e.target.value)}
-                                                    className="p-3 bg-slate-50 dark:bg-slate-950/60 rounded-xl border border-slate-200 dark:border-white/10 outline-none text-slate-900 dark:text-white focus:border-indigo-500 text-sm"
-                                                />
-                                            </div>
-                                        )}
-
-                                        <div className="flex justify-end pt-2">
-                                            <Button 
-                                                type="submit" 
-                                                disabled={joinLoading}
-                                                className="px-5 py-2 text-sm font-semibold rounded-xl bg-gradient-to-r from-indigo-600 to-indigo-500 hover:from-indigo-500 hover:to-indigo-600 text-white shadow-md shadow-indigo-500/10 hover:shadow-indigo-500/20 transition-all duration-200 w-full sm:w-auto"
-                                            >
-                                                {joinLoading ? "Đang gửi..." : "Gửi yêu cầu tham gia"}
-                                            </Button>
-                                        </div>
-                                    </form>
+                                        <ChevronRight className="w-4 h-4 text-indigo-400 group-hover:translate-x-1 transition-transform shrink-0" />
+                                    </Link>
                                 </div>
                             )}
                         </div>
@@ -591,6 +503,50 @@ export default function ProfilePage() {
                     </div>
                 </div>
             </div>
+
+            {/* QR Scanner Modal */}
+            {showScanner && (
+                <div className="fixed inset-0 z-[100] bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+                    <div className="bg-white dark:bg-slate-900 w-full max-w-sm rounded-3xl overflow-hidden shadow-2xl animate-in zoom-in-95 duration-200">
+                        <div className="p-4 flex items-center justify-between border-b border-slate-100 dark:border-white/5">
+                            <div className="flex items-center gap-2">
+                                <QrCode className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
+                                <h3 className="font-bold text-slate-900 dark:text-white">Quét mã QR</h3>
+                            </div>
+                            <button
+                                onClick={() => setShowScanner(false)}
+                                className="p-2 bg-slate-100 hover:bg-slate-200 dark:bg-white/5 dark:hover:bg-white/10 rounded-xl text-slate-500 transition-colors"
+                            >
+                                <X className="w-4 h-4" />
+                            </button>
+                        </div>
+                        <div className="p-4 bg-slate-50 dark:bg-slate-950 aspect-square w-full relative">
+                            <Scanner 
+                                onScan={(result) => {
+                                    if (result && result.length > 0) {
+                                        try {
+                                            const scannedUrl = new URL(result[0].rawValue);
+                                            const joinParam = scannedUrl.searchParams.get('join') || scannedUrl.searchParams.get('code');
+                                            if (joinParam) {
+                                                setSchoolCode(joinParam.toUpperCase());
+                                                setShowScanner(false);
+                                                return;
+                                            }
+                                        } catch (e) {
+                                            // Fallback for raw code scan
+                                            if (result[0].rawValue) {
+                                                setSchoolCode(result[0].rawValue.toUpperCase());
+                                                setShowScanner(false);
+                                            }
+                                        }
+                                    }
+                                }} 
+                                onError={(error) => console.error(error)}
+                            />
+                        </div>
+                    </div>
+                </div>
+            )}
         </Layout>
     );
 }

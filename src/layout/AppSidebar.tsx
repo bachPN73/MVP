@@ -1,5 +1,5 @@
 import { Link } from 'react-router';
-import { Home, Library, Sparkles, BookOpen, LogOut, CreditCard, X, ChevronLeft, Sun, Moon, ShieldAlert, School, Zap, Archive } from 'lucide-react';
+import { Home, Library, Sparkles, BookOpen, LogOut, CreditCard, X, ChevronLeft, Sun, Moon, ShieldAlert, School, Zap, Archive, GraduationCap } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { useTheme } from '../components/ThemeProvider';
 import { api } from '../api';
@@ -86,10 +86,13 @@ export function AppSidebar({ currentPath = '/', isOpen = false, setIsOpen, isCol
         { path: '/library', label: 'Thư viện', icon: Library },
         { path: '/find-ai', label: 'AI tìm kiếm', icon: Sparkles },
         { path: '/pricing-app', label: 'Gói dịch vụ', icon: CreditCard },
-        { path: '/guide-app', label: 'Hướng dẫn', icon: BookOpen },
         ...(['pro', 'combo', 'school', 'demo'].includes(userPlan) ? [{ path: '/vault', label: 'Kho tạm thời', icon: Archive }] : []),
         ...(userRole === 'school-admin' ? [{ path: '/school/dashboard', label: 'Trường học', icon: School }] : []),
-        ...(userRole === 'admin' ? [{ path: '/admin/dashboard', label: 'Bảng Admin', icon: ShieldAlert }] : []),
+        // Show join-school link for everyone except school-admin (who has dashboard) and active school members
+        ...(userRole !== 'school-admin' && !['school'].includes(userPlan)
+            ? [{ path: '/join-school', label: 'Trường học', icon: GraduationCap }]
+            : []),
+        { path: '/guide-app', label: 'Hướng dẫn', icon: BookOpen },
     ];
 
     const handleLogout = () => {
@@ -99,7 +102,7 @@ export function AppSidebar({ currentPath = '/', isOpen = false, setIsOpen, isCol
 
     return (
         <aside 
-            className={`fixed left-0 top-0 md:left-3 md:top-3 md:h-[calc(100vh-1.5rem)] h-full bg-sidebar/95 backdrop-blur-3xl text-sidebar-foreground flex flex-col shadow-2xl z-50 transition-all duration-300 ease-in-out md:translate-x-0 md:rounded-2xl md:border border-sidebar-border
+            className={`fixed left-0 top-0 md:left-3 md:top-3 md:h-[calc(100vh-1.5rem)] h-full bg-teal-50/95 dark:bg-sidebar/95 backdrop-blur-3xl text-sidebar-foreground flex flex-col shadow-2xl z-50 transition-all duration-300 ease-in-out md:translate-x-0 md:rounded-2xl md:border border-sidebar-border
             ${isOpen ? 'translate-x-0' : '-translate-x-full'} 
             ${isCollapsed ? 'md:w-20 w-[270px]' : 'w-[270px]'}`}
         >
@@ -225,6 +228,19 @@ export function AppSidebar({ currentPath = '/', isOpen = false, setIsOpen, isCol
                         </div>
                     </div>
                 </nav>
+
+                {/* ===== Bảng Admin Shortcut ===== */}
+                {userRole === 'admin' && (
+                    <div className="px-3.5 pb-3">
+                        <Link 
+                            to="/admin/dashboard"
+                            className="group/switch w-full flex items-center justify-center gap-2 py-3 px-4 bg-gradient-to-r from-emerald-50 to-teal-50 dark:from-emerald-500/10 dark:to-teal-500/10 text-emerald-700 dark:text-emerald-400 border border-emerald-200/60 dark:border-emerald-500/20 rounded-xl font-bold text-xs hover:shadow-sm transition-all cursor-pointer font-sans"
+                        >
+                            <ShieldAlert className="w-4 h-4 group-hover/switch:scale-110 group-hover/switch:-rotate-6 transition-transform duration-300 text-emerald-600 dark:text-emerald-400" />
+                            <span className={`${isCollapsed ? 'md:hidden' : ''}`}>Bảng Admin</span>
+                        </Link>
+                    </div>
+                )}
 
                 {/* ===== User Account Section — Premium Card ===== */}
                 <div className="px-3.5 pb-6">

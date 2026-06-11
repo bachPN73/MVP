@@ -33,6 +33,7 @@ import AdminAIConfigPage from "./pages/admin/AdminAIConfigPage";
 
 // School Pages
 import SchoolDashboard from "./pages/school/SchoolDashboard";
+import JoinSchoolPage from "./pages/JoinSchoolPage";
 
 // Pro Vault Page
 import VaultPage from "./pages/VaultPage";
@@ -53,7 +54,8 @@ function PageLoader() {
         window.location.pathname.includes('/payment/') ||
         window.location.pathname.includes('/admin') ||
         window.location.pathname.includes('/school') ||
-        window.location.pathname.includes('/vault')
+        window.location.pathname.includes('/vault') ||
+        window.location.pathname.includes('/join-school')
     );
 
     if (isApp) {
@@ -199,6 +201,10 @@ export const router = createBrowserRouter([
     {
         path: "/school/dashboard",
         Component: withAuth(SchoolDashboard),
+    },
+    {
+        path: "/join-school",
+        Component: withAuth(JoinSchoolPage),
     },
     {
         path: "/vault",

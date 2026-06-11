@@ -284,8 +284,8 @@ export default function PricingContent() {
                             <tr className="hover:bg-slate-50/50 dark:hover:bg-white/[0.01] transition-colors">
                                 <td className="p-4 font-black text-slate-900 dark:text-white">Kho tạm lưu học liệu</td>
                                 <td className="p-4 text-slate-400 dark:text-slate-500 font-medium">✕ Không hỗ trợ</td>
-                                <td className="p-4 text-emerald-600 dark:text-emerald-400 font-extrabold">✓ Có (24h)</td>
                                 <td className="p-4 text-slate-400 dark:text-slate-500 font-medium">✕ Không hỗ trợ</td>
+                                <td className="p-4 text-emerald-600 dark:text-emerald-400 font-extrabold">✓ Có (24h)</td>
                                 <td className="p-4 text-emerald-600 dark:text-emerald-400 font-extrabold">✓ Có (24h)</td>
                                 <td className="p-4 text-emerald-600 dark:text-emerald-400 font-extrabold">✓ Có (24h)</td>
                             </tr>
@@ -310,8 +310,8 @@ export default function PricingContent() {
                                 <td className="p-4 text-slate-600 dark:text-slate-500">Hỏi đáp cộng đồng</td>
                                 <td className="p-4 text-slate-600 dark:text-slate-400">Hỗ trợ qua email</td>
                                 <td className="p-4 text-orange-600 dark:text-orange-400 font-bold">Hỗ trợ ưu tiên</td>
-                                <td className="p-4 text-slate-600 dark:text-slate-400">Hỗ trợ qua email</td>
-                                <td className="p-4 font-extrabold text-emerald-655 dark:text-emerald-400">Triển khai & hỗ trợ 24/7</td>
+                                <td className="p-4 text-orange-600 dark:text-orange-400 font-bold">Hỗ trợ ưu tiên</td>
+                                <td className="p-4 font-extrabold text-emerald-600 dark:text-emerald-400">Triển khai & hỗ trợ 24/7</td>
                             </tr>
                         </tbody>
                     </table>

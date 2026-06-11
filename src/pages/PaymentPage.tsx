@@ -79,8 +79,11 @@ export default function PaymentPage() {
     const [redirectCountdown, setRedirectCountdown] = useState(5);
     const [showConfetti, setShowConfetti] = useState(false);
 
-    const COUNTDOWN_TOTAL = 180;
+    const COUNTDOWN_TOTAL = 120; // 2 phút
+    const AUTO_CANCEL_SECS = 30 * 60; // 30 phút
     const [checkCountdown, setCheckCountdown] = useState(COUNTDOWN_TOTAL);
+    const [autoCancelCountdown, setAutoCancelCountdown] = useState(AUTO_CANCEL_SECS);
+    const autoCancelRef = useRef<NodeJS.Timeout | null>(null);
 
     const bgPollingRef = useRef<NodeJS.Timeout | null>(null);
     const countdownTimerRef = useRef<NodeJS.Timeout | null>(null);
@@ -168,8 +171,28 @@ export default function PaymentPage() {
         return () => { if (countdownTimerRef.current) clearInterval(countdownTimerRef.current); };
     }, [isConfirming, payment?.status]);
 
+    // Auto-cancel countdown after 30 minutes if still pending
+    useEffect(() => {
+        if (!payment?.paymentCode || payment?.status !== 'pending') return;
+        setAutoCancelCountdown(AUTO_CANCEL_SECS);
+        autoCancelRef.current = setInterval(() => {
+            setAutoCancelCountdown(prev => {
+                if (prev <= 1) {
+                    // Time's up — mark as cancelled locally and navigate away
+                    if (autoCancelRef.current) clearInterval(autoCancelRef.current);
+                    if (bgPollingRef.current) clearInterval(bgPollingRef.current);
+                    if (countdownTimerRef.current) clearInterval(countdownTimerRef.current);
+                    navigate('/pricing-app');
+                    return 0;
+                }
+                return prev - 1;
+            });
+        }, 1000);
+        return () => { if (autoCancelRef.current) clearInterval(autoCancelRef.current); };
+    }, [payment?.paymentCode, payment?.status]);
+
     useEffect(() => () => {
-        [bgPollingRef, countdownTimerRef, redirectCountdownRef].forEach(r => { if (r.current) clearInterval(r.current); });
+        [bgPollingRef, countdownTimerRef, redirectCountdownRef, autoCancelRef].forEach(r => { if (r.current) clearInterval(r.current); });
     }, []);
 
     const handleCopy = (text: string, field: string) => {
@@ -282,8 +305,9 @@ export default function PaymentPage() {
     );
 
     // ─── MAIN ─────────────────────────────────────────────────────────────────
+    // compact.png = QR code only, không có logo ngân hàng/tên phía dưới
     const qrUrl = payment
-        ? `https://img.vietqr.io/image/${payment.bankName}-${payment.accountNumber}-compact2.png?amount=${payment.amount}&addInfo=${encodeURIComponent(payment.paymentCode)}&accountName=${encodeURIComponent(payment.accountName)}`
+        ? `https://img.vietqr.io/image/${payment.bankName}-${payment.accountNumber}-compact.png?amount=${payment.amount}&addInfo=${encodeURIComponent(payment.paymentCode)}`
         : '';
 
     return (
@@ -472,6 +496,18 @@ export default function PaymentPage() {
                                                     <div className="h-full bg-gradient-to-r from-indigo-500 to-violet-500 rounded-full transition-all duration-1000"
                                                         style={{ width: `${Math.min(((COUNTDOWN_TOTAL - checkCountdown) / COUNTDOWN_TOTAL) * 100, 95)}%` }} />
                                                 </div>
+                                                {/* ── 10-min warning ── */}
+                                                <div className="flex items-start gap-2.5 p-3 bg-amber-50 dark:bg-amber-500/10 border-2 border-amber-300 dark:border-amber-500/40 rounded-xl">
+                                                    <AlertCircle className="w-4 h-4 text-amber-600 dark:text-amber-400 shrink-0 mt-0.5" />
+                                                    <p className="text-xs font-bold text-amber-800 dark:text-amber-300 leading-relaxed">
+                                                        Nếu sau <span className="underline decoration-dotted">10 phút</span> chưa thanh toán thành công, vui lòng{' '}
+                                                        <a href="https://zalo.me/0336189329" target="_blank" rel="noreferrer" className="text-amber-700 dark:text-amber-300 underline font-black hover:text-amber-900">liên hệ chúng tôi</a> để được hỗ trợ.
+                                                    </p>
+                                                </div>
+                                                {/* Auto-cancel notice */}
+                                                <p className="text-[10px] text-slate-400 dark:text-slate-500 text-center">
+                                                    Đơn tự huỷ sau <span className="font-black text-slate-500">{Math.floor(autoCancelCountdown / 60)}:{(autoCancelCountdown % 60).toString().padStart(2, '0')}</span> nếu chưa thanh toán
+                                                </p>
                                                 {/* Check button — unlocked only at 0 */}
                                                 <button
                                                     onClick={handleManualCheck}

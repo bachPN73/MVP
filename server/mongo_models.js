@@ -8,6 +8,7 @@ const userSchema = new mongoose.Schema({
     password: { type: String, required: true },
     schoolId: { type: mongoose.Schema.Types.ObjectId, ref: 'School', default: null },
     className: { type: String, default: '' },
+    previousPlan: { type: String, default: 'free' },
     sessionToken: { type: String, default: null }
 }, { timestamps: true });
 
@@ -15,7 +16,7 @@ const schoolSchema = new mongoose.Schema({
     name: { type: String, required: true },
     schoolCode: { type: String, unique: true, required: true },
     isInviteCodeEnabled: { type: Boolean, default: true },
-    teacherQuota: { type: Number, default: 5 },
+    teacherQuota: { type: Number, default: 30 },
     studentQuota: { type: Number, default: 10 },
     teacherSeatsUsed: { type: Number, default: 0 },
     studentSeatsUsed: { type: Number, default: 0 },

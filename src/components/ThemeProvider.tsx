@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
+import { flushSync } from 'react-dom';
 
 export type Theme = 'light' | 'dark';
 
@@ -35,7 +36,16 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     }, [theme]);
 
     const toggleTheme = () => {
-        setThemeState((prev) => (prev === 'light' ? 'dark' : 'light'));
+        if (!document.startViewTransition) {
+            setThemeState((prev) => (prev === 'light' ? 'dark' : 'light'));
+            return;
+        }
+
+        document.startViewTransition(() => {
+            flushSync(() => {
+                setThemeState((prev) => (prev === 'light' ? 'dark' : 'light'));
+            });
+        });
     };
 
     const setTheme = (newTheme: Theme) => {

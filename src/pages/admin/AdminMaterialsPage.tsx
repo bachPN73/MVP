@@ -792,17 +792,17 @@ export default function AdminMaterialsPage() {
             )}
 
             {/* Materials List */}
-            <div className="bg-transparent md:bg-white md:dark:bg-slate-900/60 md:border md:border-slate-200 md:dark:border-white/10 md:rounded-2xl overflow-hidden md:shadow-sm backdrop-blur-xl animate-fadeIn">
-                {/* Desktop View Table */}
+            <div className="bg-white dark:bg-slate-900/40 rounded-2xl border border-slate-200/60 dark:border-white/10 overflow-hidden shadow-[0_2px_10px_rgba(0,0,0,0.02)] animate-fadeIn">
+                {/* Desktop view table */}
                 <div className="hidden md:block overflow-x-auto">
                     <table className="w-full text-left border-collapse font-sans">
                         <thead>
-                            <tr className="bg-slate-50/50 dark:bg-slate-950/20 border-b border-slate-200 dark:border-white/10">
-                                <th className="px-6 py-4.5 text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest">Mô Hình / Học liệu</th>
-                                <th className="px-6 py-4.5 text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest">Môn Học</th>
-                                <th className="px-6 py-4.5 text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest">Lớp</th>
-                                <th className="px-6 py-4.5 text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest">Ngày Tải Lên</th>
-                                <th className="px-6 py-4.5 text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest text-right">Hành Động</th>
+                            <tr className="bg-slate-50/50 dark:bg-slate-800/20 border-b border-slate-200/60 dark:border-white/10">
+                                <th className="px-6 py-4 text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest">Mô Hình / Học liệu</th>
+                                <th className="px-6 py-4 text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest">Môn Học</th>
+                                <th className="px-6 py-4 text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest">Lớp</th>
+                                <th className="px-6 py-4 text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest">Ngày Tải Lên</th>
+                                <th className="px-6 py-4 text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest text-right">Hành Động</th>
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-slate-100 dark:divide-white/5 font-semibold text-slate-700 dark:text-slate-200 text-sm">
@@ -823,8 +823,8 @@ export default function AdminMaterialsPage() {
                                 </tr>
                             ) : (
                                 filteredMaterials.map((model) => (
-                                    <tr key={model.id} className="hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors group">
-                                        <td className="px-6 py-4">
+                                    <tr key={model.id} className="hover:bg-slate-50/80 dark:hover:bg-slate-800/30 transition-colors group">
+                                        <td className="px-6 py-5">
                                             <div className="flex items-center gap-4">
                                                 {model.thumbnail ? (
                                                     <img src={model.thumbnail.startsWith('http') ? model.thumbnail : `${BASE_URL}${model.thumbnail}`} alt={model.title} className="w-12 h-12 rounded-xl object-cover border border-slate-200/50 dark:border-white/10 shrink-0" />
@@ -844,7 +844,7 @@ export default function AdminMaterialsPage() {
                                                 </div>
                                             </div>
                                         </td>
-                                        <td className="px-6 py-4">
+                                        <td className="px-6 py-5">
                                             <span className={`inline-flex items-center px-2.5 py-0.5 rounded-lg text-[10px] font-extrabold uppercase tracking-wide border ${
                                                 model.subject === 'physics' 
                                                     ? 'bg-indigo-50 dark:bg-indigo-950/40 border-indigo-200/10 text-indigo-600 dark:text-indigo-400' 
@@ -855,14 +855,14 @@ export default function AdminMaterialsPage() {
                                                 {model.subject === 'physics' ? 'Vật lý' : model.subject === 'chemistry' ? 'Hóa học' : 'Sinh học'}
                                             </span>
                                         </td>
-                                        <td className="px-6 py-4 text-xs font-bold text-slate-900 dark:text-white">Lớp {model.grade}</td>
-                                        <td className="px-6 py-4 text-xs text-slate-400 dark:text-slate-500 font-medium">
+                                        <td className="px-6 py-5 text-xs font-bold text-slate-900 dark:text-white">Lớp {model.grade}</td>
+                                        <td className="px-6 py-5 text-xs text-slate-400 dark:text-slate-500 font-medium">
                                             <div className="flex items-center gap-1.5">
                                                 <Calendar className="w-3.5 h-3.5 text-slate-300 dark:text-slate-600" />
                                                 {model.created_at ? new Date(model.created_at).toLocaleDateString('vi-VN') : 'N/A'}
                                             </div>
                                         </td>
-                                        <td className="px-6 py-4 text-right flex justify-end gap-1">
+                                        <td className="px-6 py-5 text-right flex justify-end gap-1">
                                             <button
                                                 onClick={(e) => {
                                                     e.preventDefault();

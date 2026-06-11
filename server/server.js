@@ -265,7 +265,7 @@ async function initDb() {
                 name: 'THPT Nguyễn Du',
                 schoolCode: 'NGUYENDU2026',
                 isInviteCodeEnabled: true,
-                teacherQuota: 5,
+                teacherQuota: 30,
                 studentQuota: 10,
                 teacherSeatsUsed: 0,
                 studentSeatsUsed: 0,
@@ -1364,12 +1364,16 @@ app.post('/api/school/requests/approve', async (req, res) => {
         }
 
         for (const reqObj of requests) {
-            await User.findByIdAndUpdate(reqObj.userId, {
-                schoolId: school._id,
-                className: reqObj.requestedClass || '',
-                role: reqObj.requestedRole,
-                plan: 'school'
-            });
+            const user = await User.findById(reqObj.userId);
+            if (user) {
+                user.schoolId = school._id;
+                user.className = reqObj.requestedClass || '';
+                user.role = reqObj.requestedRole;
+                // Save previous plan before overriding to pro, default to free if missing
+                user.previousPlan = user.plan || 'free';
+                user.plan = 'pro';
+                await user.save();
+            }
 
             if (reqObj.requestedRole === 'teacher') {
                 school.teacherSeatsUsed += 1;
@@ -1405,6 +1409,82 @@ app.post('/api/school/requests/reject', async (req, res) => {
         res.status(500).json({ error: 'Lỗi hệ thống: ' + err.message });
     }
 });
+
+app.get('/api/school/members', async (req, res) => {
+    const { schoolId } = req.query;
+    if (!schoolId) {
+        return res.status(400).json({ error: 'Thiếu mã trường học (schoolId)' });
+    }
+
+    try {
+        const members = await User.find({ schoolId, role: { $in: ['teacher', 'student'] } })
+            .select('name email role className plan previousPlan createdAt')
+            .sort({ createdAt: -1 });
+        
+        const formattedMembers = members.map(m => ({
+            id: m._id.toString(),
+            name: m.name || 'Chưa cập nhật',
+            email: m.email,
+            role: m.role,
+            className: m.className || '—',
+            plan: m.plan,
+            previousPlan: m.previousPlan,
+            joinedAt: m.createdAt
+        }));
+
+        res.json(formattedMembers);
+    } catch (err) {
+        res.status(500).json({ error: 'Lỗi hệ thống: ' + err.message });
+    }
+});
+
+app.post('/api/school/members/kick', async (req, res) => {
+    const { memberIds, schoolId } = req.body;
+    if (!memberIds || !Array.isArray(memberIds) || memberIds.length === 0 || !schoolId) {
+        return res.status(400).json({ error: 'Thiếu thông tin người dùng cần xóa' });
+    }
+
+    try {
+        const school = await School.findById(schoolId);
+        if (!school) {
+            return res.status(404).json({ error: 'Không tìm thấy trường học' });
+        }
+
+        const members = await User.find({
+            _id: { $in: memberIds },
+            schoolId,
+            role: { $in: ['teacher', 'student'] }
+        });
+
+        if (members.length === 0) {
+            return res.status(400).json({ error: 'Không tìm thấy thành viên hợp lệ' });
+        }
+
+        let teachersRemoved = 0;
+        let studentsRemoved = 0;
+
+        for (const user of members) {
+            if (user.role === 'teacher') teachersRemoved++;
+            else if (user.role === 'student') studentsRemoved++;
+
+            user.schoolId = null;
+            user.className = '';
+            // Revert plan
+            user.plan = user.previousPlan || 'free';
+            user.role = 'student'; // reset role to default student
+            await user.save();
+        }
+
+        school.teacherSeatsUsed = Math.max(0, school.teacherSeatsUsed - teachersRemoved);
+        school.studentSeatsUsed = Math.max(0, school.studentSeatsUsed - studentsRemoved);
+        await school.save();
+
+        res.json({ message: `Đã xóa thành công ${members.length} thành viên khỏi trường học.` });
+    } catch (err) {
+        res.status(500).json({ error: 'Lỗi hệ thống: ' + err.message });
+    }
+});
+
 
 app.put('/api/school/config', async (req, res) => {
     const { schoolId, isInviteCodeEnabled, schoolCode, name, schoolYear, tiet } = req.body;
@@ -1481,7 +1561,7 @@ app.post('/api/schools', async (req, res) => {
         const newSchool = await School.create({
             name: name.trim(),
             schoolCode: codeUpper,
-            teacherQuota: Number(teacherQuota) || 5,
+            teacherQuota: Number(teacherQuota) || 30,
             studentQuota: Number(studentQuota) || 10,
             schoolYear: (schoolYear || '').trim(),
             tiet: (tiet || '').trim(),

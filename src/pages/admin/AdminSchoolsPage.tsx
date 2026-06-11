@@ -27,7 +27,7 @@ export default function AdminSchoolsPage() {
     const [formData, setFormData] = useState({
         name: '',
         schoolCode: '',
-        teacherQuota: 5,
+        teacherQuota: 30,
         studentQuota: 10,
         schoolYear: '',
         tiet: ''
@@ -55,7 +55,7 @@ export default function AdminSchoolsPage() {
         setFormData({
             name: '',
             schoolCode: '',
-            teacherQuota: 5,
+            teacherQuota: 30,
             studentQuota: 10,
             schoolYear: '2025 - 2026',
             tiet: 'Học kỳ I - 35 tiết'
@@ -159,17 +159,17 @@ export default function AdminSchoolsPage() {
             </div>
 
             {/* List Table */}
-            <div className="bg-transparent md:bg-white md:dark:bg-slate-900/60 md:border md:border-slate-200 md:dark:border-white/10 md:rounded-2xl overflow-hidden md:shadow-sm backdrop-blur-xl animate-fadeIn">
+            <div className="bg-white dark:bg-slate-900/40 rounded-2xl border border-slate-200/60 dark:border-white/10 overflow-hidden shadow-[0_2px_10px_rgba(0,0,0,0.02)] animate-fadeIn">
                 <div className="hidden md:block overflow-x-auto">
                     <table className="w-full text-left border-collapse font-sans">
                         <thead>
-                            <tr className="bg-slate-50/50 dark:bg-slate-950/20 border-b border-slate-200 dark:border-white/10">
-                                <th className="px-6 py-4.5 text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest">Trường học / Mã mời</th>
-                                <th className="px-6 py-4.5 text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest">Niên khóa</th>
-                                <th className="px-6 py-4.5 text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest">Tiết học</th>
-                                <th className="px-6 py-4.5 text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest">Giáo viên Quota</th>
-                                <th className="px-6 py-4.5 text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest">Học sinh Quota</th>
-                                <th className="px-6 py-4.5 text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest text-right">Thao Tác</th>
+                            <tr className="bg-slate-50/50 dark:bg-slate-800/20 border-b border-slate-200/60 dark:border-white/10">
+                                <th className="px-6 py-4 text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest">Trường học / Mã mời</th>
+                                <th className="px-6 py-4 text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest">Niên khóa</th>
+                                <th className="px-6 py-4 text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest">Tiết học</th>
+                                <th className="px-6 py-4 text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest">Giáo viên Quota</th>
+                                <th className="px-6 py-4 text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest">Học sinh Quota</th>
+                                <th className="px-6 py-4 text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest text-right">Thao Tác</th>
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-slate-100 dark:divide-white/5 font-semibold text-slate-700 dark:text-slate-200 text-sm">
@@ -190,8 +190,8 @@ export default function AdminSchoolsPage() {
                                 </tr>
                             ) : (
                                 filteredSchools.map((school) => (
-                                    <tr key={school.id} className="hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors group">
-                                        <td className="px-6 py-4">
+                                    <tr key={school.id} className="hover:bg-slate-50/80 dark:hover:bg-slate-800/30 transition-colors group">
+                                        <td className="px-6 py-5">
                                             <div className="flex items-center gap-3">
                                                 <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-teal-500 text-white flex items-center justify-center font-bold text-base font-heading shadow-md shadow-indigo-500/10 shrink-0">
                                                     <School className="w-5 h-5" />
@@ -204,13 +204,13 @@ export default function AdminSchoolsPage() {
                                                 </div>
                                             </div>
                                         </td>
-                                        <td className="px-6 py-4 text-slate-900 dark:text-white text-xs font-medium">
+                                        <td className="px-6 py-5 text-slate-900 dark:text-white text-xs font-medium">
                                             {school.schoolYear || <span className="text-slate-400 italic">Chưa thiết lập</span>}
                                         </td>
-                                        <td className="px-6 py-4 text-slate-900 dark:text-white text-xs font-medium">
+                                        <td className="px-6 py-5 text-slate-900 dark:text-white text-xs font-medium">
                                             {school.tiet || <span className="text-slate-400 italic">Chưa thiết lập</span>}
                                         </td>
-                                        <td className="px-6 py-4">
+                                        <td className="px-6 py-5">
                                             <div className="flex flex-col gap-1">
                                                 <span className="text-xs text-slate-900 dark:text-white font-extrabold">{school.teacherSeatsUsed} / {school.teacherQuota}</span>
                                                 <div className="w-24 h-1.5 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
@@ -221,7 +221,7 @@ export default function AdminSchoolsPage() {
                                                 </div>
                                             </div>
                                         </td>
-                                        <td className="px-6 py-4">
+                                        <td className="px-6 py-5">
                                             <div className="flex flex-col gap-1">
                                                 <span className="text-xs text-slate-900 dark:text-white font-extrabold">{school.studentSeatsUsed} / {school.studentQuota}</span>
                                                 <div className="w-24 h-1.5 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
@@ -232,7 +232,7 @@ export default function AdminSchoolsPage() {
                                                 </div>
                                             </div>
                                         </td>
-                                        <td className="px-6 py-4 text-right">
+                                        <td className="px-6 py-5 text-right">
                                             <div className="flex items-center justify-end gap-2 text-slate-400 dark:text-slate-500">
                                                 <button
                                                     onClick={() => handleOpenEdit(school)}

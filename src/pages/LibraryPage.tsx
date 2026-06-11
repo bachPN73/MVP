@@ -848,10 +848,6 @@ export default function Library() {
                                         <span className="w-1.5 h-1.5 rounded-full bg-slate-400 inline-block" />
                                         Miễn phí
                                     </span>
-                                    <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-[10px] font-black bg-rose-50 dark:bg-rose-950/30 text-rose-600 dark:text-rose-400 border border-rose-200 dark:border-rose-800">
-                                        <span className="w-1.5 h-1.5 rounded-full bg-rose-500 inline-block" />
-                                        Thử nghiệm
-                                    </span>
                                     <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-[10px] font-black bg-blue-50 dark:bg-blue-950/30 text-blue-600 dark:text-blue-400 border border-blue-200 dark:border-blue-800">
                                         <span className="w-1.5 h-1.5 rounded-full bg-blue-500 inline-block" />
                                         Cơ bản
