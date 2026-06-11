@@ -86,6 +86,7 @@ function getThumbnailSrc(thumbnail: string): string {
 export default function VaultPage() {
     const navigate = useNavigate();
     const [userPlan, setUserPlan] = useState('free');
+    const [userRole, setUserRole] = useState('student');
     const [entries, setEntries] = useState<VaultEntry[]>([]);
     const [periods, setPeriods] = useState<VaultPeriod[]>([]);
     const [now, setNow] = useState(Date.now());
@@ -106,6 +107,7 @@ export default function VaultPage() {
             if (stored) {
                 const user = JSON.parse(stored);
                 if (user.plan) setUserPlan(user.plan.toLowerCase());
+                if (user.role) setUserRole(user.role);
             }
         } catch (_) {}
     }, []);
@@ -179,7 +181,7 @@ export default function VaultPage() {
         setEntries([]);
     };
 
-    const isPro = ['pro', 'combo', 'school'].includes(userPlan);
+    const isPro = ['pro', 'combo', 'school', 'admin'].includes(userPlan) || userRole === 'admin';
 
     // --- Period Management Actions ---
     const handleCreatePeriod = (e: React.FormEvent) => {

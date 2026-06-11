@@ -434,7 +434,7 @@ export default function MaterialDetail() {
 
     const handleSaveToVault = () => {
         if (!material) return;
-        const isPro = ['pro', 'combo', 'school'].includes(userPlan);
+        const isPro = ['pro', 'combo', 'school', 'admin'].includes(userPlan) || userRole === 'admin';
         if (!isPro) {
             navigate('/pricing');
             return;
@@ -577,7 +577,9 @@ export default function MaterialDetail() {
     let isBlocked = isPremiumMaterial && userPlan === 'free';
     const requiredPlan = (material as any).requiredPlan;
     
-    if (requiredPlan === null || requiredPlan === 'free' || requiredPlan === '') {
+    if (userRole === 'admin') {
+        isBlocked = false;
+    } else if (requiredPlan === null || requiredPlan === 'free' || requiredPlan === '') {
         isBlocked = false;
     } else if (requiredPlan) {
         isBlocked = userPlan === 'free';
@@ -1396,7 +1398,7 @@ export default function MaterialDetail() {
 
 
                                         {/* 24h Temporary Vault Button */}
-                                        {!isBlocked && (['pro', 'combo', 'school'].includes(userPlan) ? (
+                                        {!isBlocked && (['pro', 'combo', 'school', 'admin'].includes(userPlan) || userRole === 'admin' ? (
                                             <div className="pt-1 space-y-1">
                                                 <button
                                                     onClick={handleSaveToVault}
