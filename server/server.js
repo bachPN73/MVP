@@ -780,7 +780,28 @@ app.post('/api/forgot-password', async (req, res) => {
         await ResetToken.deleteMany({ email });
         await ResetToken.create({ email, token: resetCode, expires_at: expiresAt });
 
-        if (process.env.EMAIL_USER && process.env.EMAIL_PASS) {
+        if (process.env.RESEND_API_KEY) {
+            const response = await fetch('https://api.resend.com/emails', {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${process.env.RESEND_API_KEY}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    from: process.env.EMAIL_FROM || 'Hệ thống Học tập <noreply@edutechvn.me>',
+                    to: email,
+                    subject: 'Mã khôi phục mật khẩu - Hệ thống Học tập',
+                    html: `<h3>Xin chào ${user.name},</h3><p>Mã khôi phục mật khẩu của bạn là: <strong style="font-size:24px;color:blue;letter-spacing:4px;">${resetCode}</strong></p><p>Mã này có hiệu lực trong 15 phút.</p><br><p>Nếu bạn không yêu cầu, vui lòng bỏ qua email này.</p>`
+                })
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                console.error('[AUTH] Resend API error:', errorData);
+                throw new Error('Resend API failed: ' + JSON.stringify(errorData));
+            }
+            console.log(`[AUTH] Reset code sent via Resend API to ${email}`);
+        } else if (process.env.EMAIL_USER && process.env.EMAIL_PASS) {
             const transporter = nodemailer.createTransport({
                 host: 'smtp.gmail.com',
                 port: 587,
@@ -795,9 +816,9 @@ app.post('/api/forgot-password', async (req, res) => {
                 text: `Xin chào ${user.name},\n\nMã khôi phục mật khẩu của bạn là: ${resetCode}\nMã này có hiệu lực trong 15 phút.\n\nNếu bạn không yêu cầu, vui lòng bỏ qua email này.`,
                 html: `<h3>Xin chào ${user.name},</h3><p>Mã khôi phục mật khẩu của bạn là: <strong style="font-size:24px;color:blue;letter-spacing:4px;">${resetCode}</strong></p><p>Mã này có hiệu lực trong 15 phút.</p><br><p>Nếu bạn không yêu cầu, vui lòng bỏ qua email này.</p>`
             });
-            console.log(`[AUTH] Reset code sent via email to ${email}`);
+            console.log(`[AUTH] Reset code sent via SMTP to ${email}`);
         } else {
-            console.log(`[DEMO] Cấu hình EMAIL_USER và EMAIL_PASS trống! Mã reset cho ${email}: ${resetCode}`);
+            console.log(`[DEMO] Chưa cấu hình Resend API hoặc SMTP! Mã reset cho ${email}: ${resetCode}`);
         }
 
         res.json({
