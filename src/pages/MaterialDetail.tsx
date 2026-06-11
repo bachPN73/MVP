@@ -1,7 +1,7 @@
 import { Layout } from '../layout/MainLayout';
 import { useParams, Link, useNavigate } from 'react-router';
 import { materials as mockMaterials, getSubjectName, getTypeName, Material } from '../data/materialsData';
-import { ArrowLeft, Maximize2, Minimize2, BookOpen, Tag, GraduationCap, Loader2, Play, ZoomIn, RotateCcw, Move, Compass, Sparkles, Search, Lock, Zap, BookmarkPlus, BookmarkCheck, Clock, Archive, Folder } from 'lucide-react';
+import { ArrowLeft, Maximize2, Minimize2, BookOpen, Tag, GraduationCap, Loader2, Play, ZoomIn, RotateCcw, Move, Compass, Sparkles, Search, Lock, Zap, BookmarkPlus, BookmarkCheck, Clock, Archive, Folder, X, Plus, Trash2 } from 'lucide-react';
 import { useState, useEffect, lazy, Suspense, useRef, useMemo } from 'react';
 import { api, BASE_URL } from '../api';
 import { useTheme } from '../components/ThemeProvider';

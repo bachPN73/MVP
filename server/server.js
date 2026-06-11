@@ -258,48 +258,7 @@ async function initDb() {
             console.log('[INFO] Đã tạo cấu hình AI limits mặc định.');
         }
 
-        // Seed School "THPT Nguyễn Du"
-        let demoSchool = await School.findOne({ schoolCode: 'NGUYENDU2026' });
-        if (!demoSchool) {
-            demoSchool = await School.create({
-                name: 'THPT Nguyễn Du',
-                schoolCode: 'NGUYENDU2026',
-                isInviteCodeEnabled: true,
-                teacherQuota: 30,
-                studentQuota: 10,
-                teacherSeatsUsed: 0,
-                studentSeatsUsed: 0,
-                schoolYear: '2025 - 2026',
-                tiet: 'Học kỳ I - 35 tiết'
-            });
-            console.log('[INFO] Đã tạo trường học mẫu THPT Nguyễn Du (Mã: NGUYENDU2026)');
-        } else {
-            if (!demoSchool.schoolYear || !demoSchool.tiet) {
-                demoSchool.schoolYear = '2025 - 2026';
-                demoSchool.tiet = 'Học kỳ I - 35 tiết';
-                await demoSchool.save();
-                console.log('[INFO] Đã cập nhật Niên khóa và Tiết học cho THPT Nguyễn Du mẫu.');
-            }
-        }
-
-        // Seed School Admin
-        const schoolAdminEmail = 'schooladmin@mvp.com';
-        const schoolAdminPassword = 'Admin123';
-        const schoolAdminHash = bcrypt.hashSync(schoolAdminPassword, salt);
-        const schoolAdmin = await User.findOne({ email: schoolAdminEmail });
-        if (!schoolAdmin) {
-            await User.create({
-                name: 'School Admin Nguyễn Du',
-                email: schoolAdminEmail,
-                role: 'school-admin',
-                plan: 'school',
-                password: schoolAdminHash,
-                schoolId: demoSchool._id
-            });
-            console.log('[INFO] Đã tự động tạo tài khoản School Admin mặc định.');
-        } else {
-            await User.updateOne({ email: schoolAdminEmail }, { role: 'school-admin', plan: 'school', schoolId: demoSchool._id });
-        }
+        // School seeding removed as requested by admin to create manually
 
     } catch (err) {
         console.error('[ERROR] Lỗi khởi tạo MongoDB:', err.message);
