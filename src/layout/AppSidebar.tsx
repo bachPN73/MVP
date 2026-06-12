@@ -82,7 +82,7 @@ export function AppSidebar({ currentPath = '/', isOpen = false, setIsOpen, isCol
     };
 
     const menuItems = [
-        { path: '/dashboard', label: 'Trang chủ', icon: Home },
+        { path: '/dashboard', label: 'Tổng quan', icon: Home },
         { path: '/library', label: 'Thư viện', icon: Library },
         { path: '/find-ai', label: 'AI tìm kiếm', icon: Sparkles },
         { path: '/pricing-app', label: 'Gói dịch vụ', icon: CreditCard },

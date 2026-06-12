@@ -26,7 +26,7 @@ export default function Sidebar({ userRole, collapsed = false }: SidebarProps) {
             icon: LayoutDashboard,
             label: "Dashboard",
             path: "/dashboard/teacher",
-            tooltip: "Trang chủ"
+            tooltip: "Tổng quan"
         },
         {
             icon: LibraryIcon,
@@ -53,7 +53,7 @@ export default function Sidebar({ userRole, collapsed = false }: SidebarProps) {
             icon: LayoutDashboard,
             label: "Dashboard",
             path: "/dashboard/student",
-            tooltip: "Trang chủ"
+            tooltip: "Tổng quan"
         },
         {
             icon: LibraryIcon,

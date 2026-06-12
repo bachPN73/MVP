@@ -5,9 +5,57 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Edu Tech - Học liệu 3D trực quan</title>
+  <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48x48.png" />
+  <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png" />
+  <link rel="icon" type="image/png" sizes="144x144" href="/favicon-144x144.png" />
+  <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192x192.png" />
   <link rel="icon" type="image/png" href="/logo.png" />
   <link rel="shortcut icon" type="image/png" href="/logo.png" />
   <link rel="apple-touch-icon" href="/logo.png" />
+
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="Edu Tech - Nền tảng học Khoa học Tự nhiên giúp học sinh quan sát khái niệm khó bằng mô hình 3D, infographic và tìm kiếm AI theo đúng ngữ cảnh bài học." />
+  <meta property="og:title" content="Edu Tech - Học liệu 3D trực quan" />
+  <meta property="og:description" content="Nền tảng học Khoa học Tự nhiên giúp học sinh quan sát khái niệm khó bằng mô hình 3D, infographic và tìm kiếm AI theo đúng ngữ cảnh bài học." />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Edu Tech - Học liệu 3D trực quan" />
+  <meta name="twitter:description" content="Nền tảng học Khoa học Tự nhiên giúp học sinh quan sát khái niệm khó bằng mô hình 3D, infographic và tìm kiếm AI theo đúng ngữ cảnh bài học." />
+
+  <!-- Dynamic Google Search Structured Data (JSON-LD) & OG Image -->
+  <script>
+    (function() {
+      const origin = window.location.origin;
+      
+      // Dynamic JSON-LD Organization Schema for Google Search
+      const script = document.createElement('script');
+      script.type = 'application/ld+json';
+      script.text = JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "Edu Tech",
+        "url": origin,
+        "logo": origin + "/logo.png"
+      });
+      document.head.appendChild(script);
+
+      // Dynamic Meta tags requiring absolute URLs
+      const metaOgImage = document.createElement('meta');
+      metaOgImage.setAttribute('property', 'og:image');
+      metaOgImage.setAttribute('content', origin + '/logo.png');
+      document.head.appendChild(metaOgImage);
+
+      const metaTwitterImage = document.createElement('meta');
+      metaTwitterImage.setAttribute('name', 'twitter:image');
+      metaTwitterImage.setAttribute('content', origin + '/logo.png');
+      document.head.appendChild(metaTwitterImage);
+      
+      const metaOgUrl = document.createElement('meta');
+      metaOgUrl.setAttribute('property', 'og:url');
+      metaOgUrl.setAttribute('content', origin);
+      document.head.appendChild(metaOgUrl);
+    })();
+  </script>
 
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-VCXY5EZNZH"></script>
