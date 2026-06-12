@@ -323,7 +323,7 @@ export const api = {
         return data;
     },
 
-    updateSchoolConfig: async (schoolId: string, configData: { isInviteCodeEnabled?: boolean; schoolCode?: string; name?: string; schoolYear?: string; tiet?: string }): Promise<{ message: string; school: any }> => {
+    updateSchoolConfig: async (schoolId: string, configData: { isInviteCodeEnabled?: boolean; schoolCode?: string; name?: string; schoolYear?: string; tiet?: string; teacherQuota?: number; studentQuota?: number }): Promise<{ message: string; school: any }> => {
         const response = await fetch(`${API_URL}/school/config`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },

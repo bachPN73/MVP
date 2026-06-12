@@ -1447,7 +1447,7 @@ app.post('/api/school/members/kick', async (req, res) => {
 
 
 app.put('/api/school/config', async (req, res) => {
-    const { schoolId, isInviteCodeEnabled, schoolCode, name, schoolYear, tiet } = req.body;
+    const { schoolId, isInviteCodeEnabled, schoolCode, name, schoolYear, tiet, teacherQuota, studentQuota } = req.body;
     if (!schoolId) {
         return res.status(400).json({ error: 'Thiếu mã trường học (schoolId)' });
     }
@@ -1472,6 +1472,14 @@ app.put('/api/school/config', async (req, res) => {
 
         if (tiet !== undefined) {
             school.tiet = tiet.trim();
+        }
+
+        if (teacherQuota !== undefined) {
+            school.teacherQuota = Number(teacherQuota);
+        }
+
+        if (studentQuota !== undefined) {
+            school.studentQuota = Number(studentQuota);
         }
 
         if (schoolCode && schoolCode.trim()) {
