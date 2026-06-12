@@ -72,9 +72,7 @@ export default function SchoolDashboard() {
         name: '',
         schoolCode: '',
         schoolYear: '',
-        tiet: '',
-        teacherQuota: 5,
-        studentQuota: 10
+        tiet: ''
     });
 
     const joinUrl = school ? `${window.location.origin}/join-school?code=${school.schoolCode}` : '';
@@ -115,9 +113,7 @@ export default function SchoolDashboard() {
                 name: schoolDetail.name || '',
                 schoolCode: schoolDetail.schoolCode || '',
                 schoolYear: schoolDetail.schoolYear || '',
-                tiet: schoolDetail.tiet || '',
-                teacherQuota: schoolDetail.teacherQuota || 5,
-                studentQuota: schoolDetail.studentQuota || 10
+                tiet: schoolDetail.tiet || ''
             });
 
             // Fetch pending requests
@@ -224,9 +220,7 @@ export default function SchoolDashboard() {
                 name: configForm.name.trim(),
                 schoolCode: configForm.schoolCode.trim().toUpperCase(),
                 schoolYear: configForm.schoolYear.trim(),
-                tiet: configForm.tiet.trim(),
-                teacherQuota: configForm.teacherQuota,
-                studentQuota: configForm.studentQuota
+                tiet: configForm.tiet.trim()
             });
             setSchool(res.school);
             setIsConfigModalOpen(false);
@@ -235,9 +229,7 @@ export default function SchoolDashboard() {
                 name: res.school.name || '',
                 schoolCode: res.school.schoolCode || '',
                 schoolYear: res.school.schoolYear || '',
-                tiet: res.school.tiet || '',
-                teacherQuota: res.school.teacherQuota || 5,
-                studentQuota: res.school.studentQuota || 10
+                tiet: res.school.tiet || ''
             });
         } catch (err: any) {
             setErrorMsg(err.message || 'Cập nhật cấu hình thất bại.');
@@ -416,9 +408,7 @@ export default function SchoolDashboard() {
                                                         name: school.name || '',
                                                         schoolCode: school.schoolCode || '',
                                                         schoolYear: school.schoolYear || '',
-                                                        tiet: school.tiet || '',
-                                                        teacherQuota: school.teacherQuota || 5,
-                                                        studentQuota: school.studentQuota || 10
+                                                        tiet: school.tiet || ''
                                                     });
                                                     setIsConfigModalOpen(true);
                                                 }}
@@ -522,9 +512,7 @@ export default function SchoolDashboard() {
                                                 name: school.name || '',
                                                 schoolCode: school.schoolCode || '',
                                                 schoolYear: school.schoolYear || '',
-                                                tiet: school.tiet || '',
-                                                teacherQuota: school.teacherQuota || 5,
-                                                studentQuota: school.studentQuota || 10
+                                                tiet: school.tiet || ''
                                             });
                                             setIsConfigModalOpen(true);
                                         }}
@@ -997,34 +985,6 @@ export default function SchoolDashboard() {
                                     placeholder="Ví dụ: Học kỳ II - 45 tiết"
                                     className="w-full bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-2xl px-4 py-3 text-slate-800 dark:text-white font-semibold text-sm focus:outline-none focus:border-indigo-500 transition-colors"
                                 />
-                            </div>
-
-                            {/* Quota Limits */}
-                            <div className="grid grid-cols-2 gap-4">
-                                <div className="space-y-1.5">
-                                    <label className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Giới hạn Giáo viên</label>
-                                    <input
-                                        type="number"
-                                        required
-                                        min={1}
-                                        value={configForm.teacherQuota}
-                                        onChange={(e) => setConfigForm({ ...configForm, teacherQuota: parseInt(e.target.value) || 0 })}
-                                        placeholder="Ví dụ: 30"
-                                        className="w-full bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-2xl px-4 py-3 text-slate-800 dark:text-white font-semibold text-sm focus:outline-none focus:border-indigo-500 transition-colors"
-                                    />
-                                </div>
-                                <div className="space-y-1.5">
-                                    <label className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Giới hạn Học sinh</label>
-                                    <input
-                                        type="number"
-                                        required
-                                        min={1}
-                                        value={configForm.studentQuota}
-                                        onChange={(e) => setConfigForm({ ...configForm, studentQuota: parseInt(e.target.value) || 0 })}
-                                        placeholder="Ví dụ: 10"
-                                        className="w-full bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-2xl px-4 py-3 text-slate-800 dark:text-white font-semibold text-sm focus:outline-none focus:border-indigo-500 transition-colors"
-                                    />
-                                </div>
                             </div>
 
                             {/* Action buttons */}
