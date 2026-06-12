@@ -739,6 +739,45 @@ app.post('/api/forgot-password', async (req, res) => {
         await ResetToken.deleteMany({ email });
         await ResetToken.create({ email, token: resetCode, expires_at: expiresAt });
 
+        const emailSubject = 'Mã khôi phục mật khẩu - Edu Tech';
+        const emailText = `Xin chào ${user.name},\n\nChúng tôi nhận được yêu cầu khôi phục mật khẩu cho tài khoản của bạn tại Edu Tech. Vui lòng sử dụng mã xác nhận dưới đây để hoàn tất:\n\nMã xác nhận của bạn: ${resetCode}\n\nMã này có hiệu lực trong vòng 15 phút. Vì lý do bảo mật, vui lòng không chia sẻ mã này với bất kỳ ai.\n\nNếu bạn không yêu cầu thay đổi này, bạn có thể an tâm bỏ qua email này.\n\nCảm ơn bạn đã đồng hành cùng Edu Tech!\nTrân trọng,\nĐội ngũ hỗ trợ Edu Tech.`;
+        const emailHtml = `<div style="font-family: 'Inter', system-ui, -apple-system, sans-serif; max-width: 580px; margin: 0 auto; padding: 30px; background-color: #f8fafc; border-radius: 16px; border: 1px solid #e2e8f0; color: #1e293b; line-height: 1.6;">
+  <!-- Header / Logo -->
+  <div style="text-align: center; margin-bottom: 24px;">
+    <div style="font-size: 24px; font-weight: 800; background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; display: inline-block;">
+      Edu Tech
+    </div>
+  </div>
+  
+  <!-- Content Body -->
+  <div style="background-color: #ffffff; padding: 32px; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);">
+    <h2 style="margin-top: 0; margin-bottom: 16px; font-size: 18px; font-weight: 700; color: #0f172a;">Xin chào ${user.name},</h2>
+    <p style="margin-bottom: 24px; font-size: 15px; color: #475569;">Chúng tôi đã nhận được yêu cầu khôi phục mật khẩu cho tài khoản của bạn tại <strong>Edu Tech</strong>. Vui lòng sử dụng mã xác minh dưới đây để tiếp tục:</p>
+    
+    <!-- Code Box -->
+    <div style="text-align: center; background: #f1f5f9; padding: 20px; border-radius: 12px; margin-bottom: 24px; border: 1px dashed #cbd5e1;">
+      <span style="display: block; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; color: #64748b; font-weight: 600; margin-bottom: 8px;">Mã xác nhận của bạn</span>
+      <div style="font-size: 32px; font-weight: 800; color: #2563eb; letter-spacing: 6px; font-family: monospace;">${resetCode}</div>
+    </div>
+    
+    <p style="font-size: 13px; color: #ef4444; margin-bottom: 24px; font-weight: 500; text-align: center;">
+      ⚠️ Mã xác nhận này có hiệu lực trong vòng 15 phút. Vì lý do bảo mật, vui lòng không chia sẻ mã này cho bất kỳ ai.
+    </p>
+    
+    <hr style="border: 0; border-top: 1px solid #e2e8f0; margin: 24px 0;" />
+    
+    <p style="font-size: 13px; color: #64748b; margin-bottom: 0;">
+      Nếu bạn không gửi yêu cầu này, bạn có thể an tâm bỏ qua email.
+    </p>
+  </div>
+  
+  <!-- Footer -->
+  <div style="text-align: center; margin-top: 24px; font-size: 12px; color: #94a3b8;">
+    <p style="margin: 0 0 8px 0;">Cảm ơn bạn đã đồng hành cùng Edu Tech!</p>
+    <p style="margin: 0;">Trân trọng, Đội ngũ hỗ trợ Edu Tech.</p>
+  </div>
+</div>`;
+
         if (process.env.RESEND_API_KEY) {
             const response = await fetch('https://api.resend.com/emails', {
                 method: 'POST',
@@ -749,9 +788,9 @@ app.post('/api/forgot-password', async (req, res) => {
                 body: JSON.stringify({
                     from: process.env.EMAIL_FROM || 'Hệ thống Học tập <noreply@edutechvn.me>',
                     to: email,
-                    subject: 'Mã khôi phục mật khẩu - Hệ thống Học tập',
-                    text: `Xin chào ${user.name},\n\nMã khôi phục mật khẩu của bạn là: ${resetCode}\nMã này có hiệu lực trong 15 phút.\n\nNếu bạn không yêu cầu, vui lòng bỏ qua email này.`,
-                    html: `<h3>Xin chào ${user.name},</h3><p>Mã khôi phục mật khẩu của bạn là: <strong style="font-size:24px;color:blue;letter-spacing:4px;">${resetCode}</strong></p><p>Mã này có hiệu lực trong 15 phút.</p><br><p>Nếu bạn không yêu cầu, vui lòng bỏ qua email này.</p>`
+                    subject: emailSubject,
+                    text: emailText,
+                    html: emailHtml
                 })
             });
 
@@ -772,9 +811,9 @@ app.post('/api/forgot-password', async (req, res) => {
             await transporter.sendMail({
                 from: process.env.EMAIL_USER,
                 to: email,
-                subject: 'Mã khôi phục mật khẩu - Hệ thống Học tập',
-                text: `Xin chào ${user.name},\n\nMã khôi phục mật khẩu của bạn là: ${resetCode}\nMã này có hiệu lực trong 15 phút.\n\nNếu bạn không yêu cầu, vui lòng bỏ qua email này.`,
-                html: `<h3>Xin chào ${user.name},</h3><p>Mã khôi phục mật khẩu của bạn là: <strong style="font-size:24px;color:blue;letter-spacing:4px;">${resetCode}</strong></p><p>Mã này có hiệu lực trong 15 phút.</p><br><p>Nếu bạn không yêu cầu, vui lòng bỏ qua email này.</p>`
+                subject: emailSubject,
+                text: emailText,
+                html: emailHtml
             });
             console.log(`[AUTH] Reset code sent via SMTP to ${email}`);
         } else {
