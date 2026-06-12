@@ -13,8 +13,7 @@ export default function PricingContent() {
         free: 0,
         basic: 1,
         pro: 2,
-        combo: 3,
-        school: 4
+        school: 3
     };
     const currentPlanTier = planTiers[currentPlan] || 0;
 
@@ -76,14 +75,7 @@ export default function PricingContent() {
                         btnStyle = "border-2 border-blue-500 hover:bg-blue-500/10 text-blue-600 dark:text-blue-400 shadow-sm hover:shadow-[0_4px_15px_rgba(59,130,246,0.15)]";
                         iconBg = "bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400";
                         cardBorder = "border-blue-200 dark:border-blue-500/10 hover:border-blue-400 dark:hover:border-blue-400/50 bg-white/95 dark:bg-slate-900/60";
-                    } else if (plan.id === "combo") {
-                        themeColor = "text-orange-600 dark:text-orange-400";
-                        borderTop = "border-t-[6px] border-t-orange-500";
-                        shadowHover = "hover:shadow-orange-500/25 dark:hover:shadow-orange-500/15";
-                        // Nút Solid nổi bật trung bình cho gói Combo
-                        btnStyle = "bg-gradient-to-r from-orange-500 to-amber-500 text-white shadow-md active:scale-[0.98] hover:from-orange-600 hover:to-amber-600 hover:shadow-[0_4px_18px_rgba(249,115,22,0.3)] hover:scale-[1.01]";
-                        iconBg = "bg-orange-50 dark:bg-orange-950/60 text-orange-600 dark:text-orange-400";
-                        cardBorder = "border-orange-300 dark:border-orange-500/20 hover:border-orange-500 dark:hover:border-orange-400 bg-white/95 dark:bg-slate-900/60";
+
                     } else if (plan.id === "pro") {
                         themeColor = "text-violet-600 dark:text-indigo-400";
                         borderTop = "border-t-[6px] border-t-violet-500 dark:border-t-indigo-500";
@@ -163,8 +155,7 @@ export default function PricingContent() {
                                             checkBadge = "bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 border-slate-200 dark:border-slate-700";
                                         } else if (plan.id === "basic") {
                                             checkBadge = "bg-blue-50 dark:bg-blue-950/40 text-blue-600 dark:text-blue-400 border-blue-200 dark:border-blue-900/50";
-                                        } else if (plan.id === "combo") {
-                                            checkBadge = "bg-orange-50 dark:bg-orange-950/40 text-orange-600 dark:text-orange-400 border-orange-200 dark:border-orange-900/50";
+
                                         } else if (plan.id === "pro") {
                                             checkBadge = "bg-violet-50 dark:bg-violet-950/40 text-violet-600 dark:text-indigo-400 border-violet-200 dark:border-indigo-900/50";
                                         } else if (plan.id === "school") {
@@ -243,7 +234,6 @@ export default function PricingContent() {
                                 <th className="p-4 font-black uppercase tracking-wider text-slate-550 dark:text-slate-400">Tính năng</th>
                                 <th className="p-4 font-black uppercase tracking-wider text-slate-650 dark:text-slate-350">Miễn phí</th>
                                 <th className="p-4 font-black uppercase tracking-wider text-blue-600 dark:text-blue-400">Cơ bản</th>
-                                <th className="p-4 font-black uppercase tracking-wider text-orange-600 dark:text-orange-400">Combo Pro</th>
                                 <th className="p-4 font-black uppercase tracking-wider text-violet-600 dark:text-indigo-400">Chuyên nghiệp</th>
                                 <th className="p-4 font-black uppercase tracking-wider text-emerald-600 dark:text-emerald-400">Trường học</th>
                             </tr>
@@ -253,7 +243,6 @@ export default function PricingContent() {
                                 <td className="p-4 font-black text-slate-900 dark:text-white">Giá cả</td>
                                 <td className="p-4 font-extrabold text-slate-600 dark:text-slate-400">Miễn phí</td>
                                 <td className="p-4 font-extrabold text-blue-600 dark:text-blue-400">59K / tháng</td>
-                                <td className="p-4 font-extrabold text-orange-600 dark:text-orange-400">189K / tháng</td>
                                 <td className="p-4 font-extrabold text-violet-600 dark:text-indigo-400">99K / tháng</td>
                                 <td className="p-4 font-extrabold text-emerald-600 dark:text-emerald-400">1.5M / tháng</td>
                             </tr>
@@ -261,7 +250,6 @@ export default function PricingContent() {
                                 <td className="p-4 font-black text-slate-900 dark:text-white">Kho mô hình 3D</td>
                                 <td className="p-4 text-slate-600 dark:text-slate-400">Bản demo giới hạn</td>
                                 <td className="p-4 text-blue-600 dark:text-blue-400 font-bold">Cơ bản</td>
-                                <td className="p-4 text-orange-600 dark:text-orange-400 font-bold">Nâng cao</td>
                                 <td className="p-4 text-violet-600 dark:text-indigo-400 font-bold">Toàn bộ 3D</td>
                                 <td className="p-4 text-emerald-600 dark:text-emerald-400 font-bold">Toàn bộ 3D</td>
                             </tr>
@@ -269,7 +257,6 @@ export default function PricingContent() {
                                 <td className="p-4 font-black text-slate-900 dark:text-white">Xem Infographic</td>
                                 <td className="p-4 text-slate-600 dark:text-slate-400">Một số mẫu demo</td>
                                 <td className="p-4 text-blue-600 dark:text-blue-400 font-bold">Toàn bộ của 1 môn</td>
-                                <td className="p-4 text-orange-600 dark:text-orange-400 font-bold">Mở khóa nâng cao</td>
                                 <td className="p-4 text-violet-600 dark:text-indigo-400 font-bold">Mở khóa toàn bộ</td>
                                 <td className="p-4 text-emerald-600 dark:text-emerald-400 font-bold">Mở khóa toàn bộ</td>
                             </tr>
@@ -277,7 +264,6 @@ export default function PricingContent() {
                                 <td className="p-4 font-black text-slate-900 dark:text-white">Trợ lý bài giảng AI</td>
                                 <td className="p-4 text-slate-600 dark:text-slate-400">Giới hạn số lượt</td>
                                 <td className="p-4 text-blue-600 dark:text-blue-400 font-bold">Tính năng cơ bản</td>
-                                <td className="p-4 text-orange-600 dark:text-orange-400 font-bold">AI nâng cao</td>
                                 <td className="p-4 text-violet-600 dark:text-indigo-400 font-bold">AI nâng cao + Đề xuất</td>
                                 <td className="p-4 text-emerald-600 dark:text-emerald-400 font-bold">AI soạn bài giảng</td>
                             </tr>
@@ -287,19 +273,9 @@ export default function PricingContent() {
                                 <td className="p-4 text-slate-400 dark:text-slate-500 font-medium">✕ Không hỗ trợ</td>
                                 <td className="p-4 text-emerald-600 dark:text-emerald-400 font-extrabold">✓ Có (24h)</td>
                                 <td className="p-4 text-emerald-600 dark:text-emerald-400 font-extrabold">✓ Có (24h)</td>
-                                <td className="p-4 text-emerald-600 dark:text-emerald-400 font-extrabold">✓ Có (24h)</td>
-                            </tr>
-                            <tr className="hover:bg-slate-50/50 dark:hover:bg-white/[0.01] transition-colors">
-                                <td className="p-4 font-black text-slate-900 dark:text-white">In mô hình 3D thực tế</td>
-                                <td className="p-4 text-slate-400 dark:text-slate-500 font-medium">✕ Không hỗ trợ</td>
-                                <td className="p-4 text-slate-400 dark:text-slate-500 font-medium">✕ Không hỗ trợ</td>
-                                <td className="p-4 text-emerald-600 dark:text-emerald-400 font-extrabold">✓ 1 mô hình / tháng</td>
-                                <td className="p-4 text-slate-400 dark:text-slate-500 font-medium">✕ Không hỗ trợ</td>
-                                <td className="p-4 text-slate-400 dark:text-slate-500 font-medium">✕ Không hỗ trợ</td>
                             </tr>
                             <tr className="hover:bg-slate-50/50 dark:hover:bg-white/[0.01] transition-colors">
                                 <td className="p-4 font-black text-slate-900 dark:text-white">Số lượng tài khoản</td>
-                                <td className="p-4 text-slate-600 dark:text-slate-500">1 tài khoản cá nhân</td>
                                 <td className="p-4 text-slate-600 dark:text-slate-500">1 tài khoản cá nhân</td>
                                 <td className="p-4 text-slate-600 dark:text-slate-500">1 tài khoản cá nhân</td>
                                 <td className="p-4 text-slate-600 dark:text-slate-500">1 tài khoản cá nhân</td>
@@ -309,7 +285,6 @@ export default function PricingContent() {
                                 <td className="p-4 font-black text-slate-900 dark:text-white">Hỗ trợ kỹ thuật</td>
                                 <td className="p-4 text-slate-600 dark:text-slate-500">Hỏi đáp cộng đồng</td>
                                 <td className="p-4 text-slate-600 dark:text-slate-400">Hỗ trợ qua email</td>
-                                <td className="p-4 text-orange-600 dark:text-orange-400 font-bold">Hỗ trợ ưu tiên</td>
                                 <td className="p-4 text-orange-600 dark:text-orange-400 font-bold">Hỗ trợ ưu tiên</td>
                                 <td className="p-4 font-extrabold text-emerald-600 dark:text-emerald-400">Triển khai & hỗ trợ 24/7</td>
                             </tr>

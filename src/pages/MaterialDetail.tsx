@@ -434,7 +434,7 @@ export default function MaterialDetail() {
 
     const handleSaveToVault = () => {
         if (!material) return;
-        const isPro = ['pro', 'combo', 'school', 'admin'].includes(userPlan) || userRole === 'admin';
+        const isPro = ['pro', 'school', 'admin'].includes(userPlan) || userRole === 'admin';
         if (!isPro) {
             navigate('/pricing');
             return;
@@ -1003,7 +1003,7 @@ export default function MaterialDetail() {
                                         </>
                                     )}
                                     {!isBlocked && (
-                                        (['pro', 'combo', 'school', 'admin'].includes(userPlan) || userRole === 'admin') ? (
+                                        (['pro', 'school', 'admin'].includes(userPlan) || userRole === 'admin') ? (
                                             <>
                                                 <button
                                                     onClick={handleSaveToVault}

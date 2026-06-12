@@ -181,7 +181,7 @@ export default function VaultPage() {
         setEntries([]);
     };
 
-    const isPro = ['pro', 'combo', 'school', 'admin'].includes(userPlan) || userRole === 'admin';
+    const isPro = ['pro', 'school', 'admin'].includes(userPlan) || userRole === 'admin';
 
     // --- Period Management Actions ---
     const handleCreatePeriod = (e: React.FormEvent) => {

@@ -86,7 +86,7 @@ export function AppSidebar({ currentPath = '/', isOpen = false, setIsOpen, isCol
         { path: '/library', label: 'Thư viện', icon: Library },
         { path: '/find-ai', label: 'AI tìm kiếm', icon: Sparkles },
         { path: '/pricing-app', label: 'Gói dịch vụ', icon: CreditCard },
-        ...(['pro', 'combo', 'school', 'demo'].includes(userPlan) ? [{ path: '/vault', label: 'Kho tạm thời', icon: Archive }] : []),
+        ...(['pro', 'school', 'demo'].includes(userPlan) ? [{ path: '/vault', label: 'Kho tạm thời', icon: Archive }] : []),
         ...(userRole === 'school-admin' ? [{ path: '/school/dashboard', label: 'Trường học', icon: School }] : []),
         // Show join-school link for everyone except school-admin (who has dashboard) and active school members
         ...(userRole !== 'school-admin' && !['school'].includes(userPlan)

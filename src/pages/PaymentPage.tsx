@@ -93,7 +93,6 @@ export default function PaymentPage() {
     const plans: Record<string, any> = {
         free:   { name: "Miễn phí (Free)",     price: 0,       desc: "Giáo viên/ học sinh mới trải nghiệm", color: "from-slate-500 to-gray-600",    badge: "FREE",   accent: "#64748b" },
         basic:  { name: "Cơ bản (Basic)",      price: 59000,   desc: "Giáo viên cá nhân/học sinh",          color: "from-indigo-500 to-purple-600", badge: "BASIC",  accent: "#6366f1" },
-        combo:  { name: "Combo Pro + In 3D",   price: 189000,  desc: "In một mô hình 3D (<= 150 g)",        color: "from-rose-500 to-orange-500",   badge: "COMBO",  accent: "#f43f5e" },
         pro:    { name: "Chuyên nghiệp (Pro)", price: 99000,   desc: "Giáo viên sử dụng thường xuyên",      color: "from-violet-500 to-purple-600", badge: "PRO",    accent: "#8b5cf6" },
         school: { name: "Trường học (School)", price: 1500000, desc: "Trường THPT & Tổ bộ môn",             color: "from-teal-500 to-cyan-600",     badge: "SCHOOL", accent: "#14b8a6" },
     };

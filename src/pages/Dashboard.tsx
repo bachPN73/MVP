@@ -198,7 +198,7 @@ export default function Dashboard() {
         },
     ], [allMaterials]);
 
-    const isPremiumPlan = ['premium', 'pro', 'school', 'combo', 'basic'].includes(userPlan);
+    const isPremiumPlan = ['premium', 'pro', 'school', 'basic'].includes(userPlan);
     const isSchoolAdmin = userRole === 'school-admin';
     const planBgClass = isPremiumPlan
         ? 'bg-gradient-to-br from-amber-400 to-orange-550 shadow-orange-500/30'
@@ -232,15 +232,7 @@ export default function Dashboard() {
             borderClass: "border-amber-500/25",
             textClass: "text-amber-800 dark:text-amber-400"
         },
-        combo: {
-            label: "COMBO",
-            icon: Globe,
-            colorClass: "text-orange-500 bg-orange-500/10",
-            barColor: "from-orange-500 to-amber-505",
-            bgClass: "bg-orange-500/5 dark:bg-orange-500/10",
-            borderClass: "border-orange-500/25",
-            textClass: "text-orange-800 dark:text-orange-400"
-        },
+
         school: {
             label: "SCHOOL",
             icon: School,

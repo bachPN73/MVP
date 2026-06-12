@@ -43,7 +43,7 @@ const modelSchema = new mongoose.Schema({
     tags: { type: [String], default: [] },
     // Access control: which plan is required to view this material
     // null = no restriction (everyone can view)
-    // 'basic' | 'pro' | 'combo' | 'school' = requires that plan or higher
+    // 'basic' | 'pro' | 'school' = requires that plan or higher
     requiredPlan: { type: String, default: null },
     // Premium details fields
     subtitle: String,
@@ -79,7 +79,7 @@ const paymentSchema = new mongoose.Schema({
 }, { timestamps: true });
 
 // SystemConfig: stores global admin-configurable settings as key-value pairs
-// Key 'ai_limits' stores an object like: { free: 3, basic: 20, pro: 50, combo: 50, school: 100 }
+// Key 'ai_limits' stores an object like: { free: 3, basic: 20, pro: 50, school: 100 }
 // A value of -1 means unlimited.
 const systemConfigSchema = new mongoose.Schema({
     key: { type: String, unique: true, required: true },

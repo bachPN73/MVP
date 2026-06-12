@@ -1,6 +1,7 @@
 import { Layout } from '../../layout/MainLayout';
 import { useState, useEffect } from 'react';
 import { api } from '../../api';
+import { QRCodeSVG } from 'qrcode.react';
 import { 
     School, 
     Users, 
@@ -74,8 +75,7 @@ export default function SchoolDashboard() {
         tiet: ''
     });
 
-    const joinUrl = school ? `${window.location.origin}/profile?code=${school.schoolCode}` : '';
-    const qrUrl = joinUrl ? `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(joinUrl)}` : '';
+    const joinUrl = school ? `${window.location.origin}/join-school?code=${school.schoolCode}` : '';
 
     const handleCopyLink = () => {
         if (!joinUrl) return;

@@ -251,7 +251,7 @@ async function initDb() {
         }
 
         // Seed default AI limits config
-        const defaultAILimits = { free: 3, basic: 20, pro: 50, combo: 50, school: 100 };
+        const defaultAILimits = { free: 3, basic: 20, pro: 50, school: 100 };
         const existingAIConfig = await SystemConfig.findOne({ key: 'ai_limits' });
         if (!existingAIConfig) {
             await SystemConfig.create({ key: 'ai_limits', value: defaultAILimits });
@@ -828,7 +828,8 @@ async function getAILimits() {
     if (aiLimitsCache && now - aiLimitsCacheTime < AI_LIMITS_CACHE_TTL) {
         return aiLimitsCache;
     }
-    const defaults = { free: 3, basic: 20, pro: 50, combo: 50, school: 100 };
+    const defaults = { free: 3, basic: 20, pro: 50, school: 100 };
+    const config = await SystemConfig.findOne({ key: 'ai_limits' });
     aiLimitsCache = config ? { ...defaults, ...config.value } : defaults;
     aiLimitsCacheTime = now;
     return aiLimitsCache;

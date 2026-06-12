@@ -270,7 +270,7 @@ export default function Library() {
     }, []);
 
     // Plan hierarchy: higher index = more access
-    const PLAN_HIERARCHY = ['free', 'basic', 'combo', 'pro', 'school'];
+    const PLAN_HIERARCHY = ['free', 'basic', 'pro', 'school'];
 
     // Returns true if userPlan has access to content requiring requiredPlan
     const hasAccess = (requiredPlan: string | null | undefined): boolean => {
@@ -852,10 +852,6 @@ export default function Library() {
                                         <span className="w-1.5 h-1.5 rounded-full bg-blue-500 inline-block" />
                                         Cơ bản
                                     </span>
-                                    <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-[10px] font-black bg-orange-50 dark:bg-orange-950/30 text-orange-600 dark:text-orange-400 border border-orange-200 dark:border-orange-800">
-                                        <span className="w-1.5 h-1.5 rounded-full bg-orange-500 inline-block" />
-                                        Combo
-                                    </span>
                                     <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-[10px] font-black bg-violet-50 dark:bg-violet-950/30 text-violet-600 dark:text-violet-400 border border-violet-200 dark:border-violet-800">
                                         <span className="w-1.5 h-1.5 rounded-full bg-violet-500 inline-block" />
                                         Pro
@@ -873,8 +869,7 @@ export default function Library() {
                                     const matRequiredPlan = (material as any).requiredPlan;
                                     const isLocked = !hasAccess(matRequiredPlan);
                                     const planLabels: Record<string, string> = {
-                                        basic: 'Gói Cơ bản',
-                                        combo: 'Gói Combo', pro: 'Gói Pro', school: 'Gói Trường học'
+                                        basic: 'Gói Cơ bản', pro: 'Gói Pro', school: 'Gói Trường học'
                                     };
                                     return (
                                         <div
@@ -984,11 +979,10 @@ export default function Library() {
                                                         {/* Plan access badge — top right */}
                                                         {(() => {
                                                             const PLAN_BADGE: Record<string, { label: string; cls: string }> = {
-                                                                '':       { label: 'Mi\u1ec5n ph\u00ed',    cls: 'bg-slate-700/80 text-slate-200 border-slate-500/30' },
-                                                                'basic':  { label: 'C\u01a1 b\u1ea3n',     cls: 'bg-blue-600/85 text-white border-blue-400/30' },
-                                                                'combo':  { label: 'Combo',       cls: 'bg-orange-500/85 text-white border-orange-300/30' },
+                                                                '':       { label: 'Miễn phí',    cls: 'bg-slate-700/80 text-slate-200 border-slate-500/30' },
+                                                                'basic':  { label: 'Cơ bản',     cls: 'bg-blue-600/85 text-white border-blue-400/30' },
                                                                 'pro':    { label: 'Pro',          cls: 'bg-violet-600/85 text-white border-violet-400/30' },
-                                                                'school': { label: 'Tr\u01b0\u1eddng h\u1ecdc', cls: 'bg-emerald-600/85 text-white border-emerald-400/30' },
+                                                                'school': { label: 'Trường học', cls: 'bg-emerald-600/85 text-white border-emerald-400/30' },
                                                             };
                                                             const key = matRequiredPlan || '';
                                                             const badge = PLAN_BADGE[key] || PLAN_BADGE[''];
