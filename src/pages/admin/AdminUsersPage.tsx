@@ -158,21 +158,31 @@ export default function AdminUsersPage() {
                                                     onChange={(e) => setEditForm({...editForm, plan: e.target.value})}
                                                     className="text-xs bg-slate-50/50 dark:bg-slate-950/20 border border-slate-200 dark:border-white/10 text-slate-900 dark:text-white rounded-xl px-2.5 py-1.5 outline-none focus:ring-1 focus:ring-indigo-500 font-sans"
                                                 >
-                                                    <option value="free">Free</option>
-                                                    <option value="premium">Premium</option>
-                                                    <option value="school">School</option>
+                                                    <option value="free">Free (Miễn phí)</option>
+                                                    <option value="basic">Basic (Cơ bản)</option>
+                                                    <option value="pro">Pro (Chuyên nghiệp)</option>
+                                                    <option value="combo">Combo Pro + In 3D</option>
+                                                    <option value="school">School (Trường học)</option>
                                                 </select>
                                             ) : (
-                                                user.plan === 'premium' ? (
-                                                    <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-bold uppercase tracking-wider bg-amber-50 dark:bg-amber-950/40 border border-amber-200/10 text-amber-600 dark:text-amber-400">
-                                                        <BadgeCheck className="w-3.5 h-3.5" /> Premium
+                                                user.plan === 'premium' || user.plan === 'pro' ? (
+                                                    <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-bold uppercase tracking-wider bg-violet-50 dark:bg-violet-950/40 border border-violet-200/10 text-violet-600 dark:text-violet-400">
+                                                        <BadgeCheck className="w-3.5 h-3.5" /> Pro
+                                                    </span>
+                                                ) : user.plan === 'basic' ? (
+                                                    <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-bold uppercase tracking-wider bg-blue-50 dark:bg-blue-950/40 border border-blue-200/10 text-blue-600 dark:text-blue-400">
+                                                        <BadgeCheck className="w-3.5 h-3.5" /> Basic
+                                                    </span>
+                                                ) : user.plan === 'combo' ? (
+                                                    <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-bold uppercase tracking-wider bg-orange-50 dark:bg-orange-950/40 border border-orange-200/10 text-orange-600 dark:text-orange-400">
+                                                        <BadgeCheck className="w-3.5 h-3.5" /> Combo
                                                     </span>
                                                 ) : user.plan === 'school' ? (
-                                                    <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-bold uppercase tracking-wider bg-blue-50 dark:bg-blue-950/40 border border-blue-200/10 text-blue-600 dark:text-blue-400">
+                                                    <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-bold uppercase tracking-wider bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200/10 text-emerald-600 dark:text-emerald-400">
                                                         <BadgeCheck className="w-3.5 h-3.5" /> School
                                                     </span>
                                                 ) : (
-                                                    <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-bold uppercase tracking-wider bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200/10 text-emerald-600 dark:text-emerald-400">
+                                                    <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-bold uppercase tracking-wider bg-slate-50 dark:bg-slate-950/20 border border-slate-200/10 text-slate-600 dark:text-slate-400">
                                                         Free
                                                     </span>
                                                 )
@@ -279,11 +289,13 @@ export default function AdminUsersPage() {
                                                 <select 
                                                     value={editForm.plan}
                                                     onChange={(e) => setEditForm({...editForm, plan: e.target.value})}
-                                                    className="text-[10px] bg-slate-50/50 dark:bg-slate-950/20 border border-slate-200 dark:border-white/10 text-slate-900 dark:text-white rounded-lg px-2.5 py-1.5 outline-none focus:ring-1 focus:ring-indigo-500 w-full font-semibold"
+                                                    className="text-[10px] bg-slate-50/50 dark:bg-slate-950/20 border border-slate-200/10 dark:border-white/10 text-slate-900 dark:text-white rounded-lg px-2.5 py-1.5 outline-none focus:ring-1 focus:ring-indigo-500 w-full font-semibold"
                                                 >
-                                                    <option value="free">Free</option>
-                                                    <option value="premium">Premium</option>
-                                                    <option value="school">School</option>
+                                                    <option value="free">Free (Miễn phí)</option>
+                                                    <option value="basic">Basic (Cơ bản)</option>
+                                                    <option value="pro">Pro (Chuyên nghiệp)</option>
+                                                    <option value="combo">Combo Pro + In 3D</option>
+                                                    <option value="school">School (Trường học)</option>
                                                 </select>
                                                 <div className="flex gap-1 justify-center mt-1">
                                                     <button onClick={() => handleSaveEdit(user.id)} className="p-1.5 bg-emerald-600 text-white rounded-lg"><Save className="w-3.5 h-3.5" /></button>
@@ -299,12 +311,16 @@ export default function AdminUsersPage() {
                                                 ) : (
                                                     <span className="px-2.5 py-0.5 rounded-md text-[9px] font-bold bg-slate-50 dark:bg-slate-950/20 text-slate-600 dark:text-slate-400 border border-slate-200/10">{(user.role || 'USER').toUpperCase()}</span>
                                                 )}
-                                                {user.plan === 'premium' ? (
-                                                    <span className="px-2.5 py-0.5 rounded-md text-[9px] font-bold bg-amber-50 dark:bg-amber-950/40 text-amber-600 dark:text-amber-400 border border-amber-200/10">PREMIUM</span>
+                                                {user.plan === 'premium' || user.plan === 'pro' ? (
+                                                    <span className="px-2.5 py-0.5 rounded-md text-[9px] font-bold bg-violet-50 dark:bg-violet-950/40 text-violet-600 dark:text-violet-400 border border-violet-200/10">PRO</span>
+                                                ) : user.plan === 'basic' ? (
+                                                    <span className="px-2.5 py-0.5 rounded-md text-[9px] font-bold bg-blue-50 dark:bg-blue-950/40 text-blue-600 dark:text-blue-400 border border-blue-200/10">BASIC</span>
+                                                ) : user.plan === 'combo' ? (
+                                                    <span className="px-2.5 py-0.5 rounded-md text-[9px] font-bold bg-orange-50 dark:bg-orange-950/40 text-orange-600 dark:text-orange-400 border border-orange-200/10">COMBO</span>
                                                 ) : user.plan === 'school' ? (
-                                                    <span className="px-2.5 py-0.5 rounded-md text-[9px] font-bold bg-blue-50 dark:bg-blue-950/40 text-blue-600 dark:text-blue-400 border border-blue-200/10">SCHOOL</span>
+                                                    <span className="px-2.5 py-0.5 rounded-md text-[9px] font-bold bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400 border border-emerald-200/10">SCHOOL</span>
                                                 ) : (
-                                                    <span className="px-2.5 py-0.5 rounded-md text-[9px] font-bold bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400 border border-emerald-200/10">FREE</span>
+                                                    <span className="px-2.5 py-0.5 rounded-md text-[9px] font-bold bg-slate-50 dark:bg-slate-950/20 text-slate-600 dark:text-slate-400 border border-slate-200/10">FREE</span>
                                                 )}
                                                 <button 
                                                     onClick={() => handleEditClick(user)}

@@ -90,7 +90,8 @@ export default function AdminPaymentsPage() {
             case 'premium':
             case 'pro':
                 return <span className="px-2 py-0.5 rounded-md text-[10px] font-black tracking-wider bg-amber-50 dark:bg-amber-950/40 text-amber-600 dark:text-amber-400 border border-amber-200/10 uppercase">PRO</span>;
-
+            case 'combo':
+                return <span className="px-2 py-0.5 rounded-md text-[10px] font-black tracking-wider bg-orange-50 dark:bg-orange-950/40 text-orange-600 dark:text-orange-400 border border-orange-200/10 uppercase">COMBO</span>;
             case 'school':
                 return <span className="px-2 py-0.5 rounded-md text-[10px] font-black tracking-wider bg-blue-50 dark:bg-blue-950/40 text-blue-600 dark:text-blue-400 border border-blue-200/10 uppercase">SCHOOL</span>;
             case 'basic':
