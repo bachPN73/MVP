@@ -261,18 +261,18 @@ export default function Dashboard() {
                     /* ================= SCHOOL ADMIN LAYOUT ================= */
                     <div className="flex-1 flex flex-col gap-5 min-h-0 overflow-y-auto pr-1">
                         {/* 1. Hero Welcome & Search Area */}
-                        <div className="relative rounded-3xl overflow-hidden bg-gradient-to-br from-slate-900 via-slate-950 to-[#0e1726] border border-white/10 shadow-2xl flex-shrink-0">
+                        <div className="relative rounded-3xl overflow-hidden bg-gradient-to-br from-indigo-600 via-indigo-700 to-[#2d3280] dark:from-slate-900 dark:via-slate-950 dark:to-[#0e1726] border border-indigo-500/25 dark:border-white/10 shadow-xl flex-shrink-0">
                             <div className="absolute inset-0 overflow-hidden pointer-events-none">
-                                <div className="absolute -top-[50%] -left-[10%] w-[70%] h-[150%] rounded-full bg-indigo-600/20 blur-3xl"></div>
-                                <div className="absolute top-[20%] -right-[20%] w-[60%] h-[120%] rounded-full bg-blue-500/10 blur-3xl"></div>
+                                <div className="absolute -top-[50%] -left-[10%] w-[70%] h-[150%] rounded-full bg-indigo-500/20 dark:bg-indigo-600/20 blur-3xl"></div>
+                                <div className="absolute top-[20%] -right-[20%] w-[60%] h-[120%] rounded-full bg-blue-400/10 dark:bg-blue-500/10 blur-3xl"></div>
                             </div>
 
                             <div className="relative p-6 md:p-8 z-10 flex flex-col md:flex-row items-center justify-between gap-6">
                                 <div className="flex-1 space-y-4 w-full">
                                     <h1 className="text-2xl md:text-3.5xl font-black text-white tracking-tight leading-tight mb-1 font-heading">
-                                        Chào Quản trị viên <span className="text-transparent bg-clip-text bg-gradient-to-r from-teal-400 to-cyan-400">{userName}</span>,
+                                        Chào Quản trị viên <span className="text-transparent bg-clip-text bg-gradient-to-r from-teal-300 to-cyan-300">{userName}</span>,
                                     </h1>
-                                    <p className="text-slate-200 text-sm md:text-base font-semibold max-w-2xl">
+                                    <p className="text-indigo-100 dark:text-slate-200 text-sm md:text-base font-semibold max-w-2xl">
                                         Chào mừng bạn đến với Cổng quản trị trường học. Quản lý tài nguyên, mã mời và phê duyệt thành viên cho trường của bạn.
                                     </p>
                                 </div>
@@ -281,10 +281,10 @@ export default function Dashboard() {
 
                         {/* School Organization Dashboard */}
                         {userSchoolId && schoolInfo && (
-                            <div className="rounded-3xl border border-teal-200/60 dark:border-teal-500/20 bg-gradient-to-r from-teal-50 to-indigo-50 dark:from-teal-950/20 dark:to-indigo-950/20 p-6 md:p-8 backdrop-blur-xl shadow-xl space-y-6 relative overflow-hidden flex-1 min-h-0">
+                            <div className="rounded-3xl border border-stone-200/70 dark:border-teal-500/20 bg-gradient-to-r from-stone-50/80 to-indigo-50/60 dark:from-teal-950/20 dark:to-indigo-950/20 p-6 md:p-8 backdrop-blur-xl shadow-lg space-y-6 relative overflow-hidden flex-1 min-h-0">
                                 {/* Decorative glowing backdrops */}
-                                <div className="absolute -right-20 -bottom-20 w-60 h-60 bg-teal-500/5 dark:bg-teal-500/10 rounded-full blur-3xl pointer-events-none"></div>
-                                <div className="absolute -left-20 -top-20 w-60 h-60 bg-indigo-500/5 dark:bg-indigo-500/10 rounded-full blur-3xl pointer-events-none"></div>
+                                <div className="absolute -right-20 -bottom-20 w-60 h-60 bg-indigo-400/5 dark:bg-teal-500/10 rounded-full blur-3xl pointer-events-none"></div>
+                                <div className="absolute -left-20 -top-20 w-60 h-60 bg-indigo-300/5 dark:bg-indigo-500/10 rounded-full blur-3xl pointer-events-none"></div>
 
                                 <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 pb-4 border-b border-slate-200/80 dark:border-white/10">
                                     <div>
@@ -377,7 +377,7 @@ export default function Dashboard() {
                     /* ================= REGULAR USER LAYOUT — REDESIGNED ================= */
                     <>
                         {/* 1. Compact Welcome Banner */}
-                        <div className="relative rounded-2xl overflow-hidden bg-gradient-to-r from-indigo-50/90 via-white/95 to-slate-100/90 dark:from-slate-900 dark:via-slate-950 dark:to-[#0e1726] border border-slate-200/60 dark:border-white/[0.06] shadow-md shrink-0 w-full">
+                        <div className="relative rounded-2xl overflow-hidden bg-gradient-to-r from-indigo-50/70 via-stone-50/90 to-amber-50/40 dark:from-slate-900 dark:via-slate-950 dark:to-[#0e1726] border border-stone-200/60 dark:border-white/[0.06] shadow-md shrink-0 w-full">
                             <div className="absolute inset-0 overflow-hidden pointer-events-none">
                                 <div className="absolute -top-[40%] -left-[8%] w-[50%] h-[140%] rounded-full bg-indigo-500/10 dark:bg-indigo-500/15 blur-3xl"></div>
                                 <div className="absolute top-[10%] -right-[15%] w-[40%] h-[100%] rounded-full bg-cyan-500/8 dark:bg-cyan-500/10 blur-3xl"></div>

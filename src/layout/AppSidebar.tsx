@@ -102,7 +102,7 @@ export function AppSidebar({ currentPath = '/', isOpen = false, setIsOpen, isCol
 
     return (
         <aside 
-            className={`fixed left-0 top-0 md:left-3 md:top-3 md:h-[calc(100vh-1.5rem)] h-full bg-teal-50/95 dark:bg-sidebar/95 backdrop-blur-3xl text-sidebar-foreground flex flex-col shadow-2xl z-50 transition-all duration-300 ease-in-out md:translate-x-0 md:rounded-2xl md:border border-sidebar-border
+            className={`fixed left-0 top-0 md:left-3 md:top-3 md:h-[calc(100vh-1.5rem)] h-full bg-sidebar/95 dark:bg-sidebar/95 backdrop-blur-3xl text-sidebar-foreground flex flex-col shadow-2xl z-50 transition-all duration-300 ease-in-out md:translate-x-0 md:rounded-2xl md:border border-sidebar-border
             ${isOpen ? 'translate-x-0' : '-translate-x-full'} 
             ${isCollapsed ? 'md:w-20 w-[270px]' : 'w-[270px]'}`}
         >
