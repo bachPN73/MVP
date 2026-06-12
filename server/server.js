@@ -750,6 +750,7 @@ app.post('/api/forgot-password', async (req, res) => {
                     from: process.env.EMAIL_FROM || 'Hệ thống Học tập <noreply@edutechvn.me>',
                     to: email,
                     subject: 'Mã khôi phục mật khẩu - Hệ thống Học tập',
+                    text: `Xin chào ${user.name},\n\nMã khôi phục mật khẩu của bạn là: ${resetCode}\nMã này có hiệu lực trong 15 phút.\n\nNếu bạn không yêu cầu, vui lòng bỏ qua email này.`,
                     html: `<h3>Xin chào ${user.name},</h3><p>Mã khôi phục mật khẩu của bạn là: <strong style="font-size:24px;color:blue;letter-spacing:4px;">${resetCode}</strong></p><p>Mã này có hiệu lực trong 15 phút.</p><br><p>Nếu bạn không yêu cầu, vui lòng bỏ qua email này.</p>`
                 })
             });
