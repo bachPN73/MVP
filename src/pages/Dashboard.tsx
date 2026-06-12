@@ -322,7 +322,7 @@ export default function Dashboard() {
                                         <div className="grid grid-cols-2 gap-4 pt-2">
                                             <div className="bg-slate-50 dark:bg-slate-950/40 p-3 rounded-xl border border-slate-200/50 dark:border-white/5">
                                                 <span className="text-[10px] text-slate-500 dark:text-slate-400 uppercase tracking-widest font-bold">Giáo viên</span>
-                                                <p className="text-lg font-black text-teal-600 dark:text-teal-400 mt-0.5">{schoolInfo.teacherSeatsUsed || 0} / {schoolInfo.teacherQuota || 5}</p>
+                                                <p className="text-lg font-black text-teal-600 dark:text-teal-400 mt-0.5">{schoolInfo.teacherSeatsUsed || 0} / {schoolInfo.teacherQuota || 30}</p>
                                             </div>
                                             <div className="bg-slate-50 dark:bg-slate-950/40 p-3 rounded-xl border border-slate-200/50 dark:border-white/5">
                                                 <span className="text-[10px] text-slate-500 dark:text-slate-400 uppercase tracking-widest font-bold">Học sinh</span>
