@@ -270,7 +270,7 @@ export default function Library() {
     }, []);
 
     // Plan hierarchy: higher index = more access
-    const PLAN_HIERARCHY = ['free', 'basic', 'pro', 'school'];
+    const PLAN_HIERARCHY = ['free', 'basic', 'pro', 'combo', 'school'];
 
     // Returns true if userPlan has access to content requiring requiredPlan
     const hasAccess = (requiredPlan: string | null | undefined): boolean => {
