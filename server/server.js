@@ -242,12 +242,12 @@ async function initDb() {
                 name: 'Admin MVP',
                 email: adminEmail,
                 role: 'admin',
-                plan: 'premium',
+                plan: 'pro',
                 password: hash
             });
             console.log('[INFO] Đã tự động tạo tài khoản admin mặc định.');
         } else {
-            await User.updateOne({ email: adminEmail }, { password: hash, role: 'admin' });
+            await User.updateOne({ email: adminEmail }, { password: hash, role: 'admin', plan: 'pro' });
         }
 
         // Seed default AI limits config
@@ -1045,9 +1045,12 @@ Available Library Models:
 ${modelSummary}
 
 Instructions:
-1. "keywords": Extract key concepts from the query. Expand with synonyms (e.g. "tế bào" -> "cell", "nhân", "ti thể"), standard Vietnamese spelling, accents/non-accents, and English translations.
-2. "predicted_subject": Infer the subject. MUST be exactly one of: "physics", "chemistry", "biology", or null.
-3. "intent": A brief, professional search intent summary in Vietnamese (e.g., "Tìm kiếm mô hình tế bào và các bào quan").
+1. "keywords": Extract key concepts from the query. Expand with synonyms, standard Vietnamese spelling, accents/non-accents, and English translations.
+   SPECIAL BIOLOGY OPTIMIZATION: If the query is related to biology, cell biology, genetics, ecosystems, botany, zoology, physiology, human organs/anatomy, or medicine:
+   - Perform deep synonym expansion. Map general terms to specific biological concepts and English terms.
+   - Example: "quang hợp" -> ["photosynthesis", "chloroplast", "thực vật", "quang tự dưỡng", "lục lạp", "quá trình quang hợp"]; "tế bào" -> ["cell", "tế bào thực vật", "tế bào động vật", "bào quan", "organelle", "ti thể", "mitochondria", "nhân tế bào", "nucleus"]; "gen" or "di truyền" -> ["gene", "dna", "di truyền", "xoắn kép", "nhiễm sắc thể", "chromosome"]; "tuần hoàn" or "tim" -> ["circulatory", "heart", "hệ tuần hoàn", "máu", "tế bào bạch cầu", "white blood cell", "cơ tim"].
+2. "predicted_subject": Infer the subject. MUST be exactly one of: "physics", "chemistry", "biology", or null. For any biology-related query (including anatomy, physiology, genetics, ecology, and botany), ensure it is classified as "biology".
+3. "intent": A brief, professional search intent summary in Vietnamese.
 4. "matched_ids": Select IDs of the library models that match the query or expanded concepts. Order them by relevance (highest match first). Only include models that actually fit the search intent.
 
 Return strictly a valid JSON object matching this schema (do not output any markdown formatting, only the JSON block):

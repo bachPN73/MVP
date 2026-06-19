@@ -261,75 +261,13 @@ export default function FindWithAI() {
                 {hasSearched && (
                     <div className="max-w-6xl mx-auto mt-6 relative z-10">
                         {isSearching ? (
-                            /* Premium Loading scan */
-                            <div className="text-center py-20 bg-white/50 dark:bg-slate-900/40 backdrop-blur-xl border border-slate-200 dark:border-white/10 rounded-3xl relative overflow-hidden shadow-lg animate-pulse-glow">
-                                <div className="absolute -top-24 -left-24 w-48 h-48 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none animate-pulse-slow" />
-                                <div className="absolute -bottom-24 -right-24 w-48 h-48 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none animate-pulse-slow" />
-                                
-                                <div className="relative inline-flex items-center justify-center w-24 h-24 mb-6">
-                                    <div className="absolute inset-0 bg-gradient-to-r from-indigo-500 to-emerald-500 rounded-full animate-ping opacity-25" />
-                                    <div className="absolute inset-2 bg-white dark:bg-slate-950 border-2 border-indigo-500/30 dark:border-indigo-500/20 rounded-full" />
-                                    <Brain className="w-10 h-10 text-indigo-500 dark:text-indigo-400 relative z-10 animate-pulse" />
-                                </div>
-                                <h3 className="text-2xl font-extrabold mb-3 bg-gradient-to-r from-indigo-600 to-emerald-600 dark:from-indigo-400 dark:to-emerald-400 bg-clip-text text-transparent font-heading">
-                                    Gemini đang phân tích...
-                                </h3>
-                                <p className="text-slate-500 dark:text-slate-400 max-w-md mx-auto text-base font-medium px-4">
-                                    Hệ thống AI đang đọc hiểu nội dung ngữ cảnh, tự động phân loại môn học và truy xuất học liệu 3D tối ưu.
-                                </p>
+                            <div className="flex flex-col items-center justify-center py-20">
+                                <Loader2 className="w-10 h-10 animate-spin text-indigo-500" />
+                                <p className="mt-4 text-slate-500 dark:text-slate-400 font-semibold">Đang tìm kiếm...</p>
                             </div>
                         ) : (
                             <div className="animate-in fade-in duration-300">
-                                {/* AI Insight Console Panel */}
-                                {aiInsight && (
-                                    <div className="bg-gradient-to-br from-indigo-500/5 via-violet-500/5 to-emerald-500/5 dark:from-indigo-500/10 dark:via-violet-500/5 dark:to-emerald-500/10 border border-indigo-500/20 dark:border-indigo-500/15 rounded-3xl p-6 sm:p-8 mb-10 shadow-lg relative overflow-hidden">
-                                        <div className="absolute top-0 right-0 w-48 h-48 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none" />
-                                        
-                                        <div className="flex items-start gap-4 mb-6">
-                                            <div className="w-12 h-12 bg-gradient-to-br from-indigo-500 to-violet-600 rounded-2xl flex items-center justify-center flex-shrink-0 shadow-md relative">
-                                                <div className="absolute inset-0 bg-white/20 rounded-2xl blur-[2px]" />
-                                                <Brain className="w-6 h-6 text-white relative z-10" />
-                                            </div>
-                                            <div className="flex-1">
-                                                <span className="text-[10px] sm:text-xs font-bold uppercase tracking-wider bg-indigo-100 dark:bg-indigo-500/25 text-indigo-600 dark:text-indigo-400 px-2.5 py-1 rounded-full border border-indigo-500/20">
-                                                    AI Trợ lý học thuật
-                                                </span>
-                                                <h3 className="font-bold text-lg sm:text-xl mt-2 mb-2 text-slate-900 dark:text-white font-heading">
-                                                    Phân Tích & Định Hướng AI
-                                                </h3>
-                                                <p className="text-slate-800 dark:text-slate-200 leading-relaxed text-sm sm:text-base font-medium bg-white/80 dark:bg-slate-900/60 p-4 rounded-2xl border border-slate-200/80 dark:border-white/10 shadow-sm">
-                                                    {aiInsight}
-                                                </p>
-                                            </div>
-                                        </div>
 
-                                        <div className="flex flex-col sm:flex-row sm:items-center gap-4 pt-4 border-t border-slate-200/80 dark:border-white/10">
-                                            {/* Predicted Subject */}
-                                            {aiSubject && (
-                                                <div className="flex items-center gap-2.5 bg-white dark:bg-slate-900 px-4 py-2 rounded-xl border border-slate-200 dark:border-white/10 shadow-sm self-start">
-                                                    <FlaskConical className="w-4 h-4 text-indigo-500 dark:text-indigo-400" />
-                                                    <span className="text-sm font-semibold text-slate-700 dark:text-slate-300">
-                                                        Phân loại: <span className="text-indigo-600 dark:text-indigo-400 font-bold">{subjectNameMap[aiSubject] || aiSubject}</span>
-                                                    </span>
-                                                </div>
-                                            )}
-
-                                            {/* Keywords */}
-                                            {aiKeywords.length > 0 && (
-                                                <div className="flex items-center gap-2 flex-wrap">
-                                                    <Tag className="w-4 h-4 text-slate-400" />
-                                                    <div className="flex flex-wrap gap-1.5">
-                                                        {aiKeywords.slice(0, 6).map((kw, i) => (
-                                                            <span key={i} className="text-xs px-3 py-1 rounded-full bg-indigo-50 dark:bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 font-bold border border-indigo-200 dark:border-indigo-500/20">
-                                                                #{kw}
-                                                            </span>
-                                                        ))}
-                                                    </div>
-                                                </div>
-                                            )}
-                                        </div>
-                                    </div>
-                                )}
 
                                 {/* Results Header */}
                                 <div className="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 px-1">
