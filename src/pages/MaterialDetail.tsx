@@ -981,13 +981,10 @@ export default function MaterialDetail() {
                                     : (theme === 'light' ? 'border-stone-200 bg-slate-50' : 'border-white/5 bg-slate-900/40')
                             }`}>
                                 <span className={`text-xs ${theme === 'light' ? 'text-stone-500' : 'text-slate-400'} flex items-center flex-wrap gap-y-2`}>
-                                    Mã học liệu: <span className="font-semibold">{material.id}</span> {(material as any).source && (
-                                        <>
-                                            {" • "}
-                                            <span className={`font-bold ${theme === 'light' ? 'text-stone-700' : 'text-slate-200'}`}>
-                                                Thiết kế: {(material as any).source}
-                                            </span>
-                                        </>
+                                    {(material as any).source && (
+                                        <span className={`font-bold ${theme === 'light' ? 'text-stone-700' : 'text-slate-200'}`}>
+                                            Thiết kế: {(material as any).source}
+                                        </span>
                                     )}
                                     {!isBlocked && (
                                         (['pro', 'school', 'admin'].includes(userPlan) || userRole === 'admin') ? (
