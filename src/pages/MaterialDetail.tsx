@@ -722,20 +722,7 @@ export default function MaterialDetail() {
                                         : {}
                                 }
                             >
-                                {/* Floating Title for Premium Models */}
-                                {viewerActive && material.subtitle && (
-                                    <div className="absolute top-6 left-8 z-10 pointer-events-none select-none">
-                                        <div className={`text-[10px] font-semibold uppercase tracking-[0.2em] mb-1 ${theme === 'light' ? 'text-stone-500/70' : 'text-stone-400/70'}`}>
-                                            PHẦN NÀY TẬP TRUNG VÀO
-                                        </div>
-                                        <h2 className={`text-3xl sm:text-4xl font-bold font-heading tracking-wide drop-shadow-sm ${theme === 'light' ? 'text-stone-900' : 'text-white'}`}>
-                                            {material.title}
-                                        </h2>
-                                        <p className={`text-sm sm:text-lg font-heading italic mt-1 tracking-wide drop-shadow-sm ${theme === 'light' ? 'text-emerald-800/80' : 'text-emerald-400/80'}`}>
-                                            {material.subtitle}
-                                        </p>
-                                    </div>
-                                )}
+
 
                                  {isBlocked ? (
                                     <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center select-none bg-slate-900/90 dark:bg-slate-950/95 backdrop-blur-md z-30">
@@ -846,7 +833,9 @@ export default function MaterialDetail() {
                                                         }>
                                                             <ModelViewer modelUrl={getFullModelUrl(fileUrl)} />
                                                         </Suspense>
-
+                                                        <div className="absolute bottom-4 left-4 bg-white/90 dark:bg-slate-900/90 backdrop-blur-sm px-4 py-2 rounded-lg text-sm z-50 shadow-md pointer-events-none">
+                                                            <p className="text-slate-800 dark:text-slate-200 font-medium">Kéo chuột trái để xoay • Cuộn để zoom</p>
+                                                        </div>
                                                     </div>
                                                 ) : isPDF ? (
                                                     <div className="absolute inset-0 bg-white flex items-center justify-center overflow-hidden">
