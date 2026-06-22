@@ -19,6 +19,27 @@ export default function PricingPublicPage() {
                         </div>
                     </Link>
 
+                    <nav className="hidden items-center gap-1 md:flex">
+                        <Link
+                            to="/"
+                            className="rounded-lg px-4 py-2 text-sm font-bold text-slate-600 hover:bg-slate-100 hover:text-slate-950 dark:text-slate-300 dark:hover:bg-white/[0.08] dark:hover:text-white"
+                        >
+                            Trang chủ
+                        </Link>
+                        <Link
+                            to="/guide"
+                            className="rounded-lg px-4 py-2 text-sm font-bold text-slate-600 hover:bg-slate-100 hover:text-slate-950 dark:text-slate-300 dark:hover:bg-white/[0.08] dark:hover:text-white"
+                        >
+                            Hướng dẫn
+                        </Link>
+                        <Link
+                            to="/pricing"
+                            className="rounded-lg px-4 py-2 text-sm font-bold text-primary dark:text-white bg-slate-100 dark:bg-white/[0.08]"
+                        >
+                            Bảng giá
+                        </Link>
+                    </nav>
+
                     <div className="flex items-center gap-4 sm:gap-6">
                         <ThemeToggle variant="glass" />
                         <Link

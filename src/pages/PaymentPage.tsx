@@ -97,7 +97,8 @@ export default function PaymentPage() {
         combo:  { name: "Combo Pro + In 3D",   price: 189000,  desc: "Bao gồm in 1 mô hình 3D (<= 150 g)",  color: "from-orange-500 to-amber-500",  badge: "COMBO",  accent: "#f97316" },
         school: { name: "Trường học (School)", price: 1500000, desc: "Trường THPT & Tổ bộ môn",             color: "from-teal-500 to-cyan-600",     badge: "SCHOOL", accent: "#14b8a6" },
     };
-    const plan = plans[planId || "free"] || plans.free;
+    const resolvedPlanId = planId === 'premium' ? 'pro' : planId;
+    const plan = plans[resolvedPlanId || "free"] || plans.free;
 
     useEffect(() => {
         const on = () => setIsOnline(true), off = () => setIsOnline(false);
@@ -146,7 +147,7 @@ export default function PaymentPage() {
             const parsedUser = JSON.parse(stored);
             setUser(parsedUser);
             if (plan.price > 0) {
-                api.createPayment(parsedUser.id, planId || "free", plan.price)
+                api.createPayment(parsedUser.id, resolvedPlanId || "free", plan.price)
                     .then(setPayment)
                     .catch((err: any) => setStatusError(err.message || "Không thể kết nối máy chủ."))
                     .finally(() => setIsLoading(false));

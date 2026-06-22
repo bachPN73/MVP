@@ -833,9 +833,6 @@ export default function MaterialDetail() {
                                                         }>
                                                             <ModelViewer modelUrl={getFullModelUrl(fileUrl)} />
                                                         </Suspense>
-                                                        <div className="absolute bottom-4 left-4 bg-white/90 dark:bg-slate-900/90 backdrop-blur-sm px-4 py-2 rounded-lg text-sm z-50 shadow-md pointer-events-none">
-                                                            <p className="text-slate-800 dark:text-slate-200 font-medium">Kéo chuột trái để xoay • Kéo chuột phải di chuyển • Cuộn để zoom</p>
-                                                        </div>
                                                     </div>
                                                 ) : isPDF ? (
                                                     <div className="absolute inset-0 bg-white flex items-center justify-center overflow-hidden">

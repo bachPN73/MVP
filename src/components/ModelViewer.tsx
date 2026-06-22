@@ -508,7 +508,7 @@ export default function ModelViewer({ modelUrl }: { modelUrl: string }) {
                 <div className={`w-px h-3.5 ${theme === 'dark' ? 'bg-white/20' : 'bg-slate-300'}`} />
                 <span>Cuộn để Zoom</span>
                 <div className={`w-px h-3.5 ${theme === 'dark' ? 'bg-white/20' : 'bg-slate-300'}`} />
-                <span>Kéo để Di chuyển</span>
+                <span>Chuột phải di chuyển</span>
             </div>
         </div>
     );

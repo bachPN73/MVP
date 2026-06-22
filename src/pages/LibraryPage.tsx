@@ -4,6 +4,7 @@ import { Search, Filter, BookOpen, Trash2, X, ChevronLeft, ChevronRight, Chevron
 import { Link, useSearchParams } from 'react-router';
 import { materials as mockMaterials, getSubjectName, Material, formatRelativeTime } from '../data/materialsData';
 import { api, BASE_URL } from '../api';
+import LatexText from '../components/LatexText';
 
 export default function Library() {
     const [searchParams] = useSearchParams();
@@ -276,7 +277,8 @@ export default function Library() {
     const hasAccess = (requiredPlan: string | null | undefined): boolean => {
         if (!requiredPlan) return true; // No restriction
         if (isAdmin) return true;       // Admin always has access
-        const userLevel = PLAN_HIERARCHY.indexOf(userPlan);
+        const resolvedUserPlan = userPlan === 'premium' ? 'pro' : userPlan;
+        const userLevel = PLAN_HIERARCHY.indexOf(resolvedUserPlan);
         const requiredLevel = PLAN_HIERARCHY.indexOf(requiredPlan);
         return userLevel >= requiredLevel;
     };
@@ -541,6 +543,7 @@ export default function Library() {
                                     <select
                                         value={selectedSubject}
                                         onChange={(e) => setSelectedSubject(e.target.value as Material['subject'] | 'all')}
+                                        aria-label="Chọn môn học"
                                         className="appearance-none pl-3.5 pr-8 py-2.5 bg-slate-50/80 dark:bg-white/[0.04] border border-slate-200/80 dark:border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/40 text-xs font-bold text-slate-700 dark:text-slate-200 cursor-pointer h-[44px] transition-all"
                                     >
                                         <option value="all">📚 Tất cả môn</option>
@@ -556,6 +559,7 @@ export default function Library() {
                                     <select
                                         value={selectedType}
                                         onChange={(e) => setSelectedType(e.target.value as Material['type'] | 'all')}
+                                        aria-label="Chọn loại học liệu"
                                         className="appearance-none pl-3.5 pr-8 py-2.5 bg-slate-50/80 dark:bg-white/[0.04] border border-slate-200/80 dark:border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/40 text-xs font-bold text-slate-700 dark:text-slate-200 cursor-pointer h-[44px] transition-all"
                                     >
                                         <option value="all">📦 Tất cả loại</option>
@@ -570,6 +574,7 @@ export default function Library() {
                                     <select
                                         value={selectedGrade}
                                         onChange={(e) => setSelectedGrade(e.target.value === 'all' ? 'all' : parseInt(e.target.value))}
+                                        aria-label="Chọn khối lớp"
                                         className="appearance-none pl-3.5 pr-8 py-2.5 bg-slate-50/80 dark:bg-white/[0.04] border border-slate-200/80 dark:border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/40 text-xs font-bold text-slate-700 dark:text-slate-200 cursor-pointer h-[44px] transition-all"
                                     >
                                         <option value="all">🎓 Tất cả lớp</option>
@@ -724,9 +729,9 @@ export default function Library() {
                                                     {/* Card body */}
                                                     <div className="p-3.5 sm:p-4 flex-1 flex flex-col">
                                                         <div>
-                                                            <h3 className="font-black mb-1 sm:mb-1.5 text-sm sm:text-base line-clamp-2 leading-snug text-slate-800 dark:text-slate-100 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors font-heading">{material.title}</h3>
+                                                            <h3 className="font-black mb-1 sm:mb-1.5 text-sm sm:text-base line-clamp-2 leading-snug text-slate-800 dark:text-slate-100 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors font-heading"><LatexText text={material.title} /></h3>
                                                             <p className="text-[11px] sm:text-xs text-slate-500 dark:text-slate-400 line-clamp-2 font-medium leading-relaxed">
-                                                                {material.description}
+                                                                <LatexText text={material.description || ''} />
                                                             </p>
                                                         </div>
 
@@ -931,8 +936,8 @@ export default function Library() {
                                                         )}
                                                     </div>
                                                     <div className="p-3.5 sm:p-4 flex-1 flex flex-col filter blur-[1px]">
-                                                        <h3 className="font-black mb-1 text-sm sm:text-base line-clamp-2 leading-snug text-slate-800 dark:text-slate-100 font-heading">{material.title}</h3>
-                                                        <p className="text-[11px] sm:text-xs text-slate-500 dark:text-slate-400 line-clamp-2 font-medium leading-relaxed">{material.description}</p>
+                                                        <h3 className="font-black mb-1 text-sm sm:text-base line-clamp-2 leading-snug text-slate-800 dark:text-slate-100 font-heading"><LatexText text={material.title} /></h3>
+                                                        <p className="text-[11px] sm:text-xs text-slate-500 dark:text-slate-400 line-clamp-2 font-medium leading-relaxed"><LatexText text={material.description || ''} /></p>
                                                     </div>
                                                 </div>
                                             ) : (
@@ -1002,9 +1007,9 @@ export default function Library() {
                                                     {/* Card body */}
                                                     <div className="p-3.5 sm:p-4 flex-1 flex flex-col">
                                                         <div>
-                                                            <h3 className="font-black mb-1 sm:mb-1.5 text-sm sm:text-base line-clamp-2 leading-snug text-slate-800 dark:text-slate-100 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors font-heading">{material.title}</h3>
+                                                            <h3 className="font-black mb-1 sm:mb-1.5 text-sm sm:text-base line-clamp-2 leading-snug text-slate-800 dark:text-slate-100 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors font-heading"><LatexText text={material.title} /></h3>
                                                             <p className="text-[11px] sm:text-xs text-slate-500 dark:text-slate-400 line-clamp-2 font-medium leading-relaxed">
-                                                                {material.description}
+                                                                <LatexText text={material.description || ''} />
                                                             </p>
                                                         </div>
 

@@ -37,6 +37,7 @@ export function Layout({ children }: LayoutProps) {
                     <button
                         onClick={() => setIsSidebarOpen(true)}
                         className="text-slate-900 dark:text-white p-2 hover:bg-slate-100 dark:hover:bg-white/10 rounded-xl transition-colors"
+                        aria-label="Mở menu điều hướng"
                     >
                         <Menu className="w-6 h-6" />
                     </button>

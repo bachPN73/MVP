@@ -87,23 +87,38 @@ export default function GuidePublic() {
                         </div>
                     </Link>
 
-                    <div className="flex items-center gap-3">
-                        <ThemeToggle variant="glass" />
+                    <nav className="hidden items-center gap-1 md:flex">
                         <Link
                             to="/"
-                            className="px-4 py-2 text-slate-700 dark:text-slate-300 hover:text-primary dark:hover:text-white transition-colors font-medium rounded-xl hover:bg-slate-100/50 dark:hover:bg-white/5"
+                            className="rounded-lg px-4 py-2 text-sm font-bold text-slate-650 hover:bg-slate-100 hover:text-slate-950 dark:text-slate-350 dark:hover:bg-white/[0.08] dark:hover:text-white"
                         >
                             Trang chủ
                         </Link>
                         <Link
+                            to="/guide"
+                            className="rounded-lg px-4 py-2 text-sm font-bold text-primary dark:text-white bg-slate-100 dark:bg-white/[0.08]"
+                        >
+                            Hướng dẫn
+                        </Link>
+                        <Link
+                            to="/pricing"
+                            className="rounded-lg px-4 py-2 text-sm font-bold text-slate-650 hover:bg-slate-100 hover:text-slate-950 dark:text-slate-350 dark:hover:bg-white/[0.08] dark:hover:text-white"
+                        >
+                            Bảng giá
+                        </Link>
+                    </nav>
+
+                    <div className="flex items-center gap-3 sm:gap-4">
+                        <ThemeToggle variant="glass" />
+                        <Link
                             to="/login"
-                            className="px-4 py-2 text-slate-700 dark:text-slate-300 hover:text-primary dark:hover:text-white transition-colors font-medium rounded-xl hover:bg-slate-100/50 dark:hover:bg-white/5"
+                            className="hidden xs:block px-4 py-2 text-slate-650 dark:text-slate-350 hover:text-primary dark:hover:text-white transition-colors font-bold"
                         >
                             Đăng nhập
                         </Link>
                         <Link
                             to="/register"
-                            className="px-6 py-2 bg-gradient-to-r from-primary to-blue-600 hover:from-primary/95 hover:to-blue-600/95 text-white rounded-lg font-medium hover:shadow-lg transition-all"
+                            className="px-6 py-2.5 bg-primary hover:bg-primary/90 text-white rounded-xl font-bold hover:shadow-lg hover:shadow-primary/30 transition-all active:scale-95"
                         >
                             Đăng ký
                         </Link>

@@ -68,7 +68,7 @@ export function AppSidebar({ currentPath = '/', isOpen = false, setIsOpen, isCol
     }, [currentPath]);
 
     const getRoleLabel = (role: string, plan: string) => {
-        if (role === 'admin') return 'Quản trị Web';
+        if (role === 'admin') return 'Quản trị viên';
         if (role === 'school-admin') return 'Quản trị Trường';
         if (role === 'teacher') return 'Giáo viên';
         return 'Học sinh';
@@ -86,7 +86,7 @@ export function AppSidebar({ currentPath = '/', isOpen = false, setIsOpen, isCol
         { path: '/library', label: 'Thư viện', icon: Library },
         { path: '/find-ai', label: 'AI tìm kiếm', icon: Sparkles },
         { path: '/pricing-app', label: 'Gói dịch vụ', icon: CreditCard },
-        ...(['pro', 'school', 'demo'].includes(userPlan) ? [{ path: '/vault', label: 'Kho tạm thời', icon: Archive }] : []),
+        ...(['pro', 'premium', 'school', 'demo'].includes(userPlan) ? [{ path: '/vault', label: 'Kho tạm thời', icon: Archive }] : []),
         ...(userRole === 'school-admin' ? [{ path: '/school/dashboard', label: 'Trường học', icon: School }] : []),
         // Show join-school link for everyone except school-admin (who has dashboard) and active school members
         ...(userRole !== 'school-admin' && !['school'].includes(userPlan)
@@ -290,6 +290,7 @@ export function AppSidebar({ currentPath = '/', isOpen = false, setIsOpen, isCol
                                             : 'text-white/20 hover:text-white hover:bg-red-500/80'
                                     }`}
                                     title="Đăng xuất"
+                                    aria-label="Đăng xuất tài khoản"
                                 >
                                     <LogOut className="w-4 h-4" />
                                     {/* Premium Tooltip for logout when collapsed */}
@@ -310,6 +311,7 @@ export function AppSidebar({ currentPath = '/', isOpen = false, setIsOpen, isCol
                 className={`hidden md:flex absolute -right-3.5 top-20 items-center justify-center w-7 h-7 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 text-white border-4 border-sidebar shadow-xl hover:scale-110 active:scale-95 transition-all z-[60]
                     ${isCollapsed ? 'rotate-180' : ''}`}
                 title={isCollapsed ? "Mở rộng" : "Thu gọn"}
+                aria-label={isCollapsed ? "Mở rộng thanh điều hướng" : "Thu gọn thanh điều hướng"}
             >
                 <ChevronLeft className="w-4 h-4" />
             </button>

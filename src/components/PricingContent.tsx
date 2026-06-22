@@ -42,7 +42,7 @@ export default function PricingContent() {
                 {plans.map((plan) => {
                     const Icon = plan.icon;
                     const isFeatured = plan.id === "pro";
-                    const isOwned = plan.id.toLowerCase() === currentPlan;
+                    const isOwned = currentUser ? (plan.id.toLowerCase() === currentPlan) : false;
                     const itemPlanTier = planTiers[plan.id.toLowerCase()] || 0;
                     
                     // Xác định màu sắc cụ thể cho từng gói
@@ -185,7 +185,18 @@ export default function PricingContent() {
                                 </div>
 
                                 {/* CTA Button - Đẩy sát đáy */}
-                                {itemPlanTier < currentPlanTier ? (
+                                {!currentUser ? (
+                                     <Link to="/register" className="mt-auto block">
+                                         <button
+                                             className={`
+                                                 w-full py-3 rounded-xl text-xs font-black transition-all duration-300 cursor-pointer font-sans
+                                                 active:scale-[0.98] ${btnStyle}
+                                             `}
+                                         >
+                                             {plan.id === "free" ? "Trải nghiệm ngay" : "Chọn gói này"}
+                                         </button>
+                                     </Link>
+                                 ) : itemPlanTier < currentPlanTier ? (
                                      <div className="mt-auto block">
                                          <button
                                              disabled
