@@ -49,36 +49,34 @@ export function QuizPanel({ quiz, theme }: QuizPanelProps) {
         setQuizCompleted(false);
     };
 
-    const baseClasses = theme === 'light'
-        ? "bg-white border-stone-200 text-slate-800"
-        : "bg-slate-900 border-white/10 text-white";
+    const baseClasses = "bg-transparent text-slate-800 dark:text-white";
 
     const getOptionClasses = (index: number) => {
-        let classes = `w-full text-left p-4 rounded-xl border-2 transition-all duration-200 flex items-center justify-between group `;
+        let classes = `w-full text-left p-4 rounded-xl border transition-all duration-300 flex items-center justify-between group backdrop-blur-sm `;
         
         if (!isAnswerSubmitted) {
             if (selectedOption === index) {
                 classes += theme === 'light' 
-                    ? "border-indigo-500 bg-indigo-50" 
-                    : "border-indigo-500 bg-indigo-500/20";
+                    ? "border-indigo-500 bg-indigo-50/80 text-indigo-700 shadow-md scale-[1.02]" 
+                    : "border-indigo-400 bg-indigo-500/20 text-indigo-300 shadow-md scale-[1.02]";
             } else {
                 classes += theme === 'light'
-                    ? "border-slate-200 hover:border-indigo-300 hover:bg-slate-50"
-                    : "border-white/10 hover:border-indigo-400 hover:bg-white/5";
+                    ? "border-white/60 bg-white/50 hover:border-indigo-300 hover:bg-white/90 hover:shadow-md hover:scale-[1.01]"
+                    : "border-white/10 bg-slate-900/40 hover:border-indigo-400/50 hover:bg-slate-800/60 hover:scale-[1.01]";
             }
         } else {
             if (index === currentQuestion.correctAnswerIndex) {
                 classes += theme === 'light'
-                    ? "border-emerald-500 bg-emerald-50"
-                    : "border-emerald-500 bg-emerald-500/20";
+                    ? "border-emerald-500 bg-emerald-50/90 text-emerald-700 shadow-sm"
+                    : "border-emerald-500 bg-emerald-500/20 text-emerald-300 shadow-sm";
             } else if (selectedOption === index) {
                 classes += theme === 'light'
-                    ? "border-rose-500 bg-rose-50"
-                    : "border-rose-500 bg-rose-500/20";
+                    ? "border-rose-500 bg-rose-50/90 text-rose-700 shadow-sm"
+                    : "border-rose-500 bg-rose-500/20 text-rose-300 shadow-sm";
             } else {
                 classes += theme === 'light'
-                    ? "border-slate-200 opacity-50"
-                    : "border-white/10 opacity-50";
+                    ? "border-slate-200 bg-white/40 opacity-50"
+                    : "border-white/5 bg-slate-900/20 opacity-50";
             }
         }
         return classes;
@@ -86,17 +84,17 @@ export function QuizPanel({ quiz, theme }: QuizPanelProps) {
 
     if (quizCompleted) {
         return (
-            <div className={`w-full h-full p-8 flex flex-col items-center justify-center rounded-2xl shadow-inner ${baseClasses}`}>
-                <div className="w-20 h-20 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-full flex items-center justify-center text-white mb-6 shadow-lg">
-                    <CheckCircle2 className="w-10 h-10" />
+            <div className={`w-full h-full p-8 flex flex-col items-center justify-center rounded-2xl ${baseClasses}`}>
+                <div className="w-24 h-24 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-3xl flex items-center justify-center text-white mb-8 shadow-2xl shadow-indigo-500/30 rotate-3 hover:rotate-6 transition-transform">
+                    <CheckCircle2 className="w-12 h-12" />
                 </div>
-                <h3 className="text-3xl font-black mb-2 font-heading">Hoàn thành!</h3>
+                <h3 className="text-3xl font-black mb-2 font-heading bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-indigo-400 dark:to-purple-400 bg-clip-text text-transparent">Hoàn thành!</h3>
                 <p className={`text-lg font-medium mb-8 ${theme === 'light' ? 'text-slate-600' : 'text-slate-300'}`}>
-                    Bạn đã trả lời đúng {score} / {quiz.length} câu hỏi.
+                    Bạn đã trả lời đúng <span className="text-indigo-600 dark:text-indigo-400 font-bold">{score}</span> / {quiz.length} câu hỏi.
                 </p>
                 <button
                     onClick={handleRetry}
-                    className="flex items-center gap-2 px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-bold transition-transform active:scale-95 shadow-md"
+                    className="flex items-center gap-2 px-8 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white rounded-xl font-bold transition-transform hover:-translate-y-1 shadow-lg shadow-indigo-500/25"
                 >
                     <RefreshCcw className="w-5 h-5" /> Thử lại
                 </button>
@@ -105,14 +103,16 @@ export function QuizPanel({ quiz, theme }: QuizPanelProps) {
     }
 
     return (
-        <div className={`w-full h-full p-6 md:p-8 flex flex-col rounded-2xl shadow-inner overflow-y-auto custom-scrollbar ${baseClasses}`}>
+        <div className={`w-full h-full p-6 md:p-8 flex flex-col rounded-2xl overflow-y-auto custom-scrollbar ${baseClasses}`}>
             {/* Header */}
             <div className="flex items-center justify-between mb-8">
                 <div className="flex items-center gap-2">
-                    <HelpCircle className="w-5 h-5 text-indigo-500" />
-                    <span className="font-bold text-sm uppercase tracking-widest text-indigo-500">Trắc nghiệm</span>
+                    <div className="p-2 bg-indigo-500/10 rounded-xl">
+                        <HelpCircle className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
+                    </div>
+                    <span className="font-bold text-sm uppercase tracking-widest text-indigo-600 dark:text-indigo-400">Trắc nghiệm</span>
                 </div>
-                <div className={`px-3 py-1 rounded-lg text-xs font-bold ${theme === 'light' ? 'bg-slate-100 text-slate-600' : 'bg-white/10 text-slate-300'}`}>
+                <div className={`px-4 py-1.5 rounded-xl text-xs font-bold shadow-sm backdrop-blur-md ${theme === 'light' ? 'bg-white/80 border border-white/50 text-slate-600' : 'bg-slate-800/80 border border-white/10 text-slate-300'}`}>
                     Câu {currentQuestionIndex + 1} / {quiz.length}
                 </div>
             </div>
@@ -160,10 +160,10 @@ export function QuizPanel({ quiz, theme }: QuizPanelProps) {
                         <button
                             onClick={handleSubmit}
                             disabled={selectedOption === null}
-                            className={`px-8 py-3 rounded-xl font-bold shadow-md transition-all ${
+                            className={`px-8 py-3 rounded-xl font-bold shadow-lg transition-all duration-300 ${
                                 selectedOption !== null 
-                                    ? 'bg-indigo-600 hover:bg-indigo-700 text-white hover:-translate-y-0.5' 
-                                    : 'bg-slate-200 dark:bg-white/10 text-slate-400 dark:text-slate-500 cursor-not-allowed'
+                                    ? 'bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white hover:-translate-y-1 shadow-indigo-500/25' 
+                                    : 'bg-white/50 dark:bg-slate-800/50 text-slate-400 dark:text-slate-500 cursor-not-allowed shadow-none'
                             }`}
                         >
                             Trả lời
@@ -171,7 +171,7 @@ export function QuizPanel({ quiz, theme }: QuizPanelProps) {
                     ) : (
                         <button
                             onClick={handleNext}
-                            className="flex items-center gap-2 px-8 py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-bold shadow-md hover:-translate-y-0.5 transition-all"
+                            className="flex items-center gap-2 px-8 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white rounded-xl font-bold shadow-lg shadow-indigo-500/25 hover:-translate-y-1 transition-all duration-300"
                         >
                             {currentQuestionIndex < quiz.length - 1 ? 'Câu tiếp theo' : 'Hoàn thành'} <ChevronRight className="w-5 h-5" />
                         </button>

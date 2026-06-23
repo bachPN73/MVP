@@ -74,7 +74,7 @@ export default function MaterialDetail() {
     const [isFullscreen, setIsFullscreen] = useState(false);
     const [viewerActive, setViewerActive] = useState(false);
     const [activeTab, setActiveTab] = useState<'info' | 'structure' | 'related'>('info');
-    const [isQuizExpanded, setIsQuizExpanded] = useState(true);
+    const [isQuizExpanded, setIsQuizExpanded] = useState(false);
     const containerRef = useRef<HTMLDivElement>(null);
 
     const [allMaterials, setAllMaterials] = useState<Material[]>([]);
@@ -730,9 +730,10 @@ export default function MaterialDetail() {
                                 }
                             >
 
-                                <div className={`relative flex items-center justify-center transition-all duration-700 ease-out ${
-                                    isFullscreen && material.quiz && material.quiz.length > 0 && isQuizExpanded ? 'w-[70%]' : 'w-full'
-                                } h-full`}>
+                                <div 
+                                    className={`relative flex items-center justify-center transition-all duration-700 ease-out h-full`}
+                                    style={{ width: material.quiz && material.quiz.length > 0 && isQuizExpanded ? 'calc(100% - 390px)' : '100%' }}
+                                >
 
                                  {isBlocked ? (
                                     <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center select-none bg-slate-900/90 dark:bg-slate-950/95 backdrop-blur-md z-30">
@@ -958,21 +959,39 @@ export default function MaterialDetail() {
                                 )}
                                 </div>
 
-                                {isFullscreen && material.quiz && material.quiz.length > 0 && (
+                                {material.quiz && material.quiz.length > 0 && (
                                     <>
                                         {/* Toggle Button */}
-                                        <button
-                                            onClick={() => setIsQuizExpanded(!isQuizExpanded)}
-                                            className="absolute top-1/2 -translate-y-1/2 z-50 flex items-center justify-center w-7 h-14 bg-white dark:bg-slate-800 shadow-[0_0_15px_rgba(0,0,0,0.1)] dark:shadow-[0_0_15px_rgba(0,0,0,0.5)] border border-slate-200 dark:border-white/10 rounded-l-xl hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors cursor-pointer"
-                                            style={{ right: isQuizExpanded ? '30%' : '0px', transition: 'right 0.7s cubic-bezier(0, 0, 0.2, 1)' }}
+                                        <div 
+                                            className="absolute top-1/2 z-50 flex items-center justify-center group"
+                                            style={{ right: isQuizExpanded ? '376px' : '16px', transform: 'translateY(-50%)', transition: 'right 0.7s cubic-bezier(0, 0, 0.2, 1)' }}
                                         >
-                                            {isQuizExpanded ? <ChevronRight className="w-5 h-5 text-slate-500" /> : <ChevronLeft className="w-5 h-5 text-slate-500" />}
-                                        </button>
+                                            {!isQuizExpanded && (
+                                                <div className="absolute right-full mr-2 px-3 py-1.5 bg-indigo-600 dark:bg-indigo-500 text-white text-xs font-bold rounded-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none shadow-lg flex items-center gap-1.5">
+                                                    <Sparkles className="w-3.5 h-3.5" />
+                                                    Câu hỏi thú vị
+                                                </div>
+                                            )}
+                                            <button
+                                                onClick={() => setIsQuizExpanded(!isQuizExpanded)}
+                                                className="flex items-center justify-center w-7 h-14 bg-white dark:bg-slate-800 shadow-[0_0_15px_rgba(0,0,0,0.1)] dark:shadow-[0_0_15px_rgba(0,0,0,0.5)] border border-slate-200 dark:border-white/10 rounded-l-xl hover:bg-indigo-50 dark:hover:bg-indigo-900/30 transition-colors cursor-pointer group-hover:border-indigo-300 dark:group-hover:border-indigo-500/50"
+                                            >
+                                                {isQuizExpanded ? <ChevronRight className="w-5 h-5 text-slate-500" /> : <ChevronLeft className="w-5 h-5 text-indigo-500 dark:text-indigo-400" />}
+                                            </button>
+                                        </div>
                                         
-                                        <div className={`h-full z-40 bg-white dark:bg-slate-900 border-l border-slate-200 dark:border-white/10 overflow-hidden shadow-2xl transition-all duration-700 ease-out flex-shrink-0 ${
-                                            isQuizExpanded ? 'w-[30%]' : 'w-0 border-l-0'
-                                        }`}>
-                                            <div className="w-[100%] h-full min-w-[320px]">
+                                        <div 
+                                            className="absolute right-4 top-1/2 z-40 bg-slate-50/95 dark:bg-slate-800/95 backdrop-blur-xl rounded-2xl border border-slate-200/80 dark:border-white/10 overflow-hidden shadow-2xl transition-all duration-700 ease-out flex flex-col"
+                                            style={{ 
+                                                width: '360px', 
+                                                height: 'fit-content',
+                                                maxHeight: 'calc(100% - 32px)',
+                                                transform: `translateY(-50%) translateX(${isQuizExpanded ? '0' : '120%'})`,
+                                                opacity: isQuizExpanded ? 1 : 0,
+                                                pointerEvents: isQuizExpanded ? 'auto' : 'none'
+                                            }}
+                                        >
+                                            <div className="w-[360px] h-fit max-h-[calc(100vh-64px)] overflow-y-auto custom-scrollbar">
                                                 <QuizPanel quiz={material.quiz} theme={theme} isFullscreen={true} />
                                             </div>
                                         </div>
@@ -994,7 +1013,8 @@ export default function MaterialDetail() {
                                                 }
                                             }
                                         }}
-                                        className="absolute top-4 right-4 z-50 flex items-center gap-2 px-4 py-2 bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm rounded-lg hover:bg-white dark:hover:bg-slate-700 transition-colors shadow-lg cursor-pointer text-slate-800 dark:text-white"
+                                        className="absolute top-4 z-50 flex items-center gap-2 px-4 py-2 bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm rounded-lg hover:bg-white dark:hover:bg-slate-700 transition-colors shadow-lg cursor-pointer text-slate-800 dark:text-white"
+                                        style={{ right: isQuizExpanded ? 'calc(390px + 1rem)' : '1rem', transition: 'right 0.7s cubic-bezier(0, 0, 0.2, 1)' }}
                                         title={isFullscreen ? "Thu nhỏ" : "Mở toàn màn hình"}
                                     >
                                         {isFullscreen ? <Minimize2 className="w-4 h-4" /> : <Maximize2 className="w-4 h-4" />}
