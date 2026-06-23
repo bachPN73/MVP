@@ -215,7 +215,7 @@ export default function Landing() {
                     - Background: ảnh landing-bg.png (dark navy + 3D objects)
                     - Text trái, objects phải
                 ══════════════════════════════════════ */}
-                <section className="relative" style={{ minHeight: '90vh' }}>
+                <section className="relative" style={{ minHeight: '100dvh' }}>
                     {/* Background: hero-bg.png = EduTechvn.png (chỉ hero, không có navbar) */}
                     <div
                         className="absolute inset-0 overflow-hidden flex justify-center"
@@ -250,7 +250,7 @@ export default function Landing() {
 
 
                     {/* Content */}
-                    <div className="relative z-10 mx-auto max-w-[1440px] px-6 sm:px-12 lg:px-16 pt-[120px] pb-[70px] lg:pt-[150px] lg:pb-[90px]">
+                    <div className="relative z-10 mx-auto max-w-[1440px] px-6 sm:px-12 lg:px-16 flex flex-col justify-center min-h-[100dvh] pt-[90px] pb-[30px] sm:pt-[100px] sm:pb-[40px]">
                         {/* Brand title */}
                         <h1
                             className="font-black text-white leading-none"
@@ -260,24 +260,24 @@ export default function Landing() {
                         </h1>
 
                         {/* Tagline */}
-                        <p className="mt-5 text-xl font-bold text-white sm:text-3xl lg:text-4xl leading-tight" style={{ maxWidth: 650 }}>
+                        <p className="mt-4 sm:mt-5 text-xl font-bold text-white sm:text-3xl lg:text-4xl leading-tight" style={{ maxWidth: 650 }}>
                             Biến kiến thức trừu tượng
-                            <br />
-                            thành trải nghiệm trực quan
+                            <br className="hidden sm:inline" />
+                            {' '}thành trải nghiệm trực quan
                         </p>
 
                         {/* Sub-description */}
-                        <p className="mt-4 text-base font-medium text-slate-300 sm:text-lg lg:text-xl leading-relaxed" style={{ maxWidth: 600 }}>
+                        <p className="mt-3 sm:mt-4 text-sm sm:text-lg lg:text-xl font-medium text-slate-300 leading-relaxed" style={{ maxWidth: 600 }}>
                             Hiểu nhanh hơn nhớ lâu hơn với mô hình 3D, infographic và AI
-                            <br />
-                            Tiết kiệm thời gian soạn bài và tìm học liệu trực quan
+                            <br className="hidden sm:inline" />
+                            {' '}Tiết kiệm thời gian soạn bài và tìm học liệu trực quan
                         </p>
 
                         {/* CTA – rounded pill blue button */}
-                        <div className="mt-8">
+                        <div className="mt-6 sm:mt-8">
                             <Link
                                 to="/register"
-                                className="inline-flex items-center gap-2 rounded-full bg-blue-600 px-9 py-3.5 text-lg font-bold text-white shadow-lg hover:bg-blue-500 hover:-translate-y-0.5 hover:shadow-blue-600/40 hover:shadow-xl transition-all duration-200"
+                                className="inline-flex items-center gap-2 rounded-full bg-blue-600 px-7 py-3 sm:px-9 sm:py-3.5 text-base sm:text-lg font-bold text-white shadow-lg hover:bg-blue-500 hover:-translate-y-0.5 hover:shadow-blue-600/40 hover:shadow-xl transition-all duration-200"
                             >
                                 Trải nghiệm ngay
                             </Link>
@@ -285,19 +285,19 @@ export default function Landing() {
 
                         {/* ── FEATURE ICONS PANEL (nằm bên dưới, trong hero) ── */}
                         <div
-                            className="mt-10 lg:mt-12 grid grid-cols-2 gap-4 sm:grid-cols-4 lg:gap-5"
+                            className="mt-8 sm:mt-10 lg:mt-12 grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4 lg:gap-5"
                             style={{ maxWidth: 800 }}
                         >
                             {FEATURES.map((f, i) => (
                                 <div
                                     key={i}
-                                    className="rounded-2xl border border-white/20 bg-white/10 backdrop-blur-md p-5 hover:bg-white/15 transition-colors"
+                                    className="rounded-2xl border border-white/20 bg-white/10 backdrop-blur-md p-3 sm:p-5 hover:bg-white/15 transition-colors"
                                 >
-                                    <div className="flex justify-center scale-110 mb-2">{f.icon}</div>
-                                    <p className="mt-2 text-center text-[13px] sm:text-sm font-bold text-white leading-tight whitespace-pre-line">
+                                    <div className="flex justify-center scale-90 sm:scale-110 mb-1 sm:mb-2">{f.icon}</div>
+                                    <p className="mt-1 sm:mt-2 text-center text-[12px] sm:text-[13px] md:text-sm font-bold text-white leading-tight whitespace-pre-line">
                                         {f.title}
                                     </p>
-                                    <p className="mt-1.5 text-center text-[11px] sm:text-xs text-slate-300 leading-tight whitespace-pre-line">
+                                    <p className="mt-1 sm:mt-1.5 text-center text-[10px] sm:text-[11px] md:text-xs text-slate-300 leading-tight whitespace-pre-line">
                                         {f.sub}
                                     </p>
                                 </div>
