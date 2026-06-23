@@ -380,17 +380,16 @@ export default function Landing() {
                             {/* Right – 3D model placeholder */}
                             <div className="flex items-center justify-center">
                                 <div className="relative w-full max-w-md">
-                                    {/* 3D Model viewer */}
-                                    <div className="rounded-3xl border border-slate-200 bg-slate-50/50 overflow-hidden aspect-square shadow-lg relative group mb-5">
-                                        <ModelViewer modelUrl="/dna.glb" minimal={true} autoRotate={true} />
-                                        <div className="absolute bottom-4 left-0 right-0 flex justify-center pointer-events-none transition-opacity duration-300 opacity-0 group-hover:opacity-100">
-                                            <span className="bg-slate-900/60 text-white text-[10px] uppercase tracking-wider font-bold px-3 py-1.5 rounded-full backdrop-blur-md flex items-center gap-1.5 shadow-md border border-white/10">
-                                                <svg className="w-3 h-3 text-white/90" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                                                    <path strokeLinecap="round" strokeLinejoin="round" d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122" />
-                                                </svg>
-                                                Chạm để xoay
-                                            </span>
-                                        </div>
+                                    {/* Video replacing 3D Model for performance */}
+                                    <div className="rounded-3xl border border-slate-200 bg-white overflow-hidden aspect-square shadow-lg relative group mb-5 flex items-center justify-center">
+                                        <video 
+                                            src="/videodna.mp4" 
+                                            autoPlay 
+                                            loop 
+                                            muted 
+                                            playsInline 
+                                            className="w-full h-full object-cover"
+                                        />
                                     </div>
                                     <div className="flex justify-center">
                                         <Link
