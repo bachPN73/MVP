@@ -186,7 +186,7 @@ export default function PricingContent() {
 
                                 {/* CTA Button - Đẩy sát đáy */}
                                 {!currentUser ? (
-                                     <Link to="/register" className="mt-auto block">
+                                     <Link to="/login" className="mt-auto block">
                                          <button
                                              className={`
                                                  w-full py-3 rounded-xl text-xs font-black transition-all duration-300 cursor-pointer font-sans
