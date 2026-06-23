@@ -16,10 +16,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
         const saved = localStorage.getItem('edu_tech_theme');
         if (saved === 'light' || saved === 'dark') return saved;
         
-        // Default to dark or check system preference. Let's use light by default or check media query
-        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-            return 'dark';
-        }
+        // Mặc định luôn là light theo yêu cầu
         return 'light';
     });
 

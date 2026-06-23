@@ -3,6 +3,7 @@ import { Home, Library, Sparkles, BookOpen, LogOut, CreditCard, X, ChevronLeft, 
 import { useState, useEffect } from 'react';
 import { useTheme } from '../components/ThemeProvider';
 import { api } from '../api';
+import ThemeToggle from '../components/ThemeToggle';
 
 interface AppSidebarProps {
     currentPath?: string;
