@@ -250,8 +250,7 @@ export default function Landing() {
 
 
                     {/* Content */}
-                    {/* Shift content slightly to left by adding mr-auto or adjusting margins, and make it smaller */}
-                    <div className="relative z-10 mx-auto max-w-[1280px] px-8 sm:px-12 lg:pr-24" style={{ paddingTop: '130px', paddingBottom: '160px' }}>
+                    <div className="relative z-10 mx-auto max-w-[1440px] px-6 sm:px-12 lg:px-16 pt-[120px] pb-[70px] lg:pt-[150px] lg:pb-[90px]">
                         {/* Brand title */}
                         <h1
                             className="font-black text-white leading-none"
@@ -286,7 +285,7 @@ export default function Landing() {
 
                         {/* ── FEATURE ICONS PANEL (nằm bên dưới, trong hero) ── */}
                         <div
-                            className="mt-16 grid grid-cols-2 gap-4 sm:grid-cols-4 lg:gap-5"
+                            className="mt-10 lg:mt-12 grid grid-cols-2 gap-4 sm:grid-cols-4 lg:gap-5"
                             style={{ maxWidth: 800 }}
                         >
                             {FEATURES.map((f, i) => (
