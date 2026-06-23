@@ -68,7 +68,7 @@ export default function PricingPublicPage() {
                         Quay lại trang chủ
                     </Link>
                 </div>
-                <PricingContent />
+                <PricingContent isPublic={true} />
             </main>
 
             {/* Footer */}

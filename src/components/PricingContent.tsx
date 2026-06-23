@@ -3,7 +3,7 @@ import { Link } from "react-router";
 import { plans } from "../data/plans";
 import { useState } from "react";
 
-export default function PricingContent() {
+export default function PricingContent({ isPublic = false }: { isPublic?: boolean }) {
     const storedUser = localStorage.getItem("edu_tech_user");
     const currentUser = storedUser ? JSON.parse(storedUser) : null;
     const currentPlan = (currentUser?.plan || "free").toLowerCase();
@@ -185,7 +185,7 @@ export default function PricingContent() {
                                 </div>
 
                                 {/* CTA Button - Đẩy sát đáy */}
-                                {!currentUser ? (
+                                {isPublic || !currentUser ? (
                                      <Link to="/login" className="mt-auto block">
                                          <button
                                              className={`
