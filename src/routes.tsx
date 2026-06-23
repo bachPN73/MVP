@@ -3,42 +3,42 @@ import { lazy, Suspense } from "react";
 import ScrollToTop from "./components/ScrollToTop";
 import AuthGuard from "./components/AuthGuard";
 
-// Eagerly import all pages for instantaneous transition with zero flashing (nháy nháy)
-import Landing from "./pages/LandingPage";
-import Login from "./pages/LoginPage";
-import Register from "./pages/RegisterPage";
-import GuidePublic from "./pages/GuidePublicPage";
-import Dashboard from "./pages/Dashboard";
-import Library from "./pages/LibraryPage";
-import FindWithAI from "./pages/FindWithAI";
-import MaterialDetail from "./pages/MaterialDetail";
-import PresentationMode from "./pages/PresentationModePage";
-import Guide from "./pages/GuidePage";
-import Profile from "./pages/ProfilePage";
-import Pricing from "./pages/PricingPage";
-import PricingPublic from "./pages/PricingPublicPage";
-import Payment from "./pages/PaymentPage";
-import ForgotPassword from "./pages/ForgotPasswordPage";
-import ResetPassword from "./pages/ResetPasswordPage";
-import PresentationIntroPage from "./pages/PresentationIntroPage";
+// Tối ưu Code Splitting: Lazy load tất cả các trang để giảm dung lượng file bundle ban đầu
+const Landing = lazy(() => import("./pages/LandingPage"));
+const Login = lazy(() => import("./pages/LoginPage"));
+const Register = lazy(() => import("./pages/RegisterPage"));
+const GuidePublic = lazy(() => import("./pages/GuidePublicPage"));
+const Dashboard = lazy(() => import("./pages/Dashboard"));
+const Library = lazy(() => import("./pages/LibraryPage"));
+const FindWithAI = lazy(() => import("./pages/FindWithAI"));
+const MaterialDetail = lazy(() => import("./pages/MaterialDetail"));
+const PresentationMode = lazy(() => import("./pages/PresentationModePage"));
+const Guide = lazy(() => import("./pages/GuidePage"));
+const Profile = lazy(() => import("./pages/ProfilePage"));
+const Pricing = lazy(() => import("./pages/PricingPage"));
+const PricingPublic = lazy(() => import("./pages/PricingPublicPage"));
+const Payment = lazy(() => import("./pages/PaymentPage"));
+const ForgotPassword = lazy(() => import("./pages/ForgotPasswordPage"));
+const ResetPassword = lazy(() => import("./pages/ResetPasswordPage"));
+const PresentationIntroPage = lazy(() => import("./pages/PresentationIntroPage"));
 
 // Admin Pages
-import AdminDashboard from "./pages/admin/AdminDashboard";
-import AdminMaterialsPage from "./pages/admin/AdminMaterialsPage";
-import AdminLessonsPage from "./pages/admin/AdminLessonsPage";
-import AdminUsersPage from "./pages/admin/AdminUsersPage";
-import AdminSchoolsPage from "./pages/admin/AdminSchoolsPage";
-import AdminPaymentsPage from "./pages/admin/AdminPaymentsPage";
-import AdminAIConfigPage from "./pages/admin/AdminAIConfigPage";
+const AdminDashboard = lazy(() => import("./pages/admin/AdminDashboard"));
+const AdminMaterialsPage = lazy(() => import("./pages/admin/AdminMaterialsPage"));
+const AdminLessonsPage = lazy(() => import("./pages/admin/AdminLessonsPage"));
+const AdminUsersPage = lazy(() => import("./pages/admin/AdminUsersPage"));
+const AdminSchoolsPage = lazy(() => import("./pages/admin/AdminSchoolsPage"));
+const AdminPaymentsPage = lazy(() => import("./pages/admin/AdminPaymentsPage"));
+const AdminAIConfigPage = lazy(() => import("./pages/admin/AdminAIConfigPage"));
 
 // School Pages
-import SchoolDashboard from "./pages/school/SchoolDashboard";
-import JoinSchoolPage from "./pages/JoinSchoolPage";
+const SchoolDashboard = lazy(() => import("./pages/school/SchoolDashboard"));
+const JoinSchoolPage = lazy(() => import("./pages/JoinSchoolPage"));
 
 // Pro Vault Page
-import VaultPage from "./pages/VaultPage";
+const VaultPage = lazy(() => import("./pages/VaultPage"));
 
-import NotFound from "./pages/NotFound";
+const NotFound = lazy(() => import("./pages/NotFound"));
 
 // Loading spinner component that adapts background color to prevent bright flashing (nháy nháy) between routes
 function PageLoader() {

@@ -1,6 +1,6 @@
 import { Canvas, ThreeElements } from '@react-three/fiber';
 import { useFBX, OrbitControls, Stage, Environment } from '@react-three/drei';
-import { Suspense, useEffect, useState } from 'react';
+import { Suspense, useEffect, useState, useRef } from 'react';
 import { Loader2, HelpCircle, HardDrive, RefreshCw, Zap, Sparkles } from 'lucide-react';
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
@@ -325,6 +325,21 @@ export default function ModelViewer({ modelUrl, minimal = false, autoRotate = fa
         return false;
     });
 
+    // Tối ưu hóa: Chỉ render mô hình khi nó nằm trong vùng nhìn thấy của màn hình
+    const containerRef = useRef<HTMLDivElement>(null);
+    const [isVisible, setIsVisible] = useState(true);
+
+    useEffect(() => {
+        const observer = new IntersectionObserver(
+            ([entry]) => setIsVisible(entry.isIntersecting),
+            { threshold: 0.1 }
+        );
+        if (containerRef.current) {
+            observer.observe(containerRef.current);
+        }
+        return () => observer.disconnect();
+    }, []);
+
     // Effect to handle stabilization delay (compiling shaders & loading textures offscreen)
     useEffect(() => {
         if (loadingStage === 'stabilizing') {
@@ -375,7 +390,9 @@ export default function ModelViewer({ modelUrl, minimal = false, autoRotate = fa
     }, [loadedScene, highQuality, isAmber]);
 
     return (
-        <div className={`relative w-full h-full rounded-2xl overflow-hidden transition-colors duration-300 ${
+        <div 
+            ref={containerRef}
+            className={`relative w-full h-full rounded-2xl overflow-hidden transition-colors duration-300 ${
             theme === 'dark' 
             ? 'bg-transparent text-white' 
             : 'bg-transparent text-slate-800'
@@ -431,7 +448,8 @@ export default function ModelViewer({ modelUrl, minimal = false, autoRotate = fa
 
             <Suspense fallback={null}>
                 <Canvas
-                    frameloop="always" // Luôn render để quán tính damping của OrbitControls mượt mà không khựng giật
+                    frameloop={isVisible ? "always" : "demand"} // Ngủ đông (demand) khi khuất màn hình để tránh lag
+
                     performance={{ min: isMobile ? 0.3 : 0.5 }}
                     dpr={highQuality ? Math.min(2, window.devicePixelRatio) : 1} // Ép độ phân giải 1x khi lag, 2x khi cần chất lượng cao
                     camera={{ position: [0, 0, 4], fov: 45 }}
@@ -496,7 +514,7 @@ export default function ModelViewer({ modelUrl, minimal = false, autoRotate = fa
                         </>
                     )}
 
-                    <OrbitControls makeDefault enableZoom={!minimal} enablePan={!minimal} zoomSpeed={1.2} enableDamping={true} dampingFactor={0.05} autoRotate={autoRotate} autoRotateSpeed={0.8} />
+                    <OrbitControls makeDefault enableZoom={!minimal} enablePan={!minimal} zoomSpeed={1.2} enableDamping={true} dampingFactor={0.05} autoRotate={isVisible && autoRotate} autoRotateSpeed={0.8} />
                 </Canvas>
             </Suspense>
 
