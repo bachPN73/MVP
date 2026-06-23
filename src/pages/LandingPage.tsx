@@ -255,13 +255,13 @@ export default function Landing() {
                         {/* Brand title */}
                         <h1
                             className="font-black text-white leading-none"
-                            style={{ fontSize: 'clamp(70px, 11vw, 120px)', letterSpacing: '-0.02em' }}
+                            style={{ fontSize: 'clamp(50px, 8vw, 90px)', letterSpacing: '-0.02em' }}
                         >
                             EduTech
                         </h1>
 
                         {/* Tagline */}
-                        <p className="mt-5 text-2xl font-bold text-white sm:text-4xl lg:text-5xl leading-tight" style={{ maxWidth: 700 }}>
+                        <p className="mt-5 text-xl font-bold text-white sm:text-3xl lg:text-4xl leading-tight" style={{ maxWidth: 650 }}>
                             Biến kiến thức trừu tượng
                             <br />
                             thành trải nghiệm trực quan
