@@ -2,7 +2,7 @@ import { Layout } from "../layout/MainLayout";
 import { useParams, useNavigate, useLocation } from "react-router";
 import {
     ShieldCheck, ArrowLeft, Loader2, Sparkles, CheckCircle2,
-    QrCode, Copy, Check, AlertCircle, XCircle, X, Phone, Mail, MessageCircle,
+    QrCode, Copy, Check, AlertCircle, XCircle, X, Phone, Mail, MessageCircle, Facebook,
     Clock, Zap, RefreshCw, ChevronRight, ExternalLink,
     Wifi, WifiOff, Lock
 } from "lucide-react";
@@ -502,7 +502,7 @@ export default function PaymentPage() {
                                                     <AlertCircle className="w-4 h-4 text-amber-600 dark:text-amber-400 shrink-0 mt-0.5" />
                                                     <p className="text-xs font-bold text-amber-800 dark:text-amber-300 leading-relaxed">
                                                         Nếu sau <span className="underline decoration-dotted">10 phút</span> chưa thanh toán thành công, vui lòng{' '}
-                                                        <a href="https://zalo.me/0336189329" target="_blank" rel="noreferrer" className="text-amber-700 dark:text-amber-300 underline font-black hover:text-amber-900">liên hệ chúng tôi</a> để được hỗ trợ.
+                                                        <a href="https://www.facebook.com/" target="_blank" rel="noreferrer" className="text-amber-700 dark:text-amber-300 underline font-black hover:text-amber-900">liên hệ chúng tôi</a> để được hỗ trợ.
                                                     </p>
                                                 </div>
                                                 {/* Auto-cancel notice */}
@@ -533,7 +533,7 @@ export default function PaymentPage() {
                                 <div className="bg-white dark:bg-slate-900/80 border border-slate-200/60 dark:border-white/[0.06] rounded-[1.25rem] shadow-sm backdrop-blur-xl px-4 py-3 flex items-center gap-4 flex-wrap">
                                     <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 shrink-0">Hỗ trợ:</p>
                                     {[
-                                        { href: "https://zalo.me/0336189329", icon: <MessageCircle className="w-3.5 h-3.5" />, label: "Zalo: 0336189329", cls: "text-blue-600 hover:bg-blue-50" },
+                                        { href: "https://www.facebook.com/", icon: <Facebook className="w-3.5 h-3.5" />, label: "Inbox Facebook", cls: "text-blue-600 hover:bg-blue-50" },
                                         { href: "tel:0982143958", icon: <Phone className="w-3.5 h-3.5" />, label: "098 214 39 58", cls: "text-emerald-600 hover:bg-emerald-50" },
                                         { href: "mailto:netangedutech@gmail.com", icon: <Mail className="w-3.5 h-3.5" />, label: "netangedutech@gmail.com", cls: "text-indigo-600 hover:bg-indigo-50" },
                                     ].map(c => (
