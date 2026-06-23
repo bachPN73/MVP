@@ -250,58 +250,62 @@ export default function Landing() {
 
 
                     {/* Content */}
-                    <div className="relative z-10 mx-auto max-w-[1440px] px-6 sm:px-12 lg:px-16 flex flex-col justify-center min-h-[100dvh] pt-[90px] pb-[30px] sm:pt-[100px] sm:pb-[40px]">
-                        {/* Brand title */}
-                        <h1
-                            className="font-black text-white leading-none"
-                            style={{ fontSize: 'clamp(50px, 8vw, 90px)', letterSpacing: '-0.02em' }}
-                        >
-                            EduTech
-                        </h1>
-
-                        {/* Tagline */}
-                        <p className="mt-4 sm:mt-5 text-xl font-bold text-white sm:text-3xl lg:text-4xl leading-tight" style={{ maxWidth: 650 }}>
-                            Biến kiến thức trừu tượng
-                            <br className="hidden sm:inline" />
-                            {' '}thành trải nghiệm trực quan
-                        </p>
-
-                        {/* Sub-description */}
-                        <p className="mt-3 sm:mt-4 text-sm sm:text-lg lg:text-xl font-medium text-slate-300 leading-relaxed" style={{ maxWidth: 600 }}>
-                            Hiểu nhanh hơn nhớ lâu hơn với mô hình 3D, infographic và AI
-                            <br className="hidden sm:inline" />
-                            {' '}Tiết kiệm thời gian soạn bài và tìm học liệu trực quan
-                        </p>
-
-                        {/* CTA – rounded pill blue button */}
-                        <div className="mt-6 sm:mt-8">
-                            <Link
-                                to="/register"
-                                className="inline-flex items-center gap-2 rounded-full bg-blue-600 px-7 py-3 sm:px-9 sm:py-3.5 text-base sm:text-lg font-bold text-white shadow-lg hover:bg-blue-500 hover:-translate-y-0.5 hover:shadow-blue-600/40 hover:shadow-xl transition-all duration-200"
+                    <div className="relative z-10 mx-auto max-w-[1440px] px-6 sm:px-12 lg:px-16 flex flex-col min-h-[100dvh] pt-[80px]">
+                        <div className="my-auto py-4 sm:py-8">
+                            {/* Brand title */}
+                            <h1
+                                className="font-black text-white leading-none"
+                                style={{ fontSize: 'clamp(32px, min(8vw, 12vh), 90px)', letterSpacing: '-0.02em' }}
                             >
-                                Trải nghiệm ngay
-                            </Link>
-                        </div>
+                                EduTech
+                            </h1>
 
-                        {/* ── FEATURE ICONS PANEL (nằm bên dưới, trong hero) ── */}
-                        <div
-                            className="mt-8 sm:mt-10 lg:mt-12 grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4 lg:gap-5"
-                            style={{ maxWidth: 800 }}
-                        >
-                            {FEATURES.map((f, i) => (
-                                <div
-                                    key={i}
-                                    className="rounded-2xl border border-white/20 bg-white/10 backdrop-blur-md p-3 sm:p-5 hover:bg-white/15 transition-colors"
+                            {/* Tagline */}
+                            <p className="mt-3 sm:mt-5 [@media(max-height:750px)]:mt-2 font-bold text-white leading-tight" style={{ fontSize: 'clamp(18px, min(3vw, 4.5vh), 36px)', maxWidth: 650 }}>
+                                Biến kiến thức trừu tượng
+                                <br className="hidden sm:inline" />
+                                {' '}thành trải nghiệm trực quan
+                            </p>
+
+                            {/* Sub-description */}
+                            <p className="mt-2 sm:mt-4 [@media(max-height:750px)]:mt-2 font-medium text-slate-300 leading-relaxed" style={{ fontSize: 'clamp(14px, min(1.5vw, 2.5vh), 20px)', maxWidth: 600 }}>
+                                Hiểu nhanh hơn nhớ lâu hơn với mô hình 3D, infographic và AI
+                                <br className="hidden sm:inline" />
+                                {' '}Tiết kiệm thời gian soạn bài và tìm học liệu trực quan
+                            </p>
+
+                            {/* CTA – rounded pill blue button */}
+                            <div className="mt-5 sm:mt-8 [@media(max-height:750px)]:mt-4">
+                                <Link
+                                    to="/register"
+                                    className="inline-flex items-center gap-2 rounded-full bg-blue-600 px-7 py-3 sm:px-9 sm:py-3.5 font-bold text-white shadow-lg hover:bg-blue-500 hover:-translate-y-0.5 hover:shadow-blue-600/40 hover:shadow-xl transition-all duration-200"
+                                    style={{ fontSize: 'clamp(14px, min(1.5vw, 2.5vh), 18px)' }}
                                 >
-                                    <div className="flex justify-center scale-90 sm:scale-110 mb-1 sm:mb-2">{f.icon}</div>
-                                    <p className="mt-1 sm:mt-2 text-center text-[12px] sm:text-[13px] md:text-sm font-bold text-white leading-tight whitespace-pre-line">
-                                        {f.title}
-                                    </p>
-                                    <p className="mt-1 sm:mt-1.5 text-center text-[10px] sm:text-[11px] md:text-xs text-slate-300 leading-tight whitespace-pre-line">
-                                        {f.sub}
-                                    </p>
-                                </div>
-                            ))}
+                                    Trải nghiệm ngay
+                                </Link>
+                            </div>
+
+                            {/* ── FEATURE ICONS PANEL (nằm bên dưới, trong hero) ── */}
+                            <div
+                                className="mt-6 sm:mt-10 lg:mt-12 [@media(max-height:750px)]:mt-6 grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4 lg:gap-5"
+                                style={{ maxWidth: 800 }}
+                            >
+                                {FEATURES.map((f, i) => (
+                                    <div
+                                        key={i}
+                                        className="rounded-2xl border border-white/20 bg-white/10 backdrop-blur-md hover:bg-white/15 transition-colors"
+                                        style={{ padding: 'clamp(12px, min(2vw, 2.5vh), 20px)' }}
+                                    >
+                                        <div className="flex justify-center scale-90 sm:scale-110 [@media(max-height:750px)]:scale-75 mb-1 sm:mb-2 [@media(max-height:750px)]:mb-1">{f.icon}</div>
+                                        <p className="mt-1 sm:mt-2 [@media(max-height:750px)]:mt-1 text-center font-bold text-white leading-tight whitespace-pre-line" style={{ fontSize: 'clamp(11px, min(1.2vw, 1.8vh), 14px)' }}>
+                                            {f.title}
+                                        </p>
+                                        <p className="mt-1 sm:mt-1.5 [@media(max-height:750px)]:mt-1 text-center text-slate-300 leading-tight whitespace-pre-line" style={{ fontSize: 'clamp(9px, min(1vw, 1.5vh), 12px)' }}>
+                                            {f.sub}
+                                        </p>
+                                    </div>
+                                ))}
+                            </div>
                         </div>
                     </div>
                 </section>
