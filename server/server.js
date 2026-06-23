@@ -482,7 +482,7 @@ app.post('/api/models', async (req, res) => {
     const { 
         title, description, file_url, thumbnail, subject, grade, tags, type,
         subtitle, category, size, location, visibleInLM, features, funFact, whereItOccurs, source,
-        relatedMaterials
+        relatedMaterials, quiz
     } = req.body;
     let tagsArray = Array.isArray(tags) ? tags : [];
     if (typeof tags === 'string') {
@@ -499,11 +499,16 @@ app.post('/api/models', async (req, res) => {
         try { relatedMaterialsArray = JSON.parse(relatedMaterials); } catch (e) { relatedMaterialsArray = relatedMaterials.split(',').map(r => r.trim()).filter(Boolean); }
     }
 
+    let quizArray = Array.isArray(quiz) ? quiz : [];
+    if (typeof quiz === 'string') {
+        try { quizArray = JSON.parse(quiz); } catch (e) {}
+    }
+
     try {
         const newModel = await Material.create({
             title, description, file_url, thumbnail: thumbnail || null, subject, grade, type: type || '3d-model', tags: tagsArray,
             subtitle, category, size, location, visibleInLM, features: featuresArray, funFact, whereItOccurs, source,
-            relatedMaterials: relatedMaterialsArray
+            relatedMaterials: relatedMaterialsArray, quiz: quizArray
         });
         res.json({ id: newModel._id, message: 'Lưu học liệu thành công' });
     } catch (err) {
@@ -516,7 +521,7 @@ app.put('/api/models/:id', async (req, res) => {
     const { 
         title, description, file_url, thumbnail, subject, grade, tags, type,
         subtitle, category, size, location, visibleInLM, features, funFact, whereItOccurs, source,
-        relatedMaterials, requiredPlan
+        relatedMaterials, requiredPlan, quiz
     } = req.body;
 
     let tagsArray = tags;
@@ -540,6 +545,13 @@ app.put('/api/models/:id', async (req, res) => {
         }
     }
 
+    let quizArray = quiz;
+    if (quiz !== undefined && !Array.isArray(quiz)) {
+        if (typeof quiz === 'string') {
+            try { quizArray = JSON.parse(quiz); } catch (e) {}
+        }
+    }
+
     try {
         const updateData = {};
         if (title !== undefined) updateData.title = title;
@@ -560,6 +572,7 @@ app.put('/api/models/:id', async (req, res) => {
         if (whereItOccurs !== undefined) updateData.whereItOccurs = whereItOccurs;
         if (source !== undefined) updateData.source = source;
         if (relatedMaterialsArray !== undefined) updateData.relatedMaterials = relatedMaterialsArray;
+        if (quizArray !== undefined) updateData.quiz = quizArray;
         // requiredPlan: null means no restriction, string means minimum plan required
         if (requiredPlan !== undefined) updateData.requiredPlan = requiredPlan === '' ? null : requiredPlan;
 

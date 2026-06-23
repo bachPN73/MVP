@@ -58,6 +58,7 @@ export interface ModelInput {
     thumbnail: string | null;
     relatedMaterials?: string[];
     source?: string;
+    quiz?: QuizQuestion[];
 }
 
 export const materials: Material[] = [
@@ -94,13 +95,13 @@ export const materials: Material[] = [
             {
                 question: "Thành phần nào sau đây chỉ có ở tế bào thực vật mà không có ở tế bào động vật?",
                 options: ["Ti thể", "Lục lạp", "Nhân tế bào", "Lưới nội chất"],
-                correctOptionIndex: 1,
+                correctAnswerIndex: 1,
                 explanation: "Lục lạp là bào quan chứa diệp lục, có chức năng quang hợp, chỉ có ở thực vật."
             },
             {
                 question: "Vách tế bào thực vật cấu tạo chủ yếu từ gì?",
                 options: ["Protein", "Lipid", "Cellulose", "Chitin"],
-                correctOptionIndex: 2,
+                correctAnswerIndex: 2,
                 explanation: "Vách tế bào thực vật được cấu tạo chủ yếu từ các bó vi sợi cellulose."
             }
         ]
@@ -137,7 +138,7 @@ export const materials: Material[] = [
             {
                 question: "Bào quan nào được mệnh danh là 'nhà máy năng lượng' của tế bào?",
                 options: ["Ti thể", "Bộ máy Golgi", "Lysosome", "Lưới nội chất"],
-                correctOptionIndex: 0,
+                correctAnswerIndex: 0,
                 explanation: "Ti thể chịu trách nhiệm tổng hợp ATP cung cấp năng lượng cho tế bào."
             }
         ]

@@ -58,7 +58,8 @@ const modelSchema = new mongoose.Schema({
         habitat: String
     },
     source: { type: String, default: '' },
-    relatedMaterials: { type: [String], default: [] }
+    relatedMaterials: { type: [String], default: [] },
+    quiz: { type: [mongoose.Schema.Types.Mixed], default: [] }
 }, { timestamps: true });
 
 const resetTokenSchema = new mongoose.Schema({

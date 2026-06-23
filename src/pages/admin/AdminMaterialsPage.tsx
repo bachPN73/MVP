@@ -1,5 +1,5 @@
 import { AdminLayout } from '../../layout/AdminLayout';
-import { Box, Plus, Search, Filter, Upload, X, Loader2, CheckCircle2, AlertCircle, ImagePlus, Trash2, Calendar, Sparkles, Pencil } from 'lucide-react';
+import { Box, Plus, Search, Filter, Upload, X, Loader2, CheckCircle2, AlertCircle, ImagePlus, Trash2, Calendar, Sparkles, Pencil, Layers, ChevronUp, ChevronDown } from 'lucide-react';
 import { useState, useEffect, useMemo } from 'react';
 import { api, BASE_URL } from '../../api';
 import Button from '../../components/Button';
@@ -81,7 +81,8 @@ export default function AdminMaterialsPage() {
             featuresText: featuresText,
             funFact: model.funFact || "",
             source: model.source || "",
-            relatedMaterials: model.relatedMaterials || []
+            relatedMaterials: model.relatedMaterials || [],
+            quiz: model.quiz || []
         });
         
         setRelatedSearch('');
@@ -110,6 +111,7 @@ export default function AdminMaterialsPage() {
     const [isUploading, setIsUploading] = useState(false);
     const [status, setStatus] = useState<{ type: 'success' | 'error' | null, message: string }>({ type: null, message: "" });
     const [showPremiumFields, setShowPremiumFields] = useState(false);
+    const [showQuizForm, setShowQuizForm] = useState(false);
     const [formData, setFormData] = useState({
         title: "",
         description: "",
@@ -126,7 +128,8 @@ export default function AdminMaterialsPage() {
         featuresText: "", // multi-line structures format: "Tên: Mô tả"
         funFact: "",
         source: "",
-        relatedMaterials: [] as string[]
+        relatedMaterials: [] as string[],
+        quiz: [] as any[]
     });
 
     const allAvailableRelated = useMemo(() => {
@@ -260,6 +263,33 @@ export default function AdminMaterialsPage() {
         }
     };
 
+    const handleAddQuizQuestion = () => {
+        setFormData({
+            ...formData,
+            quiz: [...formData.quiz, { question: "", options: ["", "", "", ""], correctAnswerIndex: 0, explanation: "" }]
+        });
+    };
+
+    const handleRemoveQuizQuestion = (index: number) => {
+        const newQuiz = [...formData.quiz];
+        newQuiz.splice(index, 1);
+        setFormData({ ...formData, quiz: newQuiz });
+    };
+
+    const handleQuizQuestionChange = (index: number, field: string, value: any) => {
+        const newQuiz = [...formData.quiz];
+        newQuiz[index] = { ...newQuiz[index], [field]: value };
+        setFormData({ ...formData, quiz: newQuiz });
+    };
+
+    const handleQuizOptionChange = (questionIndex: number, optionIndex: number, value: string) => {
+        const newQuiz = [...formData.quiz];
+        const newOptions = [...newQuiz[questionIndex].options];
+        newOptions[optionIndex] = value;
+        newQuiz[questionIndex] = { ...newQuiz[questionIndex], options: newOptions };
+        setFormData({ ...formData, quiz: newQuiz });
+    };
+
     const handleUploadSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         
@@ -347,7 +377,8 @@ export default function AdminMaterialsPage() {
                     featuresText: "",
                     funFact: "",
                     source: "",
-                    relatedMaterials: []
+                    relatedMaterials: [],
+                    quiz: []
                 });
                 loadMaterials();
             }, 1500);
@@ -406,7 +437,8 @@ export default function AdminMaterialsPage() {
                                     featuresText: "",
                                     funFact: "",
                                     source: "",
-                                    relatedMaterials: []
+                                    relatedMaterials: [],
+                                    quiz: []
                                 });
                             }
                             setShowUploadForm(!showUploadForm);
@@ -736,6 +768,97 @@ export default function AdminMaterialsPage() {
                                     )}
                                 </div>
                             </div>
+                        </div>
+
+                        {/* Quiz Section */}
+                        <div className="border border-slate-200 dark:border-white/10 rounded-2xl overflow-hidden mt-6 bg-slate-50/50 dark:bg-slate-900/30">
+                            <button
+                                type="button"
+                                onClick={() => setShowQuizForm(!showQuizForm)}
+                                className="w-full flex items-center justify-between p-4 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-white/10 font-sans cursor-pointer group"
+                            >
+                                <div className="flex items-center gap-3">
+                                    <div className="w-8 h-8 rounded-lg bg-indigo-50 dark:bg-indigo-500/20 flex items-center justify-center text-indigo-600 dark:text-indigo-400 group-hover:scale-110 transition-transform">
+                                        <Layers className="w-4 h-4" />
+                                    </div>
+                                    <div className="text-left">
+                                        <h3 className="font-bold text-sm text-slate-900 dark:text-white">Quản lý Quiz (Trắc nghiệm)</h3>
+                                        <p className="text-[10px] uppercase tracking-wider font-bold text-slate-400 dark:text-slate-500 mt-0.5">{formData.quiz.length} câu hỏi hiện có</p>
+                                    </div>
+                                </div>
+                                {showQuizForm ? <ChevronUp className="w-5 h-5 text-slate-400 group-hover:text-indigo-500" /> : <ChevronDown className="w-5 h-5 text-slate-400 group-hover:text-indigo-500" />}
+                            </button>
+
+                            {showQuizForm && (
+                                <div className="p-5 font-sans space-y-6">
+                                    {formData.quiz.map((q, qIndex) => (
+                                        <div key={qIndex} className="p-4 bg-white dark:bg-slate-950/40 border border-slate-200 dark:border-white/10 rounded-xl relative group shadow-sm">
+                                            <button 
+                                                type="button"
+                                                onClick={() => handleRemoveQuizQuestion(qIndex)}
+                                                className="absolute top-4 right-4 text-slate-400 hover:text-rose-500 transition-colors"
+                                                title="Xóa câu hỏi này"
+                                            >
+                                                <X className="w-4 h-4" />
+                                            </button>
+                                            
+                                            <div className="flex flex-col gap-3">
+                                                <div className="pr-8">
+                                                    <label className="text-[10px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 mb-1.5 block">Câu hỏi {qIndex + 1}</label>
+                                                    <input
+                                                        type="text"
+                                                        placeholder="Nhập nội dung câu hỏi..."
+                                                        className="p-2.5 bg-slate-50/50 dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-white/10 text-sm font-semibold text-slate-900 dark:text-white focus:outline-none w-full"
+                                                        value={q.question}
+                                                        onChange={(e) => handleQuizQuestionChange(qIndex, 'question', e.target.value)}
+                                                    />
+                                                </div>
+
+                                                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mt-2">
+                                                    {q.options.map((opt: string, oIndex: number) => (
+                                                        <div key={oIndex} className="flex items-center gap-2">
+                                                            <input
+                                                                type="radio"
+                                                                name={`correct-${qIndex}`}
+                                                                checked={q.correctAnswerIndex === oIndex}
+                                                                onChange={() => handleQuizQuestionChange(qIndex, 'correctAnswerIndex', oIndex)}
+                                                                className="w-4 h-4 text-indigo-600 border-slate-300 focus:ring-indigo-600 dark:focus:ring-indigo-500 cursor-pointer shrink-0"
+                                                            />
+                                                            <input
+                                                                type="text"
+                                                                placeholder={`Đáp án ${oIndex + 1}`}
+                                                                className="flex-1 p-2 bg-slate-50/50 dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-white/10 text-xs font-semibold text-slate-900 dark:text-white focus:outline-none"
+                                                                value={opt}
+                                                                onChange={(e) => handleQuizOptionChange(qIndex, oIndex, e.target.value)}
+                                                            />
+                                                        </div>
+                                                    ))}
+                                                </div>
+
+                                                <div className="mt-2">
+                                                    <label className="text-[10px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 mb-1.5 block">Giải thích đáp án</label>
+                                                    <textarea
+                                                        rows={2}
+                                                        placeholder="Nhập giải thích cho đáp án đúng..."
+                                                        className="p-2 bg-slate-50/50 dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-white/10 text-xs font-semibold text-slate-900 dark:text-white focus:outline-none resize-none w-full"
+                                                        value={q.explanation}
+                                                        onChange={(e) => handleQuizQuestionChange(qIndex, 'explanation', e.target.value)}
+                                                    />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    ))}
+
+                                    <button
+                                        type="button"
+                                        onClick={handleAddQuizQuestion}
+                                        className="w-full py-3 flex items-center justify-center gap-2 border border-dashed border-indigo-200 dark:border-indigo-500/30 rounded-xl text-indigo-600 dark:text-indigo-400 text-xs font-bold uppercase tracking-wider hover:bg-indigo-50 dark:hover:bg-indigo-500/10 transition-colors"
+                                    >
+                                        <Plus className="w-4 h-4" />
+                                        Thêm câu hỏi trắc nghiệm
+                                    </button>
+                                </div>
+                            )}
                         </div>
 
                         {status.type && (
