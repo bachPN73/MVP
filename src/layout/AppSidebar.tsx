@@ -187,18 +187,18 @@ export function AppSidebar({ currentPath = '/', isOpen = false, setIsOpen, isCol
                     })}
 
                     {/* ===== Theme Switcher — Framed & Prominent ===== */}
-                    <div className="pt-4 mt-4 border-t border-sidebar-border/50">
-                        <div className={`rounded-2xl p-2.5 transition-colors duration-300 flex items-center ${isCollapsed ? 'justify-center' : 'justify-between px-5'} ${
+                    <div className="px-3.5 pt-4 mt-4 border-t border-sidebar-border/50">
+                        <div className={`rounded-2xl p-3 transition-all duration-300 flex items-center border ${isCollapsed ? 'justify-center' : 'justify-between px-5'} ${
                             theme === 'light' 
-                                ? 'bg-slate-100/60' 
-                                : 'bg-white/[0.025]'
+                                ? 'bg-indigo-50/60 border-indigo-200/80 shadow-sm' 
+                                : 'bg-indigo-500/10 border-indigo-500/20'
                         }`}>
                             {!isCollapsed && (
-                                <span className={`text-sm font-bold tracking-wide ${theme === 'light' ? 'text-slate-600' : 'text-white/50'}`}>
+                                <span className={`text-sm font-bold tracking-wide ${theme === 'light' ? 'text-indigo-900' : 'text-indigo-100'}`}>
                                     Giao diện
                                 </span>
                             )}
-                            <ThemeToggle variant="toggle" className="scale-125" />
+                            <ThemeToggle variant="toggle" className="scale-110" />
                         </div>
                     </div>
                 </nav>
