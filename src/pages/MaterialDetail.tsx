@@ -1,11 +1,12 @@
 import { Layout } from '../layout/MainLayout';
 import { useParams, Link, useNavigate } from 'react-router';
 import { materials as mockMaterials, getSubjectName, getTypeName, Material } from '../data/materialsData';
-import { ArrowLeft, Maximize2, Minimize2, BookOpen, Tag, GraduationCap, Loader2, Play, ZoomIn, RotateCcw, Move, Compass, Sparkles, Search, Lock, Zap, BookmarkPlus, BookmarkCheck, Clock, Archive, Folder, X, Plus, Trash2 } from 'lucide-react';
+import { ArrowLeft, Maximize2, Minimize2, BookOpen, Tag, GraduationCap, Loader2, Play, ZoomIn, RotateCcw, Move, Compass, Sparkles, Search, Lock, Zap, BookmarkPlus, BookmarkCheck, Clock, Archive, Folder, X, Plus, Trash2, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useState, useEffect, lazy, Suspense, useRef, useMemo } from 'react';
 import { api, BASE_URL } from '../api';
 import { useTheme } from '../components/ThemeProvider';
 import { LatexText } from '../components/LatexText';
+import { QuizPanel } from '../components/quiz/QuizPanel';
 
 const SUBJECT_CONFIGS: Record<string, {
     subjectName: string;
@@ -73,6 +74,7 @@ export default function MaterialDetail() {
     const [isFullscreen, setIsFullscreen] = useState(false);
     const [viewerActive, setViewerActive] = useState(false);
     const [activeTab, setActiveTab] = useState<'info' | 'structure' | 'related'>('info');
+    const [isQuizExpanded, setIsQuizExpanded] = useState(true);
     const containerRef = useRef<HTMLDivElement>(null);
 
     const [allMaterials, setAllMaterials] = useState<Material[]>([]);
@@ -100,7 +102,8 @@ export default function MaterialDetail() {
         whereItOccursText: '',
         whereItOccursHabitat: '',
         relatedMaterials: [] as string[],
-        source: ''
+        source: '',
+        quiz: [] as any[]
     });
 
     useEffect(() => {
@@ -189,7 +192,8 @@ export default function MaterialDetail() {
             whereItOccursText: material.whereItOccurs?.text || '',
             whereItOccursHabitat: material.whereItOccurs?.habitat || '',
             relatedMaterials: material.relatedMaterials || [],
-            source: (material as any).source || ''
+            source: (material as any).source || '',
+            quiz: material.quiz || []
         });
         setRelatedSearch('');
         setErrorMsg('');
@@ -235,7 +239,8 @@ export default function MaterialDetail() {
                 habitat: editFormData.whereItOccursHabitat
             } : undefined,
             relatedMaterials: editFormData.relatedMaterials,
-            source: editFormData.source || undefined
+            source: editFormData.source || undefined,
+            quiz: editFormData.quiz
         };
 
         try {
@@ -307,7 +312,8 @@ export default function MaterialDetail() {
                                 : undefined,
                             relatedMaterials: data.relatedMaterials || [],
                             requiredPlan: data.requiredPlan,
-                            source: normalizeStr(data.source)
+                            source: normalizeStr(data.source),
+                            quiz: data.quiz || []
                         } as any);
                     }
                 } catch (error) {
@@ -340,7 +346,8 @@ export default function MaterialDetail() {
                               } 
                             : undefined,
                         relatedMaterials: found.relatedMaterials || [],
-                        source: normalizeStr(found.source)
+                        source: normalizeStr(found.source),
+                        quiz: found.quiz || []
                     } as any);
                 }
             }
@@ -695,7 +702,7 @@ export default function MaterialDetail() {
                             <div
                                 id="viewer-wrapper"
                                 ref={containerRef}
-                                className={`flex-1 min-h-0 w-full h-full relative flex items-center justify-center group overflow-hidden transition-all duration-500 rounded-2xl ${
+                                className={`flex-1 min-h-0 w-full h-full relative flex flex-row group overflow-hidden transition-all duration-500 rounded-2xl ${
                                     material.subtitle
                                         ? (theme === 'light' ? "border border-stone-200/40 shadow-inner shadow-amber-950/5" : "border border-white/5 shadow-inner")
                                         : "bg-gradient-to-br from-slate-100 to-slate-50 dark:from-slate-900 dark:to-slate-950"
@@ -723,6 +730,9 @@ export default function MaterialDetail() {
                                 }
                             >
 
+                                <div className={`relative flex items-center justify-center transition-all duration-700 ease-out ${
+                                    isFullscreen && material.quiz && material.quiz.length > 0 && isQuizExpanded ? 'w-[70%]' : 'w-full'
+                                } h-full`}>
 
                                  {isBlocked ? (
                                     <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center select-none bg-slate-900/90 dark:bg-slate-950/95 backdrop-blur-md z-30">
@@ -944,6 +954,28 @@ export default function MaterialDetail() {
                                                 )}
                                             </>
                                         )}
+                                    </>
+                                )}
+                                </div>
+
+                                {isFullscreen && material.quiz && material.quiz.length > 0 && (
+                                    <>
+                                        {/* Toggle Button */}
+                                        <button
+                                            onClick={() => setIsQuizExpanded(!isQuizExpanded)}
+                                            className="absolute top-1/2 -translate-y-1/2 z-50 flex items-center justify-center w-7 h-14 bg-white dark:bg-slate-800 shadow-[0_0_15px_rgba(0,0,0,0.1)] dark:shadow-[0_0_15px_rgba(0,0,0,0.5)] border border-slate-200 dark:border-white/10 rounded-l-xl hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors cursor-pointer"
+                                            style={{ right: isQuizExpanded ? '30%' : '0px', transition: 'right 0.7s cubic-bezier(0, 0, 0.2, 1)' }}
+                                        >
+                                            {isQuizExpanded ? <ChevronRight className="w-5 h-5 text-slate-500" /> : <ChevronLeft className="w-5 h-5 text-slate-500" />}
+                                        </button>
+                                        
+                                        <div className={`h-full z-40 bg-white dark:bg-slate-900 border-l border-slate-200 dark:border-white/10 overflow-hidden shadow-2xl transition-all duration-700 ease-out flex-shrink-0 ${
+                                            isQuizExpanded ? 'w-[30%]' : 'w-0 border-l-0'
+                                        }`}>
+                                            <div className="w-[100%] h-full min-w-[320px]">
+                                                <QuizPanel quiz={material.quiz} theme={theme} isFullscreen={true} />
+                                            </div>
+                                        </div>
                                     </>
                                 )}
 
@@ -1280,6 +1312,96 @@ export default function MaterialDetail() {
                                                          <div className="text-center py-4 text-slate-400 text-[11px]">Không tìm thấy học liệu phù hợp.</div>
                                                      )}
                                                  </div>
+                                             </div>
+                                         </div>
+
+                                         {/* Quiz Editor */}
+                                         <div className="flex flex-col gap-1.5 font-sans mt-4 border-t border-slate-200 dark:border-white/10 pt-4">
+                                             <div className="flex justify-between items-center">
+                                                 <label className="font-bold text-slate-400 uppercase tracking-wider">
+                                                     Câu hỏi trắc nghiệm ({editFormData.quiz?.length || 0})
+                                                 </label>
+                                                 <button
+                                                     type="button"
+                                                     onClick={() => setEditFormData(prev => ({ ...prev, quiz: [...(prev.quiz || []), { question: '', options: ['', '', '', ''], correctOptionIndex: 0, explanation: '' }] }))}
+                                                     className="text-[10px] bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 px-2 py-1 rounded border border-indigo-200 dark:border-indigo-500/30 hover:bg-indigo-100 font-bold"
+                                                 >
+                                                     + Thêm câu hỏi
+                                                 </button>
+                                             </div>
+                                             <div className="space-y-4 max-h-[300px] overflow-y-auto pr-1">
+                                                 {editFormData.quiz?.map((q, qIndex) => (
+                                                     <div key={qIndex} className="p-3 border border-slate-200 dark:border-white/10 rounded-xl bg-white dark:bg-slate-900 relative group">
+                                                         <button
+                                                             type="button"
+                                                             onClick={() => setEditFormData(prev => {
+                                                                 const newQuiz = [...prev.quiz];
+                                                                 newQuiz.splice(qIndex, 1);
+                                                                 return { ...prev, quiz: newQuiz };
+                                                             })}
+                                                             className="absolute top-2 right-2 text-slate-400 hover:text-red-500 bg-slate-100 dark:bg-slate-800 rounded p-1"
+                                                         >
+                                                             <Trash2 className="w-3.5 h-3.5" />
+                                                         </button>
+                                                         <div className="flex flex-col gap-2">
+                                                             <input
+                                                                 type="text"
+                                                                 placeholder={`Câu hỏi ${qIndex + 1}`}
+                                                                 className="p-2 bg-slate-50 dark:bg-slate-950/40 border border-slate-200 dark:border-white/10 rounded-lg text-xs font-semibold focus:outline-none w-[90%] text-slate-950 dark:text-white"
+                                                                 value={q.question}
+                                                                 onChange={e => {
+                                                                     const newQuiz = [...editFormData.quiz];
+                                                                     newQuiz[qIndex].question = e.target.value;
+                                                                     setEditFormData({ ...editFormData, quiz: newQuiz });
+                                                                 }}
+                                                             />
+                                                             <div className="grid grid-cols-2 gap-2 mt-1">
+                                                                 {q.options.map((opt: string, oIndex: number) => (
+                                                                     <div key={oIndex} className="flex items-center gap-1.5">
+                                                                         <input
+                                                                             type="radio"
+                                                                             name={`correct-${qIndex}`}
+                                                                             checked={q.correctOptionIndex === oIndex}
+                                                                             onChange={() => {
+                                                                                 const newQuiz = [...editFormData.quiz];
+                                                                                 newQuiz[qIndex].correctOptionIndex = oIndex;
+                                                                                 setEditFormData({ ...editFormData, quiz: newQuiz });
+                                                                             }}
+                                                                             className="w-3.5 h-3.5 text-indigo-600 focus:ring-indigo-500 cursor-pointer"
+                                                                         />
+                                                                         <input
+                                                                             type="text"
+                                                                             placeholder={`Đáp án ${oIndex + 1}`}
+                                                                             className={`p-1.5 bg-slate-50 dark:bg-slate-950/40 border rounded text-xs focus:outline-none w-full text-slate-950 dark:text-white ${q.correctOptionIndex === oIndex ? 'border-indigo-500' : 'border-slate-200 dark:border-white/10'}`}
+                                                                             value={opt}
+                                                                             onChange={e => {
+                                                                                 const newQuiz = [...editFormData.quiz];
+                                                                                 newQuiz[qIndex].options[oIndex] = e.target.value;
+                                                                                 setEditFormData({ ...editFormData, quiz: newQuiz });
+                                                                             }}
+                                                                         />
+                                                                     </div>
+                                                                 ))}
+                                                             </div>
+                                                             <input
+                                                                 type="text"
+                                                                 placeholder="Giải thích đáp án đúng (tùy chọn)"
+                                                                 className="p-2 mt-1 bg-slate-50 dark:bg-slate-950/40 border border-slate-200 dark:border-white/10 rounded-lg text-xs focus:outline-none w-full text-slate-950 dark:text-white"
+                                                                 value={q.explanation || ''}
+                                                                 onChange={e => {
+                                                                     const newQuiz = [...editFormData.quiz];
+                                                                     newQuiz[qIndex].explanation = e.target.value;
+                                                                     setEditFormData({ ...editFormData, quiz: newQuiz });
+                                                                 }}
+                                                             />
+                                                         </div>
+                                                     </div>
+                                                 ))}
+                                                 {editFormData.quiz?.length === 0 && (
+                                                     <div className="text-center py-4 text-slate-400 text-[11px] bg-slate-50 dark:bg-slate-900/50 rounded-xl border border-slate-200 dark:border-white/5">
+                                                         Chưa có câu hỏi nào. Nhấn "+ Thêm câu hỏi" để tạo.
+                                                     </div>
+                                                 )}
                                              </div>
                                          </div>
                                     </div>

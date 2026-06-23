@@ -11,6 +11,14 @@ export interface LoginResponse {
     user: User;
 }
 
+export interface QuizQuestion {
+    id: string;
+    question: string;
+    options: string[];
+    correctAnswerIndex: number;
+    explanation?: string;
+}
+
 export interface Material {
     id: string;
     title: string;
@@ -35,6 +43,7 @@ export interface Material {
         habitat: string;
     };
     relatedMaterials?: string[];
+    quiz?: QuizQuestion[];
     requiredPlan?: string | null;
     source?: string;
 }
@@ -80,7 +89,21 @@ export const materials: Material[] = [
         file_url: "/models/plant-cell.glb",
         createdAt: new Date(Date.now() - 3 * 3600 * 1000).toISOString(),
         requiredPlan: null,
-        source: "3D Science Lab"
+        source: "3D Science Lab",
+        quiz: [
+            {
+                question: "Thành phần nào sau đây chỉ có ở tế bào thực vật mà không có ở tế bào động vật?",
+                options: ["Ti thể", "Lục lạp", "Nhân tế bào", "Lưới nội chất"],
+                correctOptionIndex: 1,
+                explanation: "Lục lạp là bào quan chứa diệp lục, có chức năng quang hợp, chỉ có ở thực vật."
+            },
+            {
+                question: "Vách tế bào thực vật cấu tạo chủ yếu từ gì?",
+                options: ["Protein", "Lipid", "Cellulose", "Chitin"],
+                correctOptionIndex: 2,
+                explanation: "Vách tế bào thực vật được cấu tạo chủ yếu từ các bó vi sợi cellulose."
+            }
+        ]
     },
     {
         id: "animal-cell",
@@ -109,7 +132,15 @@ export const materials: Material[] = [
         grade: 10,
         file_url: "/models/animal-cell.glb",
         createdAt: new Date(Date.now() - 6 * 3600 * 1000).toISOString(),
-        requiredPlan: null
+        requiredPlan: null,
+        quiz: [
+            {
+                question: "Bào quan nào được mệnh danh là 'nhà máy năng lượng' của tế bào?",
+                options: ["Ti thể", "Bộ máy Golgi", "Lysosome", "Lưới nội chất"],
+                correctOptionIndex: 0,
+                explanation: "Ti thể chịu trách nhiệm tổng hợp ATP cung cấp năng lượng cho tế bào."
+            }
+        ]
     },
     {
         id: "white-blood-cell",
