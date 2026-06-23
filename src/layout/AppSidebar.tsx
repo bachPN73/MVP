@@ -187,44 +187,17 @@ export function AppSidebar({ currentPath = '/', isOpen = false, setIsOpen, isCol
 
                     {/* ===== Theme Switcher — Framed & Prominent ===== */}
                     <div className="pt-4 mt-4 border-t border-sidebar-border/50">
-                        <div className={`rounded-2xl p-1 transition-colors duration-300 ${
+                        <div className={`rounded-2xl p-2.5 transition-colors duration-300 flex items-center ${isCollapsed ? 'justify-center' : 'justify-between px-5'} ${
                             theme === 'light' 
                                 ? 'bg-slate-100/60' 
                                 : 'bg-white/[0.025]'
                         }`}>
-                            <button
-                                onClick={toggleTheme}
-                                className={`sidebar-nav-glow group flex items-center rounded-xl relative w-full transition-all duration-300 ease-in-out ${isCollapsed ? 'md:justify-center md:px-0 md:gap-0 py-3 px-4 gap-3.5' : 'px-4 py-3 gap-3.5'} ${
-                                    theme === 'light' 
-                                        ? 'text-slate-600 hover:text-indigo-600 hover:bg-white/80' 
-                                        : 'text-white/50 hover:text-white hover:bg-white/[0.04]'
-                                }`}
-                            >
-                                <div className={`p-2 rounded-xl transition-all duration-300 shrink-0 ${
-                                    theme === 'light' 
-                                        ? 'bg-indigo-50/80 group-hover:bg-indigo-100' 
-                                        : 'bg-amber-500/10 group-hover:bg-amber-500/15'
-                                }`}>
-                                    {theme === 'light' ? (
-                                        <Moon className="w-[18px] h-[18px] text-indigo-500 group-hover:rotate-12 transition-transform duration-300" />
-                                    ) : (
-                                        <Sun className="w-[18px] h-[18px] text-amber-400 group-hover:rotate-45 transition-transform duration-300" />
-                                    )}
-                                </div>
-                                
-                                <div className={`overflow-hidden transition-all duration-300 ease-in-out flex-1 text-left
-                                    ${isCollapsed ? 'md:max-w-0 md:opacity-0 md:invisible max-w-[150px] opacity-100 visible' : 'max-w-[150px] opacity-100 visible'}`}>
-                                    <span className="text-sm font-bold tracking-wide whitespace-nowrap">
-                                        {theme === 'light' ? 'Giao diện Tối' : 'Giao diện Sáng'}
-                                    </span>
-                                </div>
-
-                                {/* Premium Glass Tooltip on Hover when collapsed */}
-                                <span className={`absolute left-full ml-4 px-3.5 py-2 bg-[#0b1329]/95 text-white text-[11px] font-bold rounded-xl opacity-0 pointer-events-none transition-all duration-300 whitespace-nowrap shadow-[0_10px_30px_rgba(0,0,0,0.5)] border border-white/10 z-[70] backdrop-blur-md before:content-[''] before:absolute before:right-full before:top-1/2 before:-translate-y-1/2 before:border-[6px] before:border-transparent before:border-r-[#0b1329]/95
-                                    ${isCollapsed ? 'group-hover:opacity-100 group-hover:translate-x-1' : ''}`}>
-                                    {theme === 'light' ? 'Chế độ Tối' : 'Chế độ Sáng'}
+                            {!isCollapsed && (
+                                <span className={`text-sm font-bold tracking-wide ${theme === 'light' ? 'text-slate-600' : 'text-white/50'}`}>
+                                    Giao diện
                                 </span>
-                            </button>
+                            )}
+                            <ThemeToggle variant="toggle" className="scale-125" />
                         </div>
                     </div>
                 </nav>

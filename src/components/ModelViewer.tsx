@@ -304,7 +304,7 @@ function StreamingLoadingOverlay({
     );
 }
 
-export default function ModelViewer({ modelUrl }: { modelUrl: string }) {
+export default function ModelViewer({ modelUrl, minimal = false, autoRotate = false }: { modelUrl: string; minimal?: boolean; autoRotate?: boolean }) {
     const isMobile = window.innerWidth < 768;
     const { theme } = useTheme();
 
@@ -330,10 +330,10 @@ export default function ModelViewer({ modelUrl }: { modelUrl: string }) {
         if (loadingStage === 'stabilizing') {
             const timer = setTimeout(() => {
                 setLoadingStage('done');
-            }, 1500); // 1.5s delay to stabilize graphics
+            }, minimal ? 0 : 1500); // 1.5s delay to stabilize graphics (bỏ qua nếu minimal)
             return () => clearTimeout(timer);
         }
-    }, [loadingStage]);
+    }, [loadingStage, minimal]);
 
     const isFBX = modelUrl.toLowerCase().endsWith('.fbx');
     const isAmber = modelUrl.toLowerCase().includes('amber') || modelUrl.toLowerCase().includes('muoi');
@@ -381,7 +381,7 @@ export default function ModelViewer({ modelUrl }: { modelUrl: string }) {
             : 'bg-transparent text-slate-800'
         }`}>
             {/* Real-time Streaming Download Status Layer */}
-            {!isFBX && (
+            {!isFBX && !minimal && (
                 <StreamingLoadingOverlay
                     pct={pct}
                     loadedMb={loadedMb}
@@ -393,39 +393,41 @@ export default function ModelViewer({ modelUrl }: { modelUrl: string }) {
             )}
 
             {/* Premium Quality Mode Toggle Switch (Kiểu công tắc) */}
-            <div className={`absolute top-4 left-4 z-20 flex items-center gap-2 px-3 py-1.5 rounded-full backdrop-blur-md border shadow-md pointer-events-auto select-none transition-colors duration-300 ${
-                theme === 'dark'
-                ? 'bg-black/40 border-white/10 text-white'
-                : 'bg-white/60 border-slate-300 text-slate-800'
-            }`}>
-                <span className="text-[11px] font-bold tracking-wider uppercase flex items-center gap-1">
-                    {highQuality ? (
-                        <>
-                            <Sparkles className="w-3.5 h-3.5 text-sky-400 animate-pulse" />
-                            <span>Đẹp mắt</span>
-                        </>
-                    ) : (
-                        <>
-                            <Zap className="w-3.5 h-3.5 text-yellow-500 animate-pulse" />
-                            <span>Mượt mà</span>
-                        </>
-                    )}
-                </span>
-                
-                <button
-                    onClick={() => setHighQuality(!highQuality)}
-                    className={`relative inline-flex h-5 w-9 items-center rounded-full transition-colors duration-300 focus:outline-none ${
-                        highQuality ? 'bg-indigo-600' : 'bg-slate-400 dark:bg-slate-700'
-                    }`}
-                    title={highQuality ? "Nhấn để chuyển sang chế độ Mượt mà (⚡)" : "Nhấn để chuyển sang chế độ Đẹp mắt (✨)"}
-                >
-                    <span
-                        className={`inline-block h-3.5 w-3.5 transform rounded-full bg-white transition-transform duration-300 ease-out ${
-                            highQuality ? 'translate-x-4.5' : 'translate-x-0.5'
+            {!minimal && (
+                <div className={`absolute top-4 left-4 z-20 flex items-center gap-2 px-3 py-1.5 rounded-full backdrop-blur-md border shadow-md pointer-events-auto select-none transition-colors duration-300 ${
+                    theme === 'dark'
+                    ? 'bg-black/40 border-white/10 text-white'
+                    : 'bg-white/60 border-slate-300 text-slate-800'
+                }`}>
+                    <span className="text-[11px] font-bold tracking-wider uppercase flex items-center gap-1">
+                        {highQuality ? (
+                            <>
+                                <Sparkles className="w-3.5 h-3.5 text-sky-400 animate-pulse" />
+                                <span>Đẹp mắt</span>
+                            </>
+                        ) : (
+                            <>
+                                <Zap className="w-3.5 h-3.5 text-yellow-500 animate-pulse" />
+                                <span>Mượt mà</span>
+                            </>
+                        )}
+                    </span>
+                    
+                    <button
+                        onClick={() => setHighQuality(!highQuality)}
+                        className={`relative inline-flex h-5 w-9 items-center rounded-full transition-colors duration-300 focus:outline-none ${
+                            highQuality ? 'bg-indigo-600' : 'bg-slate-400 dark:bg-slate-700'
                         }`}
-                    />
-                </button>
-            </div>
+                        title={highQuality ? "Nhấn để chuyển sang chế độ Mượt mà (⚡)" : "Nhấn để chuyển sang chế độ Đẹp mắt (✨)"}
+                    >
+                        <span
+                            className={`inline-block h-3.5 w-3.5 transform rounded-full bg-white transition-transform duration-300 ease-out ${
+                                highQuality ? 'translate-x-4.5' : 'translate-x-0.5'
+                            }`}
+                        />
+                    </button>
+                </div>
+            )}
 
             <Suspense fallback={null}>
                 <Canvas
@@ -494,22 +496,24 @@ export default function ModelViewer({ modelUrl }: { modelUrl: string }) {
                         </>
                     )}
 
-                    <OrbitControls makeDefault enableZoom={true} enablePan={true} zoomSpeed={1.2} enableDamping={true} dampingFactor={0.05} />
+                    <OrbitControls makeDefault enableZoom={!minimal} enablePan={!minimal} zoomSpeed={1.2} enableDamping={true} dampingFactor={0.05} autoRotate={autoRotate} autoRotateSpeed={0.8} />
                 </Canvas>
             </Suspense>
 
             {/* Premium Interaction Help Overlay */}
-            <div className={`absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-3.5 px-4.5 py-2.5 backdrop-blur-md rounded-full text-[10px] uppercase tracking-widest border pointer-events-none transition-all duration-300 ${
-                theme === 'dark'
-                ? 'bg-black/60 text-white/95 border-white/10'
-                : 'bg-white/80 text-slate-800 border-slate-200 shadow-md'
-            }`}>
-                <span className="flex items-center gap-1.5"><HelpCircle className="w-3.5 h-3.5 text-indigo-400" /> Xoay chuột</span>
-                <div className={`w-px h-3.5 ${theme === 'dark' ? 'bg-white/20' : 'bg-slate-300'}`} />
-                <span>Cuộn để Zoom</span>
-                <div className={`w-px h-3.5 ${theme === 'dark' ? 'bg-white/20' : 'bg-slate-300'}`} />
-                <span>Chuột phải di chuyển</span>
-            </div>
+            {!minimal && (
+                <div className={`absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-3.5 px-4.5 py-2.5 backdrop-blur-md rounded-full text-[10px] uppercase tracking-widest border pointer-events-none transition-all duration-300 ${
+                    theme === 'dark'
+                    ? 'bg-black/60 text-white/95 border-white/10'
+                    : 'bg-white/80 text-slate-800 border-slate-200 shadow-md'
+                }`}>
+                    <span className="flex items-center gap-1.5"><HelpCircle className="w-3.5 h-3.5 text-indigo-400" /> Xoay chuột</span>
+                    <div className={`w-px h-3.5 ${theme === 'dark' ? 'bg-white/20' : 'bg-slate-300'}`} />
+                    <span>Cuộn để Zoom</span>
+                    <div className={`w-px h-3.5 ${theme === 'dark' ? 'bg-white/20' : 'bg-slate-300'}`} />
+                    <span>Chuột phải di chuyển</span>
+                </div>
+            )}
         </div>
     );
 }

@@ -1,565 +1,615 @@
-import { Link } from 'react-router';
-import {
-    BookOpen,
-    ChevronRight,
-    Dna,
-    Eye,
-    Globe2,
-    GraduationCap,
-    Library,
-    Lightbulb,
-    Maximize2,
-    Menu,
-    Microscope,
-    Rotate3d,
-    Search,
-    Sparkles,
-    Sprout,
-    Users,
-    X,
-    type LucideIcon,
-} from 'lucide-react';
-import { useEffect, useRef, useState } from 'react';
-import ThemeToggle from '../components/ThemeToggle';
-
-type SubjectPreview = {
-    name: string;
-    icon: LucideIcon;
-    image: string;
-    description: string;
-    tone: string;
-    topics: string[];
-};
-
-export default function Landing() {
-    const aboutUsRef = useRef<HTMLElement>(null);
-    const [isMenuOpen, setIsMenuOpen] = useState(false);
-    const [scrolled, setScrolled] = useState(false);
-    const [selectedSubject, setSelectedSubject] = useState<SubjectPreview | null>(null);
-
-    useEffect(() => {
-        const handleScroll = () => setScrolled(window.scrollY > 20);
-        window.addEventListener('scroll', handleScroll);
-        return () => window.removeEventListener('scroll', handleScroll);
-    }, []);
-
-    const scrollToAbout = () => {
-        setIsMenuOpen(false);
-        aboutUsRef.current?.scrollIntoView({ behavior: 'smooth' });
-    };
-
-    const stats = [
-        { value: '3D', label: 'học liệu trực quan' },
-        { value: 'AI', label: 'tìm kiếm theo bài học' },
-        { value: 'THPT', label: 'bám sát lớp học Việt Nam' },
-    ];
-
-    const features = [
-        {
-            icon: Library,
-            title: 'Kho học liệu theo môn',
-            description: 'Mỗi mô hình được gắn môn, khối lớp, chủ đề và mô tả ngắn để giáo viên mở đúng nội dung nhanh hơn.',
-        },
-        {
-            icon: Search,
-            title: 'Tìm kiếm bằng ngữ cảnh',
-            description: 'Học sinh có thể mô tả khái niệm cần hiểu, hệ thống gợi ý học liệu 3D hoặc infographic phù hợp.',
-        },
-        {
-            icon: Maximize2,
-            title: 'Trình chiếu trên lớp',
-            description: 'Màn hình học liệu ưu tiên quan sát, xoay mô hình và trình bày kiến thức rõ ràng khi dạy trực tiếp.',
-        },
-    ];
-
-    const subjects: SubjectPreview[] = [
-        {
-            name: 'Xem 3D',
-            icon: Rotate3d,
-            image: '/Image.png',
-            description: 'Xoay, phóng to và quan sát mô hình 3D ngay trong lớp học để hiểu cấu trúc khó bằng hình ảnh trực quan.',
-            tone: 'border-blue-200 bg-blue-50 text-blue-700 dark:border-blue-400/20 dark:bg-blue-400/10 dark:text-blue-200',
-            topics: ['Xoay mô hình', 'Phóng to', 'Trình chiếu'],
-        },
-        {
-            name: 'DNA',
-            icon: Dna,
-            image: '/thumbnails/images/dna.jpg',
-            description: 'Khám phá chuỗi xoắn kép DNA, các cặp base và cách thông tin di truyền được lưu trữ trong tế bào.',
-            tone: 'border-teal-200 bg-teal-50 text-teal-700 dark:border-teal-400/20 dark:bg-teal-400/10 dark:text-teal-200',
-            topics: ['Xoắn kép', 'Di truyền', 'Nucleotide'],
-        },
-        {
-            name: 'Tế bào thực vật',
-            icon: Sprout,
-            image: '/thumbnails/images/plant-cell.jpg',
-            description: 'Quan sát lục lạp, nhân tế bào, không bào và vách tế bào để hiểu cấu trúc cơ bản của thực vật.',
-            tone: 'border-emerald-200 bg-emerald-50 text-emerald-700 dark:border-emerald-400/20 dark:bg-emerald-400/10 dark:text-emerald-200',
-            topics: ['Lục lạp', 'Nhân tế bào', 'Không bào'],
-        },
-    ];
-
-    const learningFlow = [
-        {
-            icon: BookOpen,
-            title: 'Chọn bài học',
-            description: 'Bắt đầu từ môn, khối lớp hoặc chủ đề trong thư viện.',
-        },
-        {
-            icon: Eye,
-            title: 'Quan sát mô hình',
-            description: 'Xoay, phóng to và nhìn cấu trúc từ nhiều góc.',
-        },
-        {
-            icon: Lightbulb,
-            title: 'Ghi nhớ bằng hình ảnh',
-            description: 'Kết nối mô hình với giải thích ngắn, thuật ngữ và ví dụ.',
-        },
-    ];
-
-    const SelectedSubjectIcon = selectedSubject?.icon;
-
-    return (
-        <div className="min-h-screen bg-[#f6f8fb] text-slate-900 transition-colors duration-300 dark:bg-slate-950 dark:text-slate-100">
-            <header
-                className={`fixed left-3 right-3 top-3 z-50 mx-auto max-w-6xl border backdrop-blur-xl transition-all duration-300 ${
-                    scrolled
-                        ? 'border-slate-200/50 bg-white/70 shadow-lg shadow-slate-900/5 dark:border-white/5 dark:bg-slate-950/70'
-                        : 'border-white/20 bg-white/60 shadow-sm dark:border-white/5 dark:bg-slate-950/50'
-                } rounded-2xl`}
-            >
-                <div className="flex items-center justify-between px-4 py-3 sm:px-5">
-                    <button
-                        className="group flex items-center gap-3 text-left"
-                        onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-                    >
-                        <span className="flex h-14 w-14 items-center justify-center rounded-lg overflow-hidden transition-transform group-hover:-translate-y-0.5">
-                            <img src="/logo.png" alt="Logo" className="w-full h-full object-cover" />
-                        </span>
-                        <span>
-                            <span className="block text-lg font-black leading-none tracking-tight text-slate-950 dark:text-white">
-                                Edu Tech
-                            </span>
-                        </span>
-                    </button>
-
-                    <nav className="hidden items-center gap-1 md:flex">
-                        <button
-                            onClick={scrollToAbout}
-                            className="rounded-xl px-4 py-2 text-sm font-bold text-slate-600 hover:bg-slate-100 hover:text-indigo-600 dark:text-slate-300 dark:hover:bg-white/[0.08] dark:hover:text-indigo-400 hover:scale-105 active-press"
-                        >
-                            Về Edu
-                        </button>
-                        <Link
-                            to="/guide"
-                            className="rounded-xl px-4 py-2 text-sm font-bold text-slate-600 hover:bg-slate-100 hover:text-indigo-600 dark:text-slate-300 dark:hover:bg-white/[0.08] dark:hover:text-indigo-400 hover:scale-105 active-press"
-                        >
-                            Hướng dẫn
-                        </Link>
-                        <Link
-                            to="/pricing"
-                            className="rounded-xl px-4 py-2 text-sm font-bold text-slate-600 hover:bg-slate-100 hover:text-indigo-600 dark:text-slate-300 dark:hover:bg-white/[0.08] dark:hover:text-indigo-400 hover:scale-105 active-press"
-                        >
-                            Bảng giá
-                        </Link>
-                        <Link
-                            to="/login"
-                            className="ml-2 rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-bold text-slate-800 shadow-sm hover:border-blue-300 hover:text-blue-650 dark:border-white/10 dark:bg-white/5 dark:text-slate-100 dark:hover:border-blue-300/30 hover:scale-105 active-press"
-                        >
-                            Đăng nhập
-                        </Link>
-                        <Link
-                            to="/register"
-                            className="rounded-xl bg-gradient-to-r from-blue-600 to-indigo-650 px-4 py-2 text-sm font-bold text-white shadow-sm hover:shadow-primary-glow hover:scale-105 active-press"
-                        >
-                            Đăng kí/ Bắt đầu
-                        </Link>
-                        <div className="ml-2 border-l border-slate-200 pl-2 dark:border-white/10">
-                            <ThemeToggle variant="glass" />
-                        </div>
-                    </nav>
-
-                    <div className="flex items-center gap-2 md:hidden">
-                        <ThemeToggle variant="ghost" className="p-2" />
-                        <button
-                            className="rounded-lg p-2 text-slate-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-white/[0.08]"
-                            onClick={() => setIsMenuOpen((value) => !value)}
-                            aria-label="Mở menu"
-                        >
-                            {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-                        </button>
-                    </div>
-                </div>
-
-                {isMenuOpen && (
-                    <div className="border-t border-slate-200 bg-white p-3 dark:border-white/10 dark:bg-slate-950 md:hidden">
-                        <button
-                            onClick={scrollToAbout}
-                            className="block w-full rounded-lg px-4 py-3 text-left text-sm font-bold text-slate-700 hover:bg-slate-50 dark:text-slate-200 dark:hover:bg-white/[0.08]"
-                        >
-                            Về Edu
-                        </button>
-                        <Link
-                            to="/guide"
-                            className="block rounded-lg px-4 py-3 text-sm font-bold text-slate-700 hover:bg-slate-50 dark:text-slate-200 dark:hover:bg-white/[0.08]"
-                            onClick={() => setIsMenuOpen(false)}
-                        >
-                            Hướng dẫn
-                        </Link>
-                        <Link
-                            to="/login"
-                            className="block rounded-lg px-4 py-3 text-sm font-bold text-slate-700 hover:bg-slate-50 dark:text-slate-200 dark:hover:bg-white/[0.08]"
-                            onClick={() => setIsMenuOpen(false)}
-                        >
-                            Đăng nhập
-                        </Link>
-                        <Link
-                            to="/register"
-                            className="mt-2 block rounded-xl bg-gradient-to-r from-blue-600 to-indigo-650 px-4 py-3 text-center text-sm font-bold text-white shadow-sm hover:scale-[1.02] active-press"
-                            onClick={() => setIsMenuOpen(false)}
-                        >
-                            Đăng ký miễn phí
-                        </Link>
-                    </div>
-                )}
-            </header>
-
-            <main>
-                <section className="relative min-h-[88vh] overflow-hidden pb-16 pt-28 text-white sm:pb-20 sm:pt-36 lg:min-h-[92vh]">
-                    <img
-                        src="/vietnamese-classroom.png"
-                        alt="Lớp học Việt Nam sử dụng học liệu số"
-                        className="absolute inset-0 h-full w-full object-cover"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-r from-slate-950/92 via-slate-950/70 to-slate-950/20" />
-                    <div className="absolute inset-x-0 bottom-0 h-36 bg-gradient-to-t from-[#f6f8fb] to-transparent dark:from-slate-950" />
-
-                    <div className="relative z-10 mx-auto flex max-w-7xl flex-col gap-10 px-4 sm:px-6 lg:px-8">
-                        <div className="max-w-3xl pt-10 lg:pt-16">
-                            <div className="mb-5 inline-flex items-center gap-2 rounded-xl border border-white/18 bg-white/10 px-3.5 py-2 text-xs font-bold uppercase tracking-[0.18em] text-blue-100 backdrop-blur animate-pulse-slow">
-                                <GraduationCap className="h-4 w-4 text-blue-300" />
-                                Học liệu 3D cho lớp học Việt Nam
-                            </div>
-                            <h1 className="text-5xl font-black tracking-tight text-white sm:text-6xl lg:text-7xl leading-tight">
-                                Edu Tech
-                            </h1>
-                            <p className="mt-5 max-w-2xl text-lg font-medium leading-8 text-slate-100 sm:text-xl">
-                                Nền tảng học Khoa học Tự nhiên giúp học sinh quan sát khái niệm khó bằng mô hình 3D,
-                                infographic và tìm kiếm AI theo đúng ngữ cảnh bài học.
-                            </p>
-
-                            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-                                <Link
-                                    to="/register"
-                                    className="inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-650 hover:from-blue-500 hover:to-indigo-600 px-6 py-3.5 text-base font-black text-white shadow-lg shadow-blue-600/25 hover:shadow-indigo-500/30 hover:scale-[1.03] active:scale-[0.97] transition-all duration-300"
-                                >
-                                    Học thử miễn phí
-                                    <ChevronRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
-                                </Link>
-                                <Link
-                                    to="/intro-deck"
-                                    className="inline-flex items-center justify-center gap-2 rounded-xl border border-white/20 bg-white/10 px-6 py-3.5 text-base font-black text-white backdrop-blur hover:bg-white/20 hover:scale-[1.03] active:scale-[0.97] transition-all duration-300"
-                                >
-                                    <Sparkles className="h-4 w-4" />
-                                    Xem slide giới thiệu
-                                </Link>
-                            </div>
-                        </div>
-
-                        <div className="grid max-w-3xl grid-cols-1 gap-3 sm:grid-cols-3">
-                            {stats.map((item) => (
-                                <div
-                                    key={item.label}
-                                    className="rounded-xl border border-white/15 bg-white/10 px-4 py-3 backdrop-blur transition-all duration-300 hover:-translate-y-0.5 hover:bg-white/15 hover:border-white/25 hover:shadow-md"
-                                >
-                                    <div className="text-2xl font-black text-white">{item.value}</div>
-                                    <div className="mt-1 text-xs font-bold uppercase tracking-[0.12em] text-slate-200">
-                                        {item.label}
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                </section>
-
-                <section className="mx-auto -mt-10 grid max-w-7xl grid-cols-1 gap-3 px-4 pb-16 sm:px-6 md:grid-cols-3 lg:px-8">
-                    {learningFlow.map((item, index) => {
-                        const Icon = item.icon;
-                        return (
-                            <div
-                                key={item.title}
-                                className="relative rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-white/10 dark:bg-slate-900 group hover:-translate-y-1 hover:shadow-md hover:border-indigo-500/20 dark:hover:border-indigo-500/30 transition-all duration-300"
-                            >
-                                <div className="flex items-start justify-between gap-4">
-                                    <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-slate-100 text-blue-700 dark:bg-white/[0.08] dark:text-blue-300 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300">
-                                        <Icon className="h-5 w-5" />
-                                    </div>
-                                    <span className="text-xs font-black uppercase tracking-[0.18em] text-slate-400 group-hover:text-blue-650 dark:group-hover:text-blue-400 transition-colors">
-                                        0{index + 1}
-                                    </span>
-                                </div>
-                                <h2 className="mt-5 text-xl font-black tracking-tight text-slate-950 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
-                                    {item.title}
-                                </h2>
-                                <p className="mt-2 text-sm font-medium leading-6 text-slate-600 dark:text-slate-300">
-                                    {item.description}
-                                </p>
-                            </div>
-                        );
-                    })}
-                </section>
-
-                <section className="border-y border-slate-200 bg-white py-16 dark:border-white/10 dark:bg-slate-900/60">
-                    <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                        <div className="flex flex-col justify-between gap-5 md:flex-row md:items-end">
-                            <div>
-                                <p className="text-xs font-black uppercase tracking-[0.2em] text-blue-600 dark:text-blue-300">
-                                    Học liệu trực quan
-                                </p>
-                                <h2 className="mt-3 max-w-3xl text-3xl font-black tracking-tight text-slate-950 dark:text-white sm:text-4xl">
-                                    Học bằng cách nhìn, xoay và so sánh.
-                                </h2>
-                            </div>
-                            <Link
-                                to="/register"
-                                className="inline-flex w-max items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-black text-slate-800 hover:border-blue-300 hover:text-blue-650 dark:border-white/10 dark:bg-white/5 dark:text-slate-100 dark:hover:border-blue-300/30 transition-all duration-300 hover:scale-105 active:scale-95 shadow-sm"
-                            >
-                                Vào thư viện
-                                <ChevronRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
-                            </Link>
-                        </div>
-
-                        <div className="mt-8 grid grid-cols-1 gap-5 md:grid-cols-3">
-                            {subjects.map((subject) => {
-                                const Icon = subject.icon;
-                                const getSubjectGlow = (name: string) => {
-                                    if (name.includes('3D')) return 'hover-glow-physics';
-                                    if (name.includes('DNA')) return 'hover-glow-chemistry';
-                                    return 'hover-glow-biology';
-                                };
-                                const glowClass = getSubjectGlow(subject.name);
-                                return (
-                                    <button
-                                        key={subject.name}
-                                        onClick={() => setSelectedSubject(subject)}
-                                        className={`group overflow-hidden rounded-2xl border border-slate-200 bg-white text-left shadow-sm transition-all duration-300 hover:-translate-y-1.5 hover:shadow-lg dark:border-white/10 dark:bg-slate-950 ${glowClass}`}
-                                    >
-                                        <div className="aspect-[16/10] overflow-hidden bg-slate-100">
-                                            <img
-                                                src={subject.image}
-                                                alt={subject.name}
-                                                className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.04]"
-                                            />
-                                        </div>
-                                        <div className="p-5">
-                                            <div className="flex items-center justify-between gap-3">
-                                                <span className={`inline-flex items-center gap-2 rounded-lg border px-3 py-1.5 text-xs font-black uppercase tracking-[0.12em] ${subject.tone}`}>
-                                                    <Icon className="h-4 w-4" />
-                                                    {subject.name}
-                                                </span>
-                                                <ChevronRight className="h-5 w-5 text-slate-400 transition-all duration-300 group-hover:translate-x-1.5 group-hover:text-blue-600 dark:group-hover:text-blue-450" />
-                                            </div>
-                                            <p className="mt-4 text-sm font-medium leading-6 text-slate-600 dark:text-slate-350">
-                                                {subject.description}
-                                            </p>
-                                            <div className="mt-4 flex flex-wrap gap-2">
-                                                {subject.topics.map((topic) => (
-                                                    <span
-                                                        key={topic}
-                                                        className="rounded-md bg-slate-100 px-2.5 py-1 text-xs font-bold text-slate-600 dark:bg-white/[0.08] dark:text-slate-300"
-                                                    >
-                                                        {topic}
-                                                    </span>
-                                                ))}
-                                            </div>
-                                        </div>
-                                    </button>
-                                );
-                            })}
-                        </div>
-                    </div>
-                </section>
-
-                <section ref={aboutUsRef} className="py-16 sm:py-20">
-                    <div className="mx-auto grid max-w-7xl grid-cols-1 gap-10 px-4 sm:px-6 lg:grid-cols-[0.95fr_1.05fr] lg:px-8">
-                        <div className="grid grid-cols-2 gap-4">
-                            <img
-                                src="/Image.png"
-                                alt="Giao diện học liệu Edu Tech"
-                                className="mt-8 aspect-[4/5] w-full rounded-2xl object-cover shadow-md hover:scale-[1.02] transition-transform duration-300"
-                            />
-                            <img
-                                src="/vietnamese-classroom.png"
-                                alt="Học liệu số Edu Tech"
-                                className="aspect-[4/5] w-full rounded-2xl object-cover shadow-md hover:scale-[1.02] transition-transform duration-300"
-                            />
-                        </div>
-
-                        <div className="flex flex-col justify-center">
-                            <div className="inline-flex w-max items-center gap-2 rounded-xl border border-teal-200 bg-teal-50 px-3 py-2 text-xs font-black uppercase tracking-[0.18em] text-teal-700 dark:border-teal-400/20 dark:bg-teal-400/10 dark:text-teal-200">
-                                <Globe2 className="h-4 w-4" />
-                                Dành cho giáo dục phổ thông
-                            </div>
-                            <h2 className="mt-5 text-3xl font-black tracking-tight text-slate-950 dark:text-white sm:text-4xl leading-tight">
-                                Một không gian học tập đủ trực quan cho học sinh, đủ nhanh cho giáo viên.
-                            </h2>
-                            <p className="mt-5 text-base font-medium leading-8 text-slate-600 dark:text-slate-350">
-                                Edu Tech tập trung vào các tình huống học thật: cần mở học liệu nhanh trong tiết học,
-                                cần nhìn rõ cấu trúc khó, cần tìm lại mô hình theo câu hỏi tự nhiên và cần trình bày
-                                mạch lạc trên màn hình lớp.
-                            </p>
-
-                            <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2">
-                                <div className="relative rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-white/10 dark:bg-slate-900 group hover:-translate-y-1 hover:shadow-md hover:border-indigo-500/20 dark:hover:border-indigo-500/30 transition-all duration-300">
-                                    <Users className="h-6 w-6 text-blue-600 dark:text-blue-300 group-hover:scale-110 transition-transform duration-300" />
-                                    <h3 className="mt-4 text-lg font-black text-slate-950 dark:text-white">Học sinh</h3>
-                                    <p className="mt-2 text-sm font-medium leading-6 text-slate-600 dark:text-slate-300">
-                                        Tự khám phá mô hình, ôn lại khái niệm và ghi nhớ bằng hình ảnh.
-                                    </p>
-                                </div>
-                                <div className="relative rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-white/10 dark:bg-slate-900 group hover:-translate-y-1 hover:shadow-md hover:border-indigo-500/20 dark:hover:border-indigo-500/30 transition-all duration-300">
-                                    <Microscope className="h-6 w-6 text-teal-600 dark:text-teal-300 group-hover:scale-110 transition-transform duration-300" />
-                                    <h3 className="mt-4 text-lg font-black text-slate-950 dark:text-white">Giáo viên</h3>
-                                    <p className="mt-2 text-sm font-medium leading-6 text-slate-600 dark:text-slate-300">
-                                        Chuẩn bị bài giảng trực quan và trình chiếu học liệu ngay trong lớp.
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                <section className="bg-slate-950 py-16 text-white">
-                    <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                        <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-                            {features.map((feature) => {
-                                const Icon = feature.icon;
-                                return (
-                                    <div key={feature.title} className="rounded-2xl border border-white/10 bg-gradient-to-br from-white/[0.07] to-transparent p-6 hover:from-white/[0.12] hover:border-white/15 transition-all duration-300 group hover:-translate-y-1 hover:shadow-lg">
-                                        <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-white text-slate-950 group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300">
-                                            <Icon className="h-5 w-5" />
-                                        </div>
-                                        <h3 className="mt-5 text-xl font-black tracking-tight group-hover:text-blue-300 transition-colors">{feature.title}</h3>
-                                        <p className="mt-3 text-sm font-medium leading-6 text-slate-300">
-                                            {feature.description}
-                                        </p>
-                                    </div>
-                                );
-                            })}
-                        </div>
-                    </div>
-                </section>
-
-                <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
-                    <div className="grid grid-cols-1 items-center gap-8 rounded-3xl border border-slate-200 bg-white p-6 shadow-sm dark:border-white/10 dark:bg-slate-900 md:grid-cols-[1fr_auto] md:p-8 hover:shadow-md transition-shadow">
-                        <div>
-                            <p className="text-xs font-black uppercase tracking-[0.2em] text-blue-600 dark:text-blue-300">
-                                Sẵn sàng vào lớp học số
-                            </p>
-                            <h2 className="mt-3 text-3xl font-black tracking-tight text-slate-950 dark:text-white leading-tight">
-                                Bắt đầu với thư viện 3D và AI tìm kiếm của Edu Tech.
-                            </h2>
-                            <p className="mt-3 max-w-2xl text-sm font-medium leading-6 text-slate-600 dark:text-slate-350">
-                                Tạo tài khoản để trải nghiệm các mô hình đầu tiên và mở rộng dần theo môn học.
-                            </p>
-                        </div>
-                        <div className="flex flex-col gap-3 sm:flex-row md:flex-col">
-                            <Link
-                                to="/register"
-                                className="inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-650 hover:from-blue-500 hover:to-indigo-600 px-6 py-3 text-sm font-black text-white shadow-md hover:shadow-primary-glow hover:scale-[1.03] active:scale-[0.97] transition-all duration-300"
-                            >
-                                Đăng ký miễn phí
-                                <ChevronRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
-                            </Link>
-                            <Link
-                                to="/login"
-                                className="inline-flex items-center justify-center rounded-xl border border-slate-200 px-6 py-3 text-sm font-black text-slate-800 hover:border-blue-350 hover:text-blue-650 dark:border-white/10 dark:text-slate-100 dark:hover:border-blue-300/30 hover:scale-[1.03] active:scale-[0.97] transition-all duration-300 bg-white dark:bg-white/5"
-                            >
-                                Đăng nhập
-                            </Link>
-                        </div>
-                    </div>
-                </section>
-            </main>
-
-            {selectedSubject && (
-                <div className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-950/75 p-4 backdrop-blur-md transition-all duration-300">
-                    <div className="relative grid w-full max-w-4xl overflow-hidden rounded-3xl bg-white shadow-2xl dark:bg-slate-950 lg:grid-cols-[1.05fr_0.95fr] animate-in zoom-in-95 duration-250">
-                        <button
-                            onClick={() => setSelectedSubject(null)}
-                            className="absolute right-4 top-4 z-10 rounded-xl bg-white/95 p-2 text-slate-700 shadow-md hover:bg-white dark:bg-slate-900/95 dark:text-slate-200 hover:scale-105 active-press"
-                            aria-label="Đóng"
-                        >
-                            <X className="h-5 w-5" />
-                        </button>
-                        <div className="relative min-h-[300px]">
-                            <img
-                                src={selectedSubject.image}
-                                alt={selectedSubject.name}
-                                className="absolute inset-0 h-full w-full object-cover"
-                            />
-                            <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 to-transparent" />
-                            <div className="absolute bottom-5 left-5 rounded-xl border border-white/20 bg-white/10 px-3 py-2 text-xs font-black uppercase tracking-[0.16em] text-white backdrop-blur">
-                                Học liệu thực tế
-                            </div>
-                        </div>
-                        <div className="p-6 sm:p-8">
-                            <span className={`inline-flex items-center gap-2 rounded-lg border px-3 py-1.5 text-xs font-black uppercase tracking-[0.12em] ${selectedSubject.tone}`}>
-                                {SelectedSubjectIcon && <SelectedSubjectIcon className="h-4 w-4" />}
-                                {selectedSubject.name}
-                            </span>
-                            <h3 className="mt-5 text-3xl font-black tracking-tight text-slate-950 dark:text-white">
-                                Khám phá {selectedSubject.name}
-                            </h3>
-                            <p className="mt-4 text-sm font-medium leading-7 text-slate-600 dark:text-slate-350">
-                                {selectedSubject.description}
-                            </p>
-                            <div className="mt-6 grid grid-cols-1 gap-2 sm:grid-cols-3">
-                                {selectedSubject.topics.map((topic) => (
-                                    <div
-                                        key={topic}
-                                        className="rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-center text-xs font-black uppercase tracking-[0.12em] text-slate-600 dark:border-white/10 dark:bg-white/[0.06] dark:text-slate-300"
-                                    >
-                                        {topic}
-                                    </div>
-                                ))}
-                            </div>
-                            <Link
-                                to="/register"
-                                className="mt-7 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-650 hover:from-blue-500 hover:to-indigo-600 px-5 py-3 text-sm font-black text-white shadow-md hover:shadow-primary-glow hover:scale-[1.02] active-press transition-all duration-300"
-                            >
-                                Khám phá trọn bộ thư viện
-                                <ChevronRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
-                            </Link>
-                        </div>
-                    </div>
-                </div>
-            )}
-
-            <footer className="border-t border-slate-200 bg-white py-10 dark:border-white/10 dark:bg-slate-950">
-                <div className="mx-auto flex max-w-7xl flex-col gap-6 px-4 sm:px-6 md:flex-row md:items-center md:justify-between lg:px-8">
-                    <div className="flex items-center gap-3">
-                        <div className="flex h-14 w-14 items-center justify-center rounded-lg overflow-hidden">
-                            <img src="/logo.png" alt="Logo" className="w-full h-full object-cover" />
-                        </div>
-                        <div>
-                            <div className="font-black tracking-tight text-slate-950 dark:text-white">Edu Tech</div>
-                            <div className="text-xs font-bold text-slate-500 dark:text-slate-400">
-                                Học liệu 3D cho Khoa học Tự nhiên
-                            </div>
-                        </div>
-                    </div>
-                    <div className="flex flex-wrap gap-4 text-sm font-bold text-slate-500 dark:text-slate-400">
-                        <Link to="/guide" className="hover:text-blue-700 dark:hover:text-blue-300">
-                            Hướng dẫn
-                        </Link>
-                        <Link to="/pricing" className="hover:text-blue-700 dark:hover:text-blue-300">
-                            Bảng giá
-                        </Link>
-                        <button className="hover:text-blue-700 dark:hover:text-blue-300">Liên hệ hỗ trợ</button>
-                    </div>
-                </div>
-            </footer>
-        </div>
-    );
-}
+import { Link } from 'react-router';
+import { ChevronRight, Menu, X } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
+import ThemeToggle from '../components/ThemeToggle';
+import ModelViewer from '../components/ModelViewer';
+
+/* ─────────────────────────────────────────────────────────
+   MODEL DATA – 5 cards đúng theo ảnh
+───────────────────────────────────────────────────────── */
+const MODELS = [
+    {
+        id: 'animal-cell',
+        title: 'Tế bào động vật',
+        category: 'Tế bào',
+        img: '/A1.png',
+        fallbackBg: '#fef3c7',
+    },
+    {
+        id: 'plant-cell',
+        title: 'Tế bào thực vật',
+        category: 'Tế bào',
+        img: '/A2.png',
+        fallbackBg: '#d1fae5',
+    },
+    {
+        id: 'bacteria',
+        title: 'Tế bào nhân sơ (vi khuẩn)',
+        category: 'Vi sinh vật',
+        img: '/A3.png',
+        fallbackBg: '#ede9fe',
+    },
+    {
+        id: 'dna',
+        title: 'Cấu trúc ADN',
+        category: 'Di truyền',
+        img: '/A4.png',
+        fallbackBg: '#dbeafe',
+    },
+    {
+        id: 'heart',
+        title: 'Cấu tạo tim người',
+        category: 'Cơ thể người',
+        img: '/A5.png',
+        fallbackBg: '#fee2e2',
+    },
+];
+
+/* ─────────────────────────────────────────────────────────
+   FEATURE ICONS – panel dưới hero
+───────────────────────────────────────────────────────── */
+const FEATURES = [
+    {
+        icon: (
+            <svg viewBox="0 0 40 40" className="w-9 h-9" fill="none">
+                <polygon points="20,4 36,32 4,32" fill="none" stroke="#94a3b8" strokeWidth="2.5" />
+                <polygon points="20,10 30,28 10,28" fill="none" stroke="#94a3b8" strokeWidth="1.5" opacity="0.5" />
+            </svg>
+        ),
+        title: 'Mô hình 3D\ntrực quan',
+        sub: 'Hiểu nhanh hơn\nnhớ lâu hơn',
+    },
+    {
+        icon: (
+            <svg viewBox="0 0 40 40" className="w-9 h-9" fill="none">
+                <rect x="4" y="6" width="32" height="22" rx="2" stroke="#94a3b8" strokeWidth="2.2" />
+                <line x1="10" y1="13" x2="30" y2="13" stroke="#94a3b8" strokeWidth="2" />
+                <line x1="10" y1="18" x2="30" y2="18" stroke="#94a3b8" strokeWidth="2" />
+                <line x1="10" y1="23" x2="20" y2="23" stroke="#94a3b8" strokeWidth="2" />
+                <rect x="14" y="28" width="12" height="5" rx="1" fill="#94a3b8" opacity="0.4" />
+            </svg>
+        ),
+        title: 'Infographic\nsinh động',
+        sub: 'Tổng hợp kiến\nthức sinh động',
+    },
+    {
+        icon: (
+            <svg viewBox="0 0 40 40" className="w-9 h-9" fill="none">
+                <rect x="4" y="4" width="32" height="26" rx="3" stroke="#94a3b8" strokeWidth="2.2" />
+                <text x="20" y="22" textAnchor="middle" fontSize="16" fontWeight="bold" fill="#94a3b8">AI</text>
+            </svg>
+        ),
+        title: 'AI tìm kiếm\nthông minh',
+        sub: 'Đúng bài học\nđúng ngữ cảnh',
+    },
+    {
+        icon: (
+            <svg viewBox="0 0 40 40" className="w-9 h-9" fill="none">
+                <rect x="6" y="3" width="22" height="28" rx="2" stroke="#94a3b8" strokeWidth="2.2" />
+                <path d="M14 3v28" stroke="#94a3b8" strokeWidth="1.2" opacity="0.4" />
+                <rect x="28" y="18" width="8" height="15" rx="1" stroke="#94a3b8" strokeWidth="1.8" />
+                <line x1="10" y1="10" x2="22" y2="10" stroke="#94a3b8" strokeWidth="1.5" />
+                <line x1="10" y1="15" x2="22" y2="15" stroke="#94a3b8" strokeWidth="1.5" />
+                <line x1="10" y1="20" x2="18" y2="20" stroke="#94a3b8" strokeWidth="1.5" />
+            </svg>
+        ),
+        title: 'Bám sát sách\ngiáo khoa',
+        sub: 'Chuẩn chương\ntrình học trên lớp',
+    },
+];
+
+/* ═══════════════════════════════════════════════════════════
+   COMPONENT
+═══════════════════════════════════════════════════════════ */
+export default function Landing() {
+    const storyRef = useRef<HTMLElement>(null);
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [scrolled, setScrolled] = useState(false);
+
+    useEffect(() => {
+        const onScroll = () => setScrolled(window.scrollY > 10);
+        window.addEventListener('scroll', onScroll);
+        return () => window.removeEventListener('scroll', onScroll);
+    }, []);
+
+    const scrollToStory = () => {
+        setIsMenuOpen(false);
+        storyRef.current?.scrollIntoView({ behavior: 'smooth' });
+    };
+
+    return (
+        <div className="min-h-screen bg-white text-slate-900 font-sans antialiased">
+
+            {/* ══════════════════════════════════════
+                NAVBAR – pill bar, đúng theo ảnh
+            ══════════════════════════════════════ */}
+            <header className="fixed left-0 right-0 top-0 z-50 px-4 pt-3">
+                <div
+                    className={`mx-auto max-w-7xl xl:max-w-[1440px] rounded-2xl border transition-all duration-300 ${
+                        scrolled
+                            ? 'border-slate-200/80 bg-white/95 shadow-md backdrop-blur-md'
+                            : 'border-white/30 bg-white/80 shadow-sm backdrop-blur-sm'
+                    }`}
+                >
+                    <div className="flex items-center justify-between px-4 py-3.5 sm:px-6 sm:py-4">
+                        {/* Logo – square */}
+                        <button
+                            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+                            className="flex items-center gap-3 group"
+                        >
+                            <div className="h-14 w-14 overflow-hidden rounded-none flex-shrink-0">
+                                <img src="/logo.png" alt="EduTech" className="h-full w-full object-contain" />
+                            </div>
+                            <div className="leading-tight mt-1">
+                                <p className="text-lg font-black text-black">Edu Tech</p>
+                                <p className="text-[13px] font-bold text-black mt-0.5">Học liệu 3D cho KHTN</p>
+                            </div>
+                        </button>
+
+                        {/* Desktop nav */}
+                        <nav className="hidden items-center gap-0.5 md:flex">
+                            <button
+                                onClick={scrollToStory}
+                                className="rounded-xl px-4 py-2.5 text-[15px] font-bold text-slate-900 hover:bg-slate-100 transition-all"
+                            >
+                                Về Edu
+                            </button>
+                            <Link
+                                to="/guide"
+                                className="rounded-xl px-4 py-2.5 text-[15px] font-bold text-slate-900 hover:bg-slate-100 transition-all"
+                            >
+                                Hướng dẫn
+                            </Link>
+
+                            <div className="ml-3 flex items-center gap-2">
+                                <Link
+                                    to="/login"
+                                    className="rounded-xl border-2 border-slate-200 bg-white px-5 py-2.5 text-[15px] font-bold text-slate-900 hover:border-slate-300 hover:bg-slate-50 transition-all shadow-sm"
+                                >
+                                    Đăng nhập
+                                </Link>
+                                <Link
+                                    to="/register"
+                                    className="rounded-xl bg-blue-600 px-5 py-2.5 text-[15px] font-bold text-white hover:bg-blue-700 transition-all shadow-sm"
+                                >
+                                    Đăng ký
+                                </Link>
+                                {/* Theme toggle đã bỏ theo yêu cầu */}
+                            </div>
+                        </nav>
+
+                        {/* Mobile toggle */}
+                        <button
+                            className="rounded-lg p-2 text-slate-600 hover:bg-slate-100 md:hidden"
+                            onClick={() => setIsMenuOpen(v => !v)}
+                        >
+                            {isMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+                        </button>
+                    </div>
+
+                    {/* Mobile menu */}
+                    {isMenuOpen && (
+                        <div className="border-t border-slate-100 px-4 pb-4 pt-2 md:hidden">
+                            <button onClick={scrollToStory} className="block w-full rounded-xl px-4 py-3 text-left text-[15px] font-bold text-slate-900 hover:bg-slate-50">
+                                Về Edu
+                            </button>
+                            <Link to="/guide" className="block rounded-xl px-4 py-3 text-[15px] font-bold text-slate-900 hover:bg-slate-50" onClick={() => setIsMenuOpen(false)}>
+                                Hướng dẫn
+                            </Link>
+                            <div className="mt-3 flex flex-col gap-2">
+                                <Link to="/login" className="block w-full rounded-xl border-2 border-slate-200 px-4 py-3 text-center text-[15px] font-bold text-slate-900" onClick={() => setIsMenuOpen(false)}>
+                                    Đăng nhập
+                                </Link>
+                                <Link to="/register" className="block w-full rounded-xl bg-blue-600 px-4 py-3 text-center text-[15px] font-bold text-white" onClick={() => setIsMenuOpen(false)}>
+                                    Đăng ký
+                                </Link>
+                            </div>
+                        </div>
+                    )}
+                </div>
+            </header>
+
+            <main>
+                {/* ══════════════════════════════════════
+                    HERO SECTION
+                    - Background: ảnh landing-bg.png (dark navy + 3D objects)
+                    - Text trái, objects phải
+                ══════════════════════════════════════ */}
+                <section className="relative" style={{ minHeight: '90vh' }}>
+                    {/* Background: hero-bg.png = EduTechvn.png (chỉ hero, không có navbar) */}
+                    <div
+                        className="absolute inset-0 overflow-hidden flex justify-center"
+                        style={{ background: '#071428' }}
+                    >
+                        <div className="relative w-full h-full">
+                            <img
+                                src="/Backgrod.png"
+                                alt=""
+                                aria-hidden
+                                style={{
+                                    position: 'absolute',
+                                    top: 0,
+                                    right: 0,
+                                    width: '100%',
+                                    height: '100%',
+                                    objectFit: 'cover',
+                                    objectPosition: 'right top',
+                                    pointerEvents: 'none',
+                                    userSelect: 'none',
+                                }}
+                            />
+                            {/* Overlay Mobile */}
+                            <div className="absolute inset-0 bg-gradient-to-r from-[#071428] via-[#071428]/80 to-transparent sm:hidden" />
+                            {/* Overlay Desktop: ôm sát text theo mọi tỷ lệ */}
+                            <div 
+                                className="absolute inset-0 hidden sm:block" 
+                                style={{ background: 'linear-gradient(to right, #071428 0%, #071428 calc(50% - 100px), rgba(7,20,40,0.4) calc(50% + 150px), transparent calc(50% + 400px))' }} 
+                            />
+                        </div>
+                    </div>
+
+
+                    {/* Content */}
+                    {/* Shift content slightly to left by adding mr-auto or adjusting margins, and make it smaller */}
+                    <div className="relative z-10 mx-auto max-w-[1280px] px-8 sm:px-12 lg:pr-24" style={{ paddingTop: '130px', paddingBottom: '160px' }}>
+                        {/* Brand title */}
+                        <h1
+                            className="font-black text-white leading-none"
+                            style={{ fontSize: 'clamp(70px, 11vw, 120px)', letterSpacing: '-0.02em' }}
+                        >
+                            EduTech
+                        </h1>
+
+                        {/* Tagline */}
+                        <p className="mt-5 text-2xl font-bold text-white sm:text-4xl lg:text-5xl leading-tight" style={{ maxWidth: 700 }}>
+                            Biến kiến thức trừu tượng
+                            <br />
+                            thành trải nghiệm trực quan
+                        </p>
+
+                        {/* Sub-description */}
+                        <p className="mt-4 text-base font-medium text-slate-300 sm:text-lg lg:text-xl leading-relaxed" style={{ maxWidth: 600 }}>
+                            Hiểu nhanh hơn nhớ lâu hơn với mô hình 3D, infographic và AI
+                            <br />
+                            Tiết kiệm thời gian soạn bài và tìm học liệu trực quan
+                        </p>
+
+                        {/* CTA – rounded pill blue button */}
+                        <div className="mt-8">
+                            <Link
+                                to="/register"
+                                className="inline-flex items-center gap-2 rounded-full bg-blue-600 px-9 py-3.5 text-lg font-bold text-white shadow-lg hover:bg-blue-500 hover:-translate-y-0.5 hover:shadow-blue-600/40 hover:shadow-xl transition-all duration-200"
+                            >
+                                Trải nghiệm ngay
+                            </Link>
+                        </div>
+
+                        {/* ── FEATURE ICONS PANEL (nằm bên dưới, trong hero) ── */}
+                        <div
+                            className="mt-16 grid grid-cols-2 gap-4 sm:grid-cols-4 lg:gap-5"
+                            style={{ maxWidth: 800 }}
+                        >
+                            {FEATURES.map((f, i) => (
+                                <div
+                                    key={i}
+                                    className="rounded-2xl border border-white/20 bg-white/10 backdrop-blur-md p-5 hover:bg-white/15 transition-colors"
+                                >
+                                    <div className="flex justify-center scale-110 mb-2">{f.icon}</div>
+                                    <p className="mt-2 text-center text-[13px] sm:text-sm font-bold text-white leading-tight whitespace-pre-line">
+                                        {f.title}
+                                    </p>
+                                    <p className="mt-1.5 text-center text-[11px] sm:text-xs text-slate-300 leading-tight whitespace-pre-line">
+                                        {f.sub}
+                                    </p>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </section>
+
+                {/* ══════════════════════════════════════
+                    CÂU CHUYỆN EDUTECH
+                    - Background trắng, có molecule dots trang trí
+                    - Text trái, placeholder 3D phải
+                ══════════════════════════════════════ */}
+                <section ref={storyRef} className="relative bg-white py-20 overflow-hidden" style={{ backgroundColor: '#ffffff' }}>
+                    {/* Decorative molecule dots */}
+                    <div
+                        className="absolute left-0 top-0 bottom-0 w-16 pointer-events-none select-none"
+                        style={{
+                            backgroundImage: 'radial-gradient(circle, #cbd5e1 1.5px, transparent 1.5px)',
+                            backgroundSize: '18px 18px',
+                        }}
+                    />
+                    <div
+                        className="absolute right-0 top-0 bottom-0 w-16 pointer-events-none select-none"
+                        style={{
+                            backgroundImage: 'radial-gradient(circle, #cbd5e1 1.5px, transparent 1.5px)',
+                            backgroundSize: '18px 18px',
+                        }}
+                    />
+
+                    <div className="mx-auto max-w-[1440px] px-8 sm:px-12 lg:px-16">
+                        <div className="grid grid-cols-1 items-center gap-16 lg:grid-cols-2 lg:gap-24">
+                            {/* Left – Story */}
+                            <div>
+                                <h2 className="text-4xl font-black text-blue-700 sm:text-5xl lg:text-6xl">
+                                    Câu chuyện của EduTech
+                                </h2>
+                                <div className="mt-6 text-lg sm:text-xl lg:text-2xl leading-relaxed text-slate-700 font-medium">
+                                    <p className="mb-4">
+                                        Nhiều kiến thức Khoa học quá trừu tượng để chỉ truyền đạt bằng hình ảnh tĩnh.
+                                    </p>
+                                    <p className="mb-4">
+                                        Trong khi đó, các mô hình minh họa 3D còn ít và nằm rải rác trên các nền tảng khác nhau khiến giáo viên phải mất nhiều thời gian tìm kiếm học liệu minh họa phù hợp.
+                                    </p>
+                                    <p className="text-blue-700 font-bold">
+                                        Đó là lý do EduTech ra đời.
+                                    </p>
+                                </div>
+
+                                {/* User cards */}
+                                <div className="mt-10 grid grid-cols-2 gap-6">
+                                    {/* Học sinh */}
+                                    <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 group">
+                                        <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-blue-100 text-blue-600">
+                                            <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                                                <path strokeLinecap="round" strokeLinejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
+                                            </svg>
+                                        </div>
+                                        <h3 className="mt-4 text-lg sm:text-xl font-bold text-slate-900">Học sinh</h3>
+                                        <p className="mt-2 text-sm sm:text-base text-slate-500 leading-relaxed">
+                                            Tự khám phá mô hình, ôn lại khái niệm và ghi nhớ bằng hình ảnh.
+                                        </p>
+                                    </div>
+                                    {/* Giáo viên */}
+                                    <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 group">
+                                        <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-teal-100 text-teal-600">
+                                            <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                                                <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                                            </svg>
+                                        </div>
+                                        <h3 className="mt-4 text-lg sm:text-xl font-bold text-slate-900">Giáo viên</h3>
+                                        <p className="mt-2 text-sm sm:text-base text-slate-500 leading-relaxed">
+                                            Chuẩn bị bài giảng trực quan và trình chiếu học liệu ngay trong lớp.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Right – 3D model placeholder */}
+                            <div className="flex items-center justify-center">
+                                <div className="relative w-full max-w-md">
+                                    {/* 3D Model viewer */}
+                                    <div className="rounded-3xl border border-slate-200 bg-slate-50/50 overflow-hidden aspect-square shadow-lg relative group mb-5">
+                                        <ModelViewer modelUrl="/dna.glb" minimal={true} autoRotate={true} />
+                                        <div className="absolute bottom-4 left-0 right-0 flex justify-center pointer-events-none transition-opacity duration-300 opacity-0 group-hover:opacity-100">
+                                            <span className="bg-slate-900/60 text-white text-[10px] uppercase tracking-wider font-bold px-3 py-1.5 rounded-full backdrop-blur-md flex items-center gap-1.5 shadow-md border border-white/10">
+                                                <svg className="w-3 h-3 text-white/90" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                                                    <path strokeLinecap="round" strokeLinejoin="round" d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122" />
+                                                </svg>
+                                                Chạm để xoay
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div className="flex justify-center">
+                                        <Link
+                                            to="/register"
+                                            className="inline-flex items-center gap-2 rounded-full bg-blue-600 px-6 py-2.5 text-sm font-bold text-white shadow-md hover:bg-blue-500 hover:-translate-y-0.5 hover:shadow-xl transition-all duration-200"
+                                        >
+                                            Trải nghiệm ngay
+                                            <ChevronRight className="h-4 w-4" />
+                                        </Link>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                {/* ══════════════════════════════════════
+                    QUOTE BANNER – dark teal/navy
+                ══════════════════════════════════════ */}
+                <section className="bg-[#1b3a5c] py-20 text-center">
+                    <div className="mx-auto max-w-4xl px-8">
+                        <p className="text-xl font-medium italic leading-loose text-white/95 sm:text-3xl">
+                            <em>EduTech giúp việc giảng dạy trở nên trực quan hơn.</em>
+                            <br />
+                            <em>Để mỗi học sinh không còn phải nói...</em>
+                            <br />
+                            <em className="text-blue-300 font-bold">"Em không hình dung được."</em>
+                        </p>
+                    </div>
+                </section>
+
+                {/* ══════════════════════════════════════
+                    MÔ HÌNH 3D NỔI BẬT
+                ══════════════════════════════════════ */}
+                <section className="bg-white py-16">
+                    <div className="mx-auto max-w-[1440px] px-6 sm:px-10 lg:px-16">
+                        {/* Header row */}
+                        <div className="mb-3 flex items-center justify-between">
+                            <p className="text-[13px] sm:text-base font-bold uppercase tracking-widest text-blue-600">
+                                Học liệu trực quan
+                            </p>
+                        </div>
+                        <div className="mb-8 flex items-center justify-between">
+                            <h2 className="text-3xl font-black text-slate-900 sm:text-4xl lg:text-5xl">
+                                Mô hình 3D nổi bật
+                            </h2>
+                            <Link
+                                to="/register"
+                                className="hidden sm:inline-flex items-center gap-1 text-sm font-semibold text-slate-500 hover:text-blue-600 transition-colors"
+                            >
+                                Xem tất cả <ChevronRight className="h-4 w-4" />
+                            </Link>
+                        </div>
+
+                        {/* Cards grid – 5 cards */}
+                        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
+                            {MODELS.map((m) => (
+                                <Link
+                                    key={m.id}
+                                    to="/register"
+                                    className="group flex flex-col overflow-hidden rounded-2xl border border-slate-100 bg-white shadow-sm hover:-translate-y-1.5 hover:shadow-lg hover:border-blue-100 transition-all duration-200"
+                                >
+                                    {/* Image thumbnail */}
+                                    <div
+                                        className="relative aspect-[4/3] overflow-hidden flex items-center justify-center"
+                                        style={{ background: m.fallbackBg }}
+                                    >
+
+                                        <img
+                                            src={m.img}
+                                            alt={m.title}
+                                            className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-300"
+                                            onError={(e) => {
+                                                (e.target as HTMLImageElement).style.display = 'none';
+                                            }}
+                                        />
+                                    </div>
+
+                                    {/* Info */}
+                                    <div className="flex flex-1 flex-col p-4 sm:p-5">
+                                        <p className="text-sm sm:text-lg font-bold text-slate-800 leading-tight group-hover:text-blue-700 transition-colors line-clamp-2">
+                                            {m.title}
+                                        </p>
+                                        <p className="mt-1 text-xs sm:text-sm text-slate-400">{m.category}</p>
+                                        <div className="mt-4 flex items-center justify-between">
+                                            <span className="text-xs sm:text-sm text-slate-400 font-medium">Xem chi tiết</span>
+                                            <ChevronRight className="h-4 w-4 sm:h-5 sm:w-5 text-slate-300 group-hover:text-blue-500 group-hover:translate-x-1 transition-all" />
+                                        </div>
+                                    </div>
+                                </Link>
+                            ))}
+                        </div>
+
+                        {/* Mobile "Xem tất cả" */}
+                        <div className="mt-5 text-center sm:hidden">
+                            <Link to="/register" className="inline-flex items-center gap-1 text-sm font-semibold text-slate-500">
+                                Xem tất cả <ChevronRight className="h-4 w-4" />
+                            </Link>
+                        </div>
+                    </div>
+                </section>
+
+                {/* ══════════════════════════════════════
+                    SẴN SÀNG VÀO LỚP HỌC SỐ – CTA lớn
+                    Dùng hero-bg.png (EduTechvn.png) làm trang trí
+                ══════════════════════════════════════ */}
+                <section className="relative overflow-hidden bg-white py-24 text-center">
+                    {/* Decorative molecule dots giống trong ảnh */}
+                    <div
+                        className="absolute left-0 top-0 bottom-0 w-20 pointer-events-none select-none"
+                        style={{
+                            backgroundImage: 'radial-gradient(circle, #e2e8f0 1.5px, transparent 1.5px)',
+                            backgroundSize: '20px 20px',
+                        }}
+                    />
+                    <div
+                        className="absolute right-0 top-0 bottom-0 w-20 pointer-events-none select-none"
+                        style={{
+                            backgroundImage: 'radial-gradient(circle, #e2e8f0 1.5px, transparent 1.5px)',
+                            backgroundSize: '20px 20px',
+                        }}
+                    />
+
+                    <div className="relative z-10 mx-auto max-w-4xl px-6">
+                        <h2 className="text-4xl font-black text-slate-900 sm:text-5xl lg:text-7xl leading-tight">
+                            Sẵn sàng vào lớp học số
+                        </h2>
+
+                        <div className="mt-10">
+                            <Link
+                                to="/register"
+                                className="inline-flex items-center gap-2 rounded-full bg-blue-600 px-12 py-5 text-xl font-bold text-white shadow-lg hover:bg-blue-500 hover:-translate-y-0.5 hover:shadow-blue-600/40 hover:shadow-xl transition-all duration-200"
+                            >
+                                Trải nghiệm ngay
+                            </Link>
+                        </div>
+
+                        {/* Secondary login link */}
+                        <p className="mt-4 text-sm text-slate-400">
+                            Đã có tài khoản?{' '}
+                            <Link to="/login" className="font-semibold text-blue-600 hover:text-blue-800 transition-colors">
+                                Đăng nhập ngay
+                            </Link>
+                        </p>
+                    </div>
+                </section>
+            </main>
+
+            {/* ══════════════════════════════════════
+                FOOTER – Logo trái + Liên hệ phải
+            ══════════════════════════════════════ */}
+            {/* ══ FOOTER – đồng màu với Quote section (#1b3a5c) ══ */}
+            <footer className="py-16 bg-[#1b3a5c]">
+                <div className="mx-auto max-w-[1440px] px-6 sm:px-10 lg:px-16">
+                    <div className="flex flex-col gap-12 md:flex-row md:items-start md:justify-between">
+                        {/* Logo block – vuông, to hơn */}
+                        <div className="flex items-start gap-5">
+                            <div className="h-24 w-24 overflow-hidden rounded-none flex-shrink-0 bg-white p-1.5 shadow-sm">
+                                <img src="/logo.png" alt="EduTech" className="h-full w-full object-contain" />
+                            </div>
+                            <div className="mt-2">
+                                <p className="text-2xl font-black text-white tracking-wide">Edu Tech</p>
+                                <p className="text-base font-medium text-white/80 mt-1">Học liệu 3D cho Khoa học Tự nhiên</p>
+                            </div>
+                        </div>
+
+                        {/* Liên hệ block */}
+                        <div>
+                            <p className="mb-5 text-lg font-bold text-white uppercase tracking-wider">Liên hệ</p>
+                            <ul className="space-y-4 text-base font-medium text-white/85">
+                                <li className="flex items-center gap-3 hover:text-white transition-colors cursor-default">
+                                    <svg className="h-5 w-5 text-white/70 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                                        <path strokeLinecap="round" strokeLinejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                                    </svg>
+                                    0982143958
+                                </li>
+                                <li className="flex items-center gap-3 hover:text-white transition-colors cursor-default">
+                                    <svg className="h-5 w-5 text-white/70 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                                        <path strokeLinecap="round" strokeLinejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                                    </svg>
+                                    netangedutech@gmail.com
+                                </li>
+                                <li className="flex items-start gap-3 hover:text-white transition-colors">
+                                    <svg className="h-5 w-5 text-white/70 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
+                                    </svg>
+                                    <a
+                                        href="https://www.facebook.com/profile.php?id=61590611280153"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                    >
+                                        facebook.com/EduTech
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <p className="mt-12 border-t border-white/20 pt-8 text-center text-sm font-medium text-white/60 tracking-wide">
+                        © {new Date().getFullYear()} EduTech · Học liệu 3D cho Khoa học Tự nhiên
+                    </p>
+                </div>
+            </footer>
+
+            {/* ── Mobile sticky bottom bar (đăng nhập/đăng ký) ── */}
+            <div className="fixed bottom-0 left-0 right-0 z-40 flex gap-2 border-t border-slate-100 bg-white/95 p-3 backdrop-blur-sm md:hidden">
+                <Link
+                    to="/login"
+                    className="flex-1 rounded-xl border border-slate-200 py-3 text-center text-sm font-bold text-slate-700 hover:border-blue-300 transition-colors"
+                >
+                    Đăng nhập
+                </Link>
+                <Link
+                    to="/register"
+                    className="flex-1 rounded-xl bg-blue-600 py-3 text-center text-sm font-bold text-white hover:bg-blue-700 transition-colors"
+                >
+                    Đăng ký miễn phí
+                </Link>
+            </div>
+        </div>
+    );
+}
