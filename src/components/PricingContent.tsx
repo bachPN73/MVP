@@ -22,7 +22,7 @@ export default function PricingContent({ isPublic = false }: { isPublic?: boolea
         <div className="p-3 sm:p-6 max-w-[95rem] mx-auto text-slate-800 dark:text-white">
             {/* Header - Tối ưu cực gọn nhưng đầy đủ khoảng cách để không bị cắt xén */}
             <div className="text-center mb-8">
-                <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-violet-50 dark:bg-indigo-500/10 border border-violet-100 dark:border-indigo-500/20 text-violet-600 dark:text-indigo-300 rounded-full mb-3 shadow-sm animate-pulse-slow">
+                <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-violet-50 dark:bg-indigo-500/10 border border-violet-100 dark:border-indigo-500/20 text-violet-600 dark:text-indigo-300 rounded-full mb-3 shadow-sm">
                     <Sparkles className="w-3.5 h-3.5" />
                     <span className="text-[10px] font-black tracking-wider uppercase">Bảng giá dịch vụ</span>
                 </div>
@@ -53,14 +53,7 @@ export default function PricingContent({ isPublic = false }: { isPublic?: boolea
                     let iconBg = "";
                     let cardBorder = "";
 
-                    if (isOwned) {
-                        themeColor = "text-slate-400 dark:text-slate-500";
-                        borderTop = "border-t-[6px] border-t-slate-400 dark:border-t-slate-600";
-                        shadowHover = "hover:shadow-none";
-                        btnStyle = "bg-slate-100 dark:bg-slate-800 text-slate-400 dark:text-slate-500 cursor-not-allowed border-none shadow-none";
-                        iconBg = "bg-slate-50 dark:bg-slate-900/60 text-slate-400 dark:text-slate-500";
-                        cardBorder = "border-slate-300 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-950/20 opacity-90";
-                    } else if (plan.id === "free") {
+                    if (plan.id === "free") {
                         themeColor = "text-slate-600 dark:text-slate-300";
                         borderTop = "border-t-[6px] border-t-slate-400 dark:border-t-slate-600";
                         shadowHover = "hover:shadow-slate-500/10 dark:hover:shadow-slate-500/5";
@@ -92,7 +85,7 @@ export default function PricingContent({ isPublic = false }: { isPublic?: boolea
                         btnStyle = "bg-gradient-to-r from-violet-600 to-indigo-600 text-white shadow-lg shadow-violet-500/35 active:scale-[0.98] hover:from-violet-700 hover:to-indigo-700 hover:shadow-[0_6px_25px_rgba(99,102,241,0.5)] hover:scale-[1.03]";
                         iconBg = "bg-violet-100 dark:bg-violet-950/70 text-violet-600 dark:text-indigo-300";
                         // Cực kỳ nổi bật gói PRO chủ lực
-                        cardBorder = "border-violet-500 dark:border-indigo-500/70 bg-gradient-to-b from-violet-50/40 to-white dark:from-slate-900/90 dark:to-slate-950/95 shadow-[0_20px_50px_rgba(99,102,241,0.16)] dark:shadow-[0_20px_50px_rgba(99,102,241,0.3)] xl:scale-[1.04] z-10 hover:border-violet-600 dark:hover:border-indigo-400";
+                        cardBorder = "border-violet-500 dark:border-indigo-500/70 bg-gradient-to-b from-violet-50/40 to-white dark:from-slate-900/90 dark:to-slate-950/95 shadow-[0_20px_50px_rgba(99,102,241,0.16)] dark:shadow-[0_20px_50px_rgba(99,102,241,0.3)] z-10 hover:border-violet-600 dark:hover:border-indigo-400";
                     } else if (plan.id === "school") {
                         themeColor = "text-emerald-700 dark:text-emerald-400";
                         // Gói Trường học
@@ -102,6 +95,10 @@ export default function PricingContent({ isPublic = false }: { isPublic?: boolea
                         btnStyle = "border-2 border-emerald-500 hover:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 bg-transparent shadow-sm hover:shadow-[0_4px_15px_rgba(16,185,129,0.1)]";
                         iconBg = "bg-slate-50 dark:bg-slate-950/60 text-slate-600 dark:text-slate-400";
                         cardBorder = "border-slate-200 dark:border-white/5 hover:border-emerald-600/30 dark:hover:border-emerald-600/20 bg-white/95 dark:bg-slate-900/60";
+                    }
+
+                    if (isOwned) {
+                        btnStyle = "bg-slate-100 dark:bg-slate-800 text-slate-400 dark:text-slate-500 cursor-not-allowed border-none shadow-none ring-1 ring-inset ring-slate-200 dark:ring-slate-700";
                     }
 
                     return (
@@ -120,7 +117,7 @@ export default function PricingContent({ isPublic = false }: { isPublic?: boolea
                             {/* Featured Badge - Tối ưu padding và góc bo tròn pill-shape cao cấp */}
                             {isFeatured && (
                                 <div className="absolute -top-4 left-1/2 -translate-x-1/2 z-20 pointer-events-none whitespace-nowrap">
-                                    <div className="relative px-5 py-1.5 bg-gradient-to-r from-violet-600 to-indigo-600 text-white text-[10px] font-black tracking-widest uppercase rounded-full shadow-md animate-pulse-slow">
+                                    <div className="relative px-5 py-1.5 bg-gradient-to-r from-violet-600 to-indigo-600 text-white text-[10px] font-black tracking-widest uppercase rounded-full shadow-md">
                                         <span>Phổ biến nhất</span>
                                     </div>
                                 </div>
@@ -157,9 +154,7 @@ export default function PricingContent({ isPublic = false }: { isPublic?: boolea
                                     {plan.features.map((feature, idx) => {
                                         // Xác định vòng viền tròn checkmark riêng theo từng Plan
                                         let checkBadge = "";
-                                        if (isOwned) {
-                                            checkBadge = "bg-slate-100 dark:bg-slate-800 text-slate-400 dark:text-slate-500 border-slate-200 dark:border-slate-700/50";
-                                        } else if (plan.id === "free") {
+                                        if (plan.id === "free") {
                                             checkBadge = "bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 border-slate-200 dark:border-slate-700";
                                         } else if (plan.id === "basic") {
                                             checkBadge = "bg-blue-50 dark:bg-blue-950/40 text-blue-600 dark:text-blue-400 border-blue-200 dark:border-blue-900/50";
@@ -176,7 +171,7 @@ export default function PricingContent({ isPublic = false }: { isPublic?: boolea
                                                 <div className={`w-[18px] h-[18px] rounded-full flex items-center justify-center shrink-0 mt-0.5 border shadow-sm transition-transform duration-300 group-hover:scale-105 ${checkBadge}`}>
                                                     <Check className="w-2.5 h-2.5" strokeWidth={3.5} />
                                                 </div>
-                                                <span className={`text-xs sm:text-[12.5px] xl:text-[11.5px] text-slate-700 dark:text-slate-200 leading-snug font-semibold ${isOwned ? 'text-slate-400 dark:text-slate-500 line-through opacity-70' : ''}`}>
+                                                <span className={`text-xs sm:text-[12.5px] xl:text-[11.5px] text-slate-700 dark:text-slate-200 leading-snug font-semibold`}>
                                                     {feature}
                                                 </span>
                                             </div>
@@ -335,7 +330,7 @@ export default function PricingContent({ isPublic = false }: { isPublic?: boolea
                 <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-5">
                     <div className="space-y-1 min-w-0 flex-1">
                         <h3 className="text-sm sm:text-base font-extrabold font-heading text-slate-900 dark:text-white flex items-center gap-2">
-                            <Sparkles className="w-4 h-4 text-violet-500 animate-pulse" />
+                            <Sparkles className="w-4 h-4 text-violet-500" />
                             Bạn cần một giải pháp tùy biến cho tổ chức của mình?
                         </h3>
                         <p className="text-slate-500 dark:text-slate-400 text-xs font-semibold leading-relaxed font-sans">

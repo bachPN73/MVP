@@ -144,7 +144,8 @@ export function AppSidebar({ currentPath = '/', isOpen = false, setIsOpen, isCol
                 </div>
 
                 {/* ===== Navigation — Clean & Professional ===== */}
-                <nav className="flex-1 px-3.5 py-3 space-y-0.5 overflow-hidden">
+                <nav className="flex-1 flex flex-col px-3.5 py-3 overflow-y-auto overflow-x-hidden">
+                    <div className="flex-1 flex flex-col justify-start gap-1 xl:gap-2 pb-2 min-h-max">
                     {menuItems.map((item) => {
                         const Icon = item.icon;
                         const isActive = currentPath === item.path;
@@ -187,8 +188,10 @@ export function AppSidebar({ currentPath = '/', isOpen = false, setIsOpen, isCol
                         );
                     })}
 
+                    </div>
+
                     {/* ===== Theme Switcher — Framed & Prominent ===== */}
-                    <div className="px-3.5 pt-3 mt-3 border-t border-sidebar-border/50">
+                    <div className="shrink-0 pt-3 mt-1 border-t border-sidebar-border/50">
                         <div className={`rounded-2xl transition-all duration-300 flex border overflow-hidden ${isCollapsed ? 'flex-col items-center justify-center py-6' : 'flex-row items-center justify-between p-3 px-5'} ${
                             theme === 'light' 
                                 ? 'bg-indigo-50/60 border-indigo-200/80 shadow-sm' 

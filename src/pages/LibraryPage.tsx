@@ -799,7 +799,7 @@ export default function Library() {
                                         {Object.entries(subjectChapters).map(([chapter, chapterLessons]) => (
                                             <div key={chapter} className="space-y-3">
                                                 {/* Chapter Title — Enhanced & Compact */}
-                                                <div className="flex items-center gap-3 bg-indigo-50/40 dark:bg-slate-800/40 border border-slate-200 dark:border-white/5 border-l-4 border-l-indigo-650 rounded-xl px-4 py-2.5">
+                                                <div className="flex items-center gap-3 bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm border border-indigo-100/80 dark:border-indigo-500/20 border-l-4 border-l-indigo-500 shadow-sm rounded-xl px-4 py-2.5">
                                                     <Layers className="w-4.5 h-4.5 text-indigo-600 dark:text-indigo-400 shrink-0" />
                                                     <h3 className="text-sm md:text-base font-bold text-slate-800 dark:text-white uppercase tracking-wider font-heading flex-1">{chapter}</h3>
                                                     <span className="px-2 py-0.5 rounded-lg text-[10px] font-bold bg-indigo-100/70 text-indigo-750 dark:bg-indigo-500/15 dark:text-indigo-400 border border-indigo-200/40 dark:border-indigo-500/15 shrink-0">
