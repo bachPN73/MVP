@@ -2,7 +2,7 @@ import { useParams, useNavigate } from 'react-router';
 import { materials as mockMaterials, Material } from '../data/materialsData';
 import { X, Maximize2, Minimize2, RotateCcw, BookOpen, Loader2, Sparkles, HelpCircle } from 'lucide-react';
 import { useState, useEffect } from 'react';
-import { api } from '../api';
+import { api, BASE_URL } from '../api';
 import ModelViewer from '../components/ModelViewer';
 
 export default function PresentationMode() {
@@ -94,8 +94,11 @@ export default function PresentationMode() {
 
     const getFullModelUrl = (url: string | undefined) => {
         if (!url) return "https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/Duck/glTF-Binary/Duck.glb";
-        if (url.startsWith('/models/')) {
-            return `http://127.0.0.1:3005${url}`;
+        if (url.startsWith('/')) {
+            if (id && !id.startsWith('db-')) {
+                return url; // Mock material
+            }
+            return `${BASE_URL}${url}`;
         }
         return url;
     };

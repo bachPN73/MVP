@@ -119,32 +119,17 @@ app.get('/api/ping', (req, res) => res.json({ status: 'ok', time: Date.now() }))
 
 // Session validation middleware
 app.use(async (req, res, next) => {
-    const publicPaths = [
-        '/api/login',
-        '/api/forgot-password',
-        '/api/reset-password',
-        '/api/ping',
-        '/models',
-        '/thumbnails'
-    ];
-    
-    const isPublic = publicPaths.some(p => req.path.startsWith(p));
-    const isRegister = req.path === '/api/users' && req.method === 'POST';
-    
-    if (isPublic || isRegister) {
-        return next();
-    }
-    
     const sessionToken = req.headers['x-session-token'];
     const userId = req.headers['x-user-id'];
     
     if (userId) {
         try {
             const user = await User.findById(userId);
-            if (user && user.role !== 'admin' && user.role !== 'school-admin') {
+            if (user) {
                 if (user.sessionToken && user.sessionToken !== sessionToken) {
-                    return res.status(401).json({ error: 'SESSION_INVALID', message: 'Tài khoản đã đăng nhập ở thiết bị khác' });
+                    return res.status(401).json({ error: 'SESSION_INVALID', message: 'Phiên đăng nhập không hợp lệ hoặc đã đăng nhập ở thiết bị khác' });
                 }
+                req.user = user;
             }
         } catch (err) {
             console.error('[MIDDLEWARE SESSION ERROR]', err.message);
@@ -152,6 +137,21 @@ app.use(async (req, res, next) => {
     }
     next();
 });
+
+// Auth middlewares
+const requireAuth = (req, res, next) => {
+    if (!req.user) {
+        return res.status(401).json({ error: 'UNAUTHORIZED', message: 'Vui lòng đăng nhập để tiếp tục' });
+    }
+    next();
+};
+
+const requireAdmin = (req, res, next) => {
+    if (!req.user || (req.user.role !== 'admin' && req.user.role !== 'school-admin')) {
+        return res.status(403).json({ error: 'FORBIDDEN', message: 'Bạn không có quyền thực hiện hành động này' });
+    }
+    next();
+};
 
 // Endpoint to check session status
 app.get('/api/check-session', async (req, res) => {
@@ -168,7 +168,7 @@ app.get('/api/check-session', async (req, res) => {
             return res.status(404).json({ error: 'Người dùng không tồn tại' });
         }
         
-        if (user.role !== 'admin' && user.role !== 'school-admin' && user.sessionToken && user.sessionToken !== sessionToken) {
+        if (user.sessionToken && user.sessionToken !== sessionToken) {
             return res.status(401).json({ error: 'SESSION_INVALID', message: 'Tài khoản đã đăng nhập ở thiết bị khác' });
         }
         
@@ -178,7 +178,7 @@ app.get('/api/check-session', async (req, res) => {
     }
 });
 
-app.delete('/api/u_remove/:id', async (req, res) => {
+app.delete('/api/u_remove/:id', requireAdmin, async (req, res) => {
     const { id } = req.params;
     console.log(`[USER DELETION] Request to remove ID: ${id}`);
     try {
@@ -204,7 +204,7 @@ app.delete('/api/u_remove/:id', async (req, res) => {
 });
 
 // Alias for standard REST API
-app.delete('/api/users/:id', async (req, res) => {
+app.delete('/api/users/:id', requireAdmin, async (req, res) => {
     const { id } = req.params;
     console.log(`[REST API] DELETE /api/users/${id}`);
     try {
@@ -274,7 +274,7 @@ function generateResetCode() {
 }
 
 // API Endpoints
-app.get('/api/users', async (req, res) => {
+app.get('/api/users', requireAdmin, async (req, res) => {
     try {
         const users = await User.find({}, '-password');
         // Map _id to id for frontend compatibility
@@ -288,9 +288,15 @@ app.get('/api/users', async (req, res) => {
     }
 });
 
-app.put('/api/users/:id', async (req, res) => {
+app.put('/api/users/:id', requireAuth, async (req, res) => {
     const { id } = req.params;
     const { name, email, role, plan } = req.body;
+    
+    if (role || plan) {
+        if (!req.user || (req.user.role !== 'admin' && req.user.role !== 'school-admin')) {
+            return res.status(403).json({ error: 'FORBIDDEN', message: 'Chỉ Admin mới có thể thay đổi quyền hoặc gói' });
+        }
+    }
     try {
         const user = await User.findById(id);
         if (!user) return res.status(404).json({ error: 'Không tìm thấy người dùng' });
@@ -398,12 +404,9 @@ app.post('/api/auth/google', async (req, res) => {
             console.log('[AUTH] New user registered via Google:', email);
         }
 
-        let sessionToken = null;
-        if (user.role !== 'admin' && user.role !== 'school-admin') {
-            sessionToken = crypto.randomUUID();
-            user.sessionToken = sessionToken;
-            await user.save();
-        }
+        let sessionToken = crypto.randomUUID();
+        user.sessionToken = sessionToken;
+        await user.save();
 
         res.json({
             message: 'Đăng nhập Google thành công',
@@ -428,12 +431,9 @@ app.post('/api/login', async (req, res) => {
         const isMatch = bcrypt.compareSync(password, user.password);
         if (!isMatch) return res.status(401).json({ error: 'Mật khẩu không chính xác' });
 
-        let sessionToken = null;
-        if (user.role !== 'admin' && user.role !== 'school-admin') {
-            sessionToken = crypto.randomUUID();
-            user.sessionToken = sessionToken;
-            await user.save();
-        }
+        let sessionToken = crypto.randomUUID();
+        user.sessionToken = sessionToken;
+        await user.save();
 
         const userProfile = user.toObject();
         delete userProfile.password;
@@ -478,7 +478,7 @@ app.get('/api/models/:id', async (req, res) => {
     }
 });
 
-app.post('/api/models', async (req, res) => {
+app.post('/api/models', requireAdmin, async (req, res) => {
     const { 
         title, description, file_url, thumbnail, subject, grade, tags, type,
         subtitle, category, size, location, visibleInLM, features, funFact, whereItOccurs, source,
@@ -516,7 +516,7 @@ app.post('/api/models', async (req, res) => {
     }
 });
 
-app.put('/api/models/:id', async (req, res) => {
+app.put('/api/models/:id', requireAdmin, async (req, res) => {
     const { id } = req.params;
     const { 
         title, description, file_url, thumbnail, subject, grade, tags, type,
@@ -584,7 +584,7 @@ app.put('/api/models/:id', async (req, res) => {
     }
 });
 
-app.post('/api/upload', upload.single('file'), async (req, res) => {
+app.post('/api/upload', requireAdmin, upload.single('file'), async (req, res) => {
     if (!req.file) return res.status(400).json({ error: 'Không có tệp nào được tải lên' });
 
     try {
@@ -630,7 +630,7 @@ app.post('/api/upload', upload.single('file'), async (req, res) => {
     }
 });
 
-app.post('/api/upload-thumbnail', upload.single('thumbnail'), async (req, res) => {
+app.post('/api/upload-thumbnail', requireAdmin, upload.single('thumbnail'), async (req, res) => {
     if (!req.file) return res.status(400).json({ error: 'Không có ảnh nào được tải lên' });
 
     try {
@@ -676,7 +676,7 @@ app.post('/api/upload-thumbnail', upload.single('thumbnail'), async (req, res) =
     }
 });
 
-app.delete('/api/models/:id', async (req, res) => {
+app.delete('/api/models/:id', requireAdmin, async (req, res) => {
     const { id } = req.params;
     console.log(`[MODEL DELETION] Request to remove ID: ${id}`);
     try {
@@ -899,12 +899,9 @@ app.get('/api/admin/ai-config', async (req, res) => {
 });
 
 // PUT /api/admin/ai-config — Admin cập nhật config giới hạn AI
-app.put('/api/admin/ai-config', async (req, res) => {
-    const userId = req.headers['x-user-id'];
-    if (!userId) return res.status(401).json({ error: 'Không có quyền truy cập' });
-
+app.put('/api/admin/ai-config', requireAdmin, async (req, res) => {
     try {
-        const user = await User.findById(userId);
+        const user = req.user;
         if (!user || user.role !== 'admin') {
             return res.status(403).json({ error: 'Chỉ Admin mới có thể thay đổi cấu hình' });
         }

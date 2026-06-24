@@ -336,10 +336,10 @@ export default function Landing() {
                         <div className="grid grid-cols-1 items-center gap-16 lg:grid-cols-2 lg:gap-24">
                             {/* Left – Story */}
                             <div>
-                                <h2 className="text-4xl font-black text-blue-700 sm:text-5xl lg:text-6xl">
+                                <h2 className="font-black text-blue-700 leading-tight" style={{ fontSize: 'clamp(32px, 5vw, 60px)' }}>
                                     Câu chuyện của EduTech
                                 </h2>
-                                <div className="mt-6 text-lg sm:text-xl lg:text-2xl leading-relaxed text-slate-700 font-medium">
+                                <div className="mt-6 leading-relaxed text-slate-700 font-medium" style={{ fontSize: 'clamp(16px, 2vw, 24px)' }}>
                                     <p className="mb-4">
                                         Nhiều kiến thức Khoa học quá trừu tượng để chỉ truyền đạt bằng hình ảnh tĩnh.
                                     </p>
@@ -414,7 +414,7 @@ export default function Landing() {
                 ══════════════════════════════════════ */}
                 <section className="bg-[#1b3a5c] py-20 text-center">
                     <div className="mx-auto max-w-4xl px-8">
-                        <p className="text-xl font-medium italic leading-loose text-white/95 sm:text-3xl">
+                        <p className="font-medium italic leading-loose text-white/95" style={{ fontSize: 'clamp(18px, 2.5vw, 30px)' }}>
                             <em>EduTech giúp việc giảng dạy trở nên trực quan hơn.</em>
                             <br />
                             <em>Để mỗi học sinh không còn phải nói...</em>
@@ -436,7 +436,7 @@ export default function Landing() {
                             </p>
                         </div>
                         <div className="mb-8 flex items-center justify-between">
-                            <h2 className="text-3xl font-black text-slate-900 sm:text-4xl lg:text-5xl">
+                            <h2 className="font-black text-slate-900 leading-tight" style={{ fontSize: 'clamp(28px, 4vw, 48px)' }}>
                                 Mô hình 3D nổi bật
                             </h2>
                             <Link
@@ -517,14 +517,15 @@ export default function Landing() {
                     />
 
                     <div className="relative z-10 mx-auto max-w-4xl px-6">
-                        <h2 className="text-4xl font-black text-slate-900 sm:text-5xl lg:text-7xl leading-tight">
+                        <h2 className="font-black text-slate-900 leading-tight" style={{ fontSize: 'clamp(36px, 6vw, 72px)' }}>
                             Sẵn sàng vào lớp học số
                         </h2>
 
-                        <div className="mt-10">
+                        <div className="mt-8 sm:mt-10">
                             <Link
                                 to="/register"
-                                className="inline-flex items-center gap-2 rounded-full bg-blue-600 px-12 py-5 text-xl font-bold text-white shadow-lg hover:bg-blue-500 hover:-translate-y-0.5 hover:shadow-blue-600/40 hover:shadow-xl transition-all duration-200"
+                                className="inline-flex items-center gap-2 rounded-full bg-blue-600 font-bold text-white shadow-lg hover:bg-blue-500 hover:-translate-y-0.5 hover:shadow-blue-600/40 hover:shadow-xl transition-all duration-200"
+                                style={{ padding: 'clamp(12px, 2vw, 20px) clamp(24px, 4vw, 48px)', fontSize: 'clamp(16px, 2vw, 20px)' }}
                             >
                                 Trải nghiệm ngay
                             </Link>
