@@ -45,3 +45,6 @@ LearningCell_Ref/
 # Vite cache
 .vite/
 
+# Backups
+src_backup/
+server_backup/
