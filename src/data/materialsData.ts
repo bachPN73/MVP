@@ -226,30 +226,6 @@ export const materials: Material[] = [
         grade: 12,
         file_url: "/models/dna.glb",
         createdAt: new Date(Date.now() - 4 * 24 * 3600 * 1000).toISOString()
-    },
-    {
-        id: "demo-3d-1",
-        title: "Cấu trúc phân tử H2O (3D)",
-        subject: "chemistry",
-        type: "3d-model",
-        description: "Mô hình tương tác trực quan về cấu trúc liên kết cộng hóa trị giữa Oxy và Hydro trong phân tử nước. Bạn có thể xoay và zoom để xem góc liên kết 104.5 độ.",
-        thumbnail: "https://images.unsplash.com/photo-1617155093730-a8bf47be792d?q=80&w=600&auto=format&fit=crop",
-        tags: ["Hóa học", "Phân tử", "Nước"],
-        grade: 10,
-        file_url: "https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/Duck/glTF-Binary/Duck.glb",
-        createdAt: new Date(Date.now() - 5 * 24 * 3600 * 1000).toISOString()
-    },
-    {
-        id: "demo-info-1",
-        title: "Sơ đồ Hệ Mặt Trời (Infographic)",
-        subject: "physics",
-        type: "infographic",
-        description: "Bản đồ chi tiết các hành tinh trong Hệ Mặt Trời với các thông số vật lý (khối lượng, quỹ đạo, nhiệt độ). Phóng to để đọc các văn bản mô tả kỹ thuật không bị mờ.",
-        thumbnail: "https://images.unsplash.com/photo-1614730321146-b6fa6a46bcb4?q=80&w=600&auto=format&fit=crop",
-        tags: ["Vật lý", "Thiên văn", "Vũ trụ"],
-        grade: 12,
-        file_url: "https://upload.wikimedia.org/wikipedia/commons/c/c3/Solar_sys8.jpg",
-        createdAt: new Date(Date.now() - 10 * 24 * 3600 * 1000).toISOString()
     }
 ];
 
