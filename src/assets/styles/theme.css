@@ -202,7 +202,12 @@
     }
 
     body {
-        @apply bg-background text-foreground;
+        @apply bg-background text-foreground bg-fixed bg-center bg-cover bg-no-repeat;
+        background-image: url('/images/theme-light-bg.png');
+    }
+
+    .dark body {
+        background-image: url('/images/theme-dark-bg.png');
     }
 
     /**

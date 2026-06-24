@@ -103,7 +103,8 @@ export function AppSidebar({ currentPath = '/', isOpen = false, setIsOpen, isCol
 
     return (
         <aside 
-            className={`fixed left-0 top-0 md:left-3 md:top-3 md:h-[calc(100vh-1.5rem)] h-full bg-sidebar/95 dark:bg-sidebar/95 backdrop-blur-3xl text-sidebar-foreground flex flex-col shadow-2xl z-50 transition-all duration-300 ease-in-out md:translate-x-0 md:rounded-2xl md:border border-sidebar-border
+            className={`fixed left-0 top-0 md:left-3 md:top-3 md:h-[calc(100vh-1.5rem)] h-full backdrop-blur-2xl flex flex-col shadow-2xl z-50 transition-all duration-300 ease-in-out md:translate-x-0 md:rounded-2xl md:border
+            ${theme === 'light' ? 'bg-white/50 border-white/60 text-black' : 'bg-[#0B1120]/40 border-white/10 text-slate-200'}
             ${isOpen ? 'translate-x-0' : '-translate-x-full'} 
             ${isCollapsed ? 'md:w-20 w-[270px]' : 'w-[270px]'}`}
         >
@@ -112,23 +113,23 @@ export function AppSidebar({ currentPath = '/', isOpen = false, setIsOpen, isCol
                 {/* ===== Logo Section — Premium Branding ===== */}
                 <div className={`border-b border-sidebar-border flex items-center transition-all duration-300 ease-in-out ${isCollapsed ? 'md:p-5 md:justify-center px-6 py-5 justify-between' : 'px-6 py-5 justify-between'}`}>
                     <div className="flex items-center select-none">
-                        <div className="w-14 h-14 rounded-2xl overflow-hidden shadow-[0_0_24px_rgba(79,70,229,0.2)] hover:shadow-[0_0_32px_rgba(79,70,229,0.4)] hover:scale-105 active:scale-95 transition-all shrink-0">
-                            <img src="/logo.png" alt="Logo" className="w-full h-full object-cover" />
+                        <div className="w-16 h-16 rounded-xl overflow-hidden bg-white shadow-[0_0_24px_rgba(79,70,229,0.2)] hover:shadow-[0_0_32px_rgba(79,70,229,0.4)] hover:scale-105 active:scale-95 transition-all shrink-0 flex items-center justify-center">
+                            <img src="/logo.png" alt="Logo" className="w-[90%] h-[90%] object-contain" />
                         </div>
                         
                         <div className={`overflow-hidden transition-all duration-300 ease-in-out flex flex-col
                             ${isCollapsed ? 'md:max-w-0 md:opacity-0 md:invisible md:ml-0 max-w-[180px] opacity-100 visible ml-3.5' : 'max-w-[180px] opacity-100 visible ml-3.5'}`}>
-                            <h1 className={`text-xl font-black uppercase tracking-tight leading-none whitespace-nowrap ${
+                            <h1 className={`text-2xl font-black uppercase tracking-tight leading-none whitespace-nowrap ${
                                 theme === 'light' 
                                     ? 'text-slate-900' 
                                     : 'bg-gradient-to-r from-white via-white to-white/40 bg-clip-text text-transparent'
                             }`}>
                                 EDU TECH
                             </h1>
-                            <span className={`text-[9px] uppercase tracking-[0.2em] font-extrabold mt-1.5 font-mono flex items-center gap-1 whitespace-nowrap ${
-                                theme === 'light' ? 'text-indigo-500/70' : 'text-indigo-400/50'
+                            <span className={`text-xs uppercase tracking-[0.2em] font-extrabold mt-1.5 font-mono flex items-center gap-1 whitespace-nowrap ${
+                                theme === 'light' ? 'text-emerald-600' : 'text-emerald-400'
                             }`}>
-                                <Zap className="w-2.5 h-2.5 animate-pulse" /> 3D Interactive
+                                <Zap className="w-3 h-3 animate-pulse" /> 3D Interactive
                             </span>
                         </div>
                     </div>
@@ -143,36 +144,36 @@ export function AppSidebar({ currentPath = '/', isOpen = false, setIsOpen, isCol
                 </div>
 
                 {/* ===== Navigation — Clean & Professional ===== */}
-                <nav className="flex-1 px-3.5 py-5 space-y-1 overflow-y-auto custom-scrollbar">
+                <nav className="flex-1 px-3.5 py-3 space-y-0.5 overflow-hidden">
                     {menuItems.map((item) => {
                         const Icon = item.icon;
                         const isActive = currentPath === item.path;
 
                         const inactiveClass = theme === 'light' 
-                            ? 'text-slate-500 hover:text-indigo-600 hover:bg-indigo-50/60' 
-                            : 'text-white/45 hover:text-white hover:bg-white/[0.04]';
+                            ? 'text-blue-600 font-bold hover:text-blue-700 hover:bg-white/60 hover:shadow-md' 
+                            : 'text-white font-bold hover:text-blue-200 hover:bg-white/10 hover:shadow-md';
 
                         const activeClass = theme === 'light'
-                            ? 'bg-gradient-to-r from-indigo-50 to-purple-50/50 text-indigo-600 border border-indigo-100/60 shadow-sm'
-                            : 'bg-gradient-to-r from-indigo-500/10 to-purple-500/5 text-white border border-indigo-500/15 shadow-[0_0_20px_rgba(99,102,241,0.06)]';
+                            ? 'bg-white/60 text-black shadow-sm border border-white/80 font-black'
+                            : 'bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 shadow-inner shadow-indigo-500/10 font-bold';
 
                         return (
                             <Link
                                 key={item.path}
                                 to={item.path}
-                                className={`sidebar-nav-glow premium-sidebar-item group flex items-center rounded-2xl relative transition-all duration-300 ease-in-out ${isActive ? `active ${activeClass}` : inactiveClass} ${isCollapsed ? 'md:justify-center md:px-0 md:gap-0 py-3.5 px-4 gap-3.5' : 'px-4 py-3.5 gap-3.5'}`}
+                                className={`sidebar-nav-glow premium-sidebar-item group flex items-center rounded-2xl relative transition-all duration-300 ease-in-out ${isActive ? `active ${activeClass}` : inactiveClass} ${isCollapsed ? 'md:justify-center md:px-0 md:gap-0 py-2.5 px-3 gap-3' : 'px-3 py-2.5 gap-3'}`}
                             >
                                 <div className={`p-2 rounded-xl transition-all duration-200 shrink-0 ${
                                     isActive 
-                                        ? (theme === 'light' ? 'bg-indigo-100/80 text-indigo-600' : 'bg-indigo-500/15 text-indigo-400')
-                                        : (theme === 'light' ? 'group-hover:bg-indigo-100/50 group-hover:text-indigo-500' : 'group-hover:bg-white/[0.06] group-hover:text-indigo-400')
+                                        ? (theme === 'light' ? 'bg-indigo-100/80 text-indigo-700' : 'bg-indigo-500/20 text-indigo-200')
+                                        : (theme === 'light' ? 'group-hover:bg-indigo-50 group-hover:text-indigo-600 group-hover:shadow-sm' : 'group-hover:bg-white/10 group-hover:text-indigo-400')
                                 }`}>
                                     <Icon className="w-[18px] h-[18px]" />
                                 </div>
                                 
                                 <div className={`overflow-hidden transition-all duration-300 ease-in-out flex-1 text-left
                                     ${isCollapsed ? 'md:max-w-0 md:opacity-0 md:invisible max-w-[150px] opacity-100 visible' : 'max-w-[150px] opacity-100 visible'}`}>
-                                    <span className={`text-sm font-extrabold tracking-wide whitespace-nowrap transition-all duration-200 ${isActive ? 'translate-x-0.5' : 'group-hover:translate-x-0.5'}`}>
+                                    <span className={`text-base font-extrabold tracking-wide whitespace-nowrap transition-all duration-200 ${isActive ? 'translate-x-0.5' : 'group-hover:translate-x-0.5'}`}>
                                         {item.label}
                                     </span>
                                 </div>
@@ -187,8 +188,8 @@ export function AppSidebar({ currentPath = '/', isOpen = false, setIsOpen, isCol
                     })}
 
                     {/* ===== Theme Switcher — Framed & Prominent ===== */}
-                    <div className="px-3.5 pt-4 mt-4 border-t border-sidebar-border/50">
-                        <div className={`rounded-2xl p-3 transition-all duration-300 flex items-center border ${isCollapsed ? 'justify-center' : 'justify-between px-5'} ${
+                    <div className="px-3.5 pt-3 mt-3 border-t border-sidebar-border/50">
+                        <div className={`rounded-2xl transition-all duration-300 flex border overflow-hidden ${isCollapsed ? 'flex-col items-center justify-center py-6' : 'flex-row items-center justify-between p-3 px-5'} ${
                             theme === 'light' 
                                 ? 'bg-indigo-50/60 border-indigo-200/80 shadow-sm' 
                                 : 'bg-indigo-500/10 border-indigo-500/20'
@@ -198,7 +199,9 @@ export function AppSidebar({ currentPath = '/', isOpen = false, setIsOpen, isCol
                                     Giao diện
                                 </span>
                             )}
-                            <ThemeToggle variant="toggle" className="scale-110" />
+                            <div className={`${isCollapsed ? '-rotate-90' : ''} transition-transform duration-500 origin-center flex items-center justify-center ${isCollapsed ? 'w-10 h-16' : ''}`}>
+                                <ThemeToggle variant="toggle" className="scale-110" />
+                            </div>
                         </div>
                     </div>
                 </nav>
@@ -217,7 +220,7 @@ export function AppSidebar({ currentPath = '/', isOpen = false, setIsOpen, isCol
                 )}
 
                 {/* ===== User Account Section — Premium Card ===== */}
-                <div className="px-3.5 pb-6">
+                <div className="px-3.5 pb-4">
                     <div className={`p-3 rounded-2xl transition-all duration-300 ${
                         theme === 'light' 
                             ? 'bg-slate-50/90 border border-slate-200/50 shadow-sm' 

@@ -4,18 +4,6 @@ import { BookOpen, Sparkles, Library, Maximize2, Search, MousePointer, ChevronRi
 export default function Guide() {
     const sections = [
         {
-            icon: LogIn,
-            title: 'Đăng ký & Đăng nhập',
-            description: 'Khởi đầu hành trình học tập bằng cách đăng ký hoặc đăng nhập tài khoản cá nhân.',
-            steps: [
-                'Nhấp vào nút "Đăng ký" trên trang chủ để tạo tài khoản mới',
-                'Nhập đầy đủ thông tin (Họ tên, Email, Mật khẩu) và xác nhận đăng ký',
-                'Chọn "Đăng nhập" nếu bạn đã có tài khoản và nhập thông tin truy cập',
-                'Sau khi đăng nhập thành công, bạn sẽ được tự động chuyển đến bảng điều khiển',
-            ],
-            color: 'text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-950/50',
-        },
-        {
             icon: Library,
             title: 'Thư viện học liệu',
             description: 'Khám phá hàng trăm mô hình 3D và infographic giảng dạy trực quan.',
@@ -92,18 +80,7 @@ export default function Guide() {
                     </div>
                 </div>
 
-                {/* Introduction banner */}
-                <div className="relative overflow-hidden bg-gradient-to-br from-indigo-600 via-indigo-500 to-purple-600 dark:from-indigo-950/50 dark:via-indigo-900/40 dark:to-purple-950/40 rounded-2xl p-6 md:p-8 text-white shadow-md border border-indigo-200/10 animate-fadeIn">
-                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.12),transparent)]"></div>
-                    <div className="relative z-10 space-y-3">
-                        <h2 className="text-xl md:text-2xl font-extrabold font-heading">Chào mừng bạn đến với Edu Tech!</h2>
-                        <p className="text-indigo-100 text-sm md:text-base leading-relaxed max-w-3xl font-medium font-sans">
-                            Edu Tech là nền tảng số hóa học liệu Khoa học Tự nhiên (Vật lý, Hóa học, Sinh học)
-                            tiên phong tại Việt Nam. Chúng tôi tích hợp công nghệ tương tác 3D WebGL đột phá cùng trí tuệ nhân tạo AI 
-                            để biến các khái niệm phức tạp thành trải nghiệm thị giác sống động cho giáo viên và học sinh.
-                        </p>
-                    </div>
-                </div>
+
 
                 {/* Guide sections */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

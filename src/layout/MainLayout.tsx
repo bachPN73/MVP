@@ -27,8 +27,28 @@ export function Layout({ children }: LayoutProps) {
         setIsSidebarOpen(false);
     }, [location.pathname]);
 
+    // Tự động thu gọn/mở rộng sidebar dựa trên kích thước màn hình
+    useEffect(() => {
+        const handleResize = () => {
+            if (window.innerWidth < 1280) {
+                setIsCollapsed(true);
+            } else {
+                const saved = localStorage.getItem('edu_tech_sidebar_collapsed');
+                if (!saved || saved === 'false') {
+                    setIsCollapsed(false);
+                }
+            }
+        };
+
+        // Chạy lần đầu khi mount
+        handleResize();
+
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
     return (
-        <div className="flex min-h-screen bg-background relative text-foreground transition-colors duration-300">
+        <div className="flex min-h-screen relative text-foreground transition-colors duration-300 bg-[url('/images/theme-light-bg.png')] dark:bg-[url('/images/theme-dark-bg.png')] bg-cover bg-center bg-no-repeat bg-fixed">
             {/* Mobile Header */}
             <header className="md:hidden fixed top-0 left-0 right-0 h-14 bg-sidebar flex items-center justify-between px-4 z-40 border-b border-sidebar-border shadow-md">
                 <div className="font-bold text-slate-900 dark:text-white text-lg tracking-tight">Edu Tech</div>
@@ -63,7 +83,7 @@ export function Layout({ children }: LayoutProps) {
 
             {/* Main Content Area - wrapped in a premium aligned card container on desktop */}
             <main className={`flex-1 min-h-screen md:h-screen md:min-h-0 flex flex-col p-0 pt-14 md:p-3 md:pl-6 md:pt-3 w-full overflow-hidden transition-all duration-300 ease-in-out ${isCollapsed ? 'md:ml-20' : 'md:ml-[270px]'}`}>
-                <div className="flex-1 w-full h-full bg-card md:rounded-2xl md:border border-sidebar-border shadow-xl overflow-y-auto flex flex-col relative custom-scrollbar">
+                <div key={location.pathname} className="flex-1 w-full h-full bg-white/10 dark:bg-slate-900/20 backdrop-blur-md md:rounded-2xl md:border border-sidebar-border shadow-2xl overflow-y-auto flex flex-col relative custom-scrollbar animate-in fade-in slide-in-from-bottom-2 duration-500 ease-out fill-mode-both">
                     {children}
                 </div>
             </main>

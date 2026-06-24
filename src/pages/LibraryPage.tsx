@@ -9,6 +9,7 @@ import LatexText from '../components/LatexText';
 export default function Library() {
     const [searchParams] = useSearchParams();
     const initialSubject = searchParams.get('subject') as Material['subject'] | null;
+    const initialType = searchParams.get('type') as Material['type'] | null;
 
     const [allMaterials, setAllMaterials] = useState<Material[]>(mockMaterials);
     const [isLoading, setIsLoading] = useState(true);
@@ -25,7 +26,7 @@ export default function Library() {
         searchTimerRef.current = setTimeout(() => setDebouncedSearch(value), 300);
     }, []);
     const [selectedSubject, setSelectedSubject] = useState<Material['subject'] | 'all'>(initialSubject || 'all');
-    const [selectedType, setSelectedType] = useState<Material['type'] | 'all'>('all');
+    const [selectedType, setSelectedType] = useState<Material['type'] | 'all'>(initialType || 'all');
     const [selectedGrade, setSelectedGrade] = useState<number | 'all'>('all');
 
     // Pagination states
@@ -512,8 +513,8 @@ export default function Library() {
                 </div>
 
                 {/* ===== Search & Filter Bar — Premium Glassmorphism Card ===== */}
-                <div className="sticky top-14 md:top-0 z-30 -mx-4 px-4 sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8 mb-6">
-                    <div className="bg-white/90 dark:bg-slate-900/80 backdrop-blur-xl rounded-2xl border border-slate-200/60 dark:border-white/[0.06] shadow-md p-4 flex flex-col lg:flex-row lg:items-center justify-between gap-3">
+                <div className="sticky top-14 md:top-0 z-30 -mx-4 px-4 sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8 mb-6 md:mb-8">
+                    <div className="bg-white/90 dark:bg-slate-900/80 backdrop-blur-xl border-b border-t-transparent border-slate-200/60 dark:border-white/[0.06] shadow-sm p-4 flex flex-col lg:flex-row lg:items-center justify-between gap-3">
                         {/* Search and Filters Container */}
                         <div className="flex-1 flex flex-col md:flex-row gap-3 items-stretch md:items-center">
                             {/* Search Input */}
@@ -602,6 +603,27 @@ export default function Library() {
                                     </button>
                                 )}
                             </div>
+                        </div>
+
+                        {/* ===== Plan Legend / Chú thích gói ===== */}
+                        <div className="hidden xl:flex items-center gap-2 px-2 border-l border-slate-200/60 dark:border-white/10 ml-2 pl-4">
+                            <span className="text-[10px] font-black uppercase tracking-widest text-slate-400 dark:text-slate-500 mr-1">Yêu cầu gói:</span>
+                            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-[10px] font-black bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 border border-slate-200 dark:border-white/10">
+                                <span className="w-1.5 h-1.5 rounded-full bg-slate-400 inline-block" />
+                                Miễn phí
+                            </span>
+                            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-[10px] font-black bg-blue-50 dark:bg-blue-950/30 text-blue-600 dark:text-blue-400 border border-blue-200 dark:border-blue-800">
+                                <span className="w-1.5 h-1.5 rounded-full bg-blue-500 inline-block" />
+                                Cơ bản
+                            </span>
+                            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-[10px] font-black bg-violet-50 dark:bg-violet-950/30 text-violet-600 dark:text-violet-400 border border-violet-200 dark:border-violet-800">
+                                <span className="w-1.5 h-1.5 rounded-full bg-violet-500 inline-block" />
+                                Pro
+                            </span>
+                            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-[10px] font-black bg-emerald-50 dark:bg-emerald-950/30 text-emerald-600 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800">
+                                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 inline-block" />
+                                Trường học
+                            </span>
                         </div>
 
                         {/* Results count badge */}
@@ -846,27 +868,6 @@ export default function Library() {
                         </div>
                     ) : filteredMaterials.length > 0 ? (
                         <div ref={gridRef}>
-                                {/* ===== Plan Legend / Chú thích gói ===== */}
-                                <div className="flex flex-wrap items-center gap-2 mb-4 px-1">
-                                    <span className="text-[10px] font-black uppercase tracking-widest text-slate-400 dark:text-slate-500 mr-1">Yêu cầu gói:</span>
-                                    <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-[10px] font-black bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 border border-slate-200 dark:border-white/10">
-                                        <span className="w-1.5 h-1.5 rounded-full bg-slate-400 inline-block" />
-                                        Miễn phí
-                                    </span>
-                                    <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-[10px] font-black bg-blue-50 dark:bg-blue-950/30 text-blue-600 dark:text-blue-400 border border-blue-200 dark:border-blue-800">
-                                        <span className="w-1.5 h-1.5 rounded-full bg-blue-500 inline-block" />
-                                        Cơ bản
-                                    </span>
-                                    <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-[10px] font-black bg-violet-50 dark:bg-violet-950/30 text-violet-600 dark:text-violet-400 border border-violet-200 dark:border-violet-800">
-                                        <span className="w-1.5 h-1.5 rounded-full bg-violet-500 inline-block" />
-                                        Pro
-                                    </span>
-                                    <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-[10px] font-black bg-emerald-50 dark:bg-emerald-950/30 text-emerald-600 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800">
-                                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 inline-block" />
-                                        Trường học
-                                    </span>
-                                    <span className="text-[10px] text-slate-400 dark:text-slate-500 italic ml-1">— Học liệu ở ché sẽ yêu cầu nâng cấp gói để xem.</span>
-                                </div>
 
                             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 sm:gap-5">
                                                 {paginatedMaterials.map((material) => {
