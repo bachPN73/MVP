@@ -11,6 +11,7 @@ interface LayoutProps {
 export function Layout({ children }: LayoutProps) {
     const location = useLocation();
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+    const [isMounted, setIsMounted] = useState(false);
     const [isCollapsed, setIsCollapsed] = useState<boolean>(() => {
         const saved = localStorage.getItem('edu_tech_sidebar_collapsed');
         return saved ? JSON.parse(saved) : false;
@@ -47,8 +48,14 @@ export function Layout({ children }: LayoutProps) {
         return () => window.removeEventListener('resize', handleResize);
     }, []);
 
+    // Ngăn chặn hiệu ứng (transition flash) khi mới vào trang hoặc chuyển trang
+    useEffect(() => {
+        const timer = setTimeout(() => setIsMounted(true), 10);
+        return () => clearTimeout(timer);
+    }, []);
+
     return (
-        <div className="flex min-h-screen relative text-foreground transition-colors duration-300 bg-[url('/images/theme-light-bg.png')] dark:bg-[url('/images/theme-dark-bg.png')] bg-cover bg-center bg-no-repeat bg-fixed">
+        <div className={`flex min-h-screen relative text-foreground transition-colors duration-300 bg-[url('/images/theme-light-bg.png')] dark:bg-[url('/images/theme-dark-bg.png')] bg-cover bg-center bg-no-repeat bg-fixed ${!isMounted ? 'disable-transitions' : ''}`}>
             {/* Mobile Header */}
             <header className="md:hidden fixed top-0 left-0 right-0 h-14 bg-sidebar flex items-center justify-between px-4 z-40 border-b border-sidebar-border shadow-md">
                 <div className="font-bold text-slate-900 dark:text-white text-lg tracking-tight">Edu Tech</div>

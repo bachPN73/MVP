@@ -116,7 +116,7 @@ export default function Dashboard() {
 
     return (
         <Layout>
-            <div className="relative z-10 p-4 md:p-6 w-full h-full max-w-[1600px] mx-auto flex flex-col justify-between gap-4 xl:gap-6 animate-in fade-in duration-500 overflow-hidden">
+            <div className="relative z-10 p-4 md:p-6 w-full h-full max-w-[1600px] mx-auto flex flex-col lg:justify-between gap-4 xl:gap-6 animate-in fade-in duration-500 overflow-y-auto overflow-x-hidden pb-24 lg:pb-6">
                 
                 {/* 1. Header Section */}
                 <div className="flex flex-col xl:flex-row justify-between items-stretch gap-4 shrink-0">
@@ -127,9 +127,9 @@ export default function Dashboard() {
                         <p className="text-slate-600 dark:text-slate-300 mt-1 text-sm font-medium">Hôm nay bạn muốn khám phá điều gì?</p>
                     </div>
 
-                    <div className="flex items-stretch gap-3 flex-wrap xl:flex-nowrap">
+                    <div className="flex items-stretch gap-2 lg:gap-3 flex-wrap xl:flex-nowrap w-full xl:w-auto">
                         {/* HỌC LIỆU Card */}
-                        <div className="bg-white dark:bg-slate-800/80 rounded-2xl shadow-md shadow-indigo-500/5 dark:shadow-indigo-500/10 border-[3px] border-slate-200 dark:border-slate-600 p-3 px-5 flex flex-col min-w-[100px] justify-center transition-all duration-300 hover:shadow-lg hover:-translate-y-1 group cursor-default hover:border-indigo-300 dark:hover:border-indigo-500">
+                        <div className="bg-white dark:bg-slate-800/80 rounded-2xl shadow-md shadow-indigo-500/5 dark:shadow-indigo-500/10 border-[3px] border-slate-200 dark:border-slate-600 p-3 px-4 lg:px-5 flex flex-col min-w-[90px] flex-1 xl:flex-none justify-center transition-all duration-300 hover:shadow-lg hover:-translate-y-1 group cursor-default hover:border-indigo-300 dark:hover:border-indigo-500">
                             <div className="flex items-center gap-1.5 text-indigo-600 dark:text-indigo-400 font-bold mb-0.5 text-xs group-hover:scale-105 origin-left transition-transform">
                                 <Database className="w-4 h-4 group-hover:-rotate-6 transition-transform" /> HỌC LIỆU
                             </div>
@@ -137,7 +137,7 @@ export default function Dashboard() {
                         </div>
 
                         {/* THỜI HẠN Card */}
-                        <div className="bg-white dark:bg-slate-800/80 rounded-2xl shadow-md shadow-emerald-500/5 dark:shadow-emerald-500/10 border-[3px] border-slate-200 dark:border-slate-600 p-3 px-5 flex flex-col min-w-[100px] justify-center transition-all duration-300 hover:shadow-lg hover:-translate-y-1 group cursor-default hover:border-emerald-300 dark:hover:border-emerald-500">
+                        <div className="bg-white dark:bg-slate-800/80 rounded-2xl shadow-md shadow-emerald-500/5 dark:shadow-emerald-500/10 border-[3px] border-slate-200 dark:border-slate-600 p-3 px-4 lg:px-5 flex flex-col min-w-[90px] flex-1 xl:flex-none justify-center transition-all duration-300 hover:shadow-lg hover:-translate-y-1 group cursor-default hover:border-emerald-300 dark:hover:border-emerald-500">
                             <div className="flex items-center gap-1.5 text-emerald-600 dark:text-emerald-400 font-bold mb-0.5 text-xs group-hover:scale-105 origin-left transition-transform">
                                 <Timer className="w-4 h-4 group-hover:rotate-12 transition-transform" /> THỜI HẠN
                             </div>
@@ -154,7 +154,7 @@ export default function Dashboard() {
                         </div>
 
                         {/* GÓI Card */}
-                        <div className="bg-white dark:bg-slate-800/80 rounded-2xl shadow-md shadow-amber-500/5 dark:shadow-amber-500/10 border-[3px] border-slate-200 dark:border-slate-600 p-3 px-5 flex flex-col min-w-[100px] justify-center transition-all duration-300 hover:shadow-lg hover:-translate-y-1 group cursor-default hover:border-amber-300 dark:hover:border-amber-500">
+                        <div className="bg-white dark:bg-slate-800/80 rounded-2xl shadow-md shadow-amber-500/5 dark:shadow-amber-500/10 border-[3px] border-slate-200 dark:border-slate-600 p-3 px-4 lg:px-5 flex flex-col min-w-[90px] flex-1 xl:flex-none justify-center transition-all duration-300 hover:shadow-lg hover:-translate-y-1 group cursor-default hover:border-amber-300 dark:hover:border-amber-500">
                             <div className="flex items-center gap-1.5 text-amber-500 dark:text-amber-400 font-bold mb-0.5 text-xs group-hover:scale-105 origin-left transition-transform">
                                 <Crown className="w-4 h-4 group-hover:scale-110 transition-transform" /> GÓI
                             </div>
@@ -171,7 +171,7 @@ export default function Dashboard() {
                 </div>
 
                 {/* 2. Middle Grid Section */}
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 xl:gap-6 flex-1 min-h-0 shrink-0 lg:shrink">
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 xl:gap-6 flex-none lg:flex-1">
                     
                     {/* A. Banner Mùa Hè (Col 5) -> Thay bằng hiển thị 1 model 3D */}
                     <div className="lg:col-span-5 relative rounded-3xl overflow-hidden shadow-md shadow-indigo-500/5 dark:shadow-indigo-500/10 border-[3px] border-slate-200 dark:border-slate-600 group transition-all duration-300 hover:shadow-xl hover:-translate-y-1 bg-slate-950 flex flex-col min-h-[200px] xl:min-h-[250px]">
@@ -376,7 +376,7 @@ export default function Dashboard() {
                 </div>
 
                 {/* 3. Bottom Subjects Section */}
-                <div className="shrink-0 flex-1 min-h-0 flex flex-col">
+                <div className="flex-none lg:flex-1 flex flex-col">
                     <div className="flex items-center gap-2 text-indigo-600 dark:text-indigo-400 font-bold mb-3 text-xs uppercase tracking-wider">
                         <BookOpen className="w-4 h-4" /> KHÁM PHÁ THEO MÔN HỌC
                     </div>

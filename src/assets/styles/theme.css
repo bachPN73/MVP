@@ -660,4 +660,8 @@
     box-shadow: 0 15px 35px -5px rgba(99, 102, 241, 0.4), 0 0 15px 0 rgba(99, 102, 241, 0.15);
 }
 
-
+/* Disable transitions on initial mount to prevent layout thrashing */
+.disable-transitions,
+.disable-transitions * {
+    transition: none !important;
+}
