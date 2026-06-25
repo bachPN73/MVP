@@ -135,7 +135,7 @@ export default function Login() {
                 </div>
 
                 {/* Form Wrapper - Styled as a beautiful floating high-contrast card */}
-                <div className="w-full max-w-[420px] mx-auto my-auto py-10 px-6 sm:px-10 bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-white/10 rounded-[2.5rem] shadow-[0_15px_40px_rgba(15,23,42,0.06)] dark:shadow-[0_15px_40px_rgba(0,0,0,0.3)] animate-in fade-in zoom-in-95 duration-500">
+                <div className="w-full max-w-[26.25rem] mx-auto my-auto py-10 px-6 sm:px-10 bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-white/10 rounded-[2.5rem] shadow-[0_15px_40px_rgba(15,23,42,0.06)] dark:shadow-[0_15px_40px_rgba(0,0,0,0.3)] animate-in fade-in zoom-in-95 duration-500">
                     <div className="mb-8">
                         <div className="inline-flex items-center justify-center w-12 h-12 bg-indigo-50 dark:bg-indigo-950/50 border border-indigo-100 dark:border-indigo-900/50 rounded-2xl mb-4 text-indigo-600 dark:text-indigo-400 shadow-sm">
                             <BookOpen className="w-6 h-6" strokeWidth={2.5} />
@@ -307,8 +307,8 @@ export default function Login() {
             <div className="hidden lg:flex lg:w-[45%] xl:w-[50%] bg-gradient-to-br from-[#0a1128] via-[#050b1a] to-[#0d1b3e] relative flex-col justify-between p-12 xl:p-16 text-white overflow-hidden border-l border-white/5">
                 {/* Orbital pattern overlay */}
                 <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center opacity-10 mix-blend-overlay"></div>
-                <div className="absolute top-1/4 right-1/4 w-[500px] h-[500px] bg-indigo-500/10 rounded-full blur-[100px] pointer-events-none"></div>
-                <div className="absolute bottom-1/4 left-1/4 w-[500px] h-[500px] bg-cyan-500/10 rounded-full blur-[100px] pointer-events-none"></div>
+                <div className="absolute top-1/4 right-1/4 w-[31.25rem] h-[31.25rem] bg-indigo-500/10 rounded-full blur-[6.25rem] pointer-events-none"></div>
+                <div className="absolute bottom-1/4 left-1/4 w-[31.25rem] h-[31.25rem] bg-cyan-500/10 rounded-full blur-[6.25rem] pointer-events-none"></div>
 
                 {/* Brand Logo header */}
                 <div className="flex items-center gap-3 relative z-10 animate-in fade-in slide-in-from-top-4 duration-500">
@@ -317,7 +317,7 @@ export default function Login() {
                     </div>
                     <div>
                         <h2 className="text-xl font-black tracking-tight leading-none bg-gradient-to-r from-white to-slate-300 bg-clip-text text-transparent">Edu Tech</h2>
-                        <span className="text-[10px] font-bold text-indigo-400/80 uppercase tracking-widest mt-1 block font-mono">Học liệu số 3D</span>
+                        <span className="text-[0.625rem] font-bold text-indigo-400/80 uppercase tracking-widest mt-1 block font-mono">Học liệu số 3D</span>
                     </div>
                 </div>
 

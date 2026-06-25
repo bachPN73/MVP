@@ -514,7 +514,7 @@ export default function AdminMaterialsPage() {
                                         <h3 className="text-sm font-bold mb-1 text-slate-800 dark:text-slate-100 truncate max-w-full font-sans">
                                             {file ? file.name : (formData.type === '3d-model' ? "Chọn tệp mô hình 3D" : "Chọn tệp Infographic")}
                                         </h3>
-                                        <p className="text-slate-400 dark:text-slate-500 text-[11px] font-semibold leading-relaxed">
+                                        <p className="text-slate-400 dark:text-slate-500 text-[0.6875rem] font-semibold leading-relaxed">
                                             {formData.type === '3d-model' 
                                                 ? "Hỗ trợ .glb, .gltf, .fbx, .zip (Max 100MB)" 
                                                 : "Hỗ trợ .jpg, .png, .webp, .pdf (Max 100MB)"}
@@ -539,7 +539,7 @@ export default function AdminMaterialsPage() {
                                                 <ImagePlus className="w-5 h-5 text-slate-400" />
                                             </div>
                                         )}
-                                        <div className="flex-1 text-[11px] text-slate-400 dark:text-slate-500 font-sans leading-relaxed font-semibold">
+                                        <div className="flex-1 text-[0.6875rem] text-slate-400 dark:text-slate-500 font-sans leading-relaxed font-semibold">
                                             <p className="text-slate-600 dark:text-slate-400">Hiển thị chính ở trang thư viện.</p>
                                             <p>Hỗ trợ: .jpg, .png, .webp (Max 5MB)</p>
                                         </div>
@@ -636,7 +636,7 @@ export default function AdminMaterialsPage() {
                                                 className="w-full pl-8 pr-4 py-1.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/10 rounded-lg text-xs font-semibold focus:outline-none focus:ring-1 focus:ring-indigo-500 text-slate-955 dark:text-white"
                                             />
                                         </div>
-                                        <div className="max-h-[150px] overflow-y-auto divide-y divide-slate-100 dark:divide-white/5 pr-1">
+                                        <div className="max-h-[9.375rem] overflow-y-auto divide-y divide-slate-100 dark:divide-white/5 pr-1">
                                             {filteredAvailableRelated.map(m => {
                                                 const isSelected = formData.relatedMaterials.includes(m.id);
                                                 return (
@@ -663,7 +663,7 @@ export default function AdminMaterialsPage() {
                                                             className="w-3.5 h-3.5 text-indigo-600 rounded cursor-pointer pointer-events-none"
                                                         />
                                                         <span className="text-xs font-semibold text-slate-700 dark:text-slate-200 truncate">{m.title}</span>
-                                                        <span className="text-[8px] font-bold text-slate-400 dark:text-slate-500 ml-auto shrink-0 uppercase tracking-wider">{m.subject === 'biology' ? 'Sinh' : m.subject === 'chemistry' ? 'Hóa' : 'Lý'} · Lớp {m.grade}</span>
+                                                        <span className="text-[0.5rem] font-bold text-slate-400 dark:text-slate-500 ml-auto shrink-0 uppercase tracking-wider">{m.subject === 'biology' ? 'Sinh' : m.subject === 'chemistry' ? 'Hóa' : 'Lý'} · Lớp {m.grade}</span>
                                                     </div>
                                                 );
                                             })}
@@ -783,7 +783,7 @@ export default function AdminMaterialsPage() {
                                     </div>
                                     <div className="text-left">
                                         <h3 className="font-bold text-sm text-slate-900 dark:text-white">Quản lý Quiz (Trắc nghiệm)</h3>
-                                        <p className="text-[10px] uppercase tracking-wider font-bold text-slate-400 dark:text-slate-500 mt-0.5">{formData.quiz.length} câu hỏi hiện có</p>
+                                        <p className="text-[0.625rem] uppercase tracking-wider font-bold text-slate-400 dark:text-slate-500 mt-0.5">{formData.quiz.length} câu hỏi hiện có</p>
                                     </div>
                                 </div>
                                 {showQuizForm ? <ChevronUp className="w-5 h-5 text-slate-400 group-hover:text-indigo-500" /> : <ChevronDown className="w-5 h-5 text-slate-400 group-hover:text-indigo-500" />}
@@ -804,7 +804,7 @@ export default function AdminMaterialsPage() {
                                             
                                             <div className="flex flex-col gap-3">
                                                 <div className="pr-8">
-                                                    <label className="text-[10px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 mb-1.5 block">Câu hỏi {qIndex + 1}</label>
+                                                    <label className="text-[0.625rem] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 mb-1.5 block">Câu hỏi {qIndex + 1}</label>
                                                     <input
                                                         type="text"
                                                         placeholder="Nhập nội dung câu hỏi..."
@@ -836,7 +836,7 @@ export default function AdminMaterialsPage() {
                                                 </div>
 
                                                 <div className="mt-2">
-                                                    <label className="text-[10px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 mb-1.5 block">Giải thích đáp án</label>
+                                                    <label className="text-[0.625rem] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 mb-1.5 block">Giải thích đáp án</label>
                                                     <textarea
                                                         rows={2}
                                                         placeholder="Nhập giải thích cho đáp án đúng..."
@@ -921,11 +921,11 @@ export default function AdminMaterialsPage() {
                     <table className="w-full text-left border-collapse font-sans">
                         <thead>
                             <tr className="bg-slate-50/50 dark:bg-slate-800/20 border-b border-slate-200/60 dark:border-white/10">
-                                <th className="px-6 py-4 text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest">Mô Hình / Học liệu</th>
-                                <th className="px-6 py-4 text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest">Môn Học</th>
-                                <th className="px-6 py-4 text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest">Lớp</th>
-                                <th className="px-6 py-4 text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest">Ngày Tải Lên</th>
-                                <th className="px-6 py-4 text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest text-right">Hành Động</th>
+                                <th className="px-6 py-4 text-[0.625rem] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest">Mô Hình / Học liệu</th>
+                                <th className="px-6 py-4 text-[0.625rem] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest">Môn Học</th>
+                                <th className="px-6 py-4 text-[0.625rem] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest">Lớp</th>
+                                <th className="px-6 py-4 text-[0.625rem] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest">Ngày Tải Lên</th>
+                                <th className="px-6 py-4 text-[0.625rem] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest text-right">Hành Động</th>
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-slate-100 dark:divide-white/5 font-semibold text-slate-700 dark:text-slate-200 text-sm">
@@ -959,7 +959,7 @@ export default function AdminMaterialsPage() {
                                                 <div>
                                                     <div className="flex items-center gap-2 font-extrabold text-slate-900 dark:text-white line-clamp-1 font-heading text-sm">
                                                         {model.title}
-                                                        <span className={`text-[8px] px-1.5 py-0.5 rounded font-black tracking-wider uppercase ${model.type === 'infographic' ? 'bg-amber-50 dark:bg-amber-950/40 text-amber-600 dark:text-amber-400 border border-amber-200/10' : 'bg-indigo-50 dark:bg-indigo-950/40 text-indigo-600 dark:text-indigo-400 border border-indigo-200/10'}`}>
+                                                        <span className={`text-[0.5rem] px-1.5 py-0.5 rounded font-black tracking-wider uppercase ${model.type === 'infographic' ? 'bg-amber-50 dark:bg-amber-950/40 text-amber-600 dark:text-amber-400 border border-amber-200/10' : 'bg-indigo-50 dark:bg-indigo-950/40 text-indigo-600 dark:text-indigo-400 border border-indigo-200/10'}`}>
                                                             {model.type === 'infographic' ? 'INFO' : '3D'}
                                                         </span>
                                                     </div>
@@ -968,7 +968,7 @@ export default function AdminMaterialsPage() {
                                             </div>
                                         </td>
                                         <td className="px-6 py-5">
-                                            <span className={`inline-flex items-center px-2.5 py-0.5 rounded-lg text-[10px] font-extrabold uppercase tracking-wide border ${
+                                            <span className={`inline-flex items-center px-2.5 py-0.5 rounded-lg text-[0.625rem] font-extrabold uppercase tracking-wide border ${
                                                 model.subject === 'physics' 
                                                     ? 'bg-indigo-50 dark:bg-indigo-950/40 border-indigo-200/10 text-indigo-600 dark:text-indigo-400' 
                                                     : model.subject === 'chemistry' 
@@ -1066,7 +1066,7 @@ export default function AdminMaterialsPage() {
                                     </div>
                                     <div className="space-y-1 flex-1 flex flex-col justify-between">
                                         <div>
-                                            <span className={`text-[8px] font-extrabold uppercase tracking-wide px-1.5 py-0.5 rounded border ${
+                                            <span className={`text-[0.5rem] font-extrabold uppercase tracking-wide px-1.5 py-0.5 rounded border ${
                                                 model.subject === 'physics' 
                                                     ? 'bg-indigo-50 dark:bg-indigo-950/40 border-indigo-200/10 text-indigo-600 dark:text-indigo-400' 
                                                     : model.subject === 'chemistry' 
@@ -1080,9 +1080,9 @@ export default function AdminMaterialsPage() {
                                                 {model.title}
                                             </h3>
                                         </div>
-                                        <div className="flex justify-between items-center text-[9px] text-slate-400 dark:text-slate-500 font-bold uppercase tracking-wider mt-2.5">
+                                        <div className="flex justify-between items-center text-[0.5625rem] text-slate-400 dark:text-slate-500 font-bold uppercase tracking-wider mt-2.5">
                                             <span>Lớp {model.grade}</span>
-                                            <span className={`px-1 rounded text-[7px] font-black ${model.type === 'infographic' ? 'bg-amber-50 dark:bg-amber-950/40 text-amber-600' : 'bg-indigo-50 dark:bg-indigo-950/40 text-indigo-600'}`}>
+                                            <span className={`px-1 rounded text-[0.4375rem] font-black ${model.type === 'infographic' ? 'bg-amber-50 dark:bg-amber-950/40 text-amber-600' : 'bg-indigo-50 dark:bg-indigo-950/40 text-indigo-600'}`}>
                                                 {model.type === 'infographic' ? 'INFO' : '3D'}
                                             </span>
                                         </div>

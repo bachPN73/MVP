@@ -2,6 +2,51 @@
 @import './tailwind.css';
 @import './theme.css';
 
+/* Root Scaling Strategy (Fluid Layout) 
+   Automatically scales the dashboard proportionally like an image on Desktop screens
+   by binding the root font-size to the viewport width. 
+   Base calculation: 16px at 1920px width -> 100vw / 120
+*/
+
+/* Mobile: Fluid scaling to shrink desktop-oriented padding/margins.
+   At 375px width, 2.7vw is exactly 10.1px (which shrinks the UI by ~37%).
+   This keeps the mobile layout perfectly proportioned without bloated components. */
+html {
+  font-size: clamp(8.5px, 2.7vw, 11px); 
+}
+
+@media (min-width: 640px) {
+  html {
+    font-size: 12px; /* Large phones / small tablets */
+  }
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 14px; /* Tablet base */
+  }
+}
+
+/* Desktop: Switch to fluid proportional scaling so it looks like a zooming vector image */
+@media (min-width: 1024px) {
+  html {
+    font-size: calc(100vw / 120); 
+  }
+}
+
+/* Cap the scaling on extremely large 4K screens */
+@media (min-width: 2560px) {
+  html {
+    font-size: 21.33px; 
+  }
+}
+
+/* Global Media Rules */
+img, video {
+  max-width: 100%;
+  height: auto;
+}
+
 /* Utility to prevent scrolling and set full viewport height */
 .no-scroll {
   height: 100vh;

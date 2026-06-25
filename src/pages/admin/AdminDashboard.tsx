@@ -108,7 +108,7 @@ export default function AdminDashboard() {
                             </div>
                             <div className="relative z-10 mt-2">
                                 <h3 className="text-3xl font-extrabold text-slate-900 dark:text-white mb-1 font-heading tracking-tight">{stat.value}</h3>
-                                <p className="text-[11px] text-slate-500 dark:text-slate-400 font-sans font-bold uppercase tracking-wider line-clamp-1">{stat.title}</p>
+                                <p className="text-[0.6875rem] text-slate-500 dark:text-slate-400 font-sans font-bold uppercase tracking-wider line-clamp-1">{stat.title}</p>
                             </div>
                         </div>
                     );

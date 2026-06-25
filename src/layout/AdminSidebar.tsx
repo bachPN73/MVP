@@ -48,7 +48,7 @@ export function AdminSidebar({ currentPath = '/admin/dashboard', isOpen = false,
                     </div>
                     <div>
                         <h1 className="text-xl font-black text-slate-900 dark:text-white tracking-tight font-heading">Admin<span className="text-indigo-600 dark:text-indigo-400">Panel</span></h1>
-                        <p className="text-[9px] text-slate-400 dark:text-slate-500 font-bold uppercase tracking-widest font-sans">Edu Tech</p>
+                        <p className="text-[0.5625rem] text-slate-400 dark:text-slate-500 font-bold uppercase tracking-widest font-sans">Edu Tech</p>
                     </div>
                 </div>
                 {/* Nút đóng cho Mobile */}
@@ -62,7 +62,7 @@ export function AdminSidebar({ currentPath = '/admin/dashboard', isOpen = false,
 
             {/* Navigation */}
             <nav className="flex-1 px-4 py-8 space-y-1.5 overflow-y-auto custom-scrollbar">
-                <div className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-3 px-4 font-sans">
+                <div className="text-[0.625rem] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-3 px-4 font-sans">
                     Menu Chính
                 </div>
                 {menuItems.map((item) => {
@@ -122,8 +122,8 @@ export function AdminSidebar({ currentPath = '/admin/dashboard', isOpen = false,
                         {userName.charAt(0).toUpperCase()}
                     </div>
                     <div className="flex-1 min-w-0">
-                        <p className="font-extrabold text-slate-900 dark:text-white truncate text-[13px] font-heading leading-tight">{userName}</p>
-                        <p className="text-[10px] text-emerald-600 dark:text-emerald-400 flex items-center gap-1.5 font-bold uppercase tracking-wider mt-0.5">
+                        <p className="font-extrabold text-slate-900 dark:text-white truncate text-[0.8125rem] font-heading leading-tight">{userName}</p>
+                        <p className="text-[0.625rem] text-emerald-600 dark:text-emerald-400 flex items-center gap-1.5 font-bold uppercase tracking-wider mt-0.5">
                             <span className="relative flex h-1.5 w-1.5">
                               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                               <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500"></span>

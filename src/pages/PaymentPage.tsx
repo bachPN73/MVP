@@ -45,7 +45,7 @@ function CountdownCircle({ seconds, total }: { seconds: number; total: number })
                     strokeDasharray={circ} strokeDashoffset={circ * (1 - seconds / total)}
                     style={{ transition: 'stroke-dashoffset 1s linear' }} />
             </svg>
-            <span className="relative text-[10px] font-black tabular-nums" style={{ color }}>{display}</span>
+            <span className="relative text-[0.625rem] font-black tabular-nums" style={{ color }}>{display}</span>
         </div>
     );
 }
@@ -268,7 +268,7 @@ export default function PaymentPage() {
                                 <CheckCircle2 className="w-10 h-10 text-white" />
                             </div>
                         </div>
-                        <div className="inline-flex items-center gap-1.5 bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-200/60 text-emerald-700 dark:text-emerald-400 text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full mb-3">
+                        <div className="inline-flex items-center gap-1.5 bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-200/60 text-emerald-700 dark:text-emerald-400 text-[0.625rem] font-black uppercase tracking-widest px-3 py-1 rounded-full mb-3">
                             <Zap className="w-3 h-3" /> Kích hoạt thành công
                         </div>
                         <h1 className="text-2xl font-[950] font-heading text-slate-900 dark:text-white mb-2">
@@ -320,7 +320,7 @@ export default function PaymentPage() {
             `}</style>
 
             <div className="min-h-[calc(100vh-2rem)] p-3 md:p-5 w-full">
-                <div className="max-w-[1100px] mx-auto flex flex-col gap-4">
+                <div className="max-w-[68.75rem] mx-auto flex flex-col gap-4">
 
                     {/* ── NAV ── */}
                     <div className="flex items-center gap-3">
@@ -335,9 +335,9 @@ export default function PaymentPage() {
                             <h1 className="text-base md:text-lg font-[950] text-slate-900 dark:text-white font-heading truncate">
                                 Thanh toán — <span className={`text-transparent bg-clip-text bg-gradient-to-r ${plan.color}`}>{plan.name}</span>
                             </h1>
-                            <span className={`hidden sm:inline text-[10px] font-black uppercase tracking-widest px-2.5 py-1 rounded-full bg-gradient-to-r ${plan.color} text-white shrink-0`}>{plan.badge}</span>
+                            <span className={`hidden sm:inline text-[0.625rem] font-black uppercase tracking-widest px-2.5 py-1 rounded-full bg-gradient-to-r ${plan.color} text-white shrink-0`}>{plan.badge}</span>
                         </div>
-                        <div className={`flex items-center gap-1.5 text-[10px] font-black uppercase tracking-wider px-2.5 py-1.5 rounded-xl border shrink-0 ${isOnline ? 'border-emerald-200 bg-emerald-50/80 text-emerald-700 dark:border-emerald-800/30 dark:bg-emerald-950/30 dark:text-emerald-400' : 'border-rose-200 bg-rose-50/80 text-rose-700'}`}>
+                        <div className={`flex items-center gap-1.5 text-[0.625rem] font-black uppercase tracking-wider px-2.5 py-1.5 rounded-xl border shrink-0 ${isOnline ? 'border-emerald-200 bg-emerald-50/80 text-emerald-700 dark:border-emerald-800/30 dark:bg-emerald-950/30 dark:text-emerald-400' : 'border-rose-200 bg-rose-50/80 text-rose-700'}`}>
                             {isOnline ? <Wifi className="w-3 h-3" /> : <WifiOff className="w-3 h-3" />}
                             <span className="hidden sm:inline">{isOnline ? 'Trực tuyến' : 'Mất kết nối'}</span>
                         </div>
@@ -353,11 +353,11 @@ export default function PaymentPage() {
                                 <div className="flex flex-col items-center p-5 gap-4 flex-1">
                                     {/* Header */}
                                     <div className="flex items-center gap-2 self-stretch">
-                                        <div className="flex items-center gap-1.5 bg-indigo-600 text-white text-[10px] font-black tracking-widest uppercase py-1.5 px-3 rounded-full shadow-md shadow-indigo-500/30">
+                                        <div className="flex items-center gap-1.5 bg-indigo-600 text-white text-[0.625rem] font-black tracking-widest uppercase py-1.5 px-3 rounded-full shadow-md shadow-indigo-500/30">
                                             <QrCode className="w-3 h-3" /> VIETQR
                                         </div>
-                                        <span className="text-[10px] font-black uppercase tracking-widest text-slate-400">Quét để thanh toán</span>
-                                        <div className="ml-auto flex items-center gap-1 text-[9px] font-black uppercase tracking-wider text-indigo-500 dark:text-indigo-400">
+                                        <span className="text-[0.625rem] font-black uppercase tracking-widest text-slate-400">Quét để thanh toán</span>
+                                        <div className="ml-auto flex items-center gap-1 text-[0.5625rem] font-black uppercase tracking-wider text-indigo-500 dark:text-indigo-400">
                                             <span className="w-1.5 h-1.5 rounded-full bg-indigo-500 animate-pulse" />
                                             SePay
                                         </div>
@@ -387,20 +387,20 @@ export default function PaymentPage() {
 
                                 {/* Transfer Info */}
                                 <div className="bg-white dark:bg-slate-900/80 border border-slate-200/60 dark:border-white/[0.06] rounded-[1.5rem] shadow-lg backdrop-blur-xl p-4 space-y-2.5">
-                                    <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1">Thông tin chuyển khoản</p>
+                                    <p className="text-[0.625rem] font-black uppercase tracking-widest text-slate-400 mb-1">Thông tin chuyển khoản</p>
 
                                     {/* Bank + Account — side by side */}
                                     <div className="grid grid-cols-2 gap-2">
                                         <div className="flex items-center justify-between px-3 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-white/5">
                                             <div>
-                                                <p className="text-[9px] text-slate-400 font-bold uppercase tracking-wider mb-0.5">Ngân hàng</p>
+                                                <p className="text-[0.5625rem] text-slate-400 font-bold uppercase tracking-wider mb-0.5">Ngân hàng</p>
                                                 <p className="text-sm font-black text-slate-800 dark:text-white">TPBank</p>
                                             </div>
                                             <CopyBtn value="TPBank" field="bank" copiedField={copiedField} onCopy={handleCopy} />
                                         </div>
                                         <div className="flex items-center justify-between px-3 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-white/5">
                                             <div>
-                                                <p className="text-[9px] text-slate-400 font-bold uppercase tracking-wider mb-0.5">Chủ tài khoản</p>
+                                                <p className="text-[0.5625rem] text-slate-400 font-bold uppercase tracking-wider mb-0.5">Chủ tài khoản</p>
                                                 <p className="text-sm font-black text-slate-800 dark:text-white uppercase truncate">{payment.accountName}</p>
                                             </div>
                                             <CopyBtn value={payment.accountName} field="accountName" copiedField={copiedField} onCopy={handleCopy} />
@@ -410,7 +410,7 @@ export default function PaymentPage() {
                                     {/* Account number */}
                                     <div className="flex items-center justify-between px-4 py-3 rounded-xl bg-indigo-50 dark:bg-indigo-950/30 border-2 border-indigo-200/60 dark:border-indigo-500/30">
                                         <div>
-                                            <p className="text-[9px] text-indigo-500 font-black uppercase tracking-wider mb-0.5">Số tài khoản</p>
+                                            <p className="text-[0.5625rem] text-indigo-500 font-black uppercase tracking-wider mb-0.5">Số tài khoản</p>
                                             <p className="text-2xl font-black font-mono tracking-widest text-slate-900 dark:text-white">{payment.accountNumber}</p>
                                         </div>
                                         <CopyBtn value={payment.accountNumber} field="accountNumber" copiedField={copiedField} onCopy={handleCopy} prominent />
@@ -419,7 +419,7 @@ export default function PaymentPage() {
                                     {/* Payment code */}
                                     <div className="flex items-center justify-between px-4 py-3 rounded-xl bg-gradient-to-r from-indigo-50 to-purple-50 dark:from-indigo-950/40 dark:to-purple-950/20 border-2 border-indigo-200/60 dark:border-indigo-500/30">
                                         <div className="min-w-0 flex-1">
-                                            <p className="text-[9px] text-indigo-500 font-black uppercase tracking-wider mb-0.5 flex items-center gap-1">
+                                            <p className="text-[0.5625rem] text-indigo-500 font-black uppercase tracking-wider mb-0.5 flex items-center gap-1">
                                                 <AlertCircle className="w-3 h-3" /> Nội dung (BẮT BUỘC)
                                             </p>
                                             <p className="text-base font-black font-mono text-indigo-700 dark:text-indigo-300 tracking-wider break-all select-all">{payment.paymentCode}</p>
@@ -433,7 +433,7 @@ export default function PaymentPage() {
 
                                     {/* Order Summary */}
                                     <div className="bg-white dark:bg-slate-900/80 border border-slate-200/60 dark:border-white/[0.06] rounded-[1.5rem] shadow-lg backdrop-blur-xl p-4 flex flex-col gap-3">
-                                        <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">Đơn hàng</p>
+                                        <p className="text-[0.625rem] font-black uppercase tracking-widest text-slate-400">Đơn hàng</p>
                                         {/* Plan badge */}
                                         <div className={`p-3.5 rounded-xl bg-gradient-to-br ${plan.color} text-white relative overflow-hidden`} style={{ boxShadow: `0 6px 20px ${plan.accent}35` }}>
                                             <div className="absolute -right-4 -top-4 w-16 h-16 bg-white/10 rounded-full" />
@@ -443,7 +443,7 @@ export default function PaymentPage() {
                                                 </div>
                                                 <div>
                                                     <p className="font-[950] text-sm leading-tight">{plan.name}</p>
-                                                    <p className="text-[10px] text-white/70 mt-0.5">{plan.desc}</p>
+                                                    <p className="text-[0.625rem] text-white/70 mt-0.5">{plan.desc}</p>
                                                 </div>
                                             </div>
                                         </div>
@@ -454,10 +454,10 @@ export default function PaymentPage() {
                                         </div>
                                         {/* Trust badges — 2 compact */}
                                         <div className="flex gap-2 pt-1 border-t border-dashed border-slate-100 dark:border-white/5">
-                                            <div className="flex items-center gap-1.5 text-[10px] font-bold text-emerald-600 dark:text-emerald-400">
+                                            <div className="flex items-center gap-1.5 text-[0.625rem] font-bold text-emerald-600 dark:text-emerald-400">
                                                 <ShieldCheck className="w-3.5 h-3.5" /> Bảo mật SSL
                                             </div>
-                                            <div className="flex items-center gap-1.5 text-[10px] font-bold text-indigo-600 dark:text-indigo-400">
+                                            <div className="flex items-center gap-1.5 text-[0.625rem] font-bold text-indigo-600 dark:text-indigo-400">
                                                 <Zap className="w-3.5 h-3.5" /> Kích hoạt 1–3 phút
                                             </div>
                                         </div>
@@ -467,7 +467,7 @@ export default function PaymentPage() {
                                     <div className="bg-white dark:bg-slate-900/80 border border-slate-200/60 dark:border-white/[0.06] rounded-[1.5rem] shadow-lg backdrop-blur-xl p-4 flex flex-col gap-3">
                                         {!isConfirming ? (
                                             <>
-                                                <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">Xác nhận</p>
+                                                <p className="text-[0.625rem] font-black uppercase tracking-widest text-slate-400">Xác nhận</p>
                                                 <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
                                                     Sau khi chuyển khoản, bấm xác nhận để hệ thống kiểm tra tự động.
                                                 </p>
@@ -486,7 +486,7 @@ export default function PaymentPage() {
                                                     <CountdownCircle seconds={checkCountdown} total={COUNTDOWN_TOTAL} />
                                                     <div className="flex-1 min-w-0">
                                                         <p className="text-xs font-black text-indigo-700 dark:text-indigo-300">Đang xác nhận...</p>
-                                                        <p className="text-[10px] text-indigo-400 font-semibold mt-0.5">
+                                                        <p className="text-[0.625rem] text-indigo-400 font-semibold mt-0.5">
                                                             Tự check lại sau {Math.floor(checkCountdown / 60)}p{checkCountdown % 60 > 0 ? ` ${checkCountdown % 60}s` : ''}
                                                         </p>
                                                     </div>
@@ -506,7 +506,7 @@ export default function PaymentPage() {
                                                     </p>
                                                 </div>
                                                 {/* Auto-cancel notice */}
-                                                <p className="text-[10px] text-slate-400 dark:text-slate-500 text-center">
+                                                <p className="text-[0.625rem] text-slate-400 dark:text-slate-500 text-center">
                                                     Đơn tự huỷ sau <span className="font-black text-slate-500">{Math.floor(autoCancelCountdown / 60)}:{(autoCancelCountdown % 60).toString().padStart(2, '0')}</span> nếu chưa thanh toán
                                                 </p>
                                                 {/* Check button — unlocked only at 0 */}
@@ -531,7 +531,7 @@ export default function PaymentPage() {
 
                                 {/* Support row — compact */}
                                 <div className="bg-white dark:bg-slate-900/80 border border-slate-200/60 dark:border-white/[0.06] rounded-[1.25rem] shadow-sm backdrop-blur-xl px-4 py-3 flex items-center gap-4 flex-wrap">
-                                    <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 shrink-0">Hỗ trợ:</p>
+                                    <p className="text-[0.625rem] font-black uppercase tracking-widest text-slate-400 shrink-0">Hỗ trợ:</p>
                                     {[
                                         { href: "https://www.facebook.com/", icon: <Facebook className="w-3.5 h-3.5" />, label: "Inbox Facebook", cls: "text-blue-600 hover:bg-blue-50" },
                                         { href: "tel:0982143958", icon: <Phone className="w-3.5 h-3.5" />, label: "098 214 39 58", cls: "text-emerald-600 hover:bg-emerald-50" },

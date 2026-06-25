@@ -304,7 +304,23 @@ function StreamingLoadingOverlay({
     );
 }
 
-export default function ModelViewer({ modelUrl, minimal = false, autoRotate = false }: { modelUrl: string; minimal?: boolean; autoRotate?: boolean }) {
+export default function ModelViewer({ 
+    modelUrl, 
+    minimal = false, 
+    autoRotate = false,
+    modelRotation,
+    modelPosition,
+    modelScale,
+    cameraTarget
+}: { 
+    modelUrl: string; 
+    minimal?: boolean; 
+    autoRotate?: boolean;
+    modelRotation?: [number, number, number];
+    modelPosition?: [number, number, number];
+    modelScale?: number;
+    cameraTarget?: [number, number, number];
+}) {
     const isMobile = window.innerWidth < 768;
     const { theme } = useTheme();
 
@@ -315,6 +331,11 @@ export default function ModelViewer({ modelUrl, minimal = false, autoRotate = fa
     const [totalMb, setTotalMb] = useState("0");
     const [errorMsg, setErrorMsg] = useState("");
     const [loadedScene, setLoadedScene] = useState<THREE.Group | null>(null);
+
+    // Default overrides for specific models if not provided
+    const isPlantCell = modelUrl.toLowerCase().includes('plant-cell');
+    const finalRotation = modelRotation || (isPlantCell ? [0, Math.PI / 2, 0] : undefined);
+    const finalTarget = cameraTarget || (isPlantCell ? [0, -0.2, 0] : [0, 0, 0]);
 
     // Dynamic quality setting, persisted to localStorage. Mặc định là false (Mượt mà) để tránh giật lag ngay từ đầu.
     const [highQuality, setHighQuality] = useState<boolean>(() => {
@@ -416,7 +437,7 @@ export default function ModelViewer({ modelUrl, minimal = false, autoRotate = fa
                     ? 'bg-black/40 border-white/10 text-white'
                     : 'bg-white/60 border-slate-300 text-slate-800'
                 }`}>
-                    <span className="text-[11px] font-bold tracking-wider uppercase flex items-center gap-1">
+                    <span className="text-[0.6875rem] font-bold tracking-wider uppercase flex items-center gap-1">
                         {highQuality ? (
                             <>
                                 <Sparkles className="w-3.5 h-3.5 text-sky-400 animate-pulse" />
@@ -481,7 +502,7 @@ export default function ModelViewer({ modelUrl, minimal = false, autoRotate = fa
                     )}
 
                     {isFBX ? (
-                        <Stage environment={null} intensity={isAmber ? 0.4 : 0.9} shadows={false}>
+                        <Stage environment={null} intensity={isAmber ? 0.4 : 0.9} shadows={false} adjustCamera={1.3}>
                             <FBXModel url={modelUrl} highQuality={highQuality} />
                         </Stage>
                     ) : (
@@ -507,20 +528,35 @@ export default function ModelViewer({ modelUrl, minimal = false, autoRotate = fa
                                 }}
                             />
                             {loadedScene && (
-                                <Stage environment={null} intensity={isAmber ? 0.4 : 0.9} shadows={false}>
-                                    <primitive object={loadedScene} />
+                                <Stage environment={null} intensity={isAmber ? 0.4 : 0.9} shadows={false} adjustCamera={1.3}>
+                                    <primitive 
+                                        object={loadedScene} 
+                                        rotation={finalRotation} 
+                                        position={modelPosition} 
+                                        scale={modelScale} 
+                                    />
                                 </Stage>
                             )}
                         </>
                     )}
 
-                    <OrbitControls makeDefault enableZoom={!minimal} enablePan={!minimal} zoomSpeed={1.2} enableDamping={true} dampingFactor={0.05} autoRotate={isVisible && autoRotate} autoRotateSpeed={0.8} />
+                    <OrbitControls 
+                        makeDefault 
+                        enableZoom={!minimal} 
+                        enablePan={!minimal} 
+                        zoomSpeed={1.2} 
+                        enableDamping={true} 
+                        dampingFactor={0.05} 
+                        autoRotate={isVisible && autoRotate} 
+                        autoRotateSpeed={0.8} 
+                        target={finalTarget} 
+                    />
                 </Canvas>
             </Suspense>
 
             {/* Premium Interaction Help Overlay */}
             {!minimal && (
-                <div className={`absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-3.5 px-4.5 py-2.5 backdrop-blur-md rounded-full text-[10px] uppercase tracking-widest border pointer-events-none transition-all duration-300 ${
+                <div className={`absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-3.5 px-4.5 py-2.5 backdrop-blur-md rounded-full text-[0.625rem] uppercase tracking-widest border pointer-events-none transition-all duration-300 ${
                     theme === 'dark'
                     ? 'bg-black/60 text-white/95 border-white/10'
                     : 'bg-white/80 text-slate-800 border-slate-200 shadow-md'

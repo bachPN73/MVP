@@ -199,7 +199,7 @@ export default function ResetPassword() {
                                 value={formData.token}
                                 onChange={handleChange}
                                 placeholder="000000"
-                                className="w-full px-4 py-2.5 bg-white dark:bg-slate-950 border border-slate-300 dark:border-white/10 rounded-2xl focus:outline-none focus:ring-4 focus:ring-indigo-100 dark:focus:ring-indigo-900/30 focus:border-indigo-600 dark:focus:border-indigo-500 text-center text-xl font-mono tracking-[0.4em] text-slate-950 dark:text-white transition-all h-[46px]"
+                                className="w-full px-4 py-2.5 bg-white dark:bg-slate-950 border border-slate-300 dark:border-white/10 rounded-2xl focus:outline-none focus:ring-4 focus:ring-indigo-100 dark:focus:ring-indigo-900/30 focus:border-indigo-600 dark:focus:border-indigo-500 text-center text-xl font-mono tracking-[0.4em] text-slate-950 dark:text-white transition-all h-[2.875rem]"
                                 disabled={isLoading}
                                 maxLength={6}
                                 autoFocus

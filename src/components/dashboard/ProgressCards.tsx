@@ -18,7 +18,7 @@ interface ProgressCardsProps {
 export function ProgressCards({ subjects }: ProgressCardsProps) {
     return (
         <div className="shrink-0 space-y-3">
-            <h2 className="text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest flex items-center gap-2">
+            <h2 className="text-[0.6875rem] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest flex items-center gap-2">
                 <Layers className="w-4 h-4 text-indigo-500" />
                 Tiến độ & Môn học
             </h2>
@@ -72,7 +72,7 @@ export function ProgressCards({ subjects }: ProgressCardsProps) {
                                                 className="transition-all duration-1000 ease-out"
                                                 style={{ strokeDasharray: circumference, strokeDashoffset, color: config.progressStroke }} />
                                         </svg>
-                                        <span className="relative z-10 text-[10px] font-black text-slate-700 dark:text-slate-200">{subject.progress}%</span>
+                                        <span className="relative z-10 text-[0.625rem] font-black text-slate-700 dark:text-slate-200">{subject.progress}%</span>
                                     </div>
                                 </div>
                                 <div>
@@ -80,8 +80,8 @@ export function ProgressCards({ subjects }: ProgressCardsProps) {
                                     <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">{subject.desc}</p>
                                 </div>
                                 <div className="mt-auto pt-4 border-t border-slate-100 dark:border-white/5 flex items-center gap-2">
-                                    <span className={`px-2.5 py-1 rounded-md text-[10px] font-bold ${config.badgeBg}`}>{subject.count} học liệu</span>
-                                    <span className="px-2.5 py-1 rounded-md text-[10px] font-bold bg-slate-100 text-slate-500 dark:bg-slate-800 dark:text-slate-400">{subject.subtopics.length} chủ đề</span>
+                                    <span className={`px-2.5 py-1 rounded-md text-[0.625rem] font-bold ${config.badgeBg}`}>{subject.count} học liệu</span>
+                                    <span className="px-2.5 py-1 rounded-md text-[0.625rem] font-bold bg-slate-100 text-slate-500 dark:bg-slate-800 dark:text-slate-400">{subject.subtopics.length} chủ đề</span>
                                 </div>
                             </div>
                         </Link>

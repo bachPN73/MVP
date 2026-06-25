@@ -24,7 +24,7 @@ export default function PricingContent({ isPublic = false }: { isPublic?: boolea
             <div className="text-center mb-8">
                 <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-violet-50 dark:bg-indigo-500/10 border border-violet-100 dark:border-indigo-500/20 text-violet-600 dark:text-indigo-300 rounded-full mb-3 shadow-sm">
                     <Sparkles className="w-3.5 h-3.5" />
-                    <span className="text-[10px] font-black tracking-wider uppercase">Bảng giá dịch vụ</span>
+                    <span className="text-[0.625rem] font-black tracking-wider uppercase">Bảng giá dịch vụ</span>
                 </div>
                 <h1 className="text-2xl sm:text-3xl lg:text-4xl font-[950] font-heading mb-2 text-slate-900 dark:text-white tracking-tight leading-tight animate-fadeIn">
                     Chọn gói dịch vụ{" "}
@@ -55,7 +55,7 @@ export default function PricingContent({ isPublic = false }: { isPublic?: boolea
 
                     if (plan.id === "free") {
                         themeColor = "text-slate-600 dark:text-slate-300";
-                        borderTop = "border-t-[6px] border-t-slate-400 dark:border-t-slate-600";
+                        borderTop = "border-t-[0.375rem] border-t-slate-400 dark:border-t-slate-600";
                         shadowHover = "hover:shadow-slate-500/10 dark:hover:shadow-slate-500/5";
                         // Nút Outline cho gói Miễn phí
                         btnStyle = "border-2 border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 shadow-sm hover:border-slate-400 dark:hover:border-slate-600";
@@ -63,7 +63,7 @@ export default function PricingContent({ isPublic = false }: { isPublic?: boolea
                         cardBorder = "border-slate-200 dark:border-white/5 hover:border-slate-300 dark:hover:border-white/10 bg-white/95 dark:bg-slate-900/60";
                     } else if (plan.id === "basic") {
                         themeColor = "text-blue-600 dark:text-blue-400";
-                        borderTop = "border-t-[6px] border-t-blue-500/80";
+                        borderTop = "border-t-[0.375rem] border-t-blue-500/80";
                         shadowHover = "hover:shadow-blue-500/15 dark:hover:shadow-blue-500/10";
                         // Nút Outline cho gói Cơ bản
                         btnStyle = "border-2 border-blue-500 hover:bg-blue-500/10 text-blue-600 dark:text-blue-400 shadow-sm hover:shadow-[0_4px_15px_rgba(59,130,246,0.15)]";
@@ -71,7 +71,7 @@ export default function PricingContent({ isPublic = false }: { isPublic?: boolea
                         cardBorder = "border-blue-200 dark:border-blue-500/10 hover:border-blue-400 dark:hover:border-blue-400/50 bg-white/95 dark:bg-slate-900/60";
                     } else if (plan.id === "combo") {
                         themeColor = "text-orange-600 dark:text-orange-400";
-                        borderTop = "border-t-[6px] border-t-orange-500";
+                        borderTop = "border-t-[0.375rem] border-t-orange-500";
                         shadowHover = "hover:shadow-orange-500/25 dark:hover:shadow-orange-500/15";
                         // Nút Solid nổi bật trung bình cho gói Combo
                         btnStyle = "bg-gradient-to-r from-orange-500 to-amber-500 text-white shadow-md active:scale-[0.98] hover:from-orange-600 hover:to-amber-600 hover:shadow-[0_4px_18px_rgba(249,115,22,0.3)] hover:scale-[1.01]";
@@ -79,7 +79,7 @@ export default function PricingContent({ isPublic = false }: { isPublic?: boolea
                         cardBorder = "border-orange-300 dark:border-orange-500/20 hover:border-orange-500 dark:hover:border-orange-400 bg-white/95 dark:bg-slate-900/60";
                     } else if (plan.id === "pro") {
                         themeColor = "text-violet-600 dark:text-indigo-400";
-                        borderTop = "border-t-[6px] border-t-violet-500 dark:border-t-indigo-500";
+                        borderTop = "border-t-[0.375rem] border-t-violet-500 dark:border-t-indigo-500";
                         shadowHover = "hover:shadow-violet-500/35 dark:hover:shadow-indigo-500/25";
                         // Nút Solid tím đậm nổi bật nhất cho gói Pro chủ lực
                         btnStyle = "bg-gradient-to-r from-violet-600 to-indigo-600 text-white shadow-lg shadow-violet-500/35 active:scale-[0.98] hover:from-violet-700 hover:to-indigo-700 hover:shadow-[0_6px_25px_rgba(99,102,241,0.5)] hover:scale-[1.03]";
@@ -89,7 +89,7 @@ export default function PricingContent({ isPublic = false }: { isPublic?: boolea
                     } else if (plan.id === "school") {
                         themeColor = "text-emerald-700 dark:text-emerald-400";
                         // Gói Trường học
-                        borderTop = "border-t-[6px] border-t-emerald-600/40 dark:border-t-emerald-600/30";
+                        borderTop = "border-t-[0.375rem] border-t-emerald-600/40 dark:border-t-emerald-600/30";
                         shadowHover = "hover:shadow-emerald-600/10 dark:hover:shadow-emerald-600/5";
                         // Nút Outline cho gói Trường học
                         btnStyle = "border-2 border-emerald-500 hover:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 bg-transparent shadow-sm hover:shadow-[0_4px_15px_rgba(16,185,129,0.1)]";
@@ -105,10 +105,10 @@ export default function PricingContent({ isPublic = false }: { isPublic?: boolea
                         <div
                             key={plan.id}
                             className={`
-                                flex-shrink-0 w-[275px] xs:w-[290px] md:w-auto snap-center
+                                flex-shrink-0 w-[17.1875rem] xs:w-[18.125rem] md:w-auto snap-center
                                 relative flex flex-col rounded-[2rem] border-2 transition-all duration-300 group
                                 hover:-translate-y-1.5 shadow-md backdrop-blur-xl
-                                min-h-[460px] md:min-h-0 h-full flex-grow
+                                min-h-[28.75rem] md:min-h-0 h-full flex-grow
                                 ${borderTop}
                                 ${cardBorder}
                                 ${shadowHover}
@@ -117,7 +117,7 @@ export default function PricingContent({ isPublic = false }: { isPublic?: boolea
                             {/* Featured Badge - Tối ưu padding và góc bo tròn pill-shape cao cấp */}
                             {isFeatured && (
                                 <div className="absolute -top-4 left-1/2 -translate-x-1/2 z-20 pointer-events-none whitespace-nowrap">
-                                    <div className="relative px-5 py-1.5 bg-gradient-to-r from-violet-600 to-indigo-600 text-white text-[10px] font-black tracking-widest uppercase rounded-full shadow-md">
+                                    <div className="relative px-5 py-1.5 bg-gradient-to-r from-violet-600 to-indigo-600 text-white text-[0.625rem] font-black tracking-widest uppercase rounded-full shadow-md">
                                         <span>Phổ biến nhất</span>
                                     </div>
                                 </div>
@@ -131,18 +131,18 @@ export default function PricingContent({ isPublic = false }: { isPublic?: boolea
                                     </div>
                                     <div className="min-w-0">
                                         <h2 className="text-base sm:text-lg xl:text-md font-[900] font-heading text-slate-900 dark:text-white truncate leading-snug">{plan.name}</h2>
-                                        <span className="text-[9px] text-slate-400 dark:text-indigo-300/70 font-bold uppercase tracking-[0.1em]">{plan.period}</span>
+                                        <span className="text-[0.5625rem] text-slate-400 dark:text-indigo-300/70 font-bold uppercase tracking-[0.1em]">{plan.period}</span>
                                     </div>
                                 </div>
 
                                 {/* Price */}
                                 <div className="flex items-baseline gap-0.5 mb-2 xl:mb-1.5">
                                     <span className="text-2xl sm:text-3xl xl:text-2xl font-[950] font-heading text-slate-900 dark:text-white tracking-tight">{plan.price}</span>
-                                    <span className="text-[10px] text-slate-400 dark:text-slate-400 font-bold ml-0.5">VND</span>
+                                    <span className="text-[0.625rem] text-slate-400 dark:text-slate-400 font-bold ml-0.5">VND</span>
                                 </div>
 
                                 {/* Description */}
-                                <p className="text-slate-500 dark:text-slate-400 text-[11px] sm:text-xs font-semibold leading-relaxed mb-3 xl:mb-2 min-h-[2.2rem] xl:min-h-[2.8rem] font-sans">
+                                <p className="text-slate-500 dark:text-slate-400 text-[0.6875rem] sm:text-xs font-semibold leading-relaxed mb-3 xl:mb-2 min-h-[2.2rem] xl:min-h-[2.8rem] font-sans">
                                     {plan.description}
                                 </p>
 
@@ -168,7 +168,7 @@ export default function PricingContent({ isPublic = false }: { isPublic?: boolea
 
                                         return (
                                             <div key={idx} className="flex items-start gap-2.5 xl:gap-1.5">
-                                                <div className={`w-[18px] h-[18px] rounded-full flex items-center justify-center shrink-0 mt-0.5 border shadow-sm transition-transform duration-300 group-hover:scale-105 ${checkBadge}`}>
+                                                <div className={`w-[1.125rem] h-[1.125rem] rounded-full flex items-center justify-center shrink-0 mt-0.5 border shadow-sm transition-transform duration-300 group-hover:scale-105 ${checkBadge}`}>
                                                     <Check className="w-2.5 h-2.5" strokeWidth={3.5} />
                                                 </div>
                                                 <span className={`text-xs sm:text-[12.5px] xl:text-[11.5px] text-slate-700 dark:text-slate-200 leading-snug font-semibold`}>

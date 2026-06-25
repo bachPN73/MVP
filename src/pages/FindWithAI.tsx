@@ -183,7 +183,7 @@ export default function FindWithAI() {
                                     onChange={(e) => setQuery(e.target.value.slice(0, 500))}
                                     onKeyDown={handleKeyPress}
                                     placeholder="Ví dụ: Tôi muốn tìm mô hình 3D sinh động về cấu trúc nguyên tử và các electron quay quanh hạt nhân..."
-                                    className="w-full px-4 sm:px-6 py-4 bg-transparent border-0 focus:outline-none resize-none min-h-[130px] text-base sm:text-lg text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 leading-relaxed"
+                                    className="w-full px-4 sm:px-6 py-4 bg-transparent border-0 focus:outline-none resize-none min-h-[8.125rem] text-base sm:text-lg text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 leading-relaxed"
                                     disabled={isSearching}
                                 />
                             </div>
@@ -337,7 +337,7 @@ export default function FindWithAI() {
                                                         {(Array.isArray(material.tags) ? material.tags : []).slice(0, 3).map((tag, index) => (
                                                             <span
                                                                 key={index}
-                                                                className="text-xs px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 font-semibold truncate max-w-[110px]"
+                                                                className="text-xs px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 font-semibold truncate max-w-[6.875rem]"
                                                             >
                                                                 {tag}
                                                             </span>

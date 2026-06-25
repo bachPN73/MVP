@@ -89,15 +89,15 @@ export default function AdminPaymentsPage() {
         switch (planId) {
             case 'premium':
             case 'pro':
-                return <span className="px-2 py-0.5 rounded-md text-[10px] font-black tracking-wider bg-amber-50 dark:bg-amber-950/40 text-amber-600 dark:text-amber-400 border border-amber-200/10 uppercase">PRO</span>;
+                return <span className="px-2 py-0.5 rounded-md text-[0.625rem] font-black tracking-wider bg-amber-50 dark:bg-amber-950/40 text-amber-600 dark:text-amber-400 border border-amber-200/10 uppercase">PRO</span>;
             case 'combo':
-                return <span className="px-2 py-0.5 rounded-md text-[10px] font-black tracking-wider bg-orange-50 dark:bg-orange-950/40 text-orange-600 dark:text-orange-400 border border-orange-200/10 uppercase">COMBO</span>;
+                return <span className="px-2 py-0.5 rounded-md text-[0.625rem] font-black tracking-wider bg-orange-50 dark:bg-orange-950/40 text-orange-600 dark:text-orange-400 border border-orange-200/10 uppercase">COMBO</span>;
             case 'school':
-                return <span className="px-2 py-0.5 rounded-md text-[10px] font-black tracking-wider bg-blue-50 dark:bg-blue-950/40 text-blue-600 dark:text-blue-400 border border-blue-200/10 uppercase">SCHOOL</span>;
+                return <span className="px-2 py-0.5 rounded-md text-[0.625rem] font-black tracking-wider bg-blue-50 dark:bg-blue-950/40 text-blue-600 dark:text-blue-400 border border-blue-200/10 uppercase">SCHOOL</span>;
             case 'basic':
-                return <span className="px-2 py-0.5 rounded-md text-[10px] font-black tracking-wider bg-violet-50 dark:bg-violet-950/40 text-violet-600 dark:text-violet-400 border border-violet-200/10 uppercase">BASIC</span>;
+                return <span className="px-2 py-0.5 rounded-md text-[0.625rem] font-black tracking-wider bg-violet-50 dark:bg-violet-950/40 text-violet-600 dark:text-violet-400 border border-violet-200/10 uppercase">BASIC</span>;
             default:
-                return <span className="px-2 py-0.5 rounded-md text-[10px] font-black tracking-wider bg-slate-50 dark:bg-slate-950/40 text-slate-600 dark:text-slate-400 border border-slate-200/10 uppercase">{planId}</span>;
+                return <span className="px-2 py-0.5 rounded-md text-[0.625rem] font-black tracking-wider bg-slate-50 dark:bg-slate-950/40 text-slate-600 dark:text-slate-400 border border-slate-200/10 uppercase">{planId}</span>;
         }
     };
 
@@ -136,12 +136,12 @@ export default function AdminPaymentsPage() {
                             Duyệt chuyển khoản, đối soát mã VietQR kích hoạt Premium ({payments.length} yêu cầu)
                         </p>
                         {/* Auto-refresh indicator */}
-                        <div className="flex items-center gap-1.5 text-[10px] font-black uppercase tracking-wider text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200/50 dark:border-emerald-800/30 px-2 py-0.5 rounded-full">
+                        <div className="flex items-center gap-1.5 text-[0.625rem] font-black uppercase tracking-wider text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200/50 dark:border-emerald-800/30 px-2 py-0.5 rounded-full">
                             <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
                             Auto-sync 10s
                         </div>
                         {lastRefreshed && (
-                            <span className="text-[10px] text-slate-400 font-semibold">
+                            <span className="text-[0.625rem] text-slate-400 font-semibold">
                                 Cập nhật lúc {lastRefreshed.toLocaleTimeString('vi-VN')}
                             </span>
                         )}
@@ -201,13 +201,13 @@ export default function AdminPaymentsPage() {
                     <table className="w-full text-left border-collapse font-sans">
                         <thead>
                             <tr className="bg-slate-50/50 dark:bg-slate-950/20 border-b border-slate-200 dark:border-white/10">
-                                <th className="px-6 py-4.5 text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest">Thời gian</th>
-                                <th className="px-6 py-4.5 text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest">Khách hàng</th>
-                                <th className="px-6 py-4.5 text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest">Mã đối soát</th>
-                                <th className="px-6 py-4.5 text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest">Gói mua</th>
-                                <th className="px-6 py-4.5 text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest">Số tiền</th>
-                                <th className="px-6 py-4.5 text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest">Trạng thái</th>
-                                <th className="px-6 py-4.5 text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest text-right">Tác vụ</th>
+                                <th className="px-6 py-4.5 text-[0.625rem] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest">Thời gian</th>
+                                <th className="px-6 py-4.5 text-[0.625rem] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest">Khách hàng</th>
+                                <th className="px-6 py-4.5 text-[0.625rem] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest">Mã đối soát</th>
+                                <th className="px-6 py-4.5 text-[0.625rem] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest">Gói mua</th>
+                                <th className="px-6 py-4.5 text-[0.625rem] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest">Số tiền</th>
+                                <th className="px-6 py-4.5 text-[0.625rem] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest">Trạng thái</th>
+                                <th className="px-6 py-4.5 text-[0.625rem] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest text-right">Tác vụ</th>
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-slate-100 dark:divide-white/5 font-semibold text-slate-700 dark:text-slate-200 text-sm">
@@ -239,7 +239,7 @@ export default function AdminPaymentsPage() {
                                             </div>
                                         </td>
                                         <td className="px-6 py-4">
-                                            <span className="font-black font-mono text-indigo-600 dark:text-indigo-400 tracking-wider text-[13px] bg-indigo-50 dark:bg-indigo-950/30 py-1 px-2.5 rounded-lg border border-indigo-200/10">
+                                            <span className="font-black font-mono text-indigo-600 dark:text-indigo-400 tracking-wider text-[0.8125rem] bg-indigo-50 dark:bg-indigo-950/30 py-1 px-2.5 rounded-lg border border-indigo-200/10">
                                                 {p.paymentCode}
                                             </span>
                                         </td>
@@ -250,7 +250,7 @@ export default function AdminPaymentsPage() {
                                         <td className="px-6 py-4">{getStatusBadge(p.status)}
                                             {/* Webhook auto-approved badge */}
                                             {p.status === 'approved' && (
-                                                <div className="mt-1 inline-flex items-center gap-1 text-[9px] font-black uppercase tracking-wider text-violet-600 dark:text-violet-400 bg-violet-50 dark:bg-violet-950/30 border border-violet-200/30 dark:border-violet-500/20 px-1.5 py-0.5 rounded-full">
+                                                <div className="mt-1 inline-flex items-center gap-1 text-[0.5625rem] font-black uppercase tracking-wider text-violet-600 dark:text-violet-400 bg-violet-50 dark:bg-violet-950/30 border border-violet-200/30 dark:border-violet-500/20 px-1.5 py-0.5 rounded-full">
                                                     <Zap className="w-2.5 h-2.5" /> Tự động
                                                 </div>
                                             )}
@@ -298,7 +298,7 @@ export default function AdminPaymentsPage() {
                             {filteredPayments.map((p) => (
                                 <div key={p.id} className="bg-white dark:bg-slate-900/60 p-4.5 rounded-2xl border border-slate-200 dark:border-white/10 shadow-sm relative space-y-3">
                                     <div className="flex justify-between items-start">
-                                        <div className="text-[10px] font-mono text-slate-400">
+                                        <div className="text-[0.625rem] font-mono text-slate-400">
                                             {new Date(p.createdAt).toLocaleString('vi-VN')}
                                         </div>
                                         <div>
@@ -308,7 +308,7 @@ export default function AdminPaymentsPage() {
 
                                     <div>
                                         <h3 className="font-extrabold text-slate-900 dark:text-white text-xs font-heading">{p.userName}</h3>
-                                        <p className="text-[10px] text-slate-400 dark:text-slate-500 font-bold leading-none mt-0.5">{p.userEmail}</p>
+                                        <p className="text-[0.625rem] text-slate-400 dark:text-slate-500 font-bold leading-none mt-0.5">{p.userEmail}</p>
                                     </div>
 
                                     <div className="flex justify-between items-center py-2 bg-slate-50/50 dark:bg-slate-950/20 px-2 rounded-xl">

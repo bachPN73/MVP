@@ -125,7 +125,7 @@ export default function Landing() {
             ══════════════════════════════════════ */}
             <header className="fixed left-0 right-0 top-0 z-50 px-4 pt-3">
                 <div
-                    className={`mx-auto max-w-7xl xl:max-w-[1440px] rounded-2xl border transition-all duration-300 ${
+                    className={`mx-auto max-w-7xl xl:max-w-[90rem] rounded-2xl border transition-all duration-300 ${
                         scrolled
                             ? 'border-slate-200/80 bg-white/95 shadow-md backdrop-blur-md'
                             : 'border-white/30 bg-white/80 shadow-sm backdrop-blur-sm'
@@ -142,7 +142,7 @@ export default function Landing() {
                             </div>
                             <div className="leading-tight mt-1">
                                 <p className="text-lg font-black text-black">Edu Tech</p>
-                                <p className="text-[13px] font-bold text-black mt-0.5">Học liệu 3D cho KHTN</p>
+                                <p className="text-[0.8125rem] font-bold text-black mt-0.5">Học liệu 3D cho KHTN</p>
                             </div>
                         </button>
 
@@ -150,13 +150,13 @@ export default function Landing() {
                         <nav className="hidden items-center gap-0.5 md:flex">
                             <button
                                 onClick={scrollToStory}
-                                className="rounded-xl px-4 py-2.5 text-[15px] font-bold text-slate-900 hover:bg-slate-100 transition-all"
+                                className="rounded-xl px-4 py-2.5 text-[0.9375rem] font-bold text-slate-900 hover:bg-slate-100 transition-all"
                             >
                                 Về Edu
                             </button>
                             <Link
                                 to="/guide"
-                                className="rounded-xl px-4 py-2.5 text-[15px] font-bold text-slate-900 hover:bg-slate-100 transition-all"
+                                className="rounded-xl px-4 py-2.5 text-[0.9375rem] font-bold text-slate-900 hover:bg-slate-100 transition-all"
                             >
                                 Hướng dẫn
                             </Link>
@@ -164,13 +164,13 @@ export default function Landing() {
                             <div className="ml-3 flex items-center gap-2">
                                 <Link
                                     to="/login"
-                                    className="rounded-xl border-2 border-slate-200 bg-white px-5 py-2.5 text-[15px] font-bold text-slate-900 hover:border-slate-300 hover:bg-slate-50 transition-all shadow-sm"
+                                    className="rounded-xl border-2 border-slate-200 bg-white px-5 py-2.5 text-[0.9375rem] font-bold text-slate-900 hover:border-slate-300 hover:bg-slate-50 transition-all shadow-sm"
                                 >
                                     Đăng nhập
                                 </Link>
                                 <Link
                                     to="/register"
-                                    className="rounded-xl bg-blue-600 px-5 py-2.5 text-[15px] font-bold text-white hover:bg-blue-700 transition-all shadow-sm"
+                                    className="rounded-xl bg-blue-600 px-5 py-2.5 text-[0.9375rem] font-bold text-white hover:bg-blue-700 transition-all shadow-sm"
                                 >
                                     Đăng ký
                                 </Link>
@@ -190,17 +190,17 @@ export default function Landing() {
                     {/* Mobile menu */}
                     {isMenuOpen && (
                         <div className="border-t border-slate-100 px-4 pb-4 pt-2 md:hidden">
-                            <button onClick={scrollToStory} className="block w-full rounded-xl px-4 py-3 text-left text-[15px] font-bold text-slate-900 hover:bg-slate-50">
+                            <button onClick={scrollToStory} className="block w-full rounded-xl px-4 py-3 text-left text-[0.9375rem] font-bold text-slate-900 hover:bg-slate-50">
                                 Về Edu
                             </button>
-                            <Link to="/guide" className="block rounded-xl px-4 py-3 text-[15px] font-bold text-slate-900 hover:bg-slate-50" onClick={() => setIsMenuOpen(false)}>
+                            <Link to="/guide" className="block rounded-xl px-4 py-3 text-[0.9375rem] font-bold text-slate-900 hover:bg-slate-50" onClick={() => setIsMenuOpen(false)}>
                                 Hướng dẫn
                             </Link>
                             <div className="mt-3 flex flex-col gap-2">
-                                <Link to="/login" className="block w-full rounded-xl border-2 border-slate-200 px-4 py-3 text-center text-[15px] font-bold text-slate-900" onClick={() => setIsMenuOpen(false)}>
+                                <Link to="/login" className="block w-full rounded-xl border-2 border-slate-200 px-4 py-3 text-center text-[0.9375rem] font-bold text-slate-900" onClick={() => setIsMenuOpen(false)}>
                                     Đăng nhập
                                 </Link>
-                                <Link to="/register" className="block w-full rounded-xl bg-blue-600 px-4 py-3 text-center text-[15px] font-bold text-white" onClick={() => setIsMenuOpen(false)}>
+                                <Link to="/register" className="block w-full rounded-xl bg-blue-600 px-4 py-3 text-center text-[0.9375rem] font-bold text-white" onClick={() => setIsMenuOpen(false)}>
                                     Đăng ký
                                 </Link>
                             </div>
@@ -250,7 +250,7 @@ export default function Landing() {
 
 
                     {/* Content */}
-                    <div className="relative z-10 mx-auto max-w-[1440px] px-6 sm:px-12 lg:px-16 flex flex-col min-h-[100dvh] pt-[80px]">
+                    <div className="relative z-10 mx-auto max-w-[90rem] px-6 sm:px-12 lg:px-16 flex flex-col min-h-[100dvh] pt-[5rem]">
                         <div className="my-auto py-4 sm:py-8">
                             {/* Brand title */}
                             <h1
@@ -332,7 +332,7 @@ export default function Landing() {
                         }}
                     />
 
-                    <div className="mx-auto max-w-[1600px] px-4 sm:px-8 lg:px-12">
+                    <div className="mx-auto max-w-[100rem] px-4 sm:px-8 lg:px-12">
                         <div className="grid grid-cols-1 items-start gap-8 lg:grid-cols-[1.8fr_1.1fr_1.6fr] lg:gap-12 xl:gap-16">
                             {/* Left – Story */}
                             <div className="flex flex-col">
@@ -428,10 +428,10 @@ export default function Landing() {
                     MÔ HÌNH 3D NỔI BẬT
                 ══════════════════════════════════════ */}
                 <section className="bg-white py-16">
-                    <div className="mx-auto max-w-[1440px] px-6 sm:px-10 lg:px-16">
+                    <div className="mx-auto max-w-[90rem] px-6 sm:px-10 lg:px-16">
                         {/* Header row */}
                         <div className="mb-3 flex items-center justify-between">
-                            <p className="text-[13px] sm:text-base font-bold uppercase tracking-widest text-blue-600">
+                            <p className="text-[0.8125rem] sm:text-base font-bold uppercase tracking-widest text-blue-600">
                                 Học liệu trực quan
                             </p>
                         </div>
@@ -547,7 +547,7 @@ export default function Landing() {
             ══════════════════════════════════════ */}
             {/* ══ FOOTER – đồng màu với Quote section (#1b3a5c) ══ */}
             <footer className="py-16 bg-[#1b3a5c]">
-                <div className="mx-auto max-w-[1440px] px-6 sm:px-10 lg:px-16">
+                <div className="mx-auto max-w-[90rem] px-6 sm:px-10 lg:px-16">
                     <div className="flex flex-col gap-12 md:flex-row md:items-start md:justify-between">
                         {/* Logo block – vuông, to hơn */}
                         <div className="flex items-start gap-5">

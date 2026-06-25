@@ -106,7 +106,7 @@ export function AppSidebar({ currentPath = '/', isOpen = false, setIsOpen, isCol
             className={`fixed left-0 top-0 md:left-3 md:top-3 md:h-[calc(100vh-1.5rem)] h-full backdrop-blur-2xl flex flex-col shadow-2xl z-50 transition-all duration-300 ease-in-out md:translate-x-0 md:rounded-2xl md:border
             bg-[#0B1B32] border-white/10 text-white
             ${isOpen ? 'translate-x-0' : '-translate-x-full'} 
-            ${isCollapsed ? 'md:w-20 w-[270px]' : 'w-[270px]'}`}
+            ${isCollapsed ? 'md:w-20 w-[16.875rem]' : 'w-[16.875rem]'}`}
         >
             {/* Inner container to hold and clip content to rounded borders safely */}
             <div className="w-full h-full flex flex-col overflow-hidden rounded-[inherit]">
@@ -118,7 +118,7 @@ export function AppSidebar({ currentPath = '/', isOpen = false, setIsOpen, isCol
                         </div>
                         
                         <div className={`overflow-hidden transition-all duration-300 ease-in-out flex flex-col
-                            ${isCollapsed ? 'md:max-w-0 md:opacity-0 md:invisible md:ml-0 max-w-[180px] opacity-100 visible ml-3.5' : 'max-w-[180px] opacity-100 visible ml-3.5'}`}>
+                            ${isCollapsed ? 'md:max-w-0 md:opacity-0 md:invisible md:ml-0 max-w-[11.25rem] opacity-100 visible ml-3.5' : 'max-w-[11.25rem] opacity-100 visible ml-3.5'}`}>
                             <h1 className={`text-2xl font-black uppercase tracking-tight leading-none whitespace-nowrap text-white`}>
                                 EDU TECH
                             </h1>
@@ -160,18 +160,18 @@ export function AppSidebar({ currentPath = '/', isOpen = false, setIsOpen, isCol
                                         ? 'bg-indigo-500/20 text-white'
                                         : 'group-hover:bg-white/10 group-hover:text-white'
                                 }`}>
-                                    <Icon className="w-[18px] h-[18px]" />
+                                    <Icon className="w-[1.125rem] h-[1.125rem]" />
                                 </div>
                                 
                                 <div className={`overflow-hidden transition-all duration-300 ease-in-out flex-1 text-left
-                                    ${isCollapsed ? 'md:max-w-0 md:opacity-0 md:invisible max-w-[150px] opacity-100 visible' : 'max-w-[150px] opacity-100 visible'}`}>
+                                    ${isCollapsed ? 'md:max-w-0 md:opacity-0 md:invisible max-w-[9.375rem] opacity-100 visible' : 'max-w-[9.375rem] opacity-100 visible'}`}>
                                     <span className={`text-base font-extrabold tracking-wide whitespace-nowrap transition-all duration-200 ${isActive ? 'translate-x-0.5' : 'group-hover:translate-x-0.5'}`}>
                                         {item.label}
                                     </span>
                                 </div>
 
                                 {/* Premium Glass Tooltip on Hover when collapsed */}
-                                <span className={`absolute left-full ml-4 px-3.5 py-2 bg-[#0b1329]/95 text-white text-[11px] font-bold rounded-xl opacity-0 pointer-events-none transition-all duration-300 whitespace-nowrap shadow-[0_10px_30px_rgba(0,0,0,0.5)] border border-white/10 z-[70] backdrop-blur-md before:content-[''] before:absolute before:right-full before:top-1/2 before:-translate-y-1/2 before:border-[6px] before:border-transparent before:border-r-[#0b1329]/95
+                                <span className={`absolute left-full ml-4 px-3.5 py-2 bg-[#0b1329]/95 text-white text-[0.6875rem] font-bold rounded-xl opacity-0 pointer-events-none transition-all duration-300 whitespace-nowrap shadow-[0_10px_30px_rgba(0,0,0,0.5)] border border-white/10 z-[70] backdrop-blur-md before:content-[''] before:absolute before:right-full before:top-1/2 before:-translate-y-1/2 before:border-[0.375rem] before:border-transparent before:border-r-[#0b1329]/95
                                     ${isCollapsed ? 'group-hover:opacity-100 group-hover:translate-x-1' : ''}`}>
                                     {item.label}
                                 </span>
@@ -229,16 +229,16 @@ export function AppSidebar({ currentPath = '/', isOpen = false, setIsOpen, isCol
                                 </div>
 
                                 <div className={`overflow-hidden transition-all duration-300 ease-in-out flex flex-col flex-1
-                                    ${isCollapsed ? 'md:max-w-0 md:opacity-0 md:invisible md:ml-0 md:h-0 max-w-[150px] opacity-100 visible ml-0' : 'max-w-[150px] opacity-100 visible ml-0'}`}>
+                                    ${isCollapsed ? 'md:max-w-0 md:opacity-0 md:invisible md:ml-0 md:h-0 max-w-[9.375rem] opacity-100 visible ml-0' : 'max-w-[9.375rem] opacity-100 visible ml-0'}`}>
                                     <p className={`font-black text-sm truncate leading-tight text-white`}>{userName}</p>
                                     {/* Role badge with color */}
-                                    <span className={`inline-flex items-center mt-1.5 px-2 py-0.5 rounded-md text-[9px] font-black uppercase tracking-widest leading-none border w-max ${getRoleBadgeClass(userRole, userPlan)}`}>
+                                    <span className={`inline-flex items-center mt-1.5 px-2 py-0.5 rounded-md text-[0.5625rem] font-black uppercase tracking-widest leading-none border w-max ${getRoleBadgeClass(userRole, userPlan)}`}>
                                         {getRoleLabel(userRole, userPlan)}
                                     </span>
                                 </div>
 
                                 {/* Premium Tooltip for profile when collapsed */}
-                                <span className={`absolute left-full ml-6 px-3.5 py-2 bg-[#0b1329]/95 text-white text-[11px] font-bold rounded-xl opacity-0 pointer-events-none transition-all duration-300 whitespace-nowrap shadow-[0_10px_30px_rgba(0,0,0,0.5)] border border-white/10 z-[70] backdrop-blur-md before:content-[''] before:absolute before:right-full before:top-1/2 before:-translate-y-1/2 before:border-[6px] before:border-transparent before:border-r-[#0b1329]/95
+                                <span className={`absolute left-full ml-6 px-3.5 py-2 bg-[#0b1329]/95 text-white text-[0.6875rem] font-bold rounded-xl opacity-0 pointer-events-none transition-all duration-300 whitespace-nowrap shadow-[0_10px_30px_rgba(0,0,0,0.5)] border border-white/10 z-[70] backdrop-blur-md before:content-[''] before:absolute before:right-full before:top-1/2 before:-translate-y-1/2 before:border-[0.375rem] before:border-transparent before:border-r-[#0b1329]/95
                                     ${isCollapsed ? 'group-hover:opacity-100 group-hover:translate-x-1' : ''}`}>
                                     Hồ sơ: {userName}
                                 </span>
@@ -253,7 +253,7 @@ export function AppSidebar({ currentPath = '/', isOpen = false, setIsOpen, isCol
                                 >
                                     <LogOut className="w-4 h-4" />
                                     {/* Premium Tooltip for logout when collapsed */}
-                                    <span className={`absolute left-full ml-6 top-1/2 -translate-y-1/2 px-3.5 py-2 bg-red-600/95 text-white text-[11px] font-bold rounded-xl opacity-0 pointer-events-none transition-all duration-300 whitespace-nowrap shadow-[0_10px_30px_rgba(0,0,0,0.5)] border border-red-500/20 z-[70] backdrop-blur-md before:content-[''] before:absolute before:right-full before:top-1/2 before:-translate-y-1/2 before:border-[6px] before:border-transparent before:border-r-red-600/95
+                                    <span className={`absolute left-full ml-6 top-1/2 -translate-y-1/2 px-3.5 py-2 bg-red-600/95 text-white text-[0.6875rem] font-bold rounded-xl opacity-0 pointer-events-none transition-all duration-300 whitespace-nowrap shadow-[0_10px_30px_rgba(0,0,0,0.5)] border border-red-500/20 z-[70] backdrop-blur-md before:content-[''] before:absolute before:right-full before:top-1/2 before:-translate-y-1/2 before:border-[0.375rem] before:border-transparent before:border-r-red-600/95
                                         ${isCollapsed ? 'group-hover:opacity-100 group-hover:translate-x-1' : ''}`}>
                                         Đăng xuất
                                     </span>

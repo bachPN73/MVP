@@ -10,7 +10,7 @@ export function QuickLinks({ materialCount }: QuickLinksProps) {
         <div className="shrink-0 grid grid-cols-1 md:grid-cols-2 gap-4">
             {/* AI Search */}
             <Link id="link-ai-search-card" to="/find-ai"
-                className="group relative overflow-hidden rounded-3xl bg-white dark:bg-slate-900 border border-indigo-100 dark:border-indigo-500/15 shadow-sm hover:shadow-md hover:border-indigo-300/60 dark:hover:border-indigo-500/30 transition-all duration-300 hover:-translate-y-1 flex flex-col p-5 md:p-6 min-h-[160px]">
+                className="group relative overflow-hidden rounded-3xl bg-white dark:bg-slate-900 border border-indigo-100 dark:border-indigo-500/15 shadow-sm hover:shadow-md hover:border-indigo-300/60 dark:hover:border-indigo-500/30 transition-all duration-300 hover:-translate-y-1 flex flex-col p-5 md:p-6 min-h-[10rem]">
                 <div className="flex items-start gap-4 mb-4">
                     <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center text-white shadow-lg shadow-indigo-500/20 shrink-0 group-hover:scale-110 transition-transform duration-300">
                         <Sparkles className="w-6 h-6" />
@@ -34,7 +34,7 @@ export function QuickLinks({ materialCount }: QuickLinksProps) {
 
             {/* Library */}
             <Link id="link-library-card" to="/library"
-                className="group relative overflow-hidden rounded-3xl bg-white dark:bg-slate-900 border border-teal-100 dark:border-teal-500/15 shadow-sm hover:shadow-md hover:border-teal-300/60 dark:hover:border-teal-500/30 transition-all duration-300 hover:-translate-y-1 flex flex-col p-5 md:p-6 min-h-[160px]">
+                className="group relative overflow-hidden rounded-3xl bg-white dark:bg-slate-900 border border-teal-100 dark:border-teal-500/15 shadow-sm hover:shadow-md hover:border-teal-300/60 dark:hover:border-teal-500/30 transition-all duration-300 hover:-translate-y-1 flex flex-col p-5 md:p-6 min-h-[10rem]">
                 <div className="flex items-start gap-4 mb-4">
                     <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-teal-500 to-cyan-600 flex items-center justify-center text-white shadow-lg shadow-teal-500/20 shrink-0 group-hover:scale-110 transition-transform duration-300">
                         <Library className="w-6 h-6" />

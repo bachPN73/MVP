@@ -324,7 +324,7 @@ export default function VaultPage() {
                             <div>
                                 <h1 className="text-xl md:text-2xl font-black text-slate-900 dark:text-white tracking-tight font-heading flex items-center gap-2">
                                     Kho tạm thời theo Tiết
-                                    <span className="text-[10px] font-black px-2 py-0.5 rounded-full bg-violet-500/15 text-violet-600 dark:text-violet-400 border border-violet-300/40 dark:border-violet-500/30 uppercase tracking-wider">
+                                    <span className="text-[0.625rem] font-black px-2 py-0.5 rounded-full bg-violet-500/15 text-violet-600 dark:text-violet-400 border border-violet-300/40 dark:border-violet-500/30 uppercase tracking-wider">
                                         Pro
                                     </span>
                                 </h1>
@@ -582,17 +582,17 @@ function VaultEntryCard({ entry, now, periods, onRemove, onMove }: CardProps) {
 
                     {/* Badges */}
                     <div className="absolute top-2.5 left-2.5 flex gap-1.5">
-                        <span className={`px-2 py-0.5 rounded-lg text-[9px] font-black shadow-sm uppercase tracking-wider leading-none ${style.badge}`}>
+                        <span className={`px-2 py-0.5 rounded-lg text-[0.5625rem] font-black shadow-sm uppercase tracking-wider leading-none ${style.badge}`}>
                             {getSubjectName(entry.subject)}
                         </span>
-                        <span className="px-2 py-0.5 bg-white/90 dark:bg-slate-950/90 backdrop-blur-md rounded-lg text-[9px] font-black text-slate-700 dark:text-slate-300 shadow-sm uppercase tracking-wider leading-none">
+                        <span className="px-2 py-0.5 bg-white/90 dark:bg-slate-950/90 backdrop-blur-md rounded-lg text-[0.5625rem] font-black text-slate-700 dark:text-slate-300 shadow-sm uppercase tracking-wider leading-none">
                             {entry.type === '3d-model' ? '3D' : 'INFO'}
                         </span>
                     </div>
 
                     {/* Expiring soon badge */}
                     {isExpiringSoon && (
-                        <div className="absolute bottom-2 right-2 px-2 py-0.5 rounded-lg bg-red-650 backdrop-blur-sm text-white text-[9px] font-black uppercase tracking-wider flex items-center gap-1">
+                        <div className="absolute bottom-2 right-2 px-2 py-0.5 rounded-lg bg-red-650 backdrop-blur-sm text-white text-[0.5625rem] font-black uppercase tracking-wider flex items-center gap-1">
                             <Clock className="w-2.5 h-2.5" />
                             Sắp hết hạn
                         </div>
@@ -614,7 +614,7 @@ function VaultEntryCard({ entry, now, periods, onRemove, onMove }: CardProps) {
                         {/* Countdown bar */}
                         <div>
                             <div className="flex items-center justify-between mb-1">
-                                <span className={`text-[10px] font-bold flex items-center gap-1 ${isExpiringSoon ? 'text-red-500' : 'text-slate-400 dark:text-slate-500'}`}>
+                                <span className={`text-[0.625rem] font-bold flex items-center gap-1 ${isExpiringSoon ? 'text-red-500' : 'text-slate-400 dark:text-slate-500'}`}>
                                     <Clock className="w-2.5 h-2.5" />
                                     {formatCountdown(remaining)}
                                 </span>
@@ -637,14 +637,14 @@ function VaultEntryCard({ entry, now, periods, onRemove, onMove }: CardProps) {
                             className="pt-2 border-t border-slate-100 dark:border-white/5"
                             onClick={e => e.stopPropagation()} // prevent Link trigger
                         >
-                            <label className="block text-[9px] font-black uppercase text-slate-400 tracking-wider mb-1">Di chuyển tiết:</label>
+                            <label className="block text-[0.5625rem] font-black uppercase text-slate-400 tracking-wider mb-1">Di chuyển tiết:</label>
                             <select
                                 value={entry.periodId || ''}
                                 onChange={e => {
                                     const val = e.target.value;
                                     onMove(entry.id, val === '' ? undefined : val);
                                 }}
-                                className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-white/5 rounded-lg px-2 py-1 text-[10px] font-bold focus:outline-none focus:border-violet-500 cursor-pointer text-slate-700 dark:text-slate-300"
+                                className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-white/5 rounded-lg px-2 py-1 text-[0.625rem] font-bold focus:outline-none focus:border-violet-500 cursor-pointer text-slate-700 dark:text-slate-300"
                             >
                                 <option value="">Chưa phân loại</option>
                                 {periods.map(p => (

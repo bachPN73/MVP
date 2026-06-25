@@ -345,11 +345,11 @@ export default function AdminLessonsPage() {
                             </div>
 
                             {/* Column 2: Bulk Assign Materials Selector */}
-                            <div className="bg-slate-50/50 dark:bg-slate-950/20 rounded-2xl border border-slate-200 dark:border-white/5 p-5 flex flex-col h-[400px]">
+                            <div className="bg-slate-50/50 dark:bg-slate-950/20 rounded-2xl border border-slate-200 dark:border-white/5 p-5 flex flex-col h-[25rem]">
                                 <div className="flex items-center justify-between mb-3.5 shrink-0">
                                     <div>
                                         <label className="text-xs font-extrabold uppercase tracking-wider text-indigo-600 dark:text-indigo-400 font-sans">Gán học liệu liên quan ({formData.materials.length} mục đã chọn)</label>
-                                        <p className="text-[10px] text-slate-400 dark:text-slate-500 font-semibold mt-0.5">Tự động đề xuất theo Môn & Lớp đã chọn ở cột bên</p>
+                                        <p className="text-[0.625rem] text-slate-400 dark:text-slate-500 font-semibold mt-0.5">Tự động đề xuất theo Môn & Lớp đã chọn ở cột bên</p>
                                     </div>
                                 </div>
 
@@ -370,7 +370,7 @@ export default function AdminLessonsPage() {
                                     <button
                                         type="button"
                                         onClick={() => handleSelectAllFilteredMaterials(availableFormMaterials.map(m => m.id || m._id))}
-                                        className="mb-2.5 self-start flex items-center gap-1.5 text-[10px] font-black text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 transition-colors cursor-pointer"
+                                        className="mb-2.5 self-start flex items-center gap-1.5 text-[0.625rem] font-black text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 transition-colors cursor-pointer"
                                     >
                                         <CheckSquare className="w-3.5 h-3.5" />
                                         <span>Chọn tất cả hiển thị ({availableFormMaterials.length})</span>
@@ -410,7 +410,7 @@ export default function AdminLessonsPage() {
 
                                                     <div className="min-w-0 flex-1">
                                                         <p className="text-xs font-bold text-slate-800 dark:text-slate-100 truncate">{m.title}</p>
-                                                        <p className="text-[10px] text-slate-400 dark:text-slate-500 font-semibold mt-0.5 truncate uppercase tracking-wider">{m.type === 'infographic' ? 'Infographic' : 'Mô hình 3D'}</p>
+                                                        <p className="text-[0.625rem] text-slate-400 dark:text-slate-500 font-semibold mt-0.5 truncate uppercase tracking-wider">{m.type === 'infographic' ? 'Infographic' : 'Mô hình 3D'}</p>
                                                     </div>
                                                 </div>
                                             );
@@ -419,7 +419,7 @@ export default function AdminLessonsPage() {
                                         <div className="h-full flex flex-col items-center justify-center text-center p-6 text-slate-400">
                                             <Layers className="w-10 h-10 text-slate-300 dark:text-slate-700 mb-2" />
                                             <p className="text-xs font-bold uppercase tracking-wider text-slate-400 dark:text-slate-600">Không có học liệu phù hợp</p>
-                                            <p className="text-[10px] text-slate-450 dark:text-slate-500 font-medium mt-1 leading-relaxed">
+                                            <p className="text-[0.625rem] text-slate-450 dark:text-slate-500 font-medium mt-1 leading-relaxed">
                                                 Vui lòng kiểm tra lại cấu hình Môn & Lớp ở cột trái hoặc tải học liệu mới cho Môn & Lớp này.
                                             </p>
                                         </div>
@@ -462,12 +462,12 @@ export default function AdminLessonsPage() {
                     <table className="w-full text-left border-collapse font-sans">
                         <thead>
                             <tr className="bg-slate-50/50 dark:bg-slate-800/20 border-b border-slate-200/60 dark:border-white/10">
-                                <th className="px-6 py-4 text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest">Tiêu đề bài học / Chương</th>
-                                <th className="px-6 py-4 text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest">Môn Học</th>
-                                <th className="px-6 py-4 text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest">Lớp</th>
-                                <th className="px-6 py-4 text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest">Số Học Liệu</th>
-                                <th className="px-6 py-4 text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest">Thứ Tự</th>
-                                <th className="px-6 py-4 text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest text-right">Hành Động</th>
+                                <th className="px-6 py-4 text-[0.625rem] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest">Tiêu đề bài học / Chương</th>
+                                <th className="px-6 py-4 text-[0.625rem] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest">Môn Học</th>
+                                <th className="px-6 py-4 text-[0.625rem] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest">Lớp</th>
+                                <th className="px-6 py-4 text-[0.625rem] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest">Số Học Liệu</th>
+                                <th className="px-6 py-4 text-[0.625rem] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest">Thứ Tự</th>
+                                <th className="px-6 py-4 text-[0.625rem] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest text-right">Hành Động</th>
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-slate-100 dark:divide-white/5 font-semibold text-slate-700 dark:text-slate-200 text-sm">
@@ -501,7 +501,7 @@ export default function AdminLessonsPage() {
                                                             {lesson.title}
                                                         </div>
                                                         {lesson.chapter && (
-                                                            <div className="text-[10px] text-indigo-500 dark:text-indigo-400 font-bold uppercase tracking-wider mt-0.5">
+                                                            <div className="text-[0.625rem] text-indigo-500 dark:text-indigo-400 font-bold uppercase tracking-wider mt-0.5">
                                                                 {lesson.chapter}
                                                             </div>
                                                         )}
@@ -509,7 +509,7 @@ export default function AdminLessonsPage() {
                                                 </div>
                                             </td>
                                             <td className="px-6 py-5">
-                                                <span className={`inline-flex items-center px-2.5 py-0.5 rounded-lg text-[10px] font-extrabold uppercase tracking-wide border ${
+                                                <span className={`inline-flex items-center px-2.5 py-0.5 rounded-lg text-[0.625rem] font-extrabold uppercase tracking-wide border ${
                                                     lesson.subject === 'physics' 
                                                         ? 'bg-indigo-50 dark:bg-indigo-950/40 border-indigo-200/10 text-indigo-600 dark:text-indigo-400' 
                                                         : lesson.subject === 'chemistry' 

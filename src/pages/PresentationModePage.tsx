@@ -121,7 +121,7 @@ export default function PresentationMode() {
                 <div className="flex items-center justify-between gap-4">
                     <div className="space-y-0.5 max-w-[65%]">
                         <div className="flex items-center gap-2">
-                            <span className="px-2 py-0.5 bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 font-extrabold text-[10px] uppercase rounded-md tracking-wider font-sans">
+                            <span className="px-2 py-0.5 bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 font-extrabold text-[0.625rem] uppercase rounded-md tracking-wider font-sans">
                                 {material.subject === 'physics' ? 'Vật lý' : material.subject === 'chemistry' ? 'Hóa học' : 'Sinh học'} - Lớp {material.grade}
                             </span>
                             <h1 className="text-base md:text-lg font-extrabold font-heading text-white truncate tracking-tight">{material.title}</h1>
@@ -173,7 +173,7 @@ export default function PresentationMode() {
                         {material.type === '3d-model' ? (
                             <div className={`absolute inset-0 overflow-hidden bg-[#05070f] ${isFullscreen ? 'rounded-none border-none' : 'rounded-[2rem] border border-white/10 shadow-[0_0_50px_rgba(99,102,241,0.05)] relative transition-all duration-500'}`}>
                                 <div className="absolute top-5 left-5 z-10 pointer-events-none">
-                                     <span className="flex items-center gap-2 px-3.5 py-2 bg-slate-950/90 backdrop-blur-md border border-white/10 text-slate-300 text-[11px] font-black uppercase rounded-xl shadow-2xl font-mono tracking-wider">
+                                     <span className="flex items-center gap-2 px-3.5 py-2 bg-slate-950/90 backdrop-blur-md border border-white/10 text-slate-300 text-[0.6875rem] font-black uppercase rounded-xl shadow-2xl font-mono tracking-wider">
                                         <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shadow-[0_0_10px_#10b981]" />
                                         Môi trường 3D tương tác
                                     </span>
@@ -229,8 +229,8 @@ export default function PresentationMode() {
                     </div>
 
                     <div className="flex items-center gap-2">
-                        <kbd className="px-2 py-0.5 bg-slate-900 border border-white/10 text-white rounded text-[10px] shadow-sm font-sans tracking-wider">ESC</kbd>
-                        <span className="text-[11px] text-slate-500">để thoát trình chiếu</span>
+                        <kbd className="px-2 py-0.5 bg-slate-900 border border-white/10 text-white rounded text-[0.625rem] shadow-sm font-sans tracking-wider">ESC</kbd>
+                        <span className="text-[0.6875rem] text-slate-500">để thoát trình chiếu</span>
                     </div>
                 </div>
             </div>

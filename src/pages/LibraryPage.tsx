@@ -463,13 +463,13 @@ export default function Library() {
 
                         {/* Quick subject stats */}
                         <div className="flex items-center gap-2 flex-wrap">
-                            <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-[11px] font-extrabold bg-gradient-to-r from-blue-50 to-cyan-50 text-blue-700 border border-blue-200/50 dark:from-blue-950/30 dark:to-cyan-950/30 dark:text-cyan-300 dark:border-cyan-500/20 shadow-xs">
+                            <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-[0.6875rem] font-extrabold bg-gradient-to-r from-blue-50 to-cyan-50 text-blue-700 border border-blue-200/50 dark:from-blue-950/30 dark:to-cyan-950/30 dark:text-cyan-300 dark:border-cyan-500/20 shadow-xs">
                                 <Atom className="w-3 h-3" /> {subjectCounts.physics} Vật lý
                             </span>
-                            <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-[11px] font-extrabold bg-gradient-to-r from-emerald-50 to-teal-50 text-emerald-700 border border-emerald-200/50 dark:from-emerald-950/30 dark:to-teal-950/30 dark:text-emerald-300 dark:border-emerald-500/20 shadow-xs">
+                            <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-[0.6875rem] font-extrabold bg-gradient-to-r from-emerald-50 to-teal-50 text-emerald-700 border border-emerald-200/50 dark:from-emerald-950/30 dark:to-teal-950/30 dark:text-emerald-300 dark:border-emerald-500/20 shadow-xs">
                                 <FlaskConical className="w-3 h-3" /> {subjectCounts.chemistry} Hóa học
                             </span>
-                            <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-[11px] font-extrabold bg-gradient-to-r from-rose-50 to-orange-50 text-rose-700 border border-rose-200/50 dark:from-rose-950/30 dark:to-orange-950/30 dark:text-rose-300 dark:border-rose-500/20 shadow-xs">
+                            <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-[0.6875rem] font-extrabold bg-gradient-to-r from-rose-50 to-orange-50 text-rose-700 border border-rose-200/50 dark:from-rose-950/30 dark:to-orange-950/30 dark:text-rose-300 dark:border-rose-500/20 shadow-xs">
                                 <Sprout className="w-3 h-3" /> {subjectCounts.biology} Sinh học
                             </span>
                         </div>
@@ -525,7 +525,7 @@ export default function Library() {
                                     placeholder="Tìm kiếm học liệu..."
                                     value={searchQuery}
                                     onChange={(e) => handleSearchChange(e.target.value)}
-                                    className="w-full pl-10 pr-9 py-2.5 bg-slate-50/80 dark:bg-white/[0.04] border border-slate-200/80 dark:border-white/10 text-slate-950 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/40 focus:border-indigo-300 dark:focus:border-indigo-500/40 text-sm font-medium transition-all h-[44px]"
+                                    className="w-full pl-10 pr-9 py-2.5 bg-slate-50/80 dark:bg-white/[0.04] border border-slate-200/80 dark:border-white/10 text-slate-950 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/40 focus:border-indigo-300 dark:focus:border-indigo-500/40 text-sm font-medium transition-all h-[2.75rem]"
                                 />
                                 {searchQuery && (
                                     <button 
@@ -545,7 +545,7 @@ export default function Library() {
                                         value={selectedSubject}
                                         onChange={(e) => setSelectedSubject(e.target.value as Material['subject'] | 'all')}
                                         aria-label="Chọn môn học"
-                                        className="appearance-none pl-3.5 pr-8 py-2.5 bg-slate-50/80 dark:bg-white/[0.04] border border-slate-200/80 dark:border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/40 text-xs font-bold text-slate-700 dark:text-slate-200 cursor-pointer h-[44px] transition-all"
+                                        className="appearance-none pl-3.5 pr-8 py-2.5 bg-slate-50/80 dark:bg-white/[0.04] border border-slate-200/80 dark:border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/40 text-xs font-bold text-slate-700 dark:text-slate-200 cursor-pointer h-[2.75rem] transition-all"
                                     >
                                         <option value="all">📚 Tất cả môn</option>
                                         <option value="physics">⚛️ Vật lý</option>
@@ -561,7 +561,7 @@ export default function Library() {
                                         value={selectedType}
                                         onChange={(e) => setSelectedType(e.target.value as Material['type'] | 'all')}
                                         aria-label="Chọn loại học liệu"
-                                        className="appearance-none pl-3.5 pr-8 py-2.5 bg-slate-50/80 dark:bg-white/[0.04] border border-slate-200/80 dark:border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/40 text-xs font-bold text-slate-700 dark:text-slate-200 cursor-pointer h-[44px] transition-all"
+                                        className="appearance-none pl-3.5 pr-8 py-2.5 bg-slate-50/80 dark:bg-white/[0.04] border border-slate-200/80 dark:border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/40 text-xs font-bold text-slate-700 dark:text-slate-200 cursor-pointer h-[2.75rem] transition-all"
                                     >
                                         <option value="all">📦 Tất cả loại</option>
                                         <option value="3d-model">🧊 Mô hình 3D</option>
@@ -576,7 +576,7 @@ export default function Library() {
                                         value={selectedGrade}
                                         onChange={(e) => setSelectedGrade(e.target.value === 'all' ? 'all' : parseInt(e.target.value))}
                                         aria-label="Chọn khối lớp"
-                                        className="appearance-none pl-3.5 pr-8 py-2.5 bg-slate-50/80 dark:bg-white/[0.04] border border-slate-200/80 dark:border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/40 text-xs font-bold text-slate-700 dark:text-slate-200 cursor-pointer h-[44px] transition-all"
+                                        className="appearance-none pl-3.5 pr-8 py-2.5 bg-slate-50/80 dark:bg-white/[0.04] border border-slate-200/80 dark:border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/40 text-xs font-bold text-slate-700 dark:text-slate-200 cursor-pointer h-[2.75rem] transition-all"
                                     >
                                         <option value="all">🎓 Tất cả lớp</option>
                                         <option value="10">Lớp 10</option>
@@ -595,7 +595,7 @@ export default function Library() {
                                             setSelectedGrade('all');
                                             handleSearchChange('');
                                         }}
-                                        className="flex items-center gap-1.5 px-3.5 py-2.5 text-xs font-bold text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/20 rounded-xl transition-all h-[44px] cursor-pointer border border-red-200/50 dark:border-red-500/15"
+                                        className="flex items-center gap-1.5 px-3.5 py-2.5 text-xs font-bold text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/20 rounded-xl transition-all h-[2.75rem] cursor-pointer border border-red-200/50 dark:border-red-500/15"
                                         title="Xóa tất cả bộ lọc"
                                     >
                                         <Trash2 className="w-3.5 h-3.5" />
@@ -634,7 +634,7 @@ export default function Library() {
                                 </button>
                                 
                                 <div className="bg-white dark:bg-slate-900/60 border border-slate-200/60 dark:border-white/[0.06] rounded-2xl p-5 md:p-6 shadow-sm">
-                                    <div className="text-[10px] sm:text-xs font-black text-indigo-550 uppercase tracking-widest font-mono mb-1">
+                                    <div className="text-[0.625rem] sm:text-xs font-black text-indigo-550 uppercase tracking-widest font-mono mb-1">
                                         {selectedLesson.chapter || "Chương khác / Chưa phân loại"}
                                     </div>
                                     <h2 className="text-xl md:text-2xl font-black text-slate-900 dark:text-white font-heading leading-snug">
@@ -707,10 +707,10 @@ export default function Library() {
 
                                                         {/* Floating type & subject badges */}
                                                         <div className="absolute top-2.5 left-2.5 flex gap-1.5">
-                                                            <span className={`px-2.5 py-1 rounded-lg text-[9px] font-black shadow-sm uppercase tracking-wider leading-none ${subjectStyle.badge}`}>
+                                                            <span className={`px-2.5 py-1 rounded-lg text-[0.5625rem] font-black shadow-sm uppercase tracking-wider leading-none ${subjectStyle.badge}`}>
                                                                 {getSubjectName(material.subject || selectedLesson.subject)}
                                                             </span>
-                                                            <span className="px-2.5 py-1 bg-white/90 dark:bg-slate-950/90 backdrop-blur-md rounded-lg text-[9px] font-black text-slate-700 dark:text-slate-300 shadow-sm uppercase tracking-wider leading-none">
+                                                            <span className="px-2.5 py-1 bg-white/90 dark:bg-slate-950/90 backdrop-blur-md rounded-lg text-[0.5625rem] font-black text-slate-700 dark:text-slate-300 shadow-sm uppercase tracking-wider leading-none">
                                                                 {material.type === '3d-model' ? '3D' : 'INFO'}
                                                             </span>
                                                         </div>
@@ -725,13 +725,13 @@ export default function Library() {
                                                     <div className="p-3.5 sm:p-4 flex-1 flex flex-col">
                                                         <div>
                                                             <h3 className="font-black mb-1 sm:mb-1.5 text-sm sm:text-base line-clamp-2 leading-snug text-slate-800 dark:text-slate-100 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors font-heading"><LatexText text={material.title} /></h3>
-                                                            <p className="text-[11px] sm:text-xs text-slate-500 dark:text-slate-400 line-clamp-2 font-medium leading-relaxed">
+                                                            <p className="text-[0.6875rem] sm:text-xs text-slate-500 dark:text-slate-400 line-clamp-2 font-medium leading-relaxed">
                                                                 <LatexText text={material.description || ''} />
                                                             </p>
                                                         </div>
 
                                                         {/* Footer */}
-                                                        <div className="mt-auto pt-3 border-t border-slate-100 dark:border-white/5 flex items-center justify-between text-[10px] font-bold text-slate-400 dark:text-slate-500 mt-3">
+                                                        <div className="mt-auto pt-3 border-t border-slate-100 dark:border-white/5 flex items-center justify-between text-[0.625rem] font-bold text-slate-400 dark:text-slate-500 mt-3">
                                                             <span className="flex items-center gap-1 uppercase tracking-wider">
                                                                 <GraduationCap className="w-3 h-3" /> Khối {material.grade || selectedLesson.grade}
                                                             </span>
@@ -775,7 +775,7 @@ export default function Library() {
                                                 <div className="flex items-center gap-3 bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm border border-indigo-100/80 dark:border-indigo-500/20 border-l-4 border-l-indigo-500 shadow-sm rounded-xl px-4 py-2.5">
                                                     <Layers className="w-4.5 h-4.5 text-indigo-600 dark:text-indigo-400 shrink-0" />
                                                     <h3 className="text-sm md:text-base font-bold text-slate-800 dark:text-white uppercase tracking-wider font-heading flex-1">{chapter}</h3>
-                                                    <span className="px-2 py-0.5 rounded-lg text-[10px] font-bold bg-indigo-100/70 text-indigo-750 dark:bg-indigo-500/15 dark:text-indigo-400 border border-indigo-200/40 dark:border-indigo-500/15 shrink-0">
+                                                    <span className="px-2 py-0.5 rounded-lg text-[0.625rem] font-bold bg-indigo-100/70 text-indigo-750 dark:bg-indigo-500/15 dark:text-indigo-400 border border-indigo-200/40 dark:border-indigo-500/15 shrink-0">
                                                         {chapterLessons.length} bài
                                                     </span>
                                                 </div>
@@ -788,20 +788,20 @@ export default function Library() {
                                                             <div 
                                                                 key={lessonId} 
                                                                 onClick={() => setSelectedLesson(lesson)}
-                                                                className="bg-white dark:bg-slate-900/60 border border-slate-200/70 dark:border-white/[0.06] rounded-xl p-3.5 hover:border-indigo-550 hover:shadow-md transition-all flex flex-col justify-between gap-2.5 cursor-pointer min-h-[100px] group"
+                                                                className="bg-white dark:bg-slate-900/60 border border-slate-200/70 dark:border-white/[0.06] rounded-xl p-3.5 hover:border-indigo-550 hover:shadow-md transition-all flex flex-col justify-between gap-2.5 cursor-pointer min-h-[6.25rem] group"
                                                             >
                                                                 <div className="space-y-1.5">
                                                                     <div className="flex items-center justify-between gap-2">
                                                                         <div className="w-7 h-7 rounded-md bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 flex items-center justify-center shrink-0">
                                                                             <GraduationCap className="w-4 h-4" />
                                                                         </div>
-                                                                        <span className="text-[9px] sm:text-[10px] px-2 py-0.5 rounded-lg bg-indigo-50 text-indigo-600 dark:bg-indigo-500/10 dark:text-indigo-400 font-bold font-sans border border-indigo-100/50 dark:border-indigo-500/15">
+                                                                        <span className="text-[0.5625rem] sm:text-[0.625rem] px-2 py-0.5 rounded-lg bg-indigo-50 text-indigo-600 dark:bg-indigo-500/10 dark:text-indigo-400 font-bold font-sans border border-indigo-100/50 dark:border-indigo-500/15">
                                                                             {lesson.materials ? lesson.materials.length : 0} học liệu
                                                                         </span>
                                                                     </div>
                                                                     <h4 className="text-xs sm:text-sm font-bold text-slate-800 dark:text-white font-heading leading-snug group-hover:text-indigo-600 group-hover:dark:text-indigo-400 transition-colors line-clamp-2">{lesson.title}</h4>
                                                                     {lesson.description && (
-                                                                        <p className="text-[10px] text-slate-500 dark:text-slate-400 font-medium line-clamp-1 leading-relaxed">{lesson.description}</p>
+                                                                        <p className="text-[0.625rem] text-slate-500 dark:text-slate-400 font-medium line-clamp-1 leading-relaxed">{lesson.description}</p>
                                                                     )}
                                                                 </div>
                                                                 {isAdmin && (
@@ -886,7 +886,7 @@ export default function Library() {
                                                     <Link
                                                         to="/pricing"
                                                         onClick={e => e.stopPropagation()}
-                                                        className="mt-2 px-3 py-1 bg-amber-500 hover:bg-amber-400 text-white text-[10px] font-black rounded-lg transition-colors"
+                                                        className="mt-2 px-3 py-1 bg-amber-500 hover:bg-amber-400 text-white text-[0.625rem] font-black rounded-lg transition-colors"
                                                     >
                                                         Nâng cấp
                                                     </Link>
@@ -911,7 +911,7 @@ export default function Library() {
                                                     </div>
                                                     <div className="p-3.5 sm:p-4 flex-1 flex flex-col filter blur-[1px]">
                                                         <h3 className="font-black mb-1 text-sm sm:text-base line-clamp-2 leading-snug text-slate-800 dark:text-slate-100 font-heading"><LatexText text={material.title} /></h3>
-                                                        <p className="text-[11px] sm:text-xs text-slate-500 dark:text-slate-400 line-clamp-2 font-medium leading-relaxed"><LatexText text={material.description || ''} /></p>
+                                                        <p className="text-[0.6875rem] sm:text-xs text-slate-500 dark:text-slate-400 line-clamp-2 font-medium leading-relaxed"><LatexText text={material.description || ''} /></p>
                                                     </div>
                                                 </div>
                                             ) : (
@@ -947,10 +947,10 @@ export default function Library() {
 
                                                         {/* Floating type & subject badges — top left */}
                                                         <div className="absolute top-2.5 left-2.5 flex gap-1.5">
-                                                            <span className={`px-2.5 py-1 rounded-lg text-[9px] font-black shadow-sm uppercase tracking-wider leading-none ${subjectStyle.badge}`}>
+                                                            <span className={`px-2.5 py-1 rounded-lg text-[0.5625rem] font-black shadow-sm uppercase tracking-wider leading-none ${subjectStyle.badge}`}>
                                                                 {getSubjectName(material.subject)}
                                                             </span>
-                                                            <span className="px-2.5 py-1 bg-white/90 dark:bg-slate-950/90 backdrop-blur-md rounded-lg text-[9px] font-black text-slate-700 dark:text-slate-300 shadow-sm uppercase tracking-wider leading-none">
+                                                            <span className="px-2.5 py-1 bg-white/90 dark:bg-slate-950/90 backdrop-blur-md rounded-lg text-[0.5625rem] font-black text-slate-700 dark:text-slate-300 shadow-sm uppercase tracking-wider leading-none">
                                                                 {material.type === '3d-model' ? '3D' : 'INFO'}
                                                             </span>
                                                         </div>
@@ -966,7 +966,7 @@ export default function Library() {
                                                             const key = matRequiredPlan || '';
                                                             const badge = PLAN_BADGE[key] || PLAN_BADGE[''];
                                                             return (
-                                                                <span className={`absolute top-2.5 right-2.5 px-2 py-0.5 rounded-md text-[9px] font-black backdrop-blur-sm border shadow-sm leading-none ${badge.cls}`}>
+                                                                <span className={`absolute top-2.5 right-2.5 px-2 py-0.5 rounded-md text-[0.5625rem] font-black backdrop-blur-sm border shadow-sm leading-none ${badge.cls}`}>
                                                                     {badge.label}
                                                                 </span>
                                                             );
@@ -982,13 +982,13 @@ export default function Library() {
                                                     <div className="p-3.5 sm:p-4 flex-1 flex flex-col">
                                                         <div>
                                                             <h3 className="font-black mb-1 sm:mb-1.5 text-sm sm:text-base line-clamp-2 leading-snug text-slate-800 dark:text-slate-100 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors font-heading"><LatexText text={material.title} /></h3>
-                                                            <p className="text-[11px] sm:text-xs text-slate-500 dark:text-slate-400 line-clamp-2 font-medium leading-relaxed">
+                                                            <p className="text-[0.6875rem] sm:text-xs text-slate-500 dark:text-slate-400 line-clamp-2 font-medium leading-relaxed">
                                                                 <LatexText text={material.description || ''} />
                                                             </p>
                                                         </div>
 
                                                         {/* Footer */}
-                                                        <div className="mt-auto pt-3 border-t border-slate-100 dark:border-white/5 flex items-center justify-between text-[10px] font-bold text-slate-400 dark:text-slate-500 mt-3">
+                                                        <div className="mt-auto pt-3 border-t border-slate-100 dark:border-white/5 flex items-center justify-between text-[0.625rem] font-bold text-slate-400 dark:text-slate-500 mt-3">
                                                             <span className="flex items-center gap-1 uppercase tracking-wider">
                                                                 <GraduationCap className="w-3 h-3" /> Khối {material.grade}
                                                             </span>
@@ -1001,7 +1001,7 @@ export default function Library() {
                                                                 {material.tags.slice(0, 2).map((tag, index) => (
                                                                     <span
                                                                         key={index}
-                                                                        className="text-[10px] px-2 py-0.5 rounded-md bg-slate-50 dark:bg-white/[0.04] text-slate-500 dark:text-slate-400 truncate max-w-[90px] sm:max-w-[120px] font-medium border border-slate-100/50 dark:border-white/[0.04]"
+                                                                        className="text-[0.625rem] px-2 py-0.5 rounded-md bg-slate-50 dark:bg-white/[0.04] text-slate-500 dark:text-slate-400 truncate max-w-[5.625rem] sm:max-w-[7.5rem] font-medium border border-slate-100/50 dark:border-white/[0.04]"
                                                                     >
                                                                         {tag}
                                                                     </span>
@@ -1313,10 +1313,10 @@ export default function Library() {
                                 </div>
 
                                 {/* Column 2: Material Select */}
-                                <div className="bg-slate-50/50 dark:bg-slate-950/20 rounded-2xl border border-slate-200/50 dark:border-white/5 p-5 flex flex-col h-[340px]">
+                                <div className="bg-slate-50/50 dark:bg-slate-950/20 rounded-2xl border border-slate-200/50 dark:border-white/5 p-5 flex flex-col h-[21.25rem]">
                                     <div className="mb-3 shrink-0">
                                         <label className="text-xs font-extrabold uppercase tracking-wider text-indigo-600 dark:text-indigo-400 font-sans">Liên kết học liệu ({lessonFormData.materials.length} mục đã chọn)</label>
-                                        <p className="text-[10px] text-slate-400 dark:text-slate-500 font-semibold mt-0.5">Hiển thị học liệu thuộc cùng Môn & Lớp</p>
+                                        <p className="text-[0.625rem] text-slate-400 dark:text-slate-500 font-semibold mt-0.5">Hiển thị học liệu thuộc cùng Môn & Lớp</p>
                                     </div>
 
                                     {/* Material Search Input */}
@@ -1336,7 +1336,7 @@ export default function Library() {
                                         <button
                                             type="button"
                                             onClick={() => handleToggleAllFilteredMaterials(availableFormMaterials.map(m => m.id))}
-                                            className="mb-2 self-start flex items-center gap-1.5 text-[10px] font-black text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 transition-colors cursor-pointer"
+                                            className="mb-2 self-start flex items-center gap-1.5 text-[0.625rem] font-black text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 transition-colors cursor-pointer"
                                         >
                                             <CheckSquare className="w-3.5 h-3.5" />
                                             <span>Chọn tất cả hiển thị ({availableFormMaterials.length})</span>
@@ -1375,7 +1375,7 @@ export default function Library() {
                                                             </div>
                                                         )}
                                                         <div className="min-w-0 flex-1">
-                                                            <p className="text-[11px] font-bold text-slate-800 dark:text-slate-100 truncate">{m.title}</p>
+                                                            <p className="text-[0.6875rem] font-bold text-slate-800 dark:text-slate-100 truncate">{m.title}</p>
                                                         </div>
                                                     </div>
                                                 );
@@ -1383,8 +1383,8 @@ export default function Library() {
                                         ) : (
                                             <div className="h-full flex flex-col items-center justify-center text-center p-6 text-slate-400">
                                                 <Layers className="w-8 h-8 text-slate-300 dark:text-slate-700 mb-1.5" />
-                                                <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">Không có học liệu tương thích</p>
-                                                <p className="text-[9px] text-slate-450 mt-1 leading-relaxed">
+                                                <p className="text-[0.625rem] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">Không có học liệu tương thích</p>
+                                                <p className="text-[0.5625rem] text-slate-450 mt-1 leading-relaxed">
                                                     Đảm bảo đã tải lên mô hình 3D thuộc Môn & Lớp tương ứng trước.
                                                 </p>
                                             </div>

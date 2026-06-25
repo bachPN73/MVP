@@ -16,7 +16,7 @@ export function SchoolAdminPanel({ userName, userSchoolId, schoolInfo, classmate
                 <div className="absolute inset-x-0 top-0 h-1.5 bg-gradient-to-r from-teal-500 via-emerald-400 to-indigo-500 opacity-90" />
                 <div className="p-6 md:p-8 flex flex-col md:flex-row items-center justify-between gap-6">
                     <div className="space-y-3">
-                        <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-widest bg-teal-50 text-teal-700 dark:bg-teal-500/15 dark:text-teal-300 border border-teal-200/60 dark:border-teal-500/25 shadow-sm">
+                        <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-[0.625rem] font-bold uppercase tracking-widest bg-teal-50 text-teal-700 dark:bg-teal-500/15 dark:text-teal-300 border border-teal-200/60 dark:border-teal-500/25 shadow-sm">
                             <ShieldCheck className="w-4 h-4" />
                             School Control Unit
                         </div>
@@ -35,7 +35,7 @@ export function SchoolAdminPanel({ userName, userSchoolId, schoolInfo, classmate
                 <div className="rounded-3xl border border-teal-200/40 dark:border-teal-500/20 bg-white dark:bg-slate-900 p-6 md:p-8 shadow-sm space-y-6 relative overflow-hidden flex-1 min-h-0 flex flex-col">
                     <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pb-5 border-b border-slate-100 dark:border-white/8 shrink-0">
                         <div>
-                            <p className="text-[10px] font-bold text-teal-600 dark:text-teal-400 uppercase tracking-widest flex items-center gap-2">
+                            <p className="text-[0.625rem] font-bold text-teal-600 dark:text-teal-400 uppercase tracking-widest flex items-center gap-2">
                                 <School className="w-4 h-4" /> Cổng thông tin Trường học
                             </p>
                             <h2 className="text-2xl font-black text-slate-800 dark:text-white mt-1 font-heading">{schoolInfo.name || 'Đang cập nhật'}</h2>
@@ -86,7 +86,7 @@ export function SchoolAdminPanel({ userName, userSchoolId, schoolInfo, classmate
                         <div className="lg:col-span-2 bg-slate-50 dark:bg-slate-800/50 border border-slate-200/70 dark:border-white/5 rounded-2xl p-5 flex flex-col gap-4">
                             <h3 className="font-bold text-slate-700 dark:text-white text-xs uppercase tracking-wider flex items-center justify-between">
                                 <span className="flex items-center gap-2"><Users className="w-4 h-4 text-indigo-500" /> Thành viên ({classmates.length + 1})</span>
-                                <span className="text-[10px] text-emerald-600 dark:text-emerald-400 flex items-center gap-1.5 font-bold normal-case bg-emerald-50 dark:bg-emerald-500/10 px-2 py-1 rounded-md">
+                                <span className="text-[0.625rem] text-emerald-600 dark:text-emerald-400 flex items-center gap-1.5 font-bold normal-case bg-emerald-50 dark:bg-emerald-500/10 px-2 py-1 rounded-md">
                                     <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-ping inline-block" /> Active
                                 </span>
                             </h3>
@@ -96,7 +96,7 @@ export function SchoolAdminPanel({ userName, userSchoolId, schoolInfo, classmate
                                         {userName.charAt(0).toUpperCase()}
                                     </div>
                                     <span className="text-sm font-bold text-slate-700 dark:text-white">{userName}</span>
-                                    <span className="text-[10px] text-teal-600 dark:text-teal-400 font-bold bg-teal-100/50 dark:bg-teal-500/20 px-1.5 py-0.5 rounded-md">(Bạn)</span>
+                                    <span className="text-[0.625rem] text-teal-600 dark:text-teal-400 font-bold bg-teal-100/50 dark:bg-teal-500/20 px-1.5 py-0.5 rounded-md">(Bạn)</span>
                                 </div>
                                 {classmates.map((member) => (
                                     <div key={member.id} className="flex items-center gap-2.5 bg-white border border-slate-200/60 dark:bg-slate-900/60 dark:border-white/5 px-3 py-2 rounded-xl hover:border-slate-300 dark:hover:border-white/10 transition-colors shadow-sm">
@@ -104,7 +104,7 @@ export function SchoolAdminPanel({ userName, userSchoolId, schoolInfo, classmate
                                             {(member.name || 'U').charAt(0).toUpperCase()}
                                         </div>
                                         <span className="text-sm font-semibold text-slate-700 dark:text-slate-200">{member.name}</span>
-                                        <span className={`text-[10px] font-bold px-2 py-1 rounded-md ${member.role === 'teacher' ? 'bg-teal-50 text-teal-700 dark:bg-teal-500/10 dark:text-teal-400' : 'bg-slate-100 text-slate-500 dark:bg-white/5 dark:text-slate-400'}`}>
+                                        <span className={`text-[0.625rem] font-bold px-2 py-1 rounded-md ${member.role === 'teacher' ? 'bg-teal-50 text-teal-700 dark:bg-teal-500/10 dark:text-teal-400' : 'bg-slate-100 text-slate-500 dark:bg-white/5 dark:text-slate-400'}`}>
                                             {member.role === 'teacher' ? 'GV' : member.className || 'HS'}
                                         </span>
                                     </div>

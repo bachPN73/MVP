@@ -149,7 +149,7 @@ const SLIDES = [
                     </div>
                     <div className="absolute bottom-4 left-4 bg-slate-950/80 p-2 rounded-lg border border-white/10 flex gap-2 items-center">
                         <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse mt-0.5" />
-                        <span className="text-[10px] text-white font-bold tracking-wider">LIVE 3D RENDER</span>
+                        <span className="text-[0.625rem] text-white font-bold tracking-wider">LIVE 3D RENDER</span>
                     </div>
                 </div>
             </div>
@@ -173,7 +173,7 @@ const SLIDES = [
                         <p className="text-slate-300">Nhấn Kéo để xoay góc nhìn</p>
                     </div>
                     <div className="flex justify-between items-end w-full opacity-50">
-                        <span className="text-[10px] text-white">ESC để thoát</span>
+                        <span className="text-[0.625rem] text-white">ESC để thoát</span>
                         <div className="flex gap-2">
                             <div className="w-8 h-8 rounded-full bg-white/10" />
                             <div className="w-8 h-8 rounded-full bg-white/10" />
@@ -208,14 +208,14 @@ const SLIDES = [
                         <div className="w-16 h-12 bg-slate-700 rounded-lg"></div>
                         <div className="text-left">
                             <h4 className="text-sm font-bold text-white">Quá trình Nguyên phân</h4>
-                            <p className="text-[10px] text-emerald-400">Phù hợp 98%</p>
+                            <p className="text-[0.625rem] text-emerald-400">Phù hợp 98%</p>
                         </div>
                     </div>
                     <div className="bg-slate-800/50 p-4 rounded-xl border border-white/5 flex gap-4 items-center">
                         <div className="w-16 h-12 bg-slate-700 rounded-lg"></div>
                         <div className="text-left">
                             <h4 className="text-sm font-bold text-white">Tế bào Động vật</h4>
-                            <p className="text-[10px] text-emerald-400">Phù hợp 85%</p>
+                            <p className="text-[0.625rem] text-emerald-400">Phù hợp 85%</p>
                         </div>
                     </div>
                 </div>
@@ -268,14 +268,14 @@ const SLIDES = [
                         <CreditCard className="text-emerald-400 w-8 h-8" />
                         <div>
                             <p className="text-white font-bold">Thanh toán QR tự động</p>
-                            <p className="text-[10px] text-slate-400">Kích hoạt ngay lập tức qua MoMo</p>
+                            <p className="text-[0.625rem] text-slate-400">Kích hoạt ngay lập tức qua MoMo</p>
                         </div>
                     </div>
                     <div className="bg-slate-800/80 px-6 py-4 rounded-2xl border border-white/10 flex items-center gap-4 text-left shadow-lg">
                         <GraduationCap className="text-indigo-400 w-8 h-8" />
                         <div>
                             <p className="text-white font-bold">Gói linh hoạt</p>
-                            <p className="text-[10px] text-slate-400">Đăng ký theo Tháng, Năm hoặc Trọn đời</p>
+                            <p className="text-[0.625rem] text-slate-400">Đăng ký theo Tháng, Năm hoặc Trọn đời</p>
                         </div>
                     </div>
                 </div>
@@ -345,8 +345,8 @@ export default function PresentationIntroPage() {
         <div className="fixed inset-0 bg-slate-950 text-white flex flex-col overflow-hidden font-sans select-none z-50">
             {/* Background elements */}
             <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center opacity-[0.03] pointer-events-none"></div>
-            <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-indigo-500/10 rounded-full blur-[100px] pointer-events-none -translate-y-1/2 translate-x-1/3"></div>
-            <div className="absolute bottom-0 left-0 w-[800px] h-[800px] bg-purple-500/10 rounded-full blur-[100px] pointer-events-none translate-y-1/2 -translate-x-1/3"></div>
+            <div className="absolute top-0 right-0 w-[50rem] h-[50rem] bg-indigo-500/10 rounded-full blur-[6.25rem] pointer-events-none -translate-y-1/2 translate-x-1/3"></div>
+            <div className="absolute bottom-0 left-0 w-[50rem] h-[50rem] bg-purple-500/10 rounded-full blur-[6.25rem] pointer-events-none translate-y-1/2 -translate-x-1/3"></div>
 
             {/* Top Navigation & Timer */}
             <div className="relative z-20 flex items-center justify-between p-4 md:p-6 border-b border-white/5 bg-slate-950/50 backdrop-blur-md shadow-sm">
@@ -379,7 +379,7 @@ export default function PresentationIntroPage() {
                         </span>
                     </div>
                     <div className="flex flex-col px-2 w-32">
-                        <span className="text-[10px] font-bold text-slate-500 uppercase">Mục tiêu Slide này</span>
+                        <span className="text-[0.625rem] font-bold text-slate-500 uppercase">Mục tiêu Slide này</span>
                         <span className="text-sm font-bold text-indigo-400">{slide.targetTime} giây</span>
                     </div>
                     <button 

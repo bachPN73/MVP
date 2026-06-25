@@ -89,7 +89,7 @@ export function Layout({ children }: LayoutProps) {
             )}
 
             {/* Main Content Area - wrapped in a premium aligned card container on desktop */}
-            <main className={`flex-1 min-h-screen md:h-screen md:min-h-0 flex flex-col p-0 pt-14 md:p-3 md:pl-6 md:pt-3 w-full overflow-hidden transition-all duration-300 ease-in-out ${isCollapsed ? 'md:ml-20' : 'md:ml-[270px]'}`}>
+            <main className={`flex-1 min-h-screen md:h-screen md:min-h-0 flex flex-col p-0 pt-14 md:p-3 md:pl-6 md:pt-3 w-full overflow-hidden transition-all duration-300 ease-in-out ${isCollapsed ? 'md:ml-20' : 'md:ml-[16.875rem]'}`}>
                 <div className={`flex-1 w-full h-full overflow-y-auto flex flex-col relative custom-scrollbar ${
                     location.pathname === '/dashboard' 
                         ? 'bg-transparent' 

@@ -29,7 +29,7 @@ export default function ThemeToggle({ className = "", variant = 'ghost' }: Theme
                     <Sun className={`w-5 h-5 absolute transition-all duration-500 transform ${theme === 'dark' ? 'scale-100 rotate-0 opacity-100' : 'scale-0 rotate-90 opacity-0'}`} />
                     <Moon className={`w-5 h-5 absolute transition-all duration-500 transform ${theme === 'light' ? 'scale-100 rotate-0 opacity-100' : 'scale-0 -rotate-90 opacity-0'}`} />
                 </div>
-                <span className="text-[13px] font-semibold tracking-wide">
+                <span className="text-[0.8125rem] font-semibold tracking-wide">
                     {theme === 'light' ? 'Giao diện Tối' : 'Giao diện Sáng'}
                 </span>
             </button>

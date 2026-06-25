@@ -244,7 +244,7 @@ export default function AdminAIConfigPage() {
                                                     <Infinity className="w-4 h-4" />
                                                 </button>
                                                 {isDirty && (
-                                                    <span className="text-[10px] font-bold text-indigo-500 animate-pulse">● Chưa lưu</span>
+                                                    <span className="text-[0.625rem] font-bold text-indigo-500 animate-pulse">● Chưa lưu</span>
                                                 )}
                                             </div>
                                         </div>
@@ -355,7 +355,7 @@ export default function AdminAIConfigPage() {
                         ) : (
                             <>
                                 {/* Table Header */}
-                                <div className="hidden md:grid grid-cols-[2fr_1fr_1fr_200px_36px] gap-4 px-6 py-4 bg-slate-50/50 dark:bg-slate-800/20 border-b border-slate-200/60 dark:border-white/10 text-[10px] font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400">
+                                <div className="hidden md:grid grid-cols-[2fr_1fr_1fr_200px_36px] gap-4 px-6 py-4 bg-slate-50/50 dark:bg-slate-800/20 border-b border-slate-200/60 dark:border-white/10 text-[0.625rem] font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400">
                                     <span>Tên học liệu</span>
                                     <span>Môn / Lớp</span>
                                     <span>Loại</span>
@@ -392,7 +392,7 @@ export default function AdminAIConfigPage() {
                                                         <div className="min-w-0">
                                                             <p className="text-sm font-bold text-slate-900 dark:text-white truncate">{m.title}</p>
                                                             {planMeta && (
-                                                                <span className={`inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full mt-0.5 ${planMeta.bg} ${planMeta.color} ${planMeta.border} border`}>
+                                                                <span className={`inline-flex items-center gap-1 text-[0.625rem] font-bold px-2 py-0.5 rounded-full mt-0.5 ${planMeta.bg} ${planMeta.color} ${planMeta.border} border`}>
                                                                     <Lock className="w-2.5 h-2.5" />
                                                                     {planMeta.label}
                                                                 </span>

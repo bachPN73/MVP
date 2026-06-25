@@ -39,7 +39,7 @@ export default function GuidePublic() {
                         </div>
                         <div>
                             <h1 className="text-xl font-bold bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent">Edu Tech</h1>
-                            <p className="text-[10px] text-slate-500 font-bold uppercase tracking-widest mt-0.5">Khoa học Tự nhiên</p>
+                            <p className="text-[0.625rem] text-slate-500 font-bold uppercase tracking-widest mt-0.5">Khoa học Tự nhiên</p>
                         </div>
                     </Link>
 
@@ -159,7 +159,7 @@ export default function GuidePublic() {
                         </div>
                         <div>
                             <p className="font-bold text-blue-700">Edu Tech</p>
-                            <p className="text-[10px] text-slate-500 font-bold uppercase tracking-widest">Khoa học Tự nhiên THPT</p>
+                            <p className="text-[0.625rem] text-slate-500 font-bold uppercase tracking-widest">Khoa học Tự nhiên THPT</p>
                         </div>
                     </div>
                     <p className="text-sm text-slate-500 font-medium">

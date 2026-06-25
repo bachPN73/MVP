@@ -535,7 +535,7 @@ export default function MaterialDetail() {
     if (isLoading) {
         return (
             <Layout>
-                <div className="p-8 flex flex-col items-center justify-center min-h-[400px]">
+                <div className="p-8 flex flex-col items-center justify-center min-h-[25rem]">
                     <Loader2 className="w-12 h-12 text-primary animate-spin mb-4" />
                     <p className="text-muted-foreground font-medium">Đang tải thông tin học liệu...</p>
                 </div>
@@ -622,7 +622,7 @@ export default function MaterialDetail() {
                         </button>
                         <div className="h-4 w-px bg-stone-300 dark:bg-slate-800 hidden sm:block" />
                         <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2">
-                            <span className={`text-[10px] px-2 py-0.5 rounded-md font-bold uppercase tracking-wider ${
+                            <span className={`text-[0.625rem] px-2 py-0.5 rounded-md font-bold uppercase tracking-wider ${
                                 material.subtitle 
                                     ? (theme === 'light' ? 'bg-emerald-500/10 text-emerald-700' : 'bg-emerald-500/20 text-emerald-400') 
                                     : 'bg-indigo-50 dark:bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 border border-indigo-200 dark:border-indigo-500/20'
@@ -634,7 +634,7 @@ export default function MaterialDetail() {
                             } hidden md:inline`}>
                                 &gt;
                             </span>
-                            <span className={`text-sm font-bold truncate max-w-[200px] sm:max-w-[300px] md:max-w-[400px] font-heading ${
+                            <span className={`text-sm font-bold truncate max-w-[12.5rem] sm:max-w-[18.75rem] md:max-w-[25rem] font-heading ${
                                 material.subtitle ? 'text-stone-800 dark:text-stone-100' : 'text-slate-900 dark:text-white'
                             }`}>
                                 {material.title}
@@ -642,7 +642,7 @@ export default function MaterialDetail() {
                         </div>
                     </div>
                     <div className="flex items-center gap-2">
-                        <span className={`text-[10px] font-bold px-2 py-1 rounded-md ${
+                        <span className={`text-[0.625rem] font-bold px-2 py-1 rounded-md ${
                             material.subtitle 
                                 ? (theme === 'light' ? 'bg-stone-200/60 text-stone-600' : 'bg-slate-800 text-slate-300') 
                                 : 'bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400'
@@ -650,7 +650,7 @@ export default function MaterialDetail() {
                             <GraduationCap className="w-3.5 h-3.5" />
                             Lớp {material.grade}
                         </span>
-                        <span className={`text-[10px] font-bold px-2 py-1 rounded-md hidden sm:inline-block ${
+                        <span className={`text-[0.625rem] font-bold px-2 py-1 rounded-md hidden sm:inline-block ${
                             material.subtitle 
                                 ? (theme === 'light' ? 'bg-sky-500/10 text-sky-700' : 'bg-sky-500/20 text-sky-400') 
                                 : 'bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400'
@@ -693,7 +693,7 @@ export default function MaterialDetail() {
                 {/* Main Content Area */}
                 <div className="flex-1 min-h-0 flex flex-col lg:flex-row overflow-y-auto lg:overflow-hidden p-4 sm:p-6 gap-6">
                     {/* Left Pane: Trình xem mô hình (Model Viewer) */}
-                    <div className="flex-1 min-h-[380px] lg:min-h-0 lg:h-full flex flex-col relative bg-transparent rounded-2xl overflow-hidden">
+                    <div className="flex-1 min-h-[23.75rem] lg:min-h-0 lg:h-full flex flex-col relative bg-transparent rounded-2xl overflow-hidden">
                         <div className={`flex-1 min-h-0 border rounded-2xl overflow-hidden shadow-lg relative flex flex-col ${
                             material.subtitle 
                                 ? (theme === 'light' ? 'bg-transparent border-stone-200/40 shadow-inner' : 'bg-slate-950/40 border-white/10 shadow-inner') 
@@ -749,7 +749,7 @@ export default function MaterialDetail() {
                                                 <Lock className="w-8 h-8" />
                                             </div>
                                             
-                                            <div className="inline-flex items-center gap-1 bg-indigo-500/10 border border-indigo-500/30 text-indigo-400 text-[10px] font-black uppercase tracking-wider px-3 py-1 rounded-full">
+                                            <div className="inline-flex items-center gap-1 bg-indigo-500/10 border border-indigo-500/30 text-indigo-400 text-[0.625rem] font-black uppercase tracking-wider px-3 py-1 rounded-full">
                                                 <Zap className="w-3 h-3 text-indigo-400" /> Tính Năng Trả Phí
                                             </div>
 
@@ -826,7 +826,7 @@ export default function MaterialDetail() {
 
                                                 {/* Type indicator */}
                                                 <div className="absolute bottom-4 left-4 z-10 flex items-center gap-2 px-3 py-1.5 bg-black/40 backdrop-blur-md rounded-lg">
-                                                    <span className="text-[11px] font-bold text-white/80 uppercase tracking-wider">
+                                                    <span className="text-[0.6875rem] font-bold text-white/80 uppercase tracking-wider">
                                                         {is3D ? '🧊 Mô hình 3D' : isPDF ? '📄 PDF' : '🖼️ Infographic'}
                                                     </span>
                                                 </div>
@@ -905,7 +905,7 @@ export default function MaterialDetail() {
 
                                                         {/* Top-left orientation badge */}
                                                         <div className="absolute top-4 left-4 z-50 pointer-events-none">
-                                                            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-black/30 backdrop-blur-md text-white/80 text-[10px] font-bold uppercase tracking-widest">
+                                                            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-black/30 backdrop-blur-md text-white/80 text-[0.625rem] font-bold uppercase tracking-widest">
                                                                 🖼️ Infographic
                                                             </span>
                                                         </div>
@@ -917,7 +917,7 @@ export default function MaterialDetail() {
                                                                 className="w-8 h-8 bg-white/10 hover:bg-white/25 border border-white/10 text-white rounded-full flex items-center justify-center text-base font-bold transition-all hover:scale-105 active:scale-95 cursor-pointer"
                                                                 title="Thu nhỏ"
                                                             >−</button>
-                                                            <span className="px-2.5 text-white text-[11px] font-bold font-mono tabular-nums min-w-[44px] text-center">
+                                                            <span className="px-2.5 text-white text-[0.6875rem] font-bold font-mono tabular-nums min-w-[2.75rem] text-center">
                                                                 {Math.round(scale * 100)}%
                                                             </span>
                                                             <button
@@ -938,7 +938,7 @@ export default function MaterialDetail() {
 
                                                         {/* Pan hint */}
                                                         {scale > 1 && (
-                                                            <div className="absolute bottom-5 left-4 flex items-center gap-2 px-3 py-1.5 bg-black/40 backdrop-blur-md rounded-full text-white/70 text-[11px] font-semibold pointer-events-none z-50">
+                                                            <div className="absolute bottom-5 left-4 flex items-center gap-2 px-3 py-1.5 bg-black/40 backdrop-blur-md rounded-full text-white/70 text-[0.6875rem] font-semibold pointer-events-none z-50">
                                                                 <Move className="w-3 h-3" />
                                                                 <span>Kéo để di chuyển</span>
                                                             </div>
@@ -946,7 +946,7 @@ export default function MaterialDetail() {
 
                                                         {/* Scroll hint when at default zoom */}
                                                         {scale === 1 && (
-                                                            <div className="absolute bottom-5 left-4 flex items-center gap-2 px-3 py-1.5 bg-black/30 backdrop-blur-md rounded-full text-white/60 text-[11px] font-semibold pointer-events-none z-50">
+                                                            <div className="absolute bottom-5 left-4 flex items-center gap-2 px-3 py-1.5 bg-black/30 backdrop-blur-md rounded-full text-white/60 text-[0.6875rem] font-semibold pointer-events-none z-50">
                                                                 <ZoomIn className="w-3 h-3" />
                                                                 <span>Cuộn chuột để phóng to</span>
                                                             </div>
@@ -991,7 +991,7 @@ export default function MaterialDetail() {
                                                 pointerEvents: isQuizExpanded ? 'auto' : 'none'
                                             }}
                                         >
-                                            <div className="w-[360px] h-fit max-h-[calc(100vh-64px)] overflow-y-auto custom-scrollbar">
+                                            <div className="w-[22.5rem] h-fit max-h-[calc(100vh-64px)] overflow-y-auto custom-scrollbar">
                                                 <QuizPanel quiz={material.quiz} theme={theme} isFullscreen={true} />
                                             </div>
                                         </div>
@@ -1040,7 +1040,7 @@ export default function MaterialDetail() {
                                             <>
                                                 <button
                                                     onClick={handleSaveToVault}
-                                                    className={`ml-3 px-3 py-1 rounded-lg text-[10px] font-extrabold uppercase tracking-wider transition-all duration-200 active:scale-[0.98] cursor-pointer inline-flex items-center gap-1.5 shadow-sm border ${
+                                                    className={`ml-3 px-3 py-1 rounded-lg text-[0.625rem] font-extrabold uppercase tracking-wider transition-all duration-200 active:scale-[0.98] cursor-pointer inline-flex items-center gap-1.5 shadow-sm border ${
                                                         isInVault
                                                             ? 'bg-emerald-500/10 text-emerald-650 dark:text-emerald-400 border-emerald-500/30 hover:bg-emerald-500/20'
                                                             : 'bg-indigo-600 hover:bg-indigo-700 text-white border-transparent hover:shadow-md'
@@ -1050,7 +1050,7 @@ export default function MaterialDetail() {
                                                     {isInVault ? 'Đã lưu kho tạm thời' : 'Lưu kho tạm thời'}
                                                 </button>
                                                 {vaultSaveMsg && (
-                                                    <span className="ml-2 inline-flex items-center gap-1 text-[10px] font-semibold text-emerald-600 dark:text-emerald-400">
+                                                    <span className="ml-2 inline-flex items-center gap-1 text-[0.625rem] font-semibold text-emerald-600 dark:text-emerald-400">
                                                         <Clock className="w-3 h-3" />
                                                         {vaultSaveMsg}
                                                     </span>
@@ -1059,7 +1059,7 @@ export default function MaterialDetail() {
                                         ) : (
                                             <button
                                                 onClick={() => navigate('/pricing')}
-                                                className="ml-3 px-3 py-1 rounded-lg text-[10px] font-extrabold uppercase tracking-wider transition-all duration-200 active:scale-[0.98] cursor-pointer inline-flex items-center gap-1.5 shadow-sm border border-violet-300/40 dark:border-violet-500/30 text-violet-600 dark:text-violet-400 hover:bg-violet-50 dark:hover:bg-violet-950/20"
+                                                className="ml-3 px-3 py-1 rounded-lg text-[0.625rem] font-extrabold uppercase tracking-wider transition-all duration-200 active:scale-[0.98] cursor-pointer inline-flex items-center gap-1.5 shadow-sm border border-violet-300/40 dark:border-violet-500/30 text-violet-600 dark:text-violet-400 hover:bg-violet-50 dark:hover:bg-violet-950/20"
                                             >
                                                 <BookmarkPlus className="w-3.5 h-3.5" />
                                                 Lưu kho tạm thời
@@ -1077,7 +1077,7 @@ export default function MaterialDetail() {
                     </div>
 
                     {/* Right Pane: Sidebar thông tin chi tiết */}
-                    <div className="w-full lg:w-[380px] xl:w-[420px] flex-shrink-0 lg:h-full flex flex-col min-h-0">
+                    <div className="w-full lg:w-[23.75rem] xl:w-[26.25rem] flex-shrink-0 lg:h-full flex flex-col min-h-0">
                         <div className={`flex-1 flex flex-col min-h-0 rounded-[2rem] border shadow-xl p-5 sm:p-6 transition-all duration-500 ${
                             material.subtitle 
                                 ? (theme === 'light' ? 'bg-white/85 border-stone-200/40 shadow-stone-100/30 text-stone-900' : 'bg-slate-900/85 dark:border-white/10 shadow-black/20 text-white') 
@@ -1294,10 +1294,10 @@ export default function MaterialDetail() {
                                                          placeholder="Tìm học liệu để liên kết..."
                                                          value={relatedSearch}
                                                          onChange={(e) => setRelatedSearch(e.target.value)}
-                                                         className="w-full pl-7 pr-4 py-1 bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/10 rounded-lg text-[11px] font-semibold focus:outline-none focus:ring-1 focus:ring-indigo-500 text-slate-955 dark:text-white"
+                                                         className="w-full pl-7 pr-4 py-1 bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/10 rounded-lg text-[0.6875rem] font-semibold focus:outline-none focus:ring-1 focus:ring-indigo-500 text-slate-955 dark:text-white"
                                                      />
                                                  </div>
-                                                 <div className="max-h-[120px] overflow-y-auto divide-y divide-slate-100 dark:divide-white/5 pr-1">
+                                                 <div className="max-h-[7.5rem] overflow-y-auto divide-y divide-slate-100 dark:divide-white/5 pr-1">
                                                      {filteredAvailableRelated.map(m => {
                                                          const isSelected = editFormData.relatedMaterials?.includes(m.id);
                                                          return (
@@ -1323,13 +1323,13 @@ export default function MaterialDetail() {
                                                                      onChange={() => {}}
                                                                      className="w-3 h-3 text-indigo-600 rounded cursor-pointer pointer-events-none"
                                                                  />
-                                                                 <span className="text-[11px] font-semibold text-slate-700 dark:text-slate-200 truncate">{m.title}</span>
+                                                                 <span className="text-[0.6875rem] font-semibold text-slate-700 dark:text-slate-200 truncate">{m.title}</span>
                                                                  <span className="text-[7.5px] font-bold text-slate-400 dark:text-slate-500 ml-auto shrink-0 uppercase tracking-wider">{m.subject === 'biology' ? 'Sinh' : m.subject === 'chemistry' ? 'Hóa' : 'Lý'} · Lớp {m.grade}</span>
                                                              </div>
                                                          );
                                                      })}
                                                      {filteredAvailableRelated.length === 0 && (
-                                                         <div className="text-center py-4 text-slate-400 text-[11px]">Không tìm thấy học liệu phù hợp.</div>
+                                                         <div className="text-center py-4 text-slate-400 text-[0.6875rem]">Không tìm thấy học liệu phù hợp.</div>
                                                      )}
                                                  </div>
                                              </div>
@@ -1344,12 +1344,12 @@ export default function MaterialDetail() {
                                                  <button
                                                      type="button"
                                                      onClick={() => setEditFormData(prev => ({ ...prev, quiz: [...(prev.quiz || []), { question: '', options: ['', '', '', ''], correctOptionIndex: 0, explanation: '' }] }))}
-                                                     className="text-[10px] bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 px-2 py-1 rounded border border-indigo-200 dark:border-indigo-500/30 hover:bg-indigo-100 font-bold"
+                                                     className="text-[0.625rem] bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 px-2 py-1 rounded border border-indigo-200 dark:border-indigo-500/30 hover:bg-indigo-100 font-bold"
                                                  >
                                                      + Thêm câu hỏi
                                                  </button>
                                              </div>
-                                             <div className="space-y-4 max-h-[300px] overflow-y-auto pr-1">
+                                             <div className="space-y-4 max-h-[18.75rem] overflow-y-auto pr-1">
                                                  {editFormData.quiz?.map((q, qIndex) => (
                                                      <div key={qIndex} className="p-3 border border-slate-200 dark:border-white/10 rounded-xl bg-white dark:bg-slate-900 relative group">
                                                          <button
@@ -1418,7 +1418,7 @@ export default function MaterialDetail() {
                                                      </div>
                                                  ))}
                                                  {editFormData.quiz?.length === 0 && (
-                                                     <div className="text-center py-4 text-slate-400 text-[11px] bg-slate-50 dark:bg-slate-900/50 rounded-xl border border-slate-200 dark:border-white/5">
+                                                     <div className="text-center py-4 text-slate-400 text-[0.6875rem] bg-slate-50 dark:bg-slate-900/50 rounded-xl border border-slate-200 dark:border-white/5">
                                                          Chưa có câu hỏi nào. Nhấn "+ Thêm câu hỏi" để tạo.
                                                      </div>
                                                  )}
@@ -1432,21 +1432,21 @@ export default function MaterialDetail() {
                                     {/* Sidebar Header: Tiêu đề & Thông số nhanh */}
                                     <div className="mb-4 flex-shrink-0">
                                         <div className="flex items-center gap-2 mb-2.5 flex-wrap">
-                                            <span className={`px-2.5 py-0.5 rounded-lg text-[10px] font-bold uppercase tracking-wider ${
+                                            <span className={`px-2.5 py-0.5 rounded-lg text-[0.625rem] font-bold uppercase tracking-wider ${
                                                 material.subtitle 
                                                     ? (theme === 'light' ? 'bg-emerald-500/10 text-emerald-700' : 'bg-emerald-500/25 text-emerald-400') 
                                                     : 'bg-indigo-50 dark:bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 border border-indigo-200 dark:border-indigo-500/20'
                                             }`}>
                                                 {getSubjectName(material.subject)}
                                             </span>
-                                            <span className={`px-2.5 py-0.5 rounded-lg text-[10px] font-bold uppercase tracking-wider ${
+                                            <span className={`px-2.5 py-0.5 rounded-lg text-[0.625rem] font-bold uppercase tracking-wider ${
                                                 material.subtitle 
                                                     ? (theme === 'light' ? 'bg-sky-500/10 text-sky-700' : 'bg-sky-500/25 text-sky-400') 
                                                     : 'bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-500/20'
                                             }`}>
                                                 {getTypeName(material.type)}
                                             </span>
-                                            <span className="px-2.5 py-0.5 rounded-lg text-[10px] font-bold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 flex items-center gap-0.5">
+                                            <span className="px-2.5 py-0.5 rounded-lg text-[0.625rem] font-bold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 flex items-center gap-0.5">
                                                 <GraduationCap className="w-3.5 h-3.5" />
                                                 Lớp {material.grade}
                                             </span>
@@ -1527,7 +1527,7 @@ export default function MaterialDetail() {
                                                 ? (theme === 'light' ? 'bg-stone-50/50 border-stone-200/30' : 'bg-slate-950/40 border-white/5') 
                                                 : 'bg-slate-50/50 dark:bg-slate-950/40 border-slate-100 dark:border-white/5'
                                         }`}>
-                                            <h3 className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-[0.15em] mb-2">
+                                            <h3 className="text-[0.625rem] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-[0.15em] mb-2">
                                                 Khái niệm khoa học
                                             </h3>
                                             <p className={`text-sm leading-relaxed text-slate-700 dark:text-slate-300 font-normal ${
@@ -1546,7 +1546,7 @@ export default function MaterialDetail() {
                                                 theme === 'light' ? 'bg-stone-50/50 border-stone-200/30' : 'bg-slate-950/40 border-white/5'
                                             }`}>
                                                 <div>
-                                                    <div className="text-stone-400 dark:text-slate-500 text-[9px] font-bold uppercase tracking-wider mb-0.5">
+                                                    <div className="text-stone-400 dark:text-slate-500 text-[0.5625rem] font-bold uppercase tracking-wider mb-0.5">
                                                         {cleanLabel(config.category.label)}
                                                     </div>
                                                     <div className="text-stone-800 dark:text-slate-200 text-xs font-semibold">
@@ -1554,7 +1554,7 @@ export default function MaterialDetail() {
                                                     </div>
                                                 </div>
                                                 <div>
-                                                    <div className="text-stone-400 dark:text-slate-500 text-[9px] font-bold uppercase tracking-wider mb-0.5">
+                                                    <div className="text-stone-400 dark:text-slate-500 text-[0.5625rem] font-bold uppercase tracking-wider mb-0.5">
                                                         {cleanLabel(config.size.label)}
                                                     </div>
                                                     <div className="text-stone-800 dark:text-slate-200 text-xs font-semibold">
@@ -1562,7 +1562,7 @@ export default function MaterialDetail() {
                                                     </div>
                                                 </div>
                                                 <div>
-                                                    <div className="text-stone-400 dark:text-slate-500 text-[9px] font-bold uppercase tracking-wider mb-0.5">
+                                                    <div className="text-stone-400 dark:text-slate-500 text-[0.5625rem] font-bold uppercase tracking-wider mb-0.5">
                                                         {cleanLabel(config.location.label)}
                                                     </div>
                                                     <div className="text-stone-800 dark:text-slate-200 text-xs font-semibold">
@@ -1570,7 +1570,7 @@ export default function MaterialDetail() {
                                                     </div>
                                                 </div>
                                                 <div>
-                                                    <div className="text-stone-400 dark:text-slate-500 text-[9px] font-bold uppercase tracking-wider mb-0.5 leading-snug">
+                                                    <div className="text-stone-400 dark:text-slate-500 text-[0.5625rem] font-bold uppercase tracking-wider mb-0.5 leading-snug">
                                                         {cleanLabel(config.visibleInLM.label)}
                                                     </div>
                                                     <div className="text-stone-800 dark:text-slate-200 text-xs font-semibold">
@@ -1587,7 +1587,7 @@ export default function MaterialDetail() {
                                         {/* Tags for Normal Models */}
                                         {!material.subtitle && material.tags && material.tags.length > 0 && (
                                             <div className="p-4 sm:p-5 rounded-2xl border bg-slate-50/50 dark:bg-slate-950/40 border-slate-100 dark:border-white/5">
-                                                <h3 className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-[0.15em] mb-2.5">
+                                                <h3 className="text-[0.625rem] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-[0.15em] mb-2.5">
                                                     Từ khóa liên quan
                                                 </h3>
                                                 <div className="flex flex-wrap gap-1.5">
@@ -1612,7 +1612,7 @@ export default function MaterialDetail() {
                                             }`}>
                                                 <div className="flex items-center gap-1.5 mb-2">
                                                     <span className="text-sm">💡</span>
-                                                    <div className={`text-[9px] font-bold uppercase tracking-[0.15em] ${theme === 'light' ? 'text-amber-700' : 'text-amber-400'}`}>
+                                                    <div className={`text-[0.5625rem] font-bold uppercase tracking-[0.15em] ${theme === 'light' ? 'text-amber-700' : 'text-amber-400'}`}>
                                                         {cleanLabel(config.funFact.label)}
                                                     </div>
                                                 </div>
@@ -1633,7 +1633,7 @@ export default function MaterialDetail() {
                                                     ? (theme === 'light' ? 'bg-stone-50/50 border-stone-200/30' : 'bg-slate-950/40 border-white/5') 
                                                     : 'bg-slate-50/50 dark:bg-slate-950/40 border-slate-100 dark:border-white/5'
                                             }`}>
-                                                <h3 className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-[0.15em] mb-4">
+                                                <h3 className="text-[0.625rem] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-[0.15em] mb-4">
                                                     {material.subtitle ? cleanLabel(config.featuresText.label) : 'Cấu trúc chính'}
                                                 </h3>
                                                 <ul className="flex flex-col gap-4">
@@ -1644,7 +1644,7 @@ export default function MaterialDetail() {
                                                                 <div className={`text-slate-900 dark:text-white font-bold text-xs ${material.subtitle ? 'font-heading' : ''}`}>
                                                                     <LatexText text={feature.name} />
                                                                 </div>
-                                                                <div className={`text-slate-500 dark:text-slate-400 text-[11px] mt-0.5 leading-relaxed font-normal ${material.subtitle ? 'font-sans' : ''}`}>
+                                                                <div className={`text-slate-500 dark:text-slate-400 text-[0.6875rem] mt-0.5 leading-relaxed font-normal ${material.subtitle ? 'font-sans' : ''}`}>
                                                                     <LatexText text={feature.detail} />
                                                                 </div>
                                                             </div>
@@ -1663,7 +1663,7 @@ export default function MaterialDetail() {
                                             }`}>
                                                 <div className="flex items-center gap-1.5 mb-2">
                                                     <span className="text-sm">🌍</span>
-                                                    <div className={`text-[9px] font-bold uppercase tracking-[0.15em] ${theme === 'light' ? 'text-emerald-700' : 'text-emerald-400'}`}>
+                                                    <div className={`text-[0.5625rem] font-bold uppercase tracking-[0.15em] ${theme === 'light' ? 'text-emerald-700' : 'text-emerald-400'}`}>
                                                         Phân bố & nguồn gốc
                                                     </div>
                                                 </div>
@@ -1674,7 +1674,7 @@ export default function MaterialDetail() {
                                                     {material.whereItOccurs.habitat.split('·').map((hab, idx) => (
                                                         <span 
                                                             key={idx} 
-                                                            className={`px-2 py-0.5 text-[9px] font-bold rounded-md border shadow-sm uppercase tracking-wider ${
+                                                            className={`px-2 py-0.5 text-[0.5625rem] font-bold rounded-md border shadow-sm uppercase tracking-wider ${
                                                                 theme === 'light'
                                                                     ? 'bg-white border-emerald-200/40 text-emerald-800'
                                                                     : 'bg-slate-900 border-white/5 text-emerald-400'
@@ -1697,7 +1697,7 @@ export default function MaterialDetail() {
                                                 ? (theme === 'light' ? 'bg-stone-50/50 border-stone-200/30' : 'bg-slate-950/40 border-white/5') 
                                                 : 'bg-slate-50/50 dark:bg-slate-950/40 border-slate-100 dark:border-white/5'
                                         }`}>
-                                            <h3 className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-[0.15em] mb-3">
+                                            <h3 className="text-[0.625rem] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-[0.15em] mb-3">
                                                 Học liệu cùng chuyên mục
                                             </h3>
                                             {relatedMaterials.length > 0 ? (
@@ -1717,7 +1717,7 @@ export default function MaterialDetail() {
                                                                     <BookOpen className="w-3.5 h-3.5 text-indigo-500/70 group-hover:text-indigo-600 transition-colors" />
                                                                 </div>
                                                                 <div className="flex-1 min-w-0">
-                                                                    <h4 className="font-bold text-slate-800 dark:text-slate-200 text-[11px] group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors line-clamp-1 leading-snug">
+                                                                    <h4 className="font-bold text-slate-800 dark:text-slate-200 text-[0.6875rem] group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors line-clamp-1 leading-snug">
                                                                         {relatedMaterial.title}
                                                                     </h4>
                                                                     <span className="inline-block text-[7.5px] font-bold px-1.5 py-0.2 bg-slate-100 dark:bg-slate-700 text-slate-500 dark:text-slate-400 rounded uppercase tracking-wider mt-0.5">
@@ -1737,7 +1737,7 @@ export default function MaterialDetail() {
                                             <div className="mt-3 pt-3 border-t border-slate-100 dark:border-slate-800/40 text-center">
                                                 <Link
                                                     to={`/library?subject=${material.subject}`}
-                                                    className="text-[11px] font-bold text-indigo-600 dark:text-indigo-400 hover:underline inline-flex items-center gap-0.5"
+                                                    className="text-[0.6875rem] font-bold text-indigo-600 dark:text-indigo-400 hover:underline inline-flex items-center gap-0.5"
                                                 >
                                                     Xem toàn bộ thư viện &rarr;
                                                 </Link>
@@ -1750,7 +1750,7 @@ export default function MaterialDetail() {
                                                 ? (theme === 'light' ? 'bg-stone-50/50 border-stone-200/30' : 'bg-slate-950/40 border-white/5') 
                                                 : 'bg-slate-50/50 dark:bg-slate-950/40 border-slate-100 dark:border-white/5'
                                         }`}>
-                                            <h3 className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-[0.15em] mb-2.5">
+                                            <h3 className="text-[0.625rem] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-[0.15em] mb-2.5">
                                                 Hướng dẫn tương tác
                                             </h3>
                                             <ul className="space-y-1.5 text-xs text-slate-500 dark:text-slate-400 font-medium">
@@ -1823,7 +1823,7 @@ export default function MaterialDetail() {
                                     <Archive className="w-4 h-4 text-slate-450" />
                                     Chưa phân loại (Mặc định)
                                 </span>
-                                {selectedPeriodId === undefined && <span className="text-[10px] uppercase font-black">Hiện tại</span>}
+                                {selectedPeriodId === undefined && <span className="text-[0.625rem] uppercase font-black">Hiện tại</span>}
                             </button>
 
                             {periods.map(p => (
@@ -1840,13 +1840,13 @@ export default function MaterialDetail() {
                                         <Folder className="w-4 h-4 text-violet-500" />
                                         {p.name}
                                     </span>
-                                    {selectedPeriodId === p.id && <span className="text-[10px] uppercase font-black">Hiện tại</span>}
+                                    {selectedPeriodId === p.id && <span className="text-[0.625rem] uppercase font-black">Hiện tại</span>}
                                 </button>
                             ))}
                         </div>
 
                         <form onSubmit={handleCreatePeriodFromModal} className="pt-3 border-t border-slate-100 dark:border-white/5 space-y-2">
-                            <label className="block text-[10px] font-black uppercase text-slate-450 tracking-wider">Tạo tiết học mới & lưu:</label>
+                            <label className="block text-[0.625rem] font-black uppercase text-slate-450 tracking-wider">Tạo tiết học mới & lưu:</label>
                             <div className="flex gap-2">
                                 <input
                                     type="text"

@@ -380,7 +380,7 @@ export default function SchoolDashboard() {
                             <div>
                                 <div className="flex items-center justify-between">
                                     <h3 className="text-sm font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest">Mã mời tham gia</h3>
-                                    <span className={`text-[10px] px-2 py-0.5 rounded-full font-black uppercase tracking-wider
+                                    <span className={`text-[0.625rem] px-2 py-0.5 rounded-full font-black uppercase tracking-wider
                                         ${school.isInviteCodeEnabled ? 'bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30' : 'bg-red-500/20 text-red-550 dark:text-red-400 border border-red-500/30'}`}>
                                         {school.isInviteCodeEnabled ? 'Đang hoạt động' : 'Tạm khóa'}
                                     </span>
@@ -394,7 +394,7 @@ export default function SchoolDashboard() {
                                         <button
                                             onClick={handleToggleInvite}
                                             disabled={actionLoading}
-                                            className={`flex-1 py-2 px-3 rounded-xl border text-[10px] font-black uppercase tracking-wider transition-all flex items-center justify-center gap-1 cursor-pointer disabled:opacity-50
+                                            className={`flex-1 py-2 px-3 rounded-xl border text-[0.625rem] font-black uppercase tracking-wider transition-all flex items-center justify-center gap-1 cursor-pointer disabled:opacity-50
                                                 ${school.isInviteCodeEnabled 
                                                     ? 'bg-red-500/10 border-red-500/20 text-red-600 dark:text-red-400 hover:bg-red-500/20' 
                                                     : 'bg-emerald-500/10 border-emerald-500/20 text-emerald-600 dark:text-emerald-400 hover:bg-emerald-500/20'}`}
@@ -436,7 +436,7 @@ export default function SchoolDashboard() {
                                 </div>
                             </div>
                             
-                            <p className="text-[11px] text-slate-500 dark:text-slate-400 font-medium italic mt-2">
+                            <p className="text-[0.6875rem] text-slate-500 dark:text-slate-400 font-medium italic mt-2">
                                 Gửi mã mời này cho giáo viên và học sinh để họ nhập tại mục "Tham gia tổ chức".
                             </p>
                         </div>
@@ -465,7 +465,7 @@ export default function SchoolDashboard() {
                                 </div>
                             </div>
                             
-                            <div className="flex items-center justify-between text-[11px] text-slate-500 dark:text-slate-400 mt-4">
+                            <div className="flex items-center justify-between text-[0.6875rem] text-slate-500 dark:text-slate-400 mt-4">
                                 <span>Còn trống: {remainingTeachers} chỗ</span>
                                 <span className="font-bold text-slate-700 dark:text-white/60">Tỷ lệ: {Math.round((school.teacherSeatsUsed / school.teacherQuota) * 100)}%</span>
                             </div>
@@ -495,7 +495,7 @@ export default function SchoolDashboard() {
                                 </div>
                             </div>
                             
-                            <div className="flex items-center justify-between text-[11px] text-slate-500 dark:text-slate-400 mt-4">
+                            <div className="flex items-center justify-between text-[0.6875rem] text-slate-500 dark:text-slate-400 mt-4">
                                 <span>Còn trống: {remainingStudents} chỗ</span>
                                 <span className="font-bold text-slate-700 dark:text-white/60">Tỷ lệ: {Math.round((school.studentSeatsUsed / school.studentQuota) * 100)}%</span>
                             </div>
@@ -529,7 +529,7 @@ export default function SchoolDashboard() {
                                             <Calendar className="w-4 h-4" />
                                         </div>
                                         <div>
-                                            <div className="text-[10px] text-slate-500 uppercase tracking-wider font-bold">Niên khóa</div>
+                                            <div className="text-[0.625rem] text-slate-500 uppercase tracking-wider font-bold">Niên khóa</div>
                                             <div className="text-sm font-extrabold text-slate-800 dark:text-white mt-0.5">
                                                 {school.schoolYear || 'Chưa thiết lập'}
                                             </div>
@@ -541,7 +541,7 @@ export default function SchoolDashboard() {
                                             <Clock className="w-4 h-4" />
                                         </div>
                                         <div>
-                                            <div className="text-[10px] text-slate-555 uppercase tracking-wider font-bold">Tiết học / Học phần</div>
+                                            <div className="text-[0.625rem] text-slate-555 uppercase tracking-wider font-bold">Tiết học / Học phần</div>
                                             <div className="text-sm font-extrabold text-slate-800 dark:text-white mt-0.5">
                                                 {school.tiet || 'Chưa thiết lập'}
                                             </div>
@@ -550,7 +550,7 @@ export default function SchoolDashboard() {
                                 </div>
                             </div>
 
-                            <p className="text-[11px] text-slate-500 dark:text-slate-400 font-medium italic mt-2">
+                            <p className="text-[0.6875rem] text-slate-500 dark:text-slate-400 font-medium italic mt-2">
                                 Thông tin niên khóa hiện tại và phân bổ số tiết học định mức của trường.
                             </p>
                         </div>
@@ -673,7 +673,7 @@ export default function SchoolDashboard() {
                                                     </div>
                                                 </td>
                                                 <td className="p-4">
-                                                    <span className={`text-[10px] font-black uppercase tracking-wider px-2.5 py-1 rounded-full border
+                                                    <span className={`text-[0.625rem] font-black uppercase tracking-wider px-2.5 py-1 rounded-full border
                                                         ${r.requestedRole === 'teacher' 
                                                             ? 'bg-indigo-500/10 border-indigo-500/20 text-indigo-500 dark:text-indigo-400' 
                                                             : 'bg-teal-500/10 border-teal-500/20 text-teal-600 dark:text-teal-400'}`}>
@@ -815,7 +815,7 @@ export default function SchoolDashboard() {
                                                 </div>
                                             </td>
                                             <td className="p-4">
-                                                <span className={`text-[10px] font-black uppercase tracking-wider px-2.5 py-1 rounded-full border
+                                                <span className={`text-[0.625rem] font-black uppercase tracking-wider px-2.5 py-1 rounded-full border
                                                     ${m.role === 'teacher' 
                                                         ? 'bg-indigo-500/10 border-indigo-500/20 text-indigo-500 dark:text-indigo-400' 
                                                         : 'bg-teal-500/10 border-teal-500/20 text-teal-650 dark:text-teal-400'}`}>
@@ -877,7 +877,7 @@ export default function SchoolDashboard() {
 
                         {/* QR Image Frame */}
                         <div className="p-4 bg-slate-50 dark:bg-slate-950/40 rounded-2xl border border-slate-150 dark:border-white/5 inline-block mx-auto">
-                            <div className="bg-white p-3 rounded-xl shadow-inner relative group flex items-center justify-center min-w-[216px] min-h-[216px]">
+                            <div className="bg-white p-3 rounded-xl shadow-inner relative group flex items-center justify-center min-w-[13.5rem] min-h-[13.5rem]">
                                 {joinUrl ? (
                                     <QRCodeSVG 
                                         value={joinUrl} 
@@ -894,7 +894,7 @@ export default function SchoolDashboard() {
 
                         <div className="space-y-3">
                             <div className="bg-slate-50 dark:bg-slate-950/50 p-2.5 rounded-xl border border-slate-100 dark:border-white/5 flex items-center justify-between text-xs font-mono">
-                                <span className="truncate text-slate-500 dark:text-slate-400 max-w-[200px]">{joinUrl}</span>
+                                <span className="truncate text-slate-500 dark:text-slate-400 max-w-[12.5rem]">{joinUrl}</span>
                                 <button
                                     onClick={handleCopyLink}
                                     className="p-1.5 hover:bg-slate-100 dark:hover:bg-white/10 text-slate-500 dark:text-slate-400 dark:hover:text-white rounded-lg transition-all shrink-0 ml-2"
@@ -904,7 +904,7 @@ export default function SchoolDashboard() {
                                 </button>
                             </div>
 
-                            <p className="text-[11px] text-slate-500 dark:text-slate-400 italic leading-relaxed">
+                            <p className="text-[0.6875rem] text-slate-500 dark:text-slate-400 italic leading-relaxed">
                                 Học sinh/Giáo viên chỉ cần quét mã này bằng điện thoại để tự động điền mã mời <strong className="text-indigo-600 dark:text-indigo-400 font-mono font-black">{school.schoolCode}</strong> và nộp đơn xin vào.
                             </p>
                         </div>

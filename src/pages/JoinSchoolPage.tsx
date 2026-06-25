@@ -131,7 +131,7 @@ export default function JoinSchoolPage() {
 
     return (
         <Layout currentPath="/join-school">
-            <div className="max-w-[1600px] mx-auto px-4 sm:px-6 py-8 space-y-8">
+            <div className="max-w-[100rem] mx-auto px-4 sm:px-6 py-8 space-y-8">
                 
                 {user.schoolId ? (
                     <div className="space-y-6">
@@ -220,7 +220,7 @@ export default function JoinSchoolPage() {
                         ].map((s) => (
                             <div key={s.label} className="bg-white/10 border border-white/15 rounded-2xl p-3 text-center backdrop-blur-sm">
                                 <div className="text-lg font-black text-white leading-none">{s.value}</div>
-                                <div className="text-[10px] text-teal-100 font-semibold uppercase tracking-wider mt-1">{s.label}</div>
+                                <div className="text-[0.625rem] text-teal-100 font-semibold uppercase tracking-wider mt-1">{s.label}</div>
                             </div>
                         ))}
                     </div>
@@ -362,7 +362,7 @@ export default function JoinSchoolPage() {
                                             <ScanLine className="w-5 h-5" />
                                         </button>
                                     </div>
-                                    <p className="text-[11px] text-slate-400 dark:text-slate-500">
+                                    <p className="text-[0.6875rem] text-slate-400 dark:text-slate-500">
                                         Hoặc bấm vào icon camera để quét mã QR từ trường
                                     </p>
                                 </div>
@@ -417,7 +417,7 @@ export default function JoinSchoolPage() {
                                         <p className="text-sm font-bold text-slate-900 dark:text-white truncate">{user?.name}</p>
                                         <p className="text-xs text-slate-400 dark:text-slate-500 truncate">{user?.email}</p>
                                     </div>
-                                    <span className="ml-auto shrink-0 text-[10px] font-black uppercase tracking-wider bg-slate-200 dark:bg-white/10 text-slate-500 dark:text-slate-400 px-2 py-1 rounded-full">
+                                    <span className="ml-auto shrink-0 text-[0.625rem] font-black uppercase tracking-wider bg-slate-200 dark:bg-white/10 text-slate-500 dark:text-slate-400 px-2 py-1 rounded-full">
                                         {user?.plan || "Free"}
                                     </span>
                                 </div>

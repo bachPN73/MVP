@@ -164,12 +164,12 @@ export default function AdminSchoolsPage() {
                     <table className="w-full text-left border-collapse font-sans">
                         <thead>
                             <tr className="bg-slate-50/50 dark:bg-slate-800/20 border-b border-slate-200/60 dark:border-white/10">
-                                <th className="px-6 py-4 text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest">Trường học / Mã mời</th>
-                                <th className="px-6 py-4 text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest">Niên khóa</th>
-                                <th className="px-6 py-4 text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest">Tiết học</th>
-                                <th className="px-6 py-4 text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest">Giáo viên Quota</th>
-                                <th className="px-6 py-4 text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest">Học sinh Quota</th>
-                                <th className="px-6 py-4 text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest text-right">Thao Tác</th>
+                                <th className="px-6 py-4 text-[0.625rem] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest">Trường học / Mã mời</th>
+                                <th className="px-6 py-4 text-[0.625rem] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest">Niên khóa</th>
+                                <th className="px-6 py-4 text-[0.625rem] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest">Tiết học</th>
+                                <th className="px-6 py-4 text-[0.625rem] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest">Giáo viên Quota</th>
+                                <th className="px-6 py-4 text-[0.625rem] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest">Học sinh Quota</th>
+                                <th className="px-6 py-4 text-[0.625rem] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest text-right">Thao Tác</th>
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-slate-100 dark:divide-white/5 font-semibold text-slate-700 dark:text-slate-200 text-sm">
@@ -198,7 +198,7 @@ export default function AdminSchoolsPage() {
                                                 </div>
                                                 <div>
                                                     <div className="font-extrabold text-slate-900 dark:text-white font-heading text-sm">{school.name}</div>
-                                                    <div className="inline-flex items-center gap-1 text-[10px] text-indigo-600 dark:text-indigo-400 font-mono mt-0.5 bg-indigo-50 dark:bg-indigo-950/40 px-2 py-0.5 rounded-md font-bold uppercase">
+                                                    <div className="inline-flex items-center gap-1 text-[0.625rem] text-indigo-600 dark:text-indigo-400 font-mono mt-0.5 bg-indigo-50 dark:bg-indigo-950/40 px-2 py-0.5 rounded-md font-bold uppercase">
                                                         Mã mời: {school.schoolCode}
                                                     </div>
                                                 </div>
@@ -278,7 +278,7 @@ export default function AdminSchoolsPage() {
                                         </div>
                                         <div>
                                             <h3 className="font-extrabold text-slate-900 dark:text-white text-sm font-heading">{school.name}</h3>
-                                            <span className="inline-block mt-0.5 text-[9px] font-bold font-mono px-2 py-0.5 bg-indigo-50 dark:bg-indigo-950/40 text-indigo-600 dark:text-indigo-400 rounded">
+                                            <span className="inline-block mt-0.5 text-[0.5625rem] font-bold font-mono px-2 py-0.5 bg-indigo-50 dark:bg-indigo-950/40 text-indigo-600 dark:text-indigo-400 rounded">
                                                 CODE: {school.schoolCode}
                                             </span>
                                         </div>

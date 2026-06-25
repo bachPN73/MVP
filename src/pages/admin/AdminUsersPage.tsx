@@ -85,11 +85,11 @@ export default function AdminUsersPage() {
                     <table className="w-full text-left border-collapse font-sans">
                         <thead>
                             <tr className="bg-slate-50/50 dark:bg-slate-950/20 border-b border-slate-200 dark:border-white/10">
-                                <th className="px-6 py-4.5 text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest">ID Tài Khoản</th>
-                                <th className="px-6 py-4.5 text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest">Họ và Tên / Email</th>
-                                <th className="px-6 py-4.5 text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest">Vai Trò</th>
-                                <th className="px-6 py-4.5 text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest">Gói Đăng Ký</th>
-                                <th className="px-6 py-4.5 text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest text-right">Thao Tác</th>
+                                <th className="px-6 py-4.5 text-[0.625rem] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest">ID Tài Khoản</th>
+                                <th className="px-6 py-4.5 text-[0.625rem] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest">Họ và Tên / Email</th>
+                                <th className="px-6 py-4.5 text-[0.625rem] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest">Vai Trò</th>
+                                <th className="px-6 py-4.5 text-[0.625rem] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest">Gói Đăng Ký</th>
+                                <th className="px-6 py-4.5 text-[0.625rem] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest text-right">Thao Tác</th>
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-slate-100 dark:divide-white/5 font-semibold text-slate-700 dark:text-slate-200 text-sm">
@@ -271,7 +271,7 @@ export default function AdminUsersPage() {
                                     <div className="flex-1 min-w-0 w-full flex flex-col justify-between">
                                         <div>
                                             <h3 className="font-extrabold text-slate-900 dark:text-white text-xs truncate mb-0.5 font-heading">{user.name}</h3>
-                                            <div className="text-[10px] text-slate-400 dark:text-slate-500 truncate mb-3 font-semibold">{user.email}</div>
+                                            <div className="text-[0.625rem] text-slate-400 dark:text-slate-500 truncate mb-3 font-semibold">{user.email}</div>
                                         </div>
                                         
                                         {editingId === user.id ? (
@@ -279,7 +279,7 @@ export default function AdminUsersPage() {
                                                 <select 
                                                     value={editForm.role}
                                                     onChange={(e) => setEditForm({...editForm, role: e.target.value})}
-                                                    className="text-[10px] bg-slate-50/50 dark:bg-slate-950/20 border border-slate-200 dark:border-white/10 text-slate-900 dark:text-white rounded-lg px-2.5 py-1.5 outline-none focus:ring-1 focus:ring-indigo-500 w-full font-semibold"
+                                                    className="text-[0.625rem] bg-slate-50/50 dark:bg-slate-950/20 border border-slate-200 dark:border-white/10 text-slate-900 dark:text-white rounded-lg px-2.5 py-1.5 outline-none focus:ring-1 focus:ring-indigo-500 w-full font-semibold"
                                                 >
                                                     <option value="student">Student</option>
                                                     <option value="teacher">Teacher</option>
@@ -289,7 +289,7 @@ export default function AdminUsersPage() {
                                                 <select 
                                                     value={editForm.plan}
                                                     onChange={(e) => setEditForm({...editForm, plan: e.target.value})}
-                                                    className="text-[10px] bg-slate-50/50 dark:bg-slate-950/20 border border-slate-200/10 dark:border-white/10 text-slate-900 dark:text-white rounded-lg px-2.5 py-1.5 outline-none focus:ring-1 focus:ring-indigo-500 w-full font-semibold"
+                                                    className="text-[0.625rem] bg-slate-50/50 dark:bg-slate-950/20 border border-slate-200/10 dark:border-white/10 text-slate-900 dark:text-white rounded-lg px-2.5 py-1.5 outline-none focus:ring-1 focus:ring-indigo-500 w-full font-semibold"
                                                 >
                                                     <option value="free">Free (Miễn phí)</option>
                                                     <option value="basic">Basic (Cơ bản)</option>
@@ -305,26 +305,26 @@ export default function AdminUsersPage() {
                                         ) : (
                                             <div className="flex flex-col gap-1.5 items-center">
                                                 {user.role === 'school-admin' ? (
-                                                    <span className="px-2.5 py-0.5 rounded-md text-[9px] font-bold bg-violet-50 dark:bg-violet-950/40 text-violet-600 dark:text-violet-400 border border-violet-200/10 uppercase shadow-sm">QT TRƯỜNG</span>
+                                                    <span className="px-2.5 py-0.5 rounded-md text-[0.5625rem] font-bold bg-violet-50 dark:bg-violet-950/40 text-violet-600 dark:text-violet-400 border border-violet-200/10 uppercase shadow-sm">QT TRƯỜNG</span>
                                                 ) : user.role === 'admin' ? (
-                                                    <span className="px-2.5 py-0.5 rounded-md text-[9px] font-bold bg-rose-50 dark:bg-rose-950/40 text-rose-600 dark:text-rose-400 border border-rose-200/10 uppercase shadow-sm">QT WEB</span>
+                                                    <span className="px-2.5 py-0.5 rounded-md text-[0.5625rem] font-bold bg-rose-50 dark:bg-rose-950/40 text-rose-600 dark:text-rose-400 border border-rose-200/10 uppercase shadow-sm">QT WEB</span>
                                                 ) : (
-                                                    <span className="px-2.5 py-0.5 rounded-md text-[9px] font-bold bg-slate-50 dark:bg-slate-950/20 text-slate-600 dark:text-slate-400 border border-slate-200/10">{(user.role || 'USER').toUpperCase()}</span>
+                                                    <span className="px-2.5 py-0.5 rounded-md text-[0.5625rem] font-bold bg-slate-50 dark:bg-slate-950/20 text-slate-600 dark:text-slate-400 border border-slate-200/10">{(user.role || 'USER').toUpperCase()}</span>
                                                 )}
                                                 {user.plan === 'premium' || user.plan === 'pro' ? (
-                                                    <span className="px-2.5 py-0.5 rounded-md text-[9px] font-bold bg-violet-50 dark:bg-violet-950/40 text-violet-600 dark:text-violet-400 border border-violet-200/10">PRO</span>
+                                                    <span className="px-2.5 py-0.5 rounded-md text-[0.5625rem] font-bold bg-violet-50 dark:bg-violet-950/40 text-violet-600 dark:text-violet-400 border border-violet-200/10">PRO</span>
                                                 ) : user.plan === 'basic' ? (
-                                                    <span className="px-2.5 py-0.5 rounded-md text-[9px] font-bold bg-blue-50 dark:bg-blue-950/40 text-blue-600 dark:text-blue-400 border border-blue-200/10">BASIC</span>
+                                                    <span className="px-2.5 py-0.5 rounded-md text-[0.5625rem] font-bold bg-blue-50 dark:bg-blue-950/40 text-blue-600 dark:text-blue-400 border border-blue-200/10">BASIC</span>
                                                 ) : user.plan === 'combo' ? (
-                                                    <span className="px-2.5 py-0.5 rounded-md text-[9px] font-bold bg-orange-50 dark:bg-orange-950/40 text-orange-600 dark:text-orange-400 border border-orange-200/10">COMBO</span>
+                                                    <span className="px-2.5 py-0.5 rounded-md text-[0.5625rem] font-bold bg-orange-50 dark:bg-orange-950/40 text-orange-600 dark:text-orange-400 border border-orange-200/10">COMBO</span>
                                                 ) : user.plan === 'school' ? (
-                                                    <span className="px-2.5 py-0.5 rounded-md text-[9px] font-bold bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400 border border-emerald-200/10">SCHOOL</span>
+                                                    <span className="px-2.5 py-0.5 rounded-md text-[0.5625rem] font-bold bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400 border border-emerald-200/10">SCHOOL</span>
                                                 ) : (
-                                                    <span className="px-2.5 py-0.5 rounded-md text-[9px] font-bold bg-slate-50 dark:bg-slate-950/20 text-slate-600 dark:text-slate-400 border border-slate-200/10">FREE</span>
+                                                    <span className="px-2.5 py-0.5 rounded-md text-[0.5625rem] font-bold bg-slate-50 dark:bg-slate-950/20 text-slate-600 dark:text-slate-400 border border-slate-200/10">FREE</span>
                                                 )}
                                                 <button 
                                                     onClick={() => handleEditClick(user)}
-                                                    className="mt-1 text-[10px] text-indigo-600 dark:text-indigo-400 flex items-center gap-1 hover:underline cursor-pointer"
+                                                    className="mt-1 text-[0.625rem] text-indigo-600 dark:text-indigo-400 flex items-center gap-1 hover:underline cursor-pointer"
                                                 >
                                                     <Edit2 className="w-2.5 h-2.5" /> Sửa
                                                 </button>
