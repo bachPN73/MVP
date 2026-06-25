@@ -104,7 +104,7 @@ export function AppSidebar({ currentPath = '/', isOpen = false, setIsOpen, isCol
     return (
         <aside 
             className={`fixed left-0 top-0 md:left-3 md:top-3 md:h-[calc(100vh-1.5rem)] h-full backdrop-blur-2xl flex flex-col shadow-2xl z-50 transition-all duration-300 ease-in-out md:translate-x-0 md:rounded-2xl md:border
-            ${theme === 'light' ? 'bg-white/50 border-white/60 text-black' : 'bg-[#0B1120]/40 border-white/10 text-slate-200'}
+            bg-[#0B1B32] border-white/10 text-white
             ${isOpen ? 'translate-x-0' : '-translate-x-full'} 
             ${isCollapsed ? 'md:w-20 w-[270px]' : 'w-[270px]'}`}
         >
@@ -119,11 +119,7 @@ export function AppSidebar({ currentPath = '/', isOpen = false, setIsOpen, isCol
                         
                         <div className={`overflow-hidden transition-all duration-300 ease-in-out flex flex-col
                             ${isCollapsed ? 'md:max-w-0 md:opacity-0 md:invisible md:ml-0 max-w-[180px] opacity-100 visible ml-3.5' : 'max-w-[180px] opacity-100 visible ml-3.5'}`}>
-                            <h1 className={`text-2xl font-black uppercase tracking-tight leading-none whitespace-nowrap ${
-                                theme === 'light' 
-                                    ? 'text-slate-900' 
-                                    : 'bg-gradient-to-r from-white via-white to-white/40 bg-clip-text text-transparent'
-                            }`}>
+                            <h1 className={`text-2xl font-black uppercase tracking-tight leading-none whitespace-nowrap text-white`}>
                                 EDU TECH
                             </h1>
                             <span className={`text-xs uppercase tracking-[0.2em] font-extrabold mt-1.5 font-mono flex items-center gap-1 whitespace-nowrap ${
@@ -150,13 +146,8 @@ export function AppSidebar({ currentPath = '/', isOpen = false, setIsOpen, isCol
                         const Icon = item.icon;
                         const isActive = currentPath === item.path;
 
-                        const inactiveClass = theme === 'light' 
-                            ? 'text-blue-600 font-bold hover:text-blue-700 hover:bg-white/60 hover:shadow-md' 
-                            : 'text-white font-bold hover:text-blue-200 hover:bg-white/10 hover:shadow-md';
-
-                        const activeClass = theme === 'light'
-                            ? 'bg-white/60 text-black shadow-sm border border-white/80 font-black'
-                            : 'bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 shadow-inner shadow-indigo-500/10 font-bold';
+                        const inactiveClass = 'text-white font-bold hover:text-blue-200 hover:bg-white/10 hover:shadow-md';
+                        const activeClass = 'bg-indigo-500/20 text-white border border-indigo-500/30 shadow-inner shadow-indigo-500/10 font-bold';
 
                         return (
                             <Link
@@ -166,8 +157,8 @@ export function AppSidebar({ currentPath = '/', isOpen = false, setIsOpen, isCol
                             >
                                 <div className={`p-2 rounded-xl transition-all duration-200 shrink-0 ${
                                     isActive 
-                                        ? (theme === 'light' ? 'bg-indigo-100/80 text-indigo-700' : 'bg-indigo-500/20 text-indigo-200')
-                                        : (theme === 'light' ? 'group-hover:bg-indigo-50 group-hover:text-indigo-600 group-hover:shadow-sm' : 'group-hover:bg-white/10 group-hover:text-indigo-400')
+                                        ? 'bg-indigo-500/20 text-white'
+                                        : 'group-hover:bg-white/10 group-hover:text-white'
                                 }`}>
                                     <Icon className="w-[18px] h-[18px]" />
                                 </div>
@@ -192,13 +183,9 @@ export function AppSidebar({ currentPath = '/', isOpen = false, setIsOpen, isCol
 
                     {/* ===== Theme Switcher — Framed & Prominent ===== */}
                     <div className="shrink-0 pt-3 mt-1 border-t border-sidebar-border/50">
-                        <div className={`rounded-2xl transition-all duration-300 flex border overflow-hidden ${isCollapsed ? 'flex-col items-center justify-center py-6' : 'flex-row items-center justify-between p-3 px-5'} ${
-                            theme === 'light' 
-                                ? 'bg-indigo-50/60 border-indigo-200/80 shadow-sm' 
-                                : 'bg-indigo-500/10 border-indigo-500/20'
-                        }`}>
+                        <div className={`rounded-2xl transition-all duration-300 flex border overflow-hidden ${isCollapsed ? 'flex-col items-center justify-center py-6' : 'flex-row items-center justify-between p-3 px-5'} bg-indigo-500/10 border-indigo-500/20`}>
                             {!isCollapsed && (
-                                <span className={`text-sm font-bold tracking-wide ${theme === 'light' ? 'text-indigo-900' : 'text-indigo-100'}`}>
+                                <span className={`text-sm font-bold tracking-wide text-white`}>
                                     Giao diện
                                 </span>
                             )}
@@ -224,11 +211,7 @@ export function AppSidebar({ currentPath = '/', isOpen = false, setIsOpen, isCol
 
                 {/* ===== User Account Section — Premium Card ===== */}
                 <div className="px-3.5 pb-4">
-                    <div className={`p-3 rounded-2xl transition-all duration-300 ${
-                        theme === 'light' 
-                            ? 'bg-slate-50/90 border border-slate-200/50 shadow-sm' 
-                            : 'glass-card shadow-[0_0_20px_rgba(0,0,0,0.15)]'
-                    }`}>
+                    <div className={`p-3 rounded-2xl transition-all duration-300 bg-white/5 border border-white/10 shadow-[0_0_20px_rgba(0,0,0,0.15)]`}>
                         <div className={`flex items-center transition-all duration-300 ease-in-out ${isCollapsed ? 'md:flex-col md:gap-3 justify-between gap-3' : 'justify-between gap-3'}`}>
                             <Link 
                                 to="/profile" 
@@ -247,7 +230,7 @@ export function AppSidebar({ currentPath = '/', isOpen = false, setIsOpen, isCol
 
                                 <div className={`overflow-hidden transition-all duration-300 ease-in-out flex flex-col flex-1
                                     ${isCollapsed ? 'md:max-w-0 md:opacity-0 md:invisible md:ml-0 md:h-0 max-w-[150px] opacity-100 visible ml-0' : 'max-w-[150px] opacity-100 visible ml-0'}`}>
-                                    <p className={`font-black text-sm truncate leading-tight ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>{userName}</p>
+                                    <p className={`font-black text-sm truncate leading-tight text-white`}>{userName}</p>
                                     {/* Role badge with color */}
                                     <span className={`inline-flex items-center mt-1.5 px-2 py-0.5 rounded-md text-[9px] font-black uppercase tracking-widest leading-none border w-max ${getRoleBadgeClass(userRole, userPlan)}`}>
                                         {getRoleLabel(userRole, userPlan)}
@@ -264,11 +247,7 @@ export function AppSidebar({ currentPath = '/', isOpen = false, setIsOpen, isCol
                             <div className={`transition-all duration-300 ease-in-out ${isCollapsed ? 'md:w-full md:flex md:justify-center md:border-t md:border-sidebar-border/50 md:pt-2.5' : ''}`}>
                                 <button
                                     onClick={handleLogout}
-                                    className={`p-2.5 rounded-xl transition-all active:scale-90 shrink-0 relative group ${
-                                        theme === 'light' 
-                                            ? 'text-slate-400 hover:text-red-600 hover:bg-red-50' 
-                                            : 'text-white/20 hover:text-white hover:bg-red-500/80'
-                                    }`}
+                                    className={`p-2.5 rounded-xl transition-all active:scale-90 shrink-0 relative group text-white/50 hover:text-white hover:bg-red-500/80`}
                                     title="Đăng xuất"
                                     aria-label="Đăng xuất tài khoản"
                                 >

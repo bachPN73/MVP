@@ -149,6 +149,20 @@ export default function VaultPage() {
     useEffect(() => {
         loadPeriods();
         loadVault();
+
+        // Check query param for period to scroll to
+        const params = new URLSearchParams(window.location.search);
+        const targetPeriod = params.get('period');
+        if (targetPeriod) {
+            setTimeout(() => {
+                const element = document.getElementById(`period-${targetPeriod}`);
+                if (element) {
+                    element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    // Optionally uncollapse it
+                    setCollapsedPeriods(prev => ({ ...prev, [targetPeriod]: false }));
+                }
+            }, 300); // Wait for render
+        }
     }, []);
 
     // Tick every second for countdown
@@ -406,7 +420,7 @@ export default function VaultPage() {
                         const isCollapsed = collapsedPeriods[period.id];
 
                         return (
-                            <div key={period.id} className="bg-white dark:bg-slate-900/40 border border-slate-200/60 dark:border-white/[0.05] rounded-3xl p-5 shadow-sm space-y-4">
+                            <div id={`period-${period.id}`} key={period.id} className="bg-white dark:bg-slate-900/40 border border-slate-200/60 dark:border-white/[0.05] rounded-3xl p-5 shadow-sm space-y-4">
                                 <div className="flex items-center justify-between flex-wrap gap-3 pb-3 border-b border-slate-100 dark:border-white/[0.04]">
                                     <div className="flex items-center gap-3">
                                         <button 

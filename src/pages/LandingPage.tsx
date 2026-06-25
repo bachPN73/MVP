@@ -332,10 +332,10 @@ export default function Landing() {
                         }}
                     />
 
-                    <div className="mx-auto max-w-[1440px] px-8 sm:px-12 lg:px-16">
-                        <div className="grid grid-cols-1 items-center gap-16 lg:grid-cols-2 lg:gap-24">
+                    <div className="mx-auto max-w-[1600px] px-4 sm:px-8 lg:px-12">
+                        <div className="grid grid-cols-1 items-start gap-8 lg:grid-cols-[1.8fr_1.1fr_1.6fr] lg:gap-12 xl:gap-16">
                             {/* Left – Story */}
-                            <div>
+                            <div className="flex flex-col">
                                 <h2 className="font-black text-blue-700 leading-tight" style={{ fontSize: 'clamp(32px, 5vw, 60px)' }}>
                                     Câu chuyện của EduTech
                                 </h2>
@@ -350,39 +350,39 @@ export default function Landing() {
                                         Đó là lý do EduTech ra đời.
                                     </p>
                                 </div>
+                            </div>
 
-                                {/* User cards */}
-                                <div className="mt-10 grid grid-cols-2 gap-6">
-                                    {/* Học sinh */}
-                                    <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 group">
-                                        <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-blue-100 text-blue-600">
-                                            <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                                                <path strokeLinecap="round" strokeLinejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
-                                            </svg>
-                                        </div>
-                                        <h3 className="mt-4 text-lg sm:text-xl font-bold text-slate-900">Học sinh</h3>
-                                        <p className="mt-2 text-sm sm:text-base text-slate-500 leading-relaxed">
-                                            Tự khám phá mô hình, ôn lại khái niệm và ghi nhớ bằng hình ảnh.
-                                        </p>
+                            {/* Middle - User cards */}
+                            <div className="flex flex-col gap-6">
+                                {/* Học sinh */}
+                                <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 group">
+                                    <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-blue-100 text-blue-600">
+                                        <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                                            <path strokeLinecap="round" strokeLinejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
+                                        </svg>
                                     </div>
-                                    {/* Giáo viên */}
-                                    <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 group">
-                                        <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-teal-100 text-teal-600">
-                                            <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                                                <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-                                            </svg>
-                                        </div>
-                                        <h3 className="mt-4 text-lg sm:text-xl font-bold text-slate-900">Giáo viên</h3>
-                                        <p className="mt-2 text-sm sm:text-base text-slate-500 leading-relaxed">
-                                            Chuẩn bị bài giảng trực quan và trình chiếu học liệu ngay trong lớp.
-                                        </p>
+                                    <h3 className="mt-4 text-lg sm:text-xl font-bold text-slate-900">Học sinh</h3>
+                                    <p className="mt-2 text-sm sm:text-base text-slate-500 leading-relaxed">
+                                        Tự khám phá mô hình, ôn lại khái niệm và ghi nhớ bằng hình ảnh.
+                                    </p>
+                                </div>
+                                {/* Giáo viên */}
+                                <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 group">
+                                    <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-teal-100 text-teal-600">
+                                        <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                                            <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                                        </svg>
                                     </div>
+                                    <h3 className="mt-4 text-lg sm:text-xl font-bold text-slate-900">Giáo viên</h3>
+                                    <p className="mt-2 text-sm sm:text-base text-slate-500 leading-relaxed">
+                                        Chuẩn bị bài giảng trực quan và trình chiếu học liệu ngay trong lớp.
+                                    </p>
                                 </div>
                             </div>
 
                             {/* Right – 3D model placeholder */}
-                            <div className="flex items-center justify-center">
-                                <div className="relative w-full max-w-md">
+                            <div className="flex flex-col items-center justify-center">
+                                <div className="relative w-full max-w-lg">
                                     {/* Video replacing 3D Model for performance */}
                                     <div className="rounded-3xl border border-slate-200 bg-white overflow-hidden aspect-square shadow-lg relative group mb-5 flex items-center justify-center">
                                         <video 
@@ -391,7 +391,7 @@ export default function Landing() {
                                             loop 
                                             muted 
                                             playsInline 
-                                            className="w-full h-full object-cover"
+                                            className="w-full h-full object-cover scale-105"
                                         />
                                     </div>
                                     <div className="flex justify-center">

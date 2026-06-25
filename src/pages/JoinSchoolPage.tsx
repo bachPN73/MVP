@@ -81,11 +81,7 @@ export default function JoinSchoolPage() {
         const stored = localStorage.getItem("edu_tech_user");
         if (!stored) { navigate("/login"); return; }
         const parsed = JSON.parse(stored);
-        // Already in a school or is school-admin → redirect to profile
-        if (parsed.schoolId || parsed.role === "school-admin") {
-            navigate("/profile");
-            return;
-        }
+        // Removed the redirect logic
         setUser(parsed);
 
         // Auto-fill from URL ?join= or ?code= param
@@ -135,10 +131,62 @@ export default function JoinSchoolPage() {
 
     return (
         <Layout currentPath="/join-school">
-            <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8 space-y-8">
+            <div className="max-w-[1600px] mx-auto px-4 sm:px-6 py-8 space-y-8">
+                
+                {user.schoolId ? (
+                    <div className="space-y-6">
+                        <div className="bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-white/10 rounded-3xl p-8 shadow-sm backdrop-blur-md">
+                            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6">
+                                <div className="flex items-center gap-4">
+                                    <div className="w-16 h-16 rounded-2xl bg-indigo-50 dark:bg-indigo-900/30 flex items-center justify-center shrink-0">
+                                        <School className="w-8 h-8 text-indigo-600 dark:text-indigo-400" />
+                                    </div>
+                                    <div>
+                                        <div className="text-sm font-bold text-emerald-500 uppercase tracking-wider mb-1 flex items-center gap-1.5">
+                                            <CheckCircle2 className="w-4 h-4" /> Đã tham gia trường học
+                                        </div>
+                                        <h2 className="text-2xl font-black text-slate-900 dark:text-white">Tổ chức giáo dục</h2>
+                                        <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">Vai trò của bạn: {user.role === 'teacher' ? 'Giáo viên' : 'Học sinh'} {user.className ? `- Lớp ${user.className}` : ''}</p>
+                                    </div>
+                                </div>
+                                <button 
+                                    onClick={() => {
+                                        if (window.confirm("Bạn có chắc chắn muốn rời khỏi trường học hiện tại? Tài khoản của bạn sẽ mất các đặc quyền Pro được cấp từ trường.")) {
+                                            const stored = localStorage.getItem("edu_tech_user");
+                                            if (stored) {
+                                                const curr = JSON.parse(stored);
+                                                localStorage.setItem("edu_tech_user", JSON.stringify({
+                                                    ...curr, role: "user", schoolId: null, className: null
+                                                }));
+                                                window.location.reload();
+                                            }
+                                        }
+                                    }}
+                                    className="px-5 py-2.5 bg-red-50 text-red-600 dark:bg-red-500/10 dark:text-red-400 font-bold rounded-xl hover:bg-red-100 dark:hover:bg-red-500/20 transition-colors border border-red-200 dark:border-red-500/20 whitespace-nowrap"
+                                >
+                                    Rời khỏi trường
+                                </button>
+                            </div>
+                        </div>
 
-                {/* ── Hero Header ── */}
-                <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-teal-500 via-teal-600 to-cyan-700 p-8 sm:p-10 text-white shadow-2xl shadow-teal-500/20">
+                        {/* Smaller participation hero */}
+                        <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-slate-100 to-slate-200 dark:from-slate-800 dark:to-slate-900 p-6 sm:p-8 text-slate-800 dark:text-white shadow-sm border border-slate-200 dark:border-slate-700">
+                            <div className="relative z-10 flex flex-col sm:flex-row items-center gap-6">
+                                <div>
+                                    <h1 className="text-xl sm:text-2xl font-black leading-tight text-slate-900 dark:text-white">
+                                        Tham gia trường khác
+                                    </h1>
+                                    <p className="text-slate-500 dark:text-slate-400 text-sm mt-2 max-w-lg leading-relaxed">
+                                        Bạn cần rời khỏi trường hiện tại trước khi có thể tham gia vào một tổ chức giáo dục mới.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                ) : (
+                    <>
+                        {/* ── Hero Header ── */}
+                        <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-teal-500 via-teal-600 to-cyan-700 p-8 sm:p-10 text-white shadow-2xl shadow-teal-500/20">
                     {/* Decorative blobs */}
                     <div className="absolute -top-12 -right-12 w-56 h-56 rounded-full bg-white/5 blur-2xl pointer-events-none" />
                     <div className="absolute -bottom-16 -left-8 w-72 h-72 rounded-full bg-cyan-400/20 blur-3xl pointer-events-none" />
@@ -418,7 +466,8 @@ export default function JoinSchoolPage() {
                         </div>
                     </div>
                 </div>
-            </div>
+            </>
+        )}
 
             {/* ── QR Scanner Modal ── */}
             {showScanner && (
@@ -483,6 +532,7 @@ export default function JoinSchoolPage() {
                     </div>
                 </div>
             )}
+</div>
         </Layout>
     );
 }

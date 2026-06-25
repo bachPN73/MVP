@@ -290,10 +290,10 @@ export default function ProfilePage() {
                                         <input
                                             type="email"
                                             required
+                                            disabled
                                             value={editEmail}
-                                            onChange={(e) => setEditEmail(e.target.value)}
                                             placeholder="Email của bạn..."
-                                            className="p-3 bg-slate-50 dark:bg-slate-950/60 rounded-xl border border-slate-200 dark:border-white/10 focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none text-slate-900 dark:text-white transition-all text-sm font-medium"
+                                            className="p-3 bg-slate-100 dark:bg-slate-900/60 rounded-xl border border-slate-200 dark:border-white/10 outline-none text-slate-500 dark:text-slate-400 transition-all text-sm font-medium cursor-not-allowed opacity-80"
                                         />
                                     </div>
                                     <div className="flex gap-3 justify-end pt-2 border-t border-slate-100 dark:border-white/5">
@@ -361,71 +361,7 @@ export default function ProfilePage() {
                         </div>
 
 
-                        {/* Organization / School Invite Joining */}
-                        <div id="join-school-section" className="bg-white dark:bg-slate-900/60 border border-slate-200/80 dark:border-white/10 rounded-2xl p-6 shadow-sm text-slate-900 dark:text-white backdrop-blur-md transition-all duration-300">
-                            <h3 className="text-lg font-bold font-heading mb-5 flex items-center gap-2.5">
-                                <div className="p-1.5 bg-indigo-50 dark:bg-indigo-950/50 rounded-lg text-indigo-600 dark:text-indigo-400">
-                                    <School className="w-4 h-4" />
-                                </div>
-                                Liên kết Trường học
-                            </h3>
 
-                            {user.schoolId ? (
-                                <div className="p-5 bg-gradient-to-r from-emerald-50 to-teal-50 dark:from-emerald-950/40 dark:to-teal-950/20 border border-emerald-200/60 dark:border-emerald-500/20 rounded-xl">
-                                    <h4 className="text-sm font-black text-emerald-600 dark:text-emerald-400 flex items-center gap-2">
-                                        <Sparkles className="w-4 h-4" /> ĐÃ LIÊN KẾT TỔ CHỨC THÀNH CÔNG
-                                    </h4>
-                                    <div className="mt-4 grid grid-cols-2 gap-4 text-xs">
-                                        <div>
-                                            <span className="text-slate-500 dark:text-slate-400 uppercase tracking-wider font-semibold">Trường học</span>
-                                            <p className="text-sm font-bold text-slate-800 dark:text-white mt-1">{schoolName || "Đang cập nhật"}</p>
-                                        </div>
-                                        <div>
-                                            <span className="text-slate-500 dark:text-slate-400 uppercase tracking-wider font-semibold">Vai trò thành viên</span>
-                                            <p className="text-sm font-bold text-slate-800 dark:text-white mt-1">{user.role}</p>
-                                        </div>
-                                        {user.className && (
-                                            <div>
-                                                <span className="text-slate-500 dark:text-slate-400 uppercase tracking-wider font-semibold">Lớp học</span>
-                                                <p className="text-sm font-bold text-slate-800 dark:text-white mt-1">{user.className}</p>
-                                            </div>
-                                        )}
-                                        <div>
-                                            <span className="text-slate-500 dark:text-slate-400 uppercase tracking-wider font-semibold">Mã mời</span>
-                                            <p className="text-sm font-bold text-slate-800 dark:text-white mt-1 font-mono">{schoolInfo?.schoolCode || "Đang cập nhật"}</p>
-                                        </div>
-                                        <div>
-                                            <span className="text-slate-500 dark:text-slate-400 uppercase tracking-wider font-semibold">Niên khóa</span>
-                                            <p className="text-sm font-bold text-slate-800 dark:text-white mt-1">{schoolInfo?.schoolYear || "Chưa cập nhật"}</p>
-                                        </div>
-                                        <div>
-                                            <span className="text-slate-500 dark:text-slate-400 uppercase tracking-wider font-semibold">Tiết học/Học phần</span>
-                                            <p className="text-sm font-bold text-slate-800 dark:text-white mt-1">{schoolInfo?.tiet || "Chưa cập nhật"}</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            ) : (
-                                <div className="space-y-4">
-                                    <p className="text-xs text-slate-400 font-medium leading-relaxed">
-                                        Liên kết tài khoản với trường học để nhận gói Pro miễn phí và truy cập toàn bộ tài liệu premium được cấp bởi nhà trường.
-                                    </p>
-                                    {/* CTA card linking to the full join-school page */}
-                                    <Link
-                                        to="/join-school"
-                                        className="group flex items-center gap-4 p-4 bg-gradient-to-r from-indigo-50 to-violet-50 dark:from-indigo-500/10 dark:to-violet-500/10 border border-indigo-200 dark:border-indigo-500/20 rounded-xl hover:border-indigo-400 dark:hover:border-indigo-400/40 transition-all duration-200 hover:shadow-md hover:shadow-indigo-500/10"
-                                    >
-                                        <div className="p-3 bg-indigo-100 dark:bg-indigo-500/20 rounded-xl text-indigo-600 dark:text-indigo-400 group-hover:scale-105 transition-transform shrink-0">
-                                            <School className="w-5 h-5" />
-                                        </div>
-                                        <div className="flex-1 min-w-0">
-                                            <p className="text-sm font-bold text-indigo-700 dark:text-indigo-300">Tham gia Trường học →</p>
-                                            <p className="text-xs text-indigo-500 dark:text-indigo-400/70 mt-0.5">Nhập mã mời hoặc quét QR · Nhận gói Pro miễn phí</p>
-                                        </div>
-                                        <ChevronRight className="w-4 h-4 text-indigo-400 group-hover:translate-x-1 transition-transform shrink-0" />
-                                    </Link>
-                                </div>
-                            )}
-                        </div>
 
                         {/* Password Security */}
                         <div className="bg-white dark:bg-slate-900/60 border border-slate-200/80 dark:border-white/10 rounded-2xl p-6 shadow-sm text-slate-900 dark:text-white backdrop-blur-md transition-all duration-300">

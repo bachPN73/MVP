@@ -1,8 +1,10 @@
 import { Layout } from '../layout/MainLayout';
 import { useNavigate } from 'react-router';
-import { Mic, Search, Bell, ArrowRight, Heart, Sparkles, BookOpen, Database, Timer, Crown, School, Archive } from 'lucide-react';
-import { useState, useEffect } from 'react';
+import { Mic, Search, Bell, ArrowRight, Heart, Sparkles, BookOpen, Database, Timer, Crown, School, Archive, Folder, ChevronDown, ChevronLeft, ChevronRight, Loader2 } from 'lucide-react';
+import { useState, useEffect, useRef, lazy, Suspense } from 'react';
 import { api } from '../api';
+
+const ModelViewer = lazy(() => import('../components/ModelViewer'));
 
 export default function Dashboard() {
     const navigate = useNavigate();
@@ -13,8 +15,26 @@ export default function Dashboard() {
     const [isRefreshing, setIsRefreshing] = useState(false);
     const [userPlan, setUserPlan] = useState('FREE');
     const [daysLeft, setDaysLeft] = useState<number | '∞'>('∞');
-    const [schoolName, setSchoolName] = useState('Chưa cập nhật');
+    const [schoolName, setSchoolName] = useState('Chưa tham gia');
+    const [userSchoolId, setUserSchoolId] = useState<string | null>(null);
     const [storageUsage, setStorageUsage] = useState(0);
+    const [vaultPeriods, setVaultPeriods] = useState<any[]>([]);
+    const [showAllPeriods, setShowAllPeriods] = useState(false);
+    const scrollContainerRef = useRef<HTMLDivElement>(null);
+
+    const scrollLeft = (e: React.MouseEvent) => {
+        e.stopPropagation();
+        if (scrollContainerRef.current) {
+            scrollContainerRef.current.scrollBy({ left: -200, behavior: 'smooth' });
+        }
+    };
+
+    const scrollRight = (e: React.MouseEvent) => {
+        e.stopPropagation();
+        if (scrollContainerRef.current) {
+            scrollContainerRef.current.scrollBy({ left: 200, behavior: 'smooth' });
+        }
+    };
 
     const fetchModels = async () => {
         setIsRefreshing(true);
@@ -45,10 +65,15 @@ export default function Dashboard() {
                 let currentPlan = (currentUser.plan || 'free').toUpperCase();
                 setUserPlan(currentPlan);
 
-                if (currentUser.school) {
-                    setSchoolName(currentUser.school);
+                if (currentUser.schoolId) {
+                    setUserSchoolId(currentUser.schoolId);
+                    // Fetch or use cached school name. For now, fallback to something if not found
+                    // In a real app we would call getSchoolInfo or store schoolName in user.
+                    // For demo, we might not have it in user, so let's set a placeholder or use what's there
+                    setSchoolName("Tổ chức giáo dục"); 
                 } else {
-                    setSchoolName('Trường Đại học Bách Khoa'); // Fallback demo
+                    setUserSchoolId(null);
+                    setSchoolName('Chưa tham gia');
                 }
                 
                 if (currentUser.storageUsage !== undefined) {
@@ -75,6 +100,13 @@ export default function Dashboard() {
             }
         } catch (e) { }
 
+        try {
+            const storedPeriods = localStorage.getItem('edu_tech_vault_periods');
+            if (storedPeriods) {
+                setVaultPeriods(JSON.parse(storedPeriods));
+            }
+        } catch (e) { }
+
         fetchModels();
     }, []);
 
@@ -84,76 +116,100 @@ export default function Dashboard() {
 
     return (
         <Layout>
-            <div className="relative z-10 p-4 md:p-8 w-full h-full max-w-[1400px] mx-auto xl:h-[calc(100vh-2rem)] flex flex-col gap-6 animate-in fade-in duration-500 overflow-y-auto custom-scrollbar pb-10">
+            <div className="relative z-10 p-4 md:p-6 w-full h-full max-w-[1600px] mx-auto flex flex-col justify-between gap-4 xl:gap-6 animate-in fade-in duration-500 overflow-hidden">
                 
                 {/* 1. Header Section */}
-                <div className="flex flex-col xl:flex-row justify-between items-start xl:items-end gap-4 shrink-0">
-                    <div>
-                        <h1 className="text-3xl md:text-4xl font-bold text-slate-800 dark:text-white flex items-center gap-3">
+                <div className="flex flex-col xl:flex-row justify-between items-stretch gap-4 shrink-0">
+                    <div className="bg-white dark:bg-slate-800/80 rounded-2xl shadow-md border-[3px] border-slate-200 dark:border-slate-600 p-4 px-6 flex-1 w-full flex flex-col justify-center">
+                        <h1 className="text-2xl md:text-3xl font-bold text-slate-800 dark:text-white flex items-center gap-2">
                             Xin chào, {userName} <span className="animate-wave inline-block origin-bottom-right hover:rotate-[20deg] transition-transform cursor-default">👋</span>
                         </h1>
-                        <p className="text-slate-600 dark:text-slate-300 mt-2 text-lg font-medium">Hôm nay bạn muốn khám phá điều gì ?</p>
+                        <p className="text-slate-600 dark:text-slate-300 mt-1 text-sm font-medium">Hôm nay bạn muốn khám phá điều gì?</p>
                     </div>
 
-                    <div className="flex items-center gap-4 flex-wrap">
+                    <div className="flex items-stretch gap-3 flex-wrap xl:flex-nowrap">
                         {/* HỌC LIỆU Card */}
-                        <div className="bg-white dark:bg-slate-800/80 rounded-2xl shadow-md shadow-indigo-500/5 dark:shadow-indigo-500/10 border-[3px] border-slate-200 dark:border-slate-600 p-4 px-6 flex flex-col min-w-[120px] transition-all duration-300 hover:shadow-lg hover:-translate-y-1 group cursor-default hover:border-indigo-300 dark:hover:border-indigo-500">
-                            <div className="flex items-center gap-2 text-indigo-600 dark:text-indigo-400 font-bold mb-1 text-sm group-hover:scale-105 origin-left transition-transform">
-                                <Database className="w-5 h-5 group-hover:-rotate-6 transition-transform" /> HỌC LIỆU
+                        <div className="bg-white dark:bg-slate-800/80 rounded-2xl shadow-md shadow-indigo-500/5 dark:shadow-indigo-500/10 border-[3px] border-slate-200 dark:border-slate-600 p-3 px-5 flex flex-col min-w-[100px] justify-center transition-all duration-300 hover:shadow-lg hover:-translate-y-1 group cursor-default hover:border-indigo-300 dark:hover:border-indigo-500">
+                            <div className="flex items-center gap-1.5 text-indigo-600 dark:text-indigo-400 font-bold mb-0.5 text-xs group-hover:scale-105 origin-left transition-transform">
+                                <Database className="w-4 h-4 group-hover:-rotate-6 transition-transform" /> HỌC LIỆU
                             </div>
-                            <span className="text-4xl font-black text-slate-800 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">{materialCount}</span>
+                            <span className="text-3xl font-black text-slate-800 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">{materialCount}</span>
                         </div>
 
                         {/* THỜI HẠN Card */}
-                        <div className="bg-white dark:bg-slate-800/80 rounded-2xl shadow-md shadow-emerald-500/5 dark:shadow-emerald-500/10 border-[3px] border-slate-200 dark:border-slate-600 p-4 px-6 flex flex-col min-w-[120px] transition-all duration-300 hover:shadow-lg hover:-translate-y-1 group cursor-default hover:border-emerald-300 dark:hover:border-emerald-500">
-                            <div className="flex items-center gap-2 text-emerald-600 dark:text-emerald-400 font-bold mb-1 text-sm group-hover:scale-105 origin-left transition-transform">
-                                <Timer className="w-5 h-5 group-hover:rotate-12 transition-transform" /> THỜI HẠN
+                        <div className="bg-white dark:bg-slate-800/80 rounded-2xl shadow-md shadow-emerald-500/5 dark:shadow-emerald-500/10 border-[3px] border-slate-200 dark:border-slate-600 p-3 px-5 flex flex-col min-w-[100px] justify-center transition-all duration-300 hover:shadow-lg hover:-translate-y-1 group cursor-default hover:border-emerald-300 dark:hover:border-emerald-500">
+                            <div className="flex items-center gap-1.5 text-emerald-600 dark:text-emerald-400 font-bold mb-0.5 text-xs group-hover:scale-105 origin-left transition-transform">
+                                <Timer className="w-4 h-4 group-hover:rotate-12 transition-transform" /> THỜI HẠN
                             </div>
-                            <span className="text-4xl font-black text-slate-800 dark:text-white mt-1 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">
+                            <span className="text-3xl font-black text-slate-800 dark:text-white group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">
                                 {daysLeft === '∞' ? (
-                                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 12c-2-2.67-4-4-6-4a4 4 0 1 0 0 8c2 0 4-1.33 6-4Zm0 0c2 2.67 4 4 6 4a4 4 0 1 0 0-8c-2 0-4 1.33-6 4Z"/></svg>
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 12c-2-2.67-4-4-6-4a4 4 0 1 0 0 8c2 0 4-1.33 6-4Zm0 0c2 2.67 4 4 6 4a4 4 0 1 0 0-8c-2 0-4 1.33-6 4Z"/></svg>
                                 ) : (
                                     <div className="flex items-baseline gap-1">
                                         <span>{daysLeft}</span>
-                                        <span className="text-lg font-bold text-slate-500 dark:text-slate-400">ngày</span>
+                                        <span className="text-sm font-bold text-slate-500 dark:text-slate-400">ngày</span>
                                     </div>
                                 )}
                             </span>
                         </div>
 
                         {/* GÓI Card */}
-                        <div className="bg-white dark:bg-slate-800/80 rounded-2xl shadow-md shadow-amber-500/5 dark:shadow-amber-500/10 border-[3px] border-slate-200 dark:border-slate-600 p-4 px-6 flex flex-col min-w-[120px] transition-all duration-300 hover:shadow-lg hover:-translate-y-1 group cursor-default hover:border-amber-300 dark:hover:border-amber-500">
-                            <div className="flex items-center gap-2 text-amber-500 dark:text-amber-400 font-bold mb-1 text-sm group-hover:scale-105 origin-left transition-transform">
-                                <Crown className="w-5 h-5 group-hover:scale-110 transition-transform" /> GÓI
+                        <div className="bg-white dark:bg-slate-800/80 rounded-2xl shadow-md shadow-amber-500/5 dark:shadow-amber-500/10 border-[3px] border-slate-200 dark:border-slate-600 p-3 px-5 flex flex-col min-w-[100px] justify-center transition-all duration-300 hover:shadow-lg hover:-translate-y-1 group cursor-default hover:border-amber-300 dark:hover:border-amber-500">
+                            <div className="flex items-center gap-1.5 text-amber-500 dark:text-amber-400 font-bold mb-0.5 text-xs group-hover:scale-105 origin-left transition-transform">
+                                <Crown className="w-4 h-4 group-hover:scale-110 transition-transform" /> GÓI
                             </div>
-                            <span className={`text-4xl font-black transition-colors ${userPlan !== 'FREE' ? 'text-transparent bg-clip-text bg-gradient-to-r from-amber-500 to-orange-500' : 'text-slate-800 dark:text-white group-hover:text-amber-500 dark:group-hover:text-amber-400'}`}>
+                            <span className={`text-3xl font-black transition-colors ${userPlan !== 'FREE' ? 'text-transparent bg-clip-text bg-gradient-to-r from-amber-500 to-orange-500' : 'text-slate-800 dark:text-white group-hover:text-amber-500 dark:group-hover:text-amber-400'}`}>
                                 {userPlan}
                             </span>
                         </div>
 
                         {/* Notification Bell */}
-                        <button className="bg-white dark:bg-slate-800/80 p-4 rounded-full shadow-sm border-[3px] border-slate-200 dark:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-700 transition-all duration-300 hover:shadow-md hover:-translate-y-1 ml-auto xl:ml-2 aspect-square flex items-center justify-center group">
-                            <Bell className="w-6 h-6 text-slate-600 dark:text-slate-300 group-hover:animate-wiggle" />
+                        <button className="bg-white dark:bg-slate-800/80 p-3 rounded-full shadow-sm border-[3px] border-slate-200 dark:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-700 transition-all duration-300 hover:shadow-md hover:-translate-y-1 aspect-square flex items-center justify-center group">
+                            <Bell className="w-5 h-5 text-slate-600 dark:text-slate-300 group-hover:animate-wiggle" />
                         </button>
                     </div>
                 </div>
 
                 {/* 2. Middle Grid Section */}
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 shrink-0">
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 xl:gap-6 flex-1 min-h-0 shrink-0 lg:shrink">
                     
-                    {/* A. Banner Mùa Hè (Col 5) */}
-                    <div className="lg:col-span-5 relative rounded-3xl overflow-hidden shadow-md shadow-indigo-500/5 dark:shadow-indigo-500/10 border-[3px] border-slate-200 dark:border-slate-600 group transition-all duration-300 hover:shadow-xl hover:-translate-y-1 min-h-[250px] lg:min-h-[300px]">
-                        <img 
-                            src="/images/event-banner.png" 
-                            alt="Khám phá mùa hè" 
-                            className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                        />
+                    {/* A. Banner Mùa Hè (Col 5) -> Thay bằng hiển thị 1 model 3D */}
+                    <div className="lg:col-span-5 relative rounded-3xl overflow-hidden shadow-md shadow-indigo-500/5 dark:shadow-indigo-500/10 border-[3px] border-slate-200 dark:border-slate-600 group transition-all duration-300 hover:shadow-xl hover:-translate-y-1 bg-slate-950 flex flex-col min-h-[200px] xl:min-h-[250px]">
+                        <div className="absolute inset-0 z-0">
+                            <Suspense fallback={
+                                <div className="absolute inset-0 flex flex-col items-center justify-center bg-slate-950">
+                                    <Loader2 className="w-10 h-10 text-indigo-500 animate-spin mb-3" />
+                                    <p className="text-slate-400 text-sm">Đang tải mô hình 3D...</p>
+                                </div>
+                            }>
+                                <ModelViewer modelUrl="/models/plant-cell.glb" autoRotate={true} minimal={true} />
+                            </Suspense>
+                        </div>
+                        
+                        {/* Overlay thông tin hoặc nút bấm */}
+                        <div className="absolute top-4 left-4 z-10 bg-slate-900/80 backdrop-blur-md px-3 py-1.5 rounded-xl border border-slate-700/50 flex items-center gap-2">
+                            <Sparkles className="w-4 h-4 text-indigo-400 animate-pulse" />
+                            <span className="text-xs font-black text-white uppercase tracking-wider">Mô hình 3D tương tác</span>
+                        </div>
+
+                        <div className="absolute bottom-4 right-4 z-10">
+                            <button 
+                                onClick={() => navigate('/material/plant-cell')}
+                                className="bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs px-4 py-2 rounded-xl shadow-lg transition-all hover:scale-105 active:scale-95 flex items-center gap-1.5"
+                            >
+                                Chi tiết <ArrowRight className="w-3.5 h-3.5" />
+                            </button>
+                        </div>
+
+                        <div className="absolute bottom-4 left-4 z-10 bg-black/60 backdrop-blur-sm px-3 py-1 rounded-lg">
+                            <span className="text-[11px] text-slate-300 font-bold">Tế bào thực vật (3D)</span>
+                        </div>
                     </div>
 
                     {/* B. AI Search (Col 4) */}
                     <div 
                         onClick={() => navigate('/find-ai')}
-                        className="lg:col-span-4 bg-white dark:bg-slate-800/90 rounded-3xl relative shadow-md shadow-violet-500/5 dark:shadow-violet-500/10 border-[3px] border-slate-200 dark:border-slate-600 flex flex-col overflow-hidden min-h-[250px] lg:min-h-[300px] group transition-all duration-300 hover:shadow-xl hover:-translate-y-1 cursor-pointer hover:border-violet-300 dark:hover:border-violet-500"
+                        className="lg:col-span-4 bg-white dark:bg-slate-800/90 rounded-3xl relative shadow-md shadow-violet-500/5 dark:shadow-violet-500/10 border-[3px] border-slate-200 dark:border-slate-600 flex flex-col overflow-hidden min-h-[200px] xl:min-h-[250px] group transition-all duration-300 hover:shadow-xl hover:-translate-y-1 cursor-pointer hover:border-violet-300 dark:hover:border-violet-500"
                     >
                         
                         {/* Background Image Robot spanning the whole card */}
@@ -189,7 +245,7 @@ export default function Dashboard() {
                     </div>
 
                     {/* C. Library Stats (Col 3) */}
-                    <div className="lg:col-span-3 bg-white dark:bg-slate-800/90 rounded-3xl p-6 shadow-md shadow-emerald-500/5 dark:shadow-emerald-500/10 border-[3px] border-slate-200 dark:border-slate-600 flex flex-col justify-between relative overflow-hidden min-h-[250px] lg:min-h-[300px] group/lib transition-all duration-300 hover:shadow-xl hover:-translate-y-1 hover:border-emerald-300 dark:hover:border-emerald-500">
+                    <div className="lg:col-span-3 bg-white dark:bg-slate-800/90 rounded-3xl p-4 xl:p-6 shadow-md shadow-emerald-500/5 dark:shadow-emerald-500/10 border-[3px] border-slate-200 dark:border-slate-600 flex flex-col justify-between relative overflow-hidden min-h-[200px] xl:min-h-[250px] group/lib transition-all duration-300 hover:shadow-xl hover:-translate-y-1 hover:border-emerald-300 dark:hover:border-emerald-500">
                         <div className="relative z-10">
                             <div className="flex items-center gap-2 text-emerald-600 dark:text-emerald-400 font-bold mb-2 text-xs uppercase tracking-wider">
                                 <ClockIcon className="w-4 h-4 group-hover/lib:animate-spin-slow" /> THƯ VIỆN HỌC LIỆU
@@ -249,46 +305,88 @@ export default function Dashboard() {
                         <div className="w-16 h-16 rounded-2xl bg-indigo-50 dark:bg-indigo-900/30 flex items-center justify-center shrink-0 group-hover:scale-110 group-hover:rotate-3 transition-transform">
                             <School className="w-8 h-8 text-indigo-600 dark:text-indigo-400" />
                         </div>
-                        <div>
+                        <div className="flex-1">
                             <div className="text-xs font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-wider mb-1">Trường đang tham gia</div>
                             <h3 className="text-xl font-black text-slate-800 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">{schoolName}</h3>
-                            <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">Hệ thống liên kết học liệu trực tuyến</p>
+                            {userSchoolId ? (
+                                <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">Hệ thống liên kết học liệu trực tuyến</p>
+                            ) : (
+                                <button 
+                                    onClick={() => navigate('/join-school')}
+                                    className="mt-2 text-[13px] font-bold text-white bg-indigo-600 hover:bg-indigo-700 px-4 py-1.5 rounded-xl transition-colors shadow-sm"
+                                >
+                                    Hãy tham gia
+                                </button>
+                            )}
                         </div>
                     </div>
 
                     {/* Kho tạm thời */}
                     <div 
-                        onClick={() => navigate('/library')} 
-                        className="bg-white dark:bg-slate-800/90 rounded-3xl p-6 shadow-md shadow-emerald-500/5 dark:shadow-emerald-500/10 border-[3px] border-slate-200 dark:border-slate-600 flex items-center gap-6 group hover:border-emerald-300 dark:hover:border-emerald-500 transition-all duration-300 hover:shadow-xl hover:-translate-y-1 cursor-pointer"
+                        onClick={() => navigate('/vault')} 
+                        className="bg-white dark:bg-slate-800/90 rounded-3xl p-6 shadow-md shadow-emerald-500/5 dark:shadow-emerald-500/10 border-[3px] border-slate-200 dark:border-slate-600 flex items-center gap-6 group hover:border-emerald-300 dark:hover:border-emerald-500 transition-all duration-300 hover:shadow-xl hover:-translate-y-1 cursor-pointer overflow-hidden"
                     >
                         <div className="w-16 h-16 rounded-2xl bg-emerald-50 dark:bg-emerald-900/30 flex items-center justify-center shrink-0 group-hover:scale-110 group-hover:-rotate-3 transition-transform">
                             <Archive className="w-8 h-8 text-emerald-600 dark:text-emerald-400" />
                         </div>
-                        <div className="flex-1">
+                        <div className="flex-1 min-w-0">
                             <div className="text-xs font-bold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider mb-1">Lưu trữ cá nhân</div>
                             <h3 className="text-xl font-black text-slate-800 dark:text-white group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">Kho tạm thời</h3>
-                            <div className="flex items-center gap-2 mt-2">
-                                <div className="h-2 flex-1 bg-slate-100 dark:bg-slate-700 rounded-full overflow-hidden">
-                                    <div className="h-full bg-emerald-500 rounded-full transition-all duration-1000" style={{ width: `${storageUsage}%` }}></div>
+                            
+                            {vaultPeriods.length > 0 ? (
+                                <div className="flex items-center gap-1 mt-3">
+                                    <button 
+                                        onClick={scrollLeft}
+                                        className="p-1.5 rounded-full hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition-colors shrink-0"
+                                    >
+                                        <ChevronLeft className="w-4 h-4" />
+                                    </button>
+                                    
+                                    <div 
+                                        ref={scrollContainerRef}
+                                        className="flex items-center gap-2 overflow-x-auto scrollbar-hide py-1 scroll-smooth"
+                                    >
+                                        {vaultPeriods.map((p: any) => (
+                                            <div 
+                                                key={p.id} 
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    navigate(`/vault?period=${p.id}`);
+                                                }}
+                                                className="flex items-center gap-2 bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-100 dark:border-emerald-800/30 text-emerald-700 dark:text-emerald-400 px-4 py-2 rounded-xl text-sm font-bold shrink-0 shadow-sm transition-colors hover:bg-emerald-100 dark:hover:bg-emerald-900/40 cursor-pointer"
+                                            >
+                                                <Folder className="w-4 h-4" />
+                                                <span className="truncate max-w-[150px]">{p.name}</span>
+                                            </div>
+                                        ))}
+                                    </div>
+
+                                    <button 
+                                        onClick={scrollRight}
+                                        className="p-1.5 rounded-full hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition-colors shrink-0"
+                                    >
+                                        <ChevronRight className="w-4 h-4" />
+                                    </button>
                                 </div>
-                                <span className="text-xs font-bold text-slate-500 dark:text-slate-400">{storageUsage}%</span>
-                            </div>
+                            ) : (
+                                <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">Chưa có tiết học nào được lưu</p>
+                            )}
                         </div>
                     </div>
                 </div>
 
                 {/* 3. Bottom Subjects Section */}
-                <div className="shrink-0">
-                    <div className="flex items-center gap-2 text-indigo-600 dark:text-indigo-400 font-bold mb-4 text-xs uppercase tracking-wider">
+                <div className="shrink-0 flex-1 min-h-0 flex flex-col">
+                    <div className="flex items-center gap-2 text-indigo-600 dark:text-indigo-400 font-bold mb-3 text-xs uppercase tracking-wider">
                         <BookOpen className="w-4 h-4" /> KHÁM PHÁ THEO MÔN HỌC
                     </div>
                     
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 xl:gap-6 flex-1 min-h-0">
                         
                         {/* Biology Card */}
                         <div 
                             onClick={() => navigate('/library?subject=biology')}
-                            className="bg-white dark:bg-slate-800/80 rounded-3xl relative overflow-hidden cursor-pointer shadow-md shadow-emerald-500/5 dark:shadow-emerald-500/10 border-[3px] border-emerald-200/50 dark:border-emerald-500/30 transition-all duration-500 hover:shadow-xl hover:-translate-y-2 min-h-[220px] flex group hover:border-emerald-400 dark:hover:border-emerald-500"
+                            className="bg-white dark:bg-slate-800/80 rounded-3xl relative overflow-hidden cursor-pointer shadow-md shadow-emerald-500/5 dark:shadow-emerald-500/10 border-[3px] border-emerald-200/50 dark:border-emerald-500/30 transition-all duration-500 hover:shadow-xl hover:-translate-y-2 h-full flex group hover:border-emerald-400 dark:hover:border-emerald-500"
                         >
                             {/* Background Image */}
                             <div className="absolute inset-0 z-0">
@@ -309,7 +407,7 @@ export default function Dashboard() {
                         {/* Chemistry Card */}
                         <div 
                             onClick={() => navigate('/library?subject=chemistry')}
-                            className="bg-white dark:bg-slate-800/80 rounded-3xl relative overflow-hidden cursor-pointer shadow-md shadow-orange-500/5 dark:shadow-orange-500/10 border-[3px] border-orange-200/50 dark:border-orange-500/30 transition-all duration-500 hover:shadow-xl hover:-translate-y-2 min-h-[220px] flex group hover:border-orange-400 dark:hover:border-orange-500"
+                            className="bg-white dark:bg-slate-800/80 rounded-3xl relative overflow-hidden cursor-pointer shadow-md shadow-orange-500/5 dark:shadow-orange-500/10 border-[3px] border-orange-200/50 dark:border-orange-500/30 transition-all duration-500 hover:shadow-xl hover:-translate-y-2 h-full flex group hover:border-orange-400 dark:hover:border-orange-500"
                         >
                             {/* Background Image */}
                             <div className="absolute inset-0 z-0">
@@ -330,7 +428,7 @@ export default function Dashboard() {
                         {/* Physics Card */}
                         <div 
                             onClick={() => navigate('/library?subject=physics')}
-                            className="bg-white dark:bg-slate-800/80 rounded-3xl relative overflow-hidden cursor-pointer shadow-md shadow-blue-500/5 dark:shadow-blue-500/10 border-[3px] border-blue-200/50 dark:border-blue-500/30 transition-all duration-500 hover:shadow-xl hover:-translate-y-2 min-h-[220px] flex group hover:border-blue-400 dark:hover:border-blue-500"
+                            className="bg-white dark:bg-slate-800/80 rounded-3xl relative overflow-hidden cursor-pointer shadow-md shadow-blue-500/5 dark:shadow-blue-500/10 border-[3px] border-blue-200/50 dark:border-blue-500/30 transition-all duration-500 hover:shadow-xl hover:-translate-y-2 h-full flex group hover:border-blue-400 dark:hover:border-blue-500"
                         >
                             {/* Background Image */}
                             <div className="absolute inset-0 z-0">

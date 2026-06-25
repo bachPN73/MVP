@@ -68,7 +68,7 @@ export default function Guide() {
 
     return (
         <Layout>
-            <div className="p-6 md:p-8 max-w-5xl mx-auto space-y-8">
+            <div className="p-6 md:p-8 max-w-[1600px] mx-auto space-y-8">
                 {/* Header */}
                 <div className="flex items-center gap-3.5 animate-fadeIn">
                     <div className="w-12 h-12 bg-indigo-600 dark:bg-indigo-500 rounded-xl flex items-center justify-center shadow-md shrink-0">

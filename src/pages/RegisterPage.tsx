@@ -458,18 +458,18 @@ export default function Register() {
                         </svg>
                     </div>
 
-                    <h3 className="text-2xl font-black mb-3 tracking-tight bg-gradient-to-r from-white via-white to-slate-300 bg-clip-text text-transparent">Thế giới trực quan 3D & AI</h3>
-                    <p className="text-slate-300 text-sm max-w-[380px] mx-auto leading-relaxed font-medium">
+                    <h3 className="text-3xl font-black mb-4 tracking-tight whitespace-nowrap bg-gradient-to-r from-white via-white to-slate-300 bg-clip-text text-transparent">Thế giới trực quan 3D & AI</h3>
+                    <p className="text-slate-300 text-base max-w-[90%] mx-auto leading-relaxed font-medium">
                         Khám phá và tương tác trực tiếp với các mô hình cấu trúc phân tử sinh học, hóa học và định luật vật lý sống động nhất.
                     </p>
                 </div>
 
                 {/* Footer stats / slogan */}
-                <div className="flex items-center justify-between border-t border-white/10 pt-6 relative z-10 font-mono text-[11px] tracking-wider text-slate-400">
-                    <div className="flex items-center gap-1.5 font-bold">
+                <div className="flex items-center justify-between border-t border-white/10 pt-6 relative z-10 font-mono text-xs tracking-wider text-slate-400">
+                    <div className="flex items-center gap-1.5 font-bold whitespace-nowrap">
                         <span>HỌC TẬP THỜI ĐẠI SỐ</span>
                     </div>
-                    <div className="flex gap-4 font-extrabold text-indigo-400">
+                    <div className="flex gap-4 font-extrabold text-indigo-400 whitespace-nowrap">
                         <span>VẬT LÝ</span>
                         <span>•</span>
                         <span>HÓA HỌC</span>

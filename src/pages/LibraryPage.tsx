@@ -604,33 +604,6 @@ export default function Library() {
                                 )}
                             </div>
                         </div>
-
-                        {/* ===== Plan Legend / Chú thích gói ===== */}
-                        <div className="hidden xl:flex items-center gap-2 px-2 border-l border-slate-200/60 dark:border-white/10 ml-2 pl-4">
-                            <span className="text-[10px] font-black uppercase tracking-widest text-slate-400 dark:text-slate-500 mr-1">Yêu cầu gói:</span>
-                            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-[10px] font-black bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 border border-slate-200 dark:border-white/10">
-                                <span className="w-1.5 h-1.5 rounded-full bg-slate-400 inline-block" />
-                                Miễn phí
-                            </span>
-                            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-[10px] font-black bg-blue-50 dark:bg-blue-950/30 text-blue-600 dark:text-blue-400 border border-blue-200 dark:border-blue-800">
-                                <span className="w-1.5 h-1.5 rounded-full bg-blue-500 inline-block" />
-                                Cơ bản
-                            </span>
-                            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-[10px] font-black bg-violet-50 dark:bg-violet-950/30 text-violet-600 dark:text-violet-400 border border-violet-200 dark:border-violet-800">
-                                <span className="w-1.5 h-1.5 rounded-full bg-violet-500 inline-block" />
-                                Pro
-                            </span>
-                            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-[10px] font-black bg-emerald-50 dark:bg-emerald-950/30 text-emerald-600 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800">
-                                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 inline-block" />
-                                Trường học
-                            </span>
-                        </div>
-
-                        {/* Results count badge */}
-                        <div className="text-right whitespace-nowrap hidden lg:flex items-center gap-2">
-                            <span className="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Kết quả:</span>
-                            <span className="text-sm font-black text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-950/40 px-3 py-1.5 rounded-xl border border-indigo-100/50 dark:border-indigo-500/15">{filteredMaterials.length}</span>
-                        </div>
                     </div>
                 </div>
 
