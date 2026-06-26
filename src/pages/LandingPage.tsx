@@ -254,20 +254,20 @@ export default function Landing() {
                         <div className="my-auto py-4 sm:py-8">
                             {/* Brand title */}
                             <h1
-                                className="font-black text-white leading-none text-4xl sm:text-6xl lg:text-[5rem] xl:text-[5.5rem] tracking-tight"
+                                className="font-black text-white leading-none text-4xl sm:text-6xl lg:text-[5.25rem] xl:text-[6rem] tracking-tight"
                             >
                                 EduTech
                             </h1>
 
                             {/* Tagline */}
-                            <p className="mt-3 sm:mt-5 [@media(max-height:750px)]:mt-2 font-bold text-white leading-tight text-lg sm:text-2xl lg:text-[2rem] xl:text-[2.25rem] max-w-[40rem]">
+                            <p className="mt-3 sm:mt-5 [@media(max-height:750px)]:mt-2 font-bold text-white leading-tight text-lg sm:text-2xl lg:text-[2.15rem] xl:text-[2.45rem] max-w-[45rem]">
                                 Biến kiến thức trừu tượng
                                 <br className="hidden sm:inline" />
                                 {' '}thành trải nghiệm trực quan
                             </p>
 
                             {/* Sub-description */}
-                            <p className="mt-2 sm:mt-4 [@media(max-height:750px)]:mt-2 font-medium text-slate-300 leading-relaxed text-sm sm:text-base lg:text-[1.125rem] xl:text-[1.25rem] max-w-[36rem]">
+                            <p className="mt-2 sm:mt-4 [@media(max-height:750px)]:mt-2 font-medium text-slate-200 leading-relaxed text-sm sm:text-base lg:text-[1.2rem] xl:text-[1.3rem] max-w-[40rem]">
                                 Hiểu nhanh hơn nhớ lâu hơn với mô hình 3D, infographic và AI
                                 <br className="hidden sm:inline" />
                                 {' '}Tiết kiệm thời gian soạn bài và tìm học liệu trực quan
@@ -285,18 +285,18 @@ export default function Landing() {
 
                             {/* ── FEATURE ICONS PANEL (nằm bên dưới, trong hero) ── */}
                             <div
-                                className="mt-6 sm:mt-10 lg:mt-12 [@media(max-height:750px)]:mt-6 grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4 lg:gap-5 max-w-[56rem]"
+                                className="mt-6 sm:mt-10 lg:mt-12 [@media(max-height:750px)]:mt-6 grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4 lg:gap-5 max-w-[50rem]"
                             >
                                 {FEATURES.map((f, i) => (
                                     <div
                                         key={i}
-                                        className="rounded-2xl border border-white/20 bg-white/10 backdrop-blur-md hover:bg-white/15 transition-colors p-4 sm:p-5 lg:p-[1.25rem] xl:p-[1.5rem] shadow-md flex flex-col justify-between"
+                                        className="rounded-2xl border border-white/20 bg-white/10 backdrop-blur-md hover:bg-white/15 transition-colors p-4 sm:p-5 lg:p-[1.25rem] xl:p-[1.5rem] shadow-sm flex flex-col items-center justify-start min-h-[10.5rem] sm:min-h-[12rem] lg:min-h-[14rem] xl:min-h-[15rem]"
                                     >
-                                        <div className="flex justify-center scale-100 sm:scale-115 [@media(max-height:750px)]:scale-95 mb-1.5 sm:mb-2.5 [@media(max-height:750px)]:mb-2">{f.icon}</div>
-                                        <p className="mt-1 sm:mt-2 text-center font-extrabold text-white leading-tight whitespace-pre-line text-[0.95rem] sm:text-base lg:text-[1.05rem] xl:text-[1.125rem] tracking-wide">
+                                        <div className="flex justify-center scale-95 sm:scale-110 lg:scale-120 mb-2 sm:mb-3 lg:mb-4">{f.icon}</div>
+                                        <p className="mt-1.5 sm:mt-2 text-center font-black text-white leading-snug whitespace-pre-line text-[0.95rem] sm:text-sm lg:text-[1.15rem] xl:text-[1.25rem] tracking-wide">
                                             {f.title}
                                         </p>
-                                        <p className="mt-2 sm:mt-2.5 text-center text-slate-100 leading-tight whitespace-pre-line text-[0.8rem] sm:text-xs lg:text-[0.875rem] xl:text-[0.9375rem] font-medium opacity-90">
+                                        <p className="mt-2.5 sm:mt-3 text-center text-white leading-relaxed whitespace-pre-line text-[0.78rem] sm:text-xs lg:text-[0.925rem] xl:text-[0.975rem] font-medium opacity-100">
                                             {f.sub}
                                         </p>
                                     </div>
