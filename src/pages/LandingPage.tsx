@@ -254,21 +254,20 @@ export default function Landing() {
                         <div className="my-auto py-4 sm:py-8">
                             {/* Brand title */}
                             <h1
-                                className="font-black text-white leading-none"
-                                style={{ fontSize: 'clamp(32px, min(8vw, 12vh), 90px)', letterSpacing: '-0.02em' }}
+                                className="font-black text-white leading-none text-4xl sm:text-6xl lg:text-[5rem] xl:text-[5.5rem] tracking-tight"
                             >
                                 EduTech
                             </h1>
 
                             {/* Tagline */}
-                            <p className="mt-3 sm:mt-5 [@media(max-height:750px)]:mt-2 font-bold text-white leading-tight" style={{ fontSize: 'clamp(18px, min(3vw, 4.5vh), 36px)', maxWidth: 650 }}>
+                            <p className="mt-3 sm:mt-5 [@media(max-height:750px)]:mt-2 font-bold text-white leading-tight text-lg sm:text-2xl lg:text-[2rem] xl:text-[2.25rem] max-w-[40rem]">
                                 Biến kiến thức trừu tượng
                                 <br className="hidden sm:inline" />
                                 {' '}thành trải nghiệm trực quan
                             </p>
 
                             {/* Sub-description */}
-                            <p className="mt-2 sm:mt-4 [@media(max-height:750px)]:mt-2 font-medium text-slate-300 leading-relaxed" style={{ fontSize: 'clamp(14px, min(1.5vw, 2.5vh), 20px)', maxWidth: 600 }}>
+                            <p className="mt-2 sm:mt-4 [@media(max-height:750px)]:mt-2 font-medium text-slate-300 leading-relaxed text-sm sm:text-base lg:text-[1.125rem] xl:text-[1.25rem] max-w-[36rem]">
                                 Hiểu nhanh hơn nhớ lâu hơn với mô hình 3D, infographic và AI
                                 <br className="hidden sm:inline" />
                                 {' '}Tiết kiệm thời gian soạn bài và tìm học liệu trực quan
@@ -278,8 +277,7 @@ export default function Landing() {
                             <div className="mt-5 sm:mt-8 [@media(max-height:750px)]:mt-4">
                                 <Link
                                     to="/register"
-                                    className="inline-flex items-center gap-2 rounded-full bg-blue-600 px-7 py-3 sm:px-9 sm:py-3.5 font-bold text-white shadow-lg hover:bg-blue-500 hover:-translate-y-0.5 hover:shadow-blue-600/40 hover:shadow-xl transition-all duration-200"
-                                    style={{ fontSize: 'clamp(14px, min(1.5vw, 2.5vh), 18px)' }}
+                                    className="inline-flex items-center gap-2 rounded-full bg-blue-600 px-7 py-3 sm:px-9 sm:py-3.5 font-bold text-white shadow-lg hover:bg-blue-500 hover:-translate-y-0.5 hover:shadow-blue-600/40 hover:shadow-xl transition-all duration-200 text-sm sm:text-base lg:text-[1rem] xl:text-[1.125rem]"
                                 >
                                     Trải nghiệm ngay
                                 </Link>
@@ -287,20 +285,18 @@ export default function Landing() {
 
                             {/* ── FEATURE ICONS PANEL (nằm bên dưới, trong hero) ── */}
                             <div
-                                className="mt-6 sm:mt-10 lg:mt-12 [@media(max-height:750px)]:mt-6 grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4 lg:gap-5"
-                                style={{ maxWidth: 800 }}
+                                className="mt-6 sm:mt-10 lg:mt-12 [@media(max-height:750px)]:mt-6 grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4 lg:gap-5 max-w-[50rem]"
                             >
                                 {FEATURES.map((f, i) => (
                                     <div
                                         key={i}
-                                        className="rounded-2xl border border-white/20 bg-white/10 backdrop-blur-md hover:bg-white/15 transition-colors"
-                                        style={{ padding: 'clamp(12px, min(2vw, 2.5vh), 20px)' }}
+                                        className="rounded-2xl border border-white/20 bg-white/10 backdrop-blur-md hover:bg-white/15 transition-colors p-3 sm:p-4 lg:p-[1.125rem] xl:p-[1.25rem]"
                                     >
                                         <div className="flex justify-center scale-90 sm:scale-110 [@media(max-height:750px)]:scale-75 mb-1 sm:mb-2 [@media(max-height:750px)]:mb-1">{f.icon}</div>
-                                        <p className="mt-1 sm:mt-2 [@media(max-height:750px)]:mt-1 text-center font-bold text-white leading-tight whitespace-pre-line" style={{ fontSize: 'clamp(11px, min(1.2vw, 1.8vh), 14px)' }}>
+                                        <p className="mt-1 sm:mt-2 [@media(max-height:750px)]:mt-1 text-center font-bold text-white leading-tight whitespace-pre-line text-[0.7rem] sm:text-xs lg:text-[0.8rem] xl:text-[0.875rem]">
                                             {f.title}
                                         </p>
-                                        <p className="mt-1 sm:mt-1.5 [@media(max-height:750px)]:mt-1 text-center text-slate-300 leading-tight whitespace-pre-line" style={{ fontSize: 'clamp(9px, min(1vw, 1.5vh), 12px)' }}>
+                                        <p className="mt-1 sm:mt-1.5 [@media(max-height:750px)]:mt-1 text-center text-slate-300 leading-tight whitespace-pre-line text-[0.6rem] sm:text-[10px] lg:text-[0.7rem] xl:text-[0.75rem]">
                                             {f.sub}
                                         </p>
                                     </div>
@@ -336,10 +332,10 @@ export default function Landing() {
                         <div className="grid grid-cols-1 items-start gap-8 lg:grid-cols-[1.8fr_1.1fr_1.6fr] lg:gap-12 xl:gap-16">
                             {/* Left – Story */}
                             <div className="flex flex-col">
-                                <h2 className="font-black text-blue-700 leading-tight" style={{ fontSize: 'clamp(32px, 5vw, 60px)' }}>
+                                <h2 className="font-black text-blue-700 leading-tight text-3xl sm:text-4xl lg:text-[3.25rem] xl:text-[3.75rem]">
                                     Câu chuyện của EduTech
                                 </h2>
-                                <div className="mt-6 leading-relaxed text-slate-700 font-medium" style={{ fontSize: 'clamp(16px, 2vw, 24px)' }}>
+                                <div className="mt-6 leading-relaxed text-slate-700 font-medium text-base sm:text-lg lg:text-[1.25rem] xl:text-[1.5rem]">
                                     <p className="mb-4">
                                         Nhiều kiến thức Khoa học quá trừu tượng để chỉ truyền đạt bằng hình ảnh tĩnh.
                                     </p>
@@ -414,7 +410,7 @@ export default function Landing() {
                 ══════════════════════════════════════ */}
                 <section className="bg-[#1b3a5c] py-20 text-center">
                     <div className="mx-auto max-w-4xl px-8">
-                        <p className="font-medium italic leading-loose text-white/95" style={{ fontSize: 'clamp(18px, 2.5vw, 30px)' }}>
+                        <p className="font-medium italic leading-loose text-white/95 text-lg sm:text-xl lg:text-[1.5rem] xl:text-[1.875rem]">
                             <em>EduTech giúp việc giảng dạy trở nên trực quan hơn.</em>
                             <br />
                             <em>Để mỗi học sinh không còn phải nói...</em>
@@ -436,7 +432,7 @@ export default function Landing() {
                             </p>
                         </div>
                         <div className="mb-8 flex items-center justify-between">
-                            <h2 className="font-black text-slate-900 leading-tight" style={{ fontSize: 'clamp(28px, 4vw, 48px)' }}>
+                            <h2 className="font-black text-slate-900 leading-tight text-2xl sm:text-3xl lg:text-[2.5rem] xl:text-[3rem]">
                                 Mô hình 3D nổi bật
                             </h2>
                             <Link
@@ -517,15 +513,14 @@ export default function Landing() {
                     />
 
                     <div className="relative z-10 mx-auto max-w-4xl px-6">
-                        <h2 className="font-black text-slate-900 leading-tight" style={{ fontSize: 'clamp(36px, 6vw, 72px)' }}>
+                        <h2 className="font-black text-slate-900 leading-tight text-3xl sm:text-5xl lg:text-[3.75rem] xl:text-[4.5rem]">
                             Sẵn sàng vào lớp học số
                         </h2>
 
                         <div className="mt-8 sm:mt-10">
                             <Link
                                 to="/register"
-                                className="inline-flex items-center gap-2 rounded-full bg-blue-600 font-bold text-white shadow-lg hover:bg-blue-500 hover:-translate-y-0.5 hover:shadow-blue-600/40 hover:shadow-xl transition-all duration-200"
-                                style={{ padding: 'clamp(12px, 2vw, 20px) clamp(24px, 4vw, 48px)', fontSize: 'clamp(16px, 2vw, 20px)' }}
+                                className="inline-flex items-center gap-2 rounded-full bg-blue-600 font-bold text-white shadow-lg hover:bg-blue-500 hover:-translate-y-0.5 hover:shadow-blue-600/40 hover:shadow-xl transition-all duration-200 py-3 px-6 sm:py-4 sm:px-10 lg:py-[1rem] lg:px-[2.5rem] text-base sm:text-lg lg:text-[1.125rem] xl:text-[1.25rem]"
                             >
                                 Trải nghiệm ngay
                             </Link>
