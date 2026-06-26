@@ -52,8 +52,8 @@ const FEATURES = [
     {
         icon: (
             <svg viewBox="0 0 40 40" className="w-9 h-9" fill="none">
-                <polygon points="20,4 36,32 4,32" fill="none" stroke="#94a3b8" strokeWidth="2.5" />
-                <polygon points="20,10 30,28 10,28" fill="none" stroke="#94a3b8" strokeWidth="1.5" opacity="0.5" />
+                <polygon points="20,4 36,32 4,32" fill="none" stroke="#ffffff" strokeWidth="2.5" />
+                <polygon points="20,10 30,28 10,28" fill="none" stroke="#ffffff" strokeWidth="1.5" opacity="0.6" />
             </svg>
         ),
         title: 'Mô hình 3D\ntrực quan',
@@ -62,11 +62,11 @@ const FEATURES = [
     {
         icon: (
             <svg viewBox="0 0 40 40" className="w-9 h-9" fill="none">
-                <rect x="4" y="6" width="32" height="22" rx="2" stroke="#94a3b8" strokeWidth="2.2" />
-                <line x1="10" y1="13" x2="30" y2="13" stroke="#94a3b8" strokeWidth="2" />
-                <line x1="10" y1="18" x2="30" y2="18" stroke="#94a3b8" strokeWidth="2" />
-                <line x1="10" y1="23" x2="20" y2="23" stroke="#94a3b8" strokeWidth="2" />
-                <rect x="14" y="28" width="12" height="5" rx="1" fill="#94a3b8" opacity="0.4" />
+                <rect x="4" y="6" width="32" height="22" rx="2" stroke="#ffffff" strokeWidth="2.2" />
+                <line x1="10" y1="13" x2="30" y2="13" stroke="#ffffff" strokeWidth="2" />
+                <line x1="10" y1="18" x2="30" y2="18" stroke="#ffffff" strokeWidth="2" />
+                <line x1="10" y1="23" x2="20" y2="23" stroke="#ffffff" strokeWidth="2" />
+                <rect x="14" y="28" width="12" height="5" rx="1" fill="#ffffff" opacity="0.5" />
             </svg>
         ),
         title: 'Infographic\nsinh động',
@@ -75,8 +75,8 @@ const FEATURES = [
     {
         icon: (
             <svg viewBox="0 0 40 40" className="w-9 h-9" fill="none">
-                <rect x="4" y="4" width="32" height="26" rx="3" stroke="#94a3b8" strokeWidth="2.2" />
-                <text x="20" y="22" textAnchor="middle" fontSize="16" fontWeight="bold" fill="#94a3b8">AI</text>
+                <rect x="4" y="4" width="32" height="26" rx="3" stroke="#ffffff" strokeWidth="2.2" />
+                <text x="20" y="22" textAnchor="middle" fontSize="16" fontWeight="bold" fill="#ffffff">AI</text>
             </svg>
         ),
         title: 'AI tìm kiếm\nthông minh',
@@ -85,12 +85,12 @@ const FEATURES = [
     {
         icon: (
             <svg viewBox="0 0 40 40" className="w-9 h-9" fill="none">
-                <rect x="6" y="3" width="22" height="28" rx="2" stroke="#94a3b8" strokeWidth="2.2" />
-                <path d="M14 3v28" stroke="#94a3b8" strokeWidth="1.2" opacity="0.4" />
-                <rect x="28" y="18" width="8" height="15" rx="1" stroke="#94a3b8" strokeWidth="1.8" />
-                <line x1="10" y1="10" x2="22" y2="10" stroke="#94a3b8" strokeWidth="1.5" />
-                <line x1="10" y1="15" x2="22" y2="15" stroke="#94a3b8" strokeWidth="1.5" />
-                <line x1="10" y1="20" x2="18" y2="20" stroke="#94a3b8" strokeWidth="1.5" />
+                <rect x="6" y="3" width="22" height="28" rx="2" stroke="#ffffff" strokeWidth="2.2" />
+                <path d="M14 3v28" stroke="#ffffff" strokeWidth="1.2" opacity="0.5" />
+                <rect x="28" y="18" width="8" height="15" rx="1" stroke="#ffffff" strokeWidth="1.8" />
+                <line x1="10" y1="10" x2="22" y2="10" stroke="#ffffff" strokeWidth="1.5" />
+                <line x1="10" y1="15" x2="22" y2="15" stroke="#ffffff" strokeWidth="1.5" />
+                <line x1="10" y1="20" x2="18" y2="20" stroke="#ffffff" strokeWidth="1.5" />
             </svg>
         ),
         title: 'Bám sát sách\ngiáo khoa',
@@ -285,18 +285,18 @@ export default function Landing() {
 
                             {/* ── FEATURE ICONS PANEL (nằm bên dưới, trong hero) ── */}
                             <div
-                                className="mt-6 sm:mt-10 lg:mt-12 [@media(max-height:750px)]:mt-6 grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4 lg:gap-5 max-w-[50rem]"
+                                className="mt-6 sm:mt-10 lg:mt-12 [@media(max-height:750px)]:mt-6 grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4 lg:gap-5 max-w-[56rem]"
                             >
                                 {FEATURES.map((f, i) => (
                                     <div
                                         key={i}
-                                        className="rounded-2xl border border-white/20 bg-white/10 backdrop-blur-md hover:bg-white/15 transition-colors p-3 sm:p-4 lg:p-[1.125rem] xl:p-[1.25rem]"
+                                        className="rounded-2xl border border-white/20 bg-white/10 backdrop-blur-md hover:bg-white/15 transition-colors p-4 sm:p-5 lg:p-[1.25rem] xl:p-[1.5rem] shadow-md flex flex-col justify-between"
                                     >
-                                        <div className="flex justify-center scale-90 sm:scale-110 [@media(max-height:750px)]:scale-75 mb-1 sm:mb-2 [@media(max-height:750px)]:mb-1">{f.icon}</div>
-                                        <p className="mt-1 sm:mt-2 [@media(max-height:750px)]:mt-1 text-center font-bold text-white leading-tight whitespace-pre-line text-[0.7rem] sm:text-xs lg:text-[0.8rem] xl:text-[0.875rem]">
+                                        <div className="flex justify-center scale-100 sm:scale-115 [@media(max-height:750px)]:scale-95 mb-1.5 sm:mb-2.5 [@media(max-height:750px)]:mb-2">{f.icon}</div>
+                                        <p className="mt-1 sm:mt-2 text-center font-extrabold text-white leading-tight whitespace-pre-line text-[0.95rem] sm:text-base lg:text-[1.05rem] xl:text-[1.125rem] tracking-wide">
                                             {f.title}
                                         </p>
-                                        <p className="mt-1 sm:mt-1.5 [@media(max-height:750px)]:mt-1 text-center text-slate-300 leading-tight whitespace-pre-line text-[0.6rem] sm:text-[10px] lg:text-[0.7rem] xl:text-[0.75rem]">
+                                        <p className="mt-2 sm:mt-2.5 text-center text-slate-100 leading-tight whitespace-pre-line text-[0.8rem] sm:text-xs lg:text-[0.875rem] xl:text-[0.9375rem] font-medium opacity-90">
                                             {f.sub}
                                         </p>
                                     </div>
