@@ -565,17 +565,16 @@ export default function ModelViewer({
                 </Canvas>
             </Suspense>
 
-            {/* Premium Interaction Help Overlay */}
             {!minimal && (
-                <div className={`absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-3.5 px-4.5 py-2.5 backdrop-blur-md rounded-full text-[0.625rem] uppercase tracking-widest border pointer-events-none transition-all duration-300 ${
+                <div className={`absolute bottom-3 left-1/2 -translate-x-1/2 flex items-center gap-2.5 px-3.5 py-1.5 backdrop-blur-md rounded-full text-[0.55rem] font-bold uppercase tracking-widest border pointer-events-none transition-all duration-300 ${
                     theme === 'dark'
                     ? 'bg-black/60 text-white/95 border-white/10'
                     : 'bg-white/80 text-slate-800 border-slate-200 shadow-md'
                 }`}>
-                    <span className="flex items-center gap-1.5"><HelpCircle className="w-3.5 h-3.5 text-indigo-400" /> Xoay chuột</span>
-                    <div className={`w-px h-3.5 ${theme === 'dark' ? 'bg-white/20' : 'bg-slate-300'}`} />
+                    <span className="flex items-center gap-1"><HelpCircle className="w-3 h-3 text-indigo-400" /> Xoay chuột</span>
+                    <div className={`w-px h-2.5 ${theme === 'dark' ? 'bg-white/25' : 'bg-slate-300'}`} />
                     <span>Cuộn để Zoom</span>
-                    <div className={`w-px h-3.5 ${theme === 'dark' ? 'bg-white/20' : 'bg-slate-300'}`} />
+                    <div className={`w-px h-2.5 ${theme === 'dark' ? 'bg-white/25' : 'bg-slate-300'}`} />
                     <span>Chuột phải di chuyển</span>
                 </div>
             )}

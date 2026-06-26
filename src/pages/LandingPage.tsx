@@ -285,18 +285,18 @@ export default function Landing() {
 
                             {/* ── FEATURE ICONS PANEL (nằm bên dưới, trong hero) ── */}
                             <div
-                                className="mt-6 sm:mt-10 lg:mt-12 [@media(max-height:750px)]:mt-6 grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4 lg:gap-5 max-w-[50rem]"
+                                className="mt-6 sm:mt-10 lg:mt-12 [@media(max-height:750px)]:mt-6 grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4 lg:gap-5 max-w-[74rem]"
                             >
                                 {FEATURES.map((f, i) => (
                                     <div
                                         key={i}
-                                        className="rounded-2xl border border-white/20 bg-white/10 backdrop-blur-md hover:bg-white/15 transition-colors p-4 sm:p-5 lg:p-[1.25rem] xl:p-[1.5rem] shadow-sm flex flex-col items-center justify-start min-h-[10.5rem] sm:min-h-[12rem] lg:min-h-[14rem] xl:min-h-[15rem]"
+                                        className="rounded-3xl border border-white/20 bg-white/10 backdrop-blur-md hover:bg-white/15 transition-colors p-4 sm:p-5 lg:p-6 shadow-sm flex flex-col items-center justify-center min-h-[7.5rem] sm:min-h-[8rem] lg:min-h-[8.5rem] xl:min-h-[9rem]"
                                     >
-                                        <div className="flex justify-center scale-95 sm:scale-110 lg:scale-120 mb-2 sm:mb-3 lg:mb-4">{f.icon}</div>
-                                        <p className="mt-1.5 sm:mt-2 text-center font-black text-white leading-snug whitespace-pre-line text-[0.95rem] sm:text-sm lg:text-[1.15rem] xl:text-[1.25rem] tracking-wide">
+                                        <div className="flex justify-center scale-90 sm:scale-100 lg:scale-110 mb-1.5 sm:mb-2">{f.icon}</div>
+                                        <p className="mt-1 sm:mt-1.5 text-center font-black text-white leading-snug whitespace-pre-line text-[0.95rem] sm:text-sm lg:text-[1.15rem] xl:text-[1.25rem] tracking-wide">
                                             {f.title}
                                         </p>
-                                        <p className="mt-2.5 sm:mt-3 text-center text-white leading-relaxed whitespace-pre-line text-[0.78rem] sm:text-xs lg:text-[0.925rem] xl:text-[0.975rem] font-medium opacity-100">
+                                        <p className="mt-1.5 sm:mt-2 text-center text-white leading-relaxed whitespace-pre-line text-[0.78rem] sm:text-xs lg:text-[0.925rem] xl:text-[0.975rem] font-medium opacity-90">
                                             {f.sub}
                                         </p>
                                     </div>
