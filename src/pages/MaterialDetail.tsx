@@ -705,7 +705,7 @@ export default function MaterialDetail() {
                                 className={`flex-1 min-h-0 w-full h-full relative flex flex-row group overflow-hidden transition-all duration-500 rounded-2xl ${
                                     material.subtitle
                                         ? (theme === 'light' ? "border border-stone-200/40 shadow-inner shadow-amber-950/5" : "border border-white/5 shadow-inner")
-                                        : "bg-gradient-to-br from-slate-100 to-slate-50 dark:from-slate-900 dark:to-slate-950"
+                                        : "bg-gradient-to-br from-slate-200 to-slate-100 dark:from-slate-950 dark:to-black"
                                 }`}
                                 style={
                                     material.subtitle && theme === 'light'
@@ -715,7 +715,7 @@ export default function MaterialDetail() {
                                                   material.id === 'plant-cell' ? '#7fb069' :
                                                   material.id === 'animal-cell' ? '#e8859a' :
                                                   material.id === 'white-blood-cell' ? '#c8a2d8' : '#f0a868'
-                                              } 10%, #f8fafc) 0%, #f1f5f9 55%, #e2e8f0 100%)`,
+                                              } 10%, #f1f5f9) 0%, #e2e8f0 55%, #cbd5e1 100%)`,
                                           }
                                         : material.subtitle && theme === 'dark'
                                         ? {
@@ -724,7 +724,7 @@ export default function MaterialDetail() {
                                                   material.id === 'plant-cell' ? '#064e3b' :
                                                   material.id === 'animal-cell' ? '#4c0519' :
                                                   material.id === 'white-blood-cell' ? '#3b0764' : '#451a03'
-                                              } 40%, #030712) 0%, #030712 60%, #0f172a 100%)`,
+                                              } 40%, #020617) 0%, #020617 60%, #000000 100%)`,
                                           }
                                         : {}
                                 }
@@ -1343,7 +1343,7 @@ export default function MaterialDetail() {
                                                  </label>
                                                  <button
                                                      type="button"
-                                                     onClick={() => setEditFormData(prev => ({ ...prev, quiz: [...(prev.quiz || []), { question: '', options: ['', '', '', ''], correctOptionIndex: 0, explanation: '' }] }))}
+                                                     onClick={() => setEditFormData(prev => ({ ...prev, quiz: [...(prev.quiz || []), { question: '', options: ['', '', '', ''], correctAnswerIndex: 0, explanation: '' }] }))}
                                                      className="text-[0.625rem] bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 px-2 py-1 rounded border border-indigo-200 dark:border-indigo-500/30 hover:bg-indigo-100 font-bold"
                                                  >
                                                      + Thêm câu hỏi
@@ -1381,10 +1381,10 @@ export default function MaterialDetail() {
                                                                          <input
                                                                              type="radio"
                                                                              name={`correct-${qIndex}`}
-                                                                             checked={q.correctOptionIndex === oIndex}
+                                                                             checked={q.correctAnswerIndex === oIndex}
                                                                              onChange={() => {
                                                                                  const newQuiz = [...editFormData.quiz];
-                                                                                 newQuiz[qIndex].correctOptionIndex = oIndex;
+                                                                                 newQuiz[qIndex].correctAnswerIndex = oIndex;
                                                                                  setEditFormData({ ...editFormData, quiz: newQuiz });
                                                                              }}
                                                                              className="w-3.5 h-3.5 text-indigo-600 focus:ring-indigo-500 cursor-pointer"
@@ -1392,7 +1392,7 @@ export default function MaterialDetail() {
                                                                          <input
                                                                              type="text"
                                                                              placeholder={`Đáp án ${oIndex + 1}`}
-                                                                             className={`p-1.5 bg-slate-50 dark:bg-slate-950/40 border rounded text-xs focus:outline-none w-full text-slate-950 dark:text-white ${q.correctOptionIndex === oIndex ? 'border-indigo-500' : 'border-slate-200 dark:border-white/10'}`}
+                                                                             className={`p-1.5 bg-slate-50 dark:bg-slate-950/40 border rounded text-xs focus:outline-none w-full text-slate-950 dark:text-white ${q.correctAnswerIndex === oIndex ? 'border-indigo-500' : 'border-slate-200 dark:border-white/10'}`}
                                                                              value={opt}
                                                                              onChange={e => {
                                                                                  const newQuiz = [...editFormData.quiz];
@@ -1522,12 +1522,12 @@ export default function MaterialDetail() {
                                 {activeTab === 'info' && (
                                     <div className="space-y-4 animate-in fade-in duration-300">
                                         {/* Concept Card */}
-                                        <div className={`p-4 sm:p-5 rounded-2xl border ${
+                                        <div className={`p-5 sm:p-6 rounded-2xl border ${
                                             material.subtitle 
-                                                ? (theme === 'light' ? 'bg-stone-50/50 border-stone-200/30' : 'bg-slate-950/40 border-white/5') 
+                                                ? (theme === 'light' ? 'bg-stone-50/50 border-stone-200/30 shadow-sm' : 'bg-slate-950/40 border-white/5 shadow-md') 
                                                 : 'bg-slate-50/50 dark:bg-slate-950/40 border-slate-100 dark:border-white/5'
                                         }`}>
-                                            <h3 className="text-[0.625rem] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-[0.15em] mb-2">
+                                            <h3 className="text-[0.6875rem] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-[0.15em] mb-2">
                                                 Khái niệm khoa học
                                             </h3>
                                             <p className={`text-sm leading-relaxed text-slate-700 dark:text-slate-300 font-normal ${
@@ -1542,38 +1542,38 @@ export default function MaterialDetail() {
 
                                         {/* Quick Stats Grid for Premium Models */}
                                         {material.subtitle && (
-                                            <div className={`grid grid-cols-2 gap-3 p-4 sm:p-5 rounded-2xl border ${
-                                                theme === 'light' ? 'bg-stone-50/50 border-stone-200/30' : 'bg-slate-950/40 border-white/5'
+                                            <div className={`grid grid-cols-2 gap-x-5 gap-y-4 p-5 sm:p-6 rounded-2xl border ${
+                                                theme === 'light' ? 'bg-stone-50/50 border-stone-200/30 shadow-sm' : 'bg-slate-950/40 border-white/5 shadow-md'
                                             }`}>
-                                                <div>
-                                                    <div className="text-stone-400 dark:text-slate-500 text-[0.5625rem] font-bold uppercase tracking-wider mb-0.5">
+                                                <div className="space-y-1">
+                                                    <div className="text-stone-400 dark:text-slate-500 text-[0.6875rem] font-bold uppercase tracking-wider">
                                                         {cleanLabel(config.category.label)}
                                                     </div>
-                                                    <div className="text-stone-800 dark:text-slate-200 text-xs font-semibold">
+                                                    <div className="text-stone-800 dark:text-slate-200 text-sm font-semibold leading-relaxed">
                                                         <LatexText text={material.category || 'Mô hình 3D'} />
                                                     </div>
                                                 </div>
-                                                <div>
-                                                    <div className="text-stone-400 dark:text-slate-500 text-[0.5625rem] font-bold uppercase tracking-wider mb-0.5">
+                                                <div className="space-y-1">
+                                                    <div className="text-stone-400 dark:text-slate-500 text-[0.6875rem] font-bold uppercase tracking-wider">
                                                         {cleanLabel(config.size.label)}
                                                     </div>
-                                                    <div className="text-stone-800 dark:text-slate-200 text-xs font-semibold">
+                                                    <div className="text-stone-800 dark:text-slate-200 text-sm font-semibold leading-relaxed">
                                                         <LatexText text={material.size || 'N/A'} />
                                                     </div>
                                                 </div>
-                                                <div>
-                                                    <div className="text-stone-400 dark:text-slate-500 text-[0.5625rem] font-bold uppercase tracking-wider mb-0.5">
+                                                <div className="space-y-1">
+                                                    <div className="text-stone-400 dark:text-slate-500 text-[0.6875rem] font-bold uppercase tracking-wider">
                                                         {cleanLabel(config.location.label)}
                                                     </div>
-                                                    <div className="text-stone-800 dark:text-slate-200 text-xs font-semibold">
+                                                    <div className="text-stone-800 dark:text-slate-200 text-sm font-semibold leading-relaxed">
                                                         <LatexText text={material.location || 'N/A'} />
                                                     </div>
                                                 </div>
-                                                <div>
-                                                    <div className="text-stone-400 dark:text-slate-500 text-[0.5625rem] font-bold uppercase tracking-wider mb-0.5 leading-snug">
+                                                <div className="space-y-1">
+                                                    <div className="text-stone-400 dark:text-slate-500 text-[0.6875rem] font-bold uppercase tracking-wider leading-snug">
                                                         {cleanLabel(config.visibleInLM.label)}
                                                     </div>
-                                                    <div className="text-stone-800 dark:text-slate-200 text-xs font-semibold">
+                                                    <div className="text-stone-800 dark:text-slate-200 text-sm font-semibold leading-relaxed">
                                                         {material.id === 'dna' ? (
                                                             <span className="text-[#b53b3b] dark:text-[#f472b6] font-bold">Điện tử</span>
                                                         ) : (
@@ -1586,8 +1586,8 @@ export default function MaterialDetail() {
 
                                         {/* Tags for Normal Models */}
                                         {!material.subtitle && material.tags && material.tags.length > 0 && (
-                                            <div className="p-4 sm:p-5 rounded-2xl border bg-slate-50/50 dark:bg-slate-950/40 border-slate-100 dark:border-white/5">
-                                                <h3 className="text-[0.625rem] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-[0.15em] mb-2.5">
+                                            <div className="p-5 sm:p-6 rounded-2xl border bg-slate-50/50 dark:bg-slate-950/40 border-slate-100 dark:border-white/5">
+                                                <h3 className="text-[0.6875rem] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-[0.15em] mb-2.5">
                                                     Từ khóa liên quan
                                                 </h3>
                                                 <div className="flex flex-wrap gap-1.5">
@@ -1605,18 +1605,18 @@ export default function MaterialDetail() {
 
                                         {/* Fun Fact (Premium Only) */}
                                         {material.funFact && (
-                                            <div className={`border rounded-2xl p-4 sm:p-5 shadow-sm bg-gradient-to-b ${
+                                            <div className={`border rounded-2xl p-5 sm:p-6 shadow-sm bg-gradient-to-b ${
                                                 theme === 'light'
-                                                    ? 'bg-amber-50/30 border-amber-200/25 from-amber-50/20 to-white/40 text-amber-900/85'
-                                                    : 'bg-amber-950/15 border-amber-900/35 from-amber-950/5 to-slate-900/10 text-amber-200/85'
+                                                    ? 'bg-amber-50/30 border-amber-200/25 from-amber-50/20 to-white/40 text-amber-900/85 shadow-sm'
+                                                    : 'bg-amber-950/15 border-amber-900/35 from-amber-950/5 to-slate-900/10 text-amber-200/85 shadow-md'
                                             }`}>
                                                 <div className="flex items-center gap-1.5 mb-2">
-                                                    <span className="text-sm">💡</span>
-                                                    <div className={`text-[0.5625rem] font-bold uppercase tracking-[0.15em] ${theme === 'light' ? 'text-amber-700' : 'text-amber-400'}`}>
+                                                    <span className="text-base">💡</span>
+                                                    <div className={`text-[0.6875rem] font-bold uppercase tracking-[0.15em] ${theme === 'light' ? 'text-amber-700' : 'text-amber-400'}`}>
                                                         {cleanLabel(config.funFact.label)}
                                                     </div>
                                                 </div>
-                                                <p className="text-xs font-heading italic leading-relaxed">
+                                                <p className="text-sm font-heading italic leading-relaxed">
                                                     "<LatexText text={material.funFact} />"
                                                 </p>
                                             </div>
@@ -1628,12 +1628,12 @@ export default function MaterialDetail() {
                                     <div className="space-y-4 animate-in fade-in duration-300">
                                         {/* Main Features */}
                                         {material.features && material.features.length > 0 && (
-                                            <div className={`p-4 sm:p-5 rounded-2xl border ${
+                                            <div className={`p-5 sm:p-6 rounded-2xl border ${
                                                 material.subtitle 
-                                                    ? (theme === 'light' ? 'bg-stone-50/50 border-stone-200/30' : 'bg-slate-950/40 border-white/5') 
+                                                    ? (theme === 'light' ? 'bg-stone-50/50 border-stone-200/30 shadow-sm' : 'bg-slate-950/40 border-white/5 shadow-md') 
                                                     : 'bg-slate-50/50 dark:bg-slate-950/40 border-slate-100 dark:border-white/5'
                                             }`}>
-                                                <h3 className="text-[0.625rem] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-[0.15em] mb-4">
+                                                <h3 className="text-[0.6875rem] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-[0.15em] mb-4">
                                                     {material.subtitle ? cleanLabel(config.featuresText.label) : 'Cấu trúc chính'}
                                                 </h3>
                                                 <ul className="flex flex-col gap-4">
@@ -1641,10 +1641,10 @@ export default function MaterialDetail() {
                                                         <li key={idx} className="flex gap-2.5 items-start">
                                                             <span className="w-1.5 h-1.5 rounded-full bg-sky-400 border border-sky-300 shadow-sm flex-shrink-0 mt-1.5" />
                                                             <div className="flex-1 min-w-0">
-                                                                <div className={`text-slate-900 dark:text-white font-bold text-xs ${material.subtitle ? 'font-heading' : ''}`}>
+                                                                <div className={`text-slate-900 dark:text-white font-bold text-sm ${material.subtitle ? 'font-heading' : ''}`}>
                                                                     <LatexText text={feature.name} />
                                                                 </div>
-                                                                <div className={`text-slate-500 dark:text-slate-400 text-[0.6875rem] mt-0.5 leading-relaxed font-normal ${material.subtitle ? 'font-sans' : ''}`}>
+                                                                <div className={`text-slate-500 dark:text-slate-400 text-xs mt-0.5 leading-relaxed font-normal ${material.subtitle ? 'font-sans' : ''}`}>
                                                                     <LatexText text={feature.detail} />
                                                                 </div>
                                                             </div>
@@ -1656,25 +1656,25 @@ export default function MaterialDetail() {
 
                                         {/* Where It Occurs (Premium Only) */}
                                         {material.whereItOccurs && (
-                                            <div className={`border rounded-2xl p-4 sm:p-5 shadow-sm bg-gradient-to-b ${
+                                            <div className={`border rounded-2xl p-5 sm:p-6 shadow-sm bg-gradient-to-b ${
                                                 theme === 'light'
-                                                    ? 'bg-emerald-50/30 border-emerald-200/25 from-emerald-50/20 to-white/40 text-emerald-950'
-                                                    : 'bg-emerald-950/10 border-emerald-900/30 from-emerald-950/5 to-slate-900/10 text-emerald-200'
+                                                    ? 'bg-emerald-50/30 border-emerald-200/25 from-emerald-50/20 to-white/40 text-emerald-950 shadow-sm'
+                                                    : 'bg-emerald-950/10 border-emerald-900/30 from-emerald-950/5 to-slate-900/10 text-emerald-200 shadow-md'
                                             }`}>
                                                 <div className="flex items-center gap-1.5 mb-2">
-                                                    <span className="text-sm">🌍</span>
-                                                    <div className={`text-[0.5625rem] font-bold uppercase tracking-[0.15em] ${theme === 'light' ? 'text-emerald-700' : 'text-emerald-400'}`}>
+                                                    <span className="text-base">🌍</span>
+                                                    <div className={`text-[0.6875rem] font-bold uppercase tracking-[0.15em] ${theme === 'light' ? 'text-emerald-700' : 'text-emerald-400'}`}>
                                                         Phân bố & nguồn gốc
                                                     </div>
                                                 </div>
-                                                <p className="leading-relaxed mb-3 text-xs font-normal">
+                                                <p className="leading-relaxed mb-3 text-sm font-normal">
                                                     <LatexText text={material.whereItOccurs.text} />
                                                 </p>
                                                 <div className={`flex flex-wrap gap-1 pt-2 border-t ${theme === 'light' ? 'border-emerald-100/30' : 'border-emerald-900/25'}`}>
                                                     {material.whereItOccurs.habitat.split('·').map((hab, idx) => (
                                                         <span 
                                                             key={idx} 
-                                                            className={`px-2 py-0.5 text-[0.5625rem] font-bold rounded-md border shadow-sm uppercase tracking-wider ${
+                                                            className={`px-2 py-0.5 text-[0.625rem] font-bold rounded-md border shadow-sm uppercase tracking-wider ${
                                                                 theme === 'light'
                                                                     ? 'bg-white border-emerald-200/40 text-emerald-800'
                                                                     : 'bg-slate-900 border-white/5 text-emerald-400'
@@ -1692,12 +1692,12 @@ export default function MaterialDetail() {
                                 {activeTab === 'related' && (
                                     <div className="space-y-4 animate-in fade-in duration-300">
                                         {/* Related Materials Card */}
-                                        <div className={`p-4 sm:p-5 rounded-2xl border ${
+                                        <div className={`p-5 sm:p-6 rounded-2xl border ${
                                             material.subtitle 
-                                                ? (theme === 'light' ? 'bg-stone-50/50 border-stone-200/30' : 'bg-slate-950/40 border-white/5') 
+                                                ? (theme === 'light' ? 'bg-stone-50/50 border-stone-200/30 shadow-sm' : 'bg-slate-950/40 border-white/5 shadow-md') 
                                                 : 'bg-slate-50/50 dark:bg-slate-950/40 border-slate-100 dark:border-white/5'
                                         }`}>
-                                            <h3 className="text-[0.625rem] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-[0.15em] mb-3">
+                                            <h3 className="text-[0.6875rem] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-[0.15em] mb-3">
                                                 Học liệu cùng chuyên mục
                                             </h3>
                                             {relatedMaterials.length > 0 ? (

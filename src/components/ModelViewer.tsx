@@ -333,8 +333,19 @@ export default function ModelViewer({
     const [loadedScene, setLoadedScene] = useState<THREE.Group | null>(null);
 
     // Default overrides for specific models if not provided
-    const isPlantCell = modelUrl.toLowerCase().includes('plant-cell');
-    const finalRotation = modelRotation || (isPlantCell ? [0, Math.PI / 2, 0] : undefined);
+    const lowerUrl = modelUrl.toLowerCase();
+    const isPlantCell = lowerUrl.includes('plant-cell') || lowerUrl.includes('thuc-vat') || lowerUrl.includes('thực vật');
+    const isAnimalCell = lowerUrl.includes('animal-cell') || lowerUrl.includes('dong-vat') || lowerUrl.includes('động vật');
+    const isNeuron = lowerUrl.includes('neuron') || lowerUrl.includes('than-kinh') || lowerUrl.includes('thần kinh');
+    const isWhiteBloodCell = lowerUrl.includes('white-blood-cell') || lowerUrl.includes('bach-cau') || lowerUrl.includes('bạch cầu');
+
+    const finalRotation = modelRotation || (
+        isPlantCell ? [0, -Math.PI / 2, 0] : 
+        isAnimalCell ? [0, Math.PI, 0] : 
+        isWhiteBloodCell ? [0, Math.PI, 0] :
+        isNeuron ? [0, Math.PI / 2, 0] :
+        undefined
+    );
     const finalTarget = cameraTarget || (isPlantCell ? [0, -0.2, 0] : [0, 0, 0]);
 
     // Dynamic quality setting, persisted to localStorage. Mặc định là false (Mượt mà) để tránh giật lag ngay từ đầu.
@@ -488,21 +499,21 @@ export default function ModelViewer({
                         isAmber ? <Environment preset="studio" /> : <Environment preset="city" />
                     ) : (
                         // Fallback ánh sáng Hemisphere khi tắt Environment để đạt hiệu năng cực đại mà vẫn giữ chiều sâu 3D
-                        <hemisphereLight skyColor="#ffffff" groundColor="#333333" intensity={isAmber ? 0.7 : 0.9} />
+                        <hemisphereLight skyColor="#ffffff" groundColor="#333333" intensity={isAmber ? 0.9 : 1.1} />
                     )}
 
-                    <ambientLight intensity={isAmber ? 0.5 : 0.6} />
-                    <directionalLight position={[10, 10, 10]} intensity={isAmber ? 0.6 : 1.2} />
+                    <ambientLight intensity={isAmber ? 0.65 : 0.8} />
+                    <directionalLight position={[10, 10, 10]} intensity={isAmber ? 0.8 : 1.4} />
 
                     {!isMobile && (
                         <>
-                            <directionalLight position={[-10, 5, -10]} intensity={isAmber ? 0.6 : 0.4} color="#ffffff" />
-                            <pointLight position={[0, -5, 5]} intensity={isAmber ? 0.4 : 0.2} color="#ffffff" />
+                            <directionalLight position={[-10, 5, -10]} intensity={isAmber ? 0.75 : 0.55} color="#ffffff" />
+                            <pointLight position={[0, -5, 5]} intensity={isAmber ? 0.5 : 0.35} color="#ffffff" />
                         </>
                     )}
 
                     {isFBX ? (
-                        <Stage environment={null} intensity={isAmber ? 0.4 : 0.9} shadows={false} adjustCamera={1.3}>
+                        <Stage environment={null} intensity={isAmber ? 0.55 : 1.1} shadows={false} adjustCamera={1.3}>
                             <FBXModel url={modelUrl} highQuality={highQuality} />
                         </Stage>
                     ) : (
@@ -528,7 +539,7 @@ export default function ModelViewer({
                                 }}
                             />
                             {loadedScene && (
-                                <Stage environment={null} intensity={isAmber ? 0.4 : 0.9} shadows={false} adjustCamera={1.3}>
+                                <Stage environment={null} intensity={isAmber ? 0.55 : 1.1} shadows={false} adjustCamera={1.3}>
                                     <primitive 
                                         object={loadedScene} 
                                         rotation={finalRotation} 
