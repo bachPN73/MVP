@@ -1,7 +1,7 @@
 import { Canvas, ThreeElements } from '@react-three/fiber';
 import { useFBX, OrbitControls, Stage, Environment } from '@react-three/drei';
 import { Suspense, useEffect, useState, useRef } from 'react';
-import { Loader2, HelpCircle, HardDrive, RefreshCw, Zap, Sparkles } from 'lucide-react';
+import { Loader2, HelpCircle, HardDrive, RefreshCw, Zap, Sparkles, Sun } from 'lucide-react';
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js';
@@ -330,6 +330,9 @@ export default function ModelViewer({
     const [loadedMb, setLoadedMb] = useState("0");
     const [totalMb, setTotalMb] = useState("0");
     const [errorMsg, setErrorMsg] = useState("");
+
+    // Brightness control: 1.0 = mức sáng mặc định (mốc giữa), range [0.2, 2.0]
+    const [lightIntensity, setLightIntensity] = useState<number>(1.0);
     const [loadedScene, setLoadedScene] = useState<THREE.Group | null>(null);
 
     // Default overrides for specific models if not provided
@@ -502,13 +505,13 @@ export default function ModelViewer({
                         <hemisphereLight skyColor="#ffffff" groundColor="#333333" intensity={isAmber ? 0.9 : 1.1} />
                     )}
 
-                    <ambientLight intensity={isAmber ? 0.65 : 0.8} />
-                    <directionalLight position={[10, 10, 10]} intensity={isAmber ? 0.8 : 1.4} />
+                    <ambientLight intensity={(isAmber ? 0.65 : 0.8) * lightIntensity} />
+                    <directionalLight position={[10, 10, 10]} intensity={(isAmber ? 0.8 : 1.4) * lightIntensity} />
 
                     {!isMobile && (
                         <>
-                            <directionalLight position={[-10, 5, -10]} intensity={isAmber ? 0.75 : 0.55} color="#ffffff" />
-                            <pointLight position={[0, -5, 5]} intensity={isAmber ? 0.5 : 0.35} color="#ffffff" />
+                            <directionalLight position={[-10, 5, -10]} intensity={(isAmber ? 0.75 : 0.55) * lightIntensity} color="#ffffff" />
+                            <pointLight position={[0, -5, 5]} intensity={(isAmber ? 0.5 : 0.35) * lightIntensity} color="#ffffff" />
                         </>
                     )}
 
@@ -565,6 +568,79 @@ export default function ModelViewer({
                 </Canvas>
             </Suspense>
 
+            {/* Brightness Slider - dọc bên trái */}
+            {!minimal && (
+                <div className={`absolute left-3 top-1/2 -translate-y-1/2 z-20 flex flex-col items-center gap-2 px-2 py-3 rounded-2xl backdrop-blur-md border shadow-lg transition-colors duration-300 ${
+                    theme === 'dark'
+                    ? 'bg-black/40 border-white/10'
+                    : 'bg-white/70 border-slate-200 shadow-slate-200/50'
+                }`}>
+                    {/* Icon Sáng - đầu trên */}
+                    <Sun className={`w-3.5 h-3.5 shrink-0 ${
+                        lightIntensity > 1.4 ? 'text-yellow-400' : theme === 'dark' ? 'text-white/50' : 'text-slate-400'
+                    }`} />
+
+                    {/* Slider dọc */}
+                    <div className="relative flex items-center justify-center" style={{ height: '100px' }}>
+                        <input
+                            type="range"
+                            min={0.2}
+                            max={2.0}
+                            step={0.05}
+                            value={lightIntensity}
+                            onChange={(e) => setLightIntensity(parseFloat(e.target.value))}
+                            title={`Độ sáng: ${Math.round(lightIntensity * 100)}%`}
+                            className="appearance-none cursor-pointer"
+                            style={{
+                                writingMode: 'vertical-lr' as any,
+                                direction: 'rtl',
+                                width: '6px',
+                                height: '100px',
+                                WebkitAppearance: 'slider-vertical',
+                                background: `linear-gradient(to top, ${
+                                    theme === 'dark' ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'
+                                } ${((1 - (lightIntensity - 0.2) / 1.8) * 100).toFixed(0)}%, ${
+                                    lightIntensity > 1.0 ? '#facc15' : '#818cf8'
+                                } ${((1 - (lightIntensity - 0.2) / 1.8) * 100).toFixed(0)}%)`,
+                                borderRadius: '999px',
+                                outline: 'none',
+                                border: 'none',
+                                padding: '0',
+                            }}
+                        />
+                        {/* Vạch đánh dấu mốc giữa (mức mặc định = 1.0) */}
+                        <div
+                            className={`absolute left-1/2 -translate-x-1/2 w-3 h-px pointer-events-none ${
+                                theme === 'dark' ? 'bg-white/40' : 'bg-slate-400/60'
+                            }`}
+                            style={{ bottom: `${((1.0 - 0.2) / 1.8) * 100}%` }}
+                            title="Mức sáng mặc định"
+                        />
+                    </div>
+
+                    {/* Icon Tối - đầu dưới */}
+                    <Sun className={`w-3 h-3 shrink-0 ${
+                        theme === 'dark' ? 'text-white/20' : 'text-slate-300'
+                    }`} />
+
+                    {/* Nút reset về mặc định khi đã chỉnh */}
+                    {Math.abs(lightIntensity - 1.0) > 0.08 && (
+                        <button
+                            onClick={() => setLightIntensity(1.0)}
+                            title="Đặt lại mức sáng mặc định"
+                            className={`mt-0.5 w-5 h-5 rounded-full flex items-center justify-center text-[9px] font-black border transition-all hover:scale-110 active:scale-95 ${
+                                theme === 'dark'
+                                ? 'bg-white/10 border-white/20 text-white/60 hover:bg-white/20'
+                                : 'bg-slate-100 border-slate-300 text-slate-500 hover:bg-slate-200'
+                            }`}
+                        >
+                            ↺
+                        </button>
+                    )}
+                </div>
+            )}
+
+            {/* Bottom help text */}
             {!minimal && (
                 <div className={`absolute bottom-3 left-1/2 -translate-x-1/2 flex items-center gap-2.5 px-3.5 py-1.5 backdrop-blur-md rounded-full text-[0.55rem] font-bold uppercase tracking-widest border pointer-events-none transition-all duration-300 ${
                     theme === 'dark'

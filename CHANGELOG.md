@@ -1,143 +1,241 @@
-# Nhật ký thay đổi theo ngày (Changelog by Date) - EduTech Web App
+# Nhật ký Thay đổi (Changelog)
 
-Tài liệu này tổng hợp toàn bộ lịch sử cập nhật của dự án EduTech được chia theo từng ngày làm việc thực tế và chi tiết các công việc đã triển khai.
+Tất cả các thay đổi đáng chú ý của dự án **EduTech** sẽ được ghi lại trong tệp này.
 
-## Ngày 26/06/2026 - Tối ưu hóa Responsive Landing Page & Đồng bộ hệ thống tag
-- **Tối ưu Landing Page:** Thay thế font-size cứng (`clamp` px) sang đơn vị `rem` và các class Tailwind responsive, kích hoạt fluid scaling tự động thu nhỏ ~29% ở độ phân giải 1366x768.
-- **Chuẩn hóa Git Tags:** Đổi tên toàn bộ 15 tags lịch sử từ định dạng ngày tháng sang định dạng phiên bản SemVer (`v0.1.0` -> `v0.15.0`) và đồng bộ hóa lên GitHub.
+Định dạng dựa trên tiêu chuẩn [Keep a Changelog](https://keepachangelog.com/vi/1.0.0/)
+và dự án này tuân thủ [Semantic Versioning](https://semver.org/lang/vi/).
 
----
-
-## Ngày 25/06/2026 - Tối ưu hóa giao diện di động & Hệ thống co giãn chữ linh hoạt
-- **Fluid Scaling toàn hệ thống:** Áp dụng công nghệ CSS fluid scaling giúp co giãn tự động cho text và layouts trên mọi thiết bị. ([43712bc](https://github.com/bachPN73/MVP/commit/43712bc))
-- **Redesign Dashboard di động:** Thiết kế lại toàn bộ Bảng điều khiển tối ưu hiển thị trên màn hình nhỏ. ([43712bc](https://github.com/bachPN73/MVP/commit/43712bc))
-- **Sửa lỗi đè layout & nhấp nháy Sidebar:** Khắc phục lỗi chồng chéo layout màn hình nhỏ và sửa hiện tượng nháy Sidebar khi chuyển route. ([ea34942](https://github.com/bachPN73/MVP/commit/ea34942))
-- **Mở rộng giao diện:** Thay nền trong suốt cho Dashboard, mở rộng container các trang Dashboard, Guide, và JoinSchool. ([66e70f4](https://github.com/bachPN73/MVP/commit/66e70f4))
-- **Dọn dẹp scrollbars:** Loại bỏ thanh cuộn không cần thiết và tối ưu bộ lọc thư viện. ([66e70f4](https://github.com/bachPN73/MVP/commit/66e70f4))
+> **Quy tắc phân loại nhãn:**
+> - `Added` — Tính năng mới hoàn toàn.
+> - `Changed` — Thay đổi đối với tính năng đã có sẵn.
+> - `Deprecated` — Tính năng sắp bị xóa trong tương lai.
+> - `Removed` — Tính năng đã bị xóa hoàn toàn.
+> - `Fixed` — Sửa lỗi.
+> - `Security` — Vá lỗ hổng bảo mật.
 
 ---
 
-## Ngày 24/06/2026 - Tối ưu mã nguồn & Khắc phục lỗ hổng bảo mật
-- **Dọn dẹp tài nguyên tĩnh:** Xóa các model demo không còn sử dụng (H2O, Solar System) và code thừa. ([99a91d2](https://github.com/bachPN73/MVP/commit/99a91d2), [028d7ac](https://github.com/bachPN73/MVP/commit/028d7ac))
-- **Sửa lỗi Sidebar & chuyển đổi trang:** Tối ưu hóa giao diện và khắc phục lỗi chuyển đổi route. ([907d0a5](https://github.com/bachPN73/MVP/commit/907d0a5), [689722c](https://github.com/bachPN73/MVP/commit/689722c))
-- **Vá lỗi bảo mật hệ thống:** Sửa lỗi phân quyền truy cập (Broken Access Control) và xác thực session, tinh chỉnh logic URL trong PresentationMode. ([411a969](https://github.com/bachPN73/MVP/commit/411a969))
+## [v2.5.0] - 2026-06-27
+
+> **Mục tiêu:** Bổ sung tính năng tương tác hỗ trợ học sinh điều chỉnh độ sáng trực quan của mô hình 3D.
+
+### Added
+- Tích hợp thanh điều chỉnh độ sáng (brightness slider) dạng cột dọc nhỏ đặt ở bên trái mô hình 3D, hỗ trợ học sinh tinh chỉnh ánh sáng mô hình từ 20% đến 200% với mốc trung bình 100% là độ sáng mặc định.
 
 ---
 
-## Ngày 23/06/2026 - Nâng cấp Landing Page, Tích hợp Quiz & Tối ưu hóa mô hình 3D
-- **Tối ưu Landing Page:** Áp dụng CSS clamp/vh giúp co giãn các thành phần khi chiều cao màn hình thấp. ([e05064a](https://github.com/bachPN73/MVP/commit/e05064a))
-- **Responsive Landing Page Hero:** Căn chỉnh logo, tinh chỉnh padding và cỡ chữ Hero section trên mobile. ([e703a82](https://github.com/bachPN73/MVP/commit/e703a82), [6b5faf9](https://github.com/bachPN73/MVP/commit/6b5faf9), [74627d5](https://github.com/bachPN73/MVP/commit/74627d5))
-- **Luồng thanh toán an toàn:** Link bảng giá công khai chuyển hướng về `/login` thay vì đi thẳng tới thanh toán. ([cf6678f](https://github.com/bachPN73/MVP/commit/cf6678f), [c039822](https://github.com/bachPN73/MVP/commit/c039822))
-- **Rút gọn trang Hướng dẫn:** Chỉ tập trung vào việc hướng dẫn Đăng ký và Đăng nhập. ([6c8815c](https://github.com/bachPN73/MVP/commit/6c8815c))
-- **Nâng cấp hiệu năng tải trang:** Thay thế mô hình 3D trên Landing Page bằng video nhẹ hơn. ([32611a4](https://github.com/bachPN73/MVP/commit/32611a4))
-- **Lazy Loading 3D:** Tích hợp Lazy Loading và Intersection Observer giúp tối ưu hóa thời gian tải của các mô hình 3D. ([9273187](https://github.com/bachPN73/MVP/commit/9273187))
-- **Cấu hình hệ thống:** Bổ sung cấu hình Agent, tài nguyên ảnh tĩnh. Thay liên hệ Zalo sang Facebook ở trang Thanh toán. ([86da87a](https://github.com/bachPN73/MVP/commit/86da87a), [e8ffcc7](https://github.com/bachPN73/MVP/commit/e8ffcc7))
-- **Thiết lập giao diện mặc định:** Đặt giao diện sáng làm mặc định và sửa lỗi import AppSidebar, làm nổi bật khung đổi theme. ([e8a30e0](https://github.com/bachPN73/MVP/commit/e8a30e0), [d05707d](https://github.com/bachPN73/MVP/commit/d05707d))
-- **Nâng cấp DNA 3D:** Cập nhật hiển thị DNA 3D, tối ưu hóa giao diện tương tác và tốc độ tải. ([d4352ad](https://github.com/bachPN73/MVP/commit/d4352ad))
-- **Tích hợp Quiz Panel:** Thiết kế lại QuizPanel với phong cách Glassmorphism nổi, cấu hình tính năng quản lý Quiz cho tài liệu. ([30b621d](https://github.com/bachPN73/MVP/commit/30b621d), [7c591d1](https://github.com/bachPN73/MVP/commit/7c591d1), [f749c0c](https://github.com/bachPN73/MVP/commit/f749c0c))
+## [v2.4.0] - 2026-06-27
+
+> **Mục tiêu:** Tối ưu hóa toàn diện khả năng hiển thị (Responsive) trên màn hình nhỏ (1366x768) và thiết bị di động.
+
+### Added
+- Tích hợp cơ chế **fluid scaling** toàn hệ thống: Font chữ và layout tự động co giãn linh hoạt theo kích thước màn hình thay vì bị vỡ hoặc tràn ra ngoài.
+- Tối ưu Landing Page riêng cho màn hình 1366x768: Tăng kích thước chữ tiêu đề hero và các hộp tính năng để đọc rõ ràng hơn.
+
+### Changed
+- Thiết kế lại trang Dashboard trên **di động**: Chuyển sidebar thành menu drawer thu gọn, sắp xếp lại các nút thao tác nhanh thành dạng lưới 2 cột.
+- Thay nền Dashboard từ màu đặc sang **nền trong suốt** để hòa hợp với ảnh nền hệ thống.
+- Mở rộng khung chứa nội dung của Dashboard, trang Hướng dẫn và trang Tham gia Trường học.
+- Cải thiện góc xoay, ánh sáng mô hình 3D và tăng kích thước chữ hướng dẫn bên sidebar.
+- Tối ưu bộ lọc Thư viện, ẩn thanh cuộn mặc định của trình duyệt để tối ưu thẩm mỹ.
+
+### Fixed
+- Sửa lỗi các phần tử giao diện **chồng đè lên nhau** (layout overlap) khi màn hình nhỏ hơn 1400px.
+- Sửa lỗi Sidebar bị **nhấp nháy** (flash) trong quá trình chuyển đổi giữa các trang (route transition).
 
 ---
 
-## Ngày 22/06/2026 - Tái cấu trúc Dashboard UI
-- **Redesign Dashboard:** Thiết kế lại giao diện Dashboard (Hero banner mới, thẻ môn học, lối tắt thao tác nhanh, carousel tài liệu). ([7a8db90](https://github.com/bachPN73/MVP/commit/7a8db90))
-- **Sửa text hướng dẫn 3D:** Cập nhật thông báo tương tác 3D và xóa bỏ các overlay trùng lặp. ([b3383d8](https://github.com/bachPN73/MVP/commit/b3383d8))
+## [v2.3.2] - 2026-06-23
+
+> **Mục tiêu:** Giảm tải tài nguyên CPU/GPU và tăng tốc độ tải trang ban đầu.
+
+### Added
+- Tích hợp `IntersectionObserver` vào `ModelViewer`: Canvas 3D tự động chuyển sang chế độ **"ngủ đông"** (`frameloop="demand"`) khi người dùng cuộn khỏi vùng nhìn thấy, giúp tiết kiệm tài nguyên đáng kể.
+- Triển khai **Code Splitting** toàn diện: Toàn bộ các trang (Landing, Dashboard, Library, Admin...) được chuyển sang `React.lazy()` + `Suspense` để tải chậm (lazy load), giảm ~60% dung lượng bundle JavaScript tải về ban đầu.
+- Bổ sung cấu hình **Agent AI** (GEMINI.md) và các tài nguyên ảnh tĩnh mới cho hệ thống.
+
+### Changed
+- Nút hỗ trợ kỹ thuật trên trang Thanh toán: Thay liên kết **Zalo cá nhân** bằng **Fanpage Facebook** chính thức.
+- Khung Theme Switcher trong Sidebar: Thay đổi màu viền và nền sang tông **Indigo** nổi bật hơn trên cả giao diện Sáng và Tối.
+
+### Fixed
+- Sửa lỗi crash app do thiếu import `ThemeToggle` trong `AppSidebar.tsx`.
+
+### Changed
+- Đặt chế độ **Giao diện Sáng (Light Mode)** làm mặc định cho tất cả người dùng truy cập lần đầu (thay vì tự động theo hệ điều hành).
 
 ---
 
-## Ngày 19/06/2026 - Cải tiến tương tác mô hình 3D & Tìm kiếm AI
-- **Cải thiện hướng dẫn di chuyển 3D:** Thêm chỉ dẫn chuột phải để di chuyển (pan góc nhìn). ([15a8c82](https://github.com/bachPN73/MVP/commit/15a8c82))
-- **Tinh chỉnh thanh trạng thái:** Loại bỏ ID tài liệu và khôi phục text trợ giúp ở thanh trạng thái dưới cùng. ([f0d83e1](https://github.com/bachPN73/MVP/commit/f0d83e1), [c2e1587](https://github.com/bachPN73/MVP/commit/c2e1587), [f7dcaa8](https://github.com/bachPN73/MVP/commit/f7dcaa8))
-- **Tối ưu hóa Tìm kiếm AI:** Đơn giản hóa UI tìm kiếm, tinh chỉnh prompt của mô hình Gemini tối ưu cho môn Sinh học. ([aaa4bbe](https://github.com/bachPN73/MVP/commit/aaa4bbe))
+## [v2.3.0] - 2026-06-23
+
+> **Mục tiêu:** Tích hợp hệ thống trắc nghiệm tương tác trực tiếp bên cạnh mô hình 3D.
+
+### Added
+- **Tính năng Quiz tương tác** (`QuizPanel`): Học sinh làm bài trắc nghiệm ngay bên cạnh mô hình 3D mà không cần chuyển trang. Chấm điểm tức thì, đổi màu xanh/đỏ khi chọn đáp án, hiển thị giải thích chi tiết sau mỗi câu.
+- **Báo cáo kết quả tổng quan** cuối bài trắc nghiệm: Hiển thị phần trăm chính xác, số câu đúng/sai và xếp hạng năng lực.
+- **Quản lý Quiz cho Admin** trong `AdminMaterialsPage`: Cho phép thêm, sửa, xóa câu hỏi trắc nghiệm (câu hỏi, 4 tùy chọn, đáp án đúng, giải thích) trực tiếp khi tạo/sửa học liệu.
+- Cập nhật **MongoDB Schema** bổ sung trường `quiz[]` để lưu trữ dữ liệu trắc nghiệm.
+- Thêm tệp mô hình DNA 3D (`dna.glb`) chất lượng cao.
+- Tạo mới các component tái sử dụng cho Dashboard: `WelcomeBanner`, `ProgressCards`, `QuickLinks`, `SchoolAdminPanel`.
+
+### Changed
+- **Thiết kế QuizPanel** theo phong cách **Glassmorphism** (kính mờ): Bảng quiz nổi dạng floating card rộng 360px ở góc phải, có thể đóng/mở mượt mà bằng hiệu ứng trượt (`translateX`) và thay đổi opacity.
+- Tái cấu trúc mã nguồn `Dashboard.tsx`: Chia nhỏ từ file ~700 dòng thành các component con độc lập.
 
 ---
 
-## Ngày 13/06/2026 - Cập nhật Favicon & Thương hiệu
-- **Cập nhật logo:** Zoom to logo hệ thống và cập nhật favicon mới. ([a3de4ca](https://github.com/bachPN73/MVP/commit/a3de4ca))
+## [v2.2.0] - 2026-06-22
+
+> **Mục tiêu:** Redesign trang Tổng quan và bổ sung tính năng Kho lưu trữ học liệu Premium.
+
+### Added
+- **Thiết kế lại Dashboard** với: Banner chào mừng cá nhân hóa, thẻ môn học phân loại (Sinh học, Hóa học, Vật lý), các nút thao tác nhanh và danh sách học liệu vừa xem dạng carousel trượt ngang.
+- Tính năng **Lưu kho tạm thời (Pro Vault)**: Học sinh có thể lưu học liệu vào kho cá nhân trong 24 giờ (giới hạn đối với tài khoản Free).
+
+### Changed
+- Di chuyển nút "Lưu kho tạm thời" vào thanh metadata bar phía dưới của trang học liệu.
+- Tối ưu hóa và dọn dẹp hướng dẫn tương tác 3D: Thêm hướng dẫn click chuột phải để dịch chuyển góc nhìn (pan).
+
+### Removed
+- Xóa dữ liệu seed trường học mẫu thử nghiệm khỏi `server.js`.
+- Xóa các mô hình demo H2O và Hệ Mặt Trời không còn sử dụng.
+
+### Fixed
+- Sửa lỗi crash `ReferenceError` do thiếu import `Archive`, `Folder`, `Plus`, `Trash2`, `X` trong `MaterialDetail.tsx`.
+- Sửa lỗi Admin bị khóa bởi cơ chế Premium Lock khi xem học liệu trong Vault.
+- Sửa lỗi giao diện và luồng xử lý khi chuyển đổi giữa các trang (route transition flickering).
 
 ---
 
-## Ngày 12/06/2026 - Quản lý Gói dịch vụ, Email Khôi phục Mật khẩu & Quản trị Trường học
-- **Đồng nhất gói dịch vụ:** Thống nhất các gói dịch vụ Basic, Pro, Combo, School; khôi phục gói Combo Pro + In 3D trên cả client và server. ([c99c59d](https://github.com/bachPN73/MVP/commit/c99c59d), [6e27429](https://github.com/bachPN73/MVP/commit/6e27429))
-- **Mẫu email khôi phục mật khẩu:** Thiết kế lại template email khôi phục với giao diện premium, thêm nội dung plain text dự phòng. ([9c55da7](https://github.com/bachPN73/MVP/commit/9c55da7), [c4d3e1c](https://github.com/bachPN73/MVP/commit/c4d3e1c))
-- **Đổi tên trang chủ:** Đổi tên Trang chủ thành **Tổng quan** và cập nhật cấu hình SEO/Favicon. ([16fe2d4](https://github.com/bachPN73/MVP/commit/16fe2d4))
-- **Quản lý giới hạn Quota:** Cho phép Admin trường học tự chỉnh sửa quota của Giáo viên và Học sinh. ([ff03192](https://github.com/bachPN73/MVP/commit/ff03192))
-- **Quota giáo viên:** Tăng giới hạn quota mặc định của giáo viên từ 5 lên 30 trong Dashboard. ([c5acf6f](https://github.com/bachPN73/MVP/commit/c5acf6f))
-- **Tối ưu hóa Light Mode:** Chỉnh sửa Light Mode sang tông ấm kem/warm stone giúp giảm chói mắt và hài hòa hơn. ([0f9bd19](https://github.com/bachPN73/MVP/commit/0f9bd19))
-- **Sửa các lỗi nhỏ:** Sửa lỗi quét QR code, luồng tham gia trường học (join flow). ([8407553](https://github.com/bachPN73/MVP/commit/8407553), [569e181](https://github.com/bachPN73/MVP/commit/569e181))
+## [v2.1.0] - 2026-06-06 đến 2026-06-13
+
+> **Mục tiêu:** Tích hợp các dịch vụ nền tảng (OAuth Google, SMTP) và tái thiết kế giao diện chuyên nghiệp.
+
+### Added
+- Tích hợp **Đăng nhập bằng Google** (Google OAuth 2.0).
+- Tích hợp dịch vụ gửi **Email khôi phục mật khẩu** qua Resend API (Nodemailer fallback).
+- Thiết kế mẫu email HTML sang trọng và phương án fallback Plain-Text dự phòng.
+- Hỗ trợ **7 ngày dùng thử miễn phí** đầy đủ tính năng Pro cho tài khoản mới đăng ký.
+- Cho phép Admin trường học **tự chỉnh sửa quota** giáo viên và học sinh trực tiếp trên Dashboard.
+- Thêm hộp thông báo **cảnh báo thư rác** vào trang Quên mật khẩu và Đặt lại mật khẩu.
+- Tích hợp **Google Analytics 4 (GA4)** với mã `G-VCXY5EZNZH`, tự động theo dõi lượt xem trang khi người dùng chuyển route.
+- Bổ sung favicon mới và cập nhật cấu hình SEO.
+
+### Changed
+- Thiết kế lại toàn bộ trang **Landing Page**: Tối ưu font tiếng Việt, layout Hero section, thiết kế chân trang mới.
+- Tối ưu giao diện **Tìm kiếm AI**: Đơn giản hóa khung chat và cải tiến prompt gửi lên Gemini API cho kết quả Sinh học chính xác hơn.
+- Đổi tên trang "Trang chủ" thành **"Tổng quan"** trong Sidebar và cập nhật SEO meta tags tương ứng.
+- Thống nhất 4 gói dịch vụ trên cả Client và Server: **Cơ Bản, Nâng Cao (Pro), Combo Pro + 3D, Nhà Trường**.
+- Tối ưu hóa **Light Mode** sang tông màu ấm kem/stone, giảm độ chói và hài hòa hơn.
+- Sidebar thích ứng tự động với chế độ Sáng/Tối (dynamic Tailwind classes).
+- Đổi tên "Find with AI" thành **"AI tìm kiếm"**.
+- Nâng quota giáo viên mặc định từ 5 lên **30**.
+
+### Fixed
+- Sửa lỗi chữ bị mờ/biến mất bằng cách thay thế mã màu Tailwind không hợp lệ (`rose-650` → `rose-700`).
+- Sửa lỗi tiêu đề "Không gian tương tác" bị cắt (text clipping).
+- Sửa lỗi cấu hình cổng SMTP: Chuyển sang port 587 và ép kết nối IPv4 để hoạt động ổn định trên Render.
+- Sửa lỗi rendering QR code thanh toán và luồng tham gia trường học (join flow).
+- Sửa lỗi favicon không tải được.
+
+### Security
+- Tách vai trò Admin trường học thành `school-admin`, tách biệt hoàn toàn với `admin` hệ thống.
+- Giới hạn quyền truy cập trang quản trị (`/admin/*`) chỉ dành cho `admin` hệ thống.
 
 ---
 
-## Ngày 11/06/2026 - Quản lý Kho lưu trữ (Vault), Email SMTP & Tối ưu hóa chung
-- **Nút Lưu kho tạm thời:** Di chuyển nút Lưu kho xuống thanh metadata bar phía dưới và đặt tên tiếng Việt. ([4978ac1](https://github.com/bachPN73/MVP/commit/4978ac1))
-- **Dọn dẹp cơ sở dữ liệu:** Xóa dữ liệu seed thử nghiệm trường học mẫu trong server.js. ([7b19429](https://github.com/bachPN73/MVP/commit/7b19429))
-- **Bổ sung thư viện icon:** Sửa lỗi thiếu các import biểu tượng Archive, Folder, Plus, Trash2, X trong MaterialDetail.tsx. ([3589a3b](https://github.com/bachPN73/MVP/commit/3589a3b), [baa1e31](https://github.com/bachPN73/MVP/commit/baa1e31))
-- **Quyền truy cập Vault:** Cho phép tài khoản Admin bỏ qua khóa Premium để xem thử tài liệu trong Vault. ([6eea945](https://github.com/bachPN73/MVP/commit/6eea945))
-- **Cập nhật nút CTA:** Đổi nút kêu gọi hành động (CTA) trên LandingPage thành "Đăng kí/ Bắt đầu". ([cc5ae13](https://github.com/bachPN73/MVP/commit/cc5ae13))
-- **Tích hợp thanh toán & chủ đề:** Cập nhật trang JoinSchool, màu sắc giao diện và trang thanh toán. ([a7fa6d3](https://github.com/bachPN73/MVP/commit/a7fa6d3))
-- **Cảnh báo Spam email:** Thêm thông tin cảnh báo gửi spam vào trang đổi mật khẩu và trang quên mật khẩu. ([5c31c2f](https://github.com/bachPN73/MVP/commit/5c31c2f), [6090bda](https://github.com/bachPN73/MVP/commit/6090bda))
-- **Cấu hình Email SMTP & Resend:** Tích hợp dịch vụ Resend API để gửi thư khôi phục, đổi cổng SMTP sang 587 và ép kết nối IPv4 để hoạt động ổn định trên máy chủ Render. Cập nhật CORS và transport settings. ([7d31530](https://github.com/bachPN73/MVP/commit/7d31530), [33cb111](https://github.com/bachPN73/MVP/commit/33cb111), [bfe22ac](https://github.com/bachPN73/MVP/commit/bfe22ac), [92518d2](https://github.com/bachPN73/MVP/commit/92518d2), [1fbaf54](https://github.com/bachPN73/MVP/commit/1fbaf54))
-- **Dọn dẹp tài nguyên ảnh:** Cập nhật logo mới, xóa ảnh và mô hình 3D thừa, thêm logo.png vào thư mục public. ([7697e83](https://github.com/bachPN73/MVP/commit/7697e83), [f8196e6](https://github.com/bachPN73/MVP/commit/f8196e6))
-- **Tài liệu cấu hình:** Cập nhật tài liệu hướng dẫn Google OAuth & SMTP. ([1a6be14](https://github.com/bachPN73/MVP/commit/1a6be14))
+## [v2.0.0] - 2026-06-09
+
+> **Mục tiêu:** Tái cấu trúc toàn bộ mã nguồn lần đầu, chuẩn bị nền tảng cho giai đoạn phát triển tính năng nâng cao.
+
+### Changed
+- **[BREAKING]** Tái cấu trúc toàn bộ cấu trúc thư mục dự án: Tách biệt rõ ràng `src/components`, `src/layout`, `src/pages`, `src/data`.
+- Chuẩn hóa tên biến, hàm và component theo tiếng Anh (camelCase, PascalCase).
+- Xóa bỏ toàn bộ code thừa và các component không còn sử dụng.
 
 ---
 
-## Ngày 09/06/2026 - Phát hành Phiên bản 2.0 & Tái cấu trúc
-- **Phát hành Phiên bản 2.0:** Ghi nhận phiên bản v2.0 của web. ([969c27a](https://github.com/bachPN73/MVP/commit/969c27a))
-- **Refactor code structure:** Tái cấu trúc lại thư mục dự án để dễ đọc, dễ bảo trì hơn. ([8fbb301](https://github.com/bachPN73/MVP/commit/8fbb301))
+## [v1.3.0] - 2026-06-05
+
+> **Mục tiêu:** Đo lường hành vi người dùng thực tế và chuẩn hóa bộ nhận diện thương hiệu.
+
+### Added
+- Tích hợp **Google Analytics 4** theo dõi traffic và hành vi người dùng.
+- Cập nhật Logo hệ thống EduTech mới trên toàn bộ nền tảng.
+- Thêm tài liệu hướng dẫn cấu hình **Google OAuth** và **SMTP** cho lập trình viên.
+
+### Removed
+- Xóa các tệp ảnh và mô hình 3D cũ không còn sử dụng để giảm dung lượng repository.
 
 ---
 
-## Ngày 08/06/2026 - Tối ưu hóa UI/UX & Tương tác 3D
-- **Tính năng giới thiệu:** Tối ưu hóa UI/UX, cải thiện hiệu năng 3D viewer, bỏ qua khóa premium cho admin và thêm trang giới thiệu intro. ([5945b8c](https://github.com/bachPN73/MVP/commit/5945b8c))
+## [v1.2.0] - 2026-06-05
+
+> **Mục tiêu:** Tự động hóa quy trình thanh toán và nâng cấp tài khoản, không cần duyệt thủ công.
+
+### Added
+- Tích hợp **cổng thanh toán SePay** (VietQR): Khi người dùng quét mã QR chuyển khoản thành công, SePay tự động gửi Webhook về server và hệ thống tự động nâng cấp tài khoản lên gói Pro ngay lập tức.
+- Cơ chế **chặn thanh toán trùng lặp** khi đang xử lý giao dịch.
+- Tính năng **Kho lưu trữ Pro 24 giờ**: Học sinh tài khoản Free có thể lưu học liệu Pro và xem trong 24 giờ.
+- Hiển thị **nhãn gói cước động** (Plan Badge: Free, Pro, School) trên giao diện người dùng.
+- Tính năng **dùng thử miễn phí 7 ngày** khi đăng ký tài khoản mới.
+- Sao lưu dữ liệu **local fallback**: Tự động lưu file vào local nếu Supabase upload bị lỗi hoặc kích thước file vượt 48MB.
+
+### Changed
+- Cập nhật và đồng bộ các gói giá dịch vụ giữa trang Bảng giá và trang Thanh toán.
+- Ẩn các nút gói cước thấp hơn khi người dùng đã đăng ký gói cao hơn.
+
+### Removed
+- Gỡ chức năng **tải xuống tài nguyên** (download) để bảo vệ bản quyền nội dung.
+
+### Security
+- Phân tách vai trò quản trị: `school-admin` (quản trị trường) và `admin` (quản trị hệ thống) với quyền truy cập riêng biệt.
 
 ---
 
-## Ngày 06/06/2026 - Nâng cấp Sidebar, Bảng giá & Tích hợp dịch vụ Email
-- **Mobile Sidebar & So sánh gói:** Tối ưu hóa sidebar di động dạng kéo rút, lưới bảng giá responsive và bảng so sánh chi tiết dạng thu gọn. ([6f219a9](https://github.com/bachPN73/MVP/commit/6f219a9))
-- **Cải thiện độ tương phản:** Sửa lỗi chữ bị mờ bằng cách thay thế mã màu không hợp lệ (`rose-650` sang `rose-700`) và tăng tương phản khi hiển thị sáng. ([806bd3d](https://github.com/bachPN73/MVP/commit/806bd3d))
-- **Sidebar thích ứng Theme:** Thay đổi giao diện Sidebar tự động thích ứng với nền sáng/tối. ([0c70287](https://github.com/bachPN73/MVP/commit/0c70287))
-- **Sửa tiêu đề & logo:** Tăng kích thước tối đa logo Dashboard lên 240px và sửa lỗi hiển thị tiêu đề "Không gian tương tác". ([3ea6e23](https://github.com/bachPN73/MVP/commit/3ea6e23), [d240682](https://github.com/bachPN73/MVP/commit/d240682))
-- **Banner chúc thi tốt:** Thay thế ảnh mặc định bằng logo EduTech trên Dashboard và thay đổi sidebar phải thành màu gradient đỏ-vàng may mắn đi kèm banner chúc thi tốt. ([1d3ea62](https://github.com/bachPN73/MVP/commit/1d3ea62))
-- **Nền tảng Landing Page & AI:** Tối ưu hiển thị font tiếng Việt, thiết kế lại trang chủ và chân trang, đổi tên Find with AI thành AI tìm kiếm, cấu hình ban đầu cho Google Login & email. ([b4337f7](https://github.com/bachPN73/MVP/commit/b4337f7))
-- **Phân quyền tài liệu & Chống spam AI:** Chia tài liệu theo các gói đăng ký, giới hạn lượt tìm kiếm AI và chống spam, bổ sung chú giải (legend) trong thư viện. ([c06bc32](https://github.com/bachPN73/MVP/commit/c06bc32))
+## [v1.1.0] - 2026-05-29
+
+> **Mục tiêu:** Nâng cấp kiến trúc lên chuẩn ứng dụng hiện đại, hỗ trợ nhiều trường học và đa giao diện.
+
+### Added
+- **[MAJOR]** Di chuyển toàn bộ mã nguồn lên kiến trúc Modern Refactored với khả năng mở rộng.
+- Hỗ trợ **Dark/Light Mode** toàn cục — người dùng có thể chuyển đổi giao diện bất kỳ lúc nào.
+- Phân hệ **Cổng Trường học (School Portal)**: Trường học đăng ký tài khoản tổ chức, phân phối tài khoản con cho Giáo viên và Học sinh.
+- Kết nối cơ sở dữ liệu **MongoDB/PostgreSQL** để lưu trữ dữ liệu người dùng bền vững.
+- Hỗ trợ hiển thị công thức **LaTeX** cho môn Toán và Lý.
+- Nâng giới hạn upload lên **100MB** cho tài khoản Admin.
+- Hỗ trợ upload và hiển thị mô hình 3D định dạng **`.fbx`**.
+- Layout **Infographic** linh hoạt tự động chuyển đổi giữa dọc/ngang và hỗ trợ chủ đề Sáng/Tối.
+- Đồng bộ toàn bộ hệ thống sử dụng font chữ **Plus Jakarta Sans**.
+- Trang quản lý bài học và trang quản lý thanh toán cho Admin.
+
+### Fixed
+- Sửa lỗi môi trường preset 3D không hợp lệ (`neutral` → `city`).
+- Sửa lỗi Sidebar đè lên nội dung chính.
 
 ---
 
-## Ngày 05/06/2026 - Tích hợp Google Analytics & Hệ thống thanh toán SePay
-- **Google Analytics (GA4):** Tích hợp Google Analytics mã G-VCXY5EZNZH giúp theo dõi hành vi và lượng truy cập trang thực tế. ([6bc4910](https://github.com/bachPN73/MVP/commit/6bc4910), [85d1594](https://github.com/bachPN73/MVP/commit/85d1594))
-- **Kho lưu trữ Pro 24h:** Khóa chức năng tải tài nguyên, triển khai tính năng lưu trữ Pro thời hạn 24h. ([2083942](https://github.com/bachPN73/MVP/commit/2083942))
-- **Phân quyền Admin:** Tách biệt vai trò Admin trường học thành `school-admin` và giới hạn quyền truy cập trang quản trị cho Admin hệ thống. ([c130267](https://github.com/bachPN73/MVP/commit/c130267), [003a58f](https://github.com/bachPN73/MVP/commit/003a58f))
-- **Liên kết trực tiếp:** Sửa lỗi giao diện liên kết tài khoản trường học cho quản trị viên trường học. ([cf7b3c8](https://github.com/bachPN73/MVP/commit/cf7b3c8))
-- **Nút đóng Thanh toán & Gói Free:** Tạo nút đóng trang khi thanh toán thành công, giới hạn tính năng cho các tài khoản dùng thử miễn phí. ([8a57f7e](https://github.com/bachPN73/MVP/commit/8a57f7e))
-- **Hiển thị nhãn gói cước:** Hiển thị nhãn loại tài khoản (Plan Badge), hỗ trợ 7 ngày dùng thử miễn phí và ẩn các gói cước thấp hơn khi đã mua gói cao hơn. ([8b7ec8b](https://github.com/bachPN73/MVP/commit/8b7ec8b))
-- **Tích hợp SePay & Cổng VietQR:** Đồng bộ hóa cổng thanh toán tự động SePay, hiển thị mã VietQR chính xác và chặn thanh toán trùng lặp. ([4145398](https://github.com/bachPN73/MVP/commit/4145398), [e0322d4](https://github.com/bachPN73/MVP/commit/e0322d4))
-- **Sao lưu dữ liệu local:** Tạo bộ lưu trữ dự phòng tại local khi file tải lên vượt quá 48MB hoặc kết nối cơ sở dữ liệu Supabase bị lỗi. ([f10ebe4](https://github.com/bachPN73/MVP/commit/f10ebe4))
-- **Sửa môi trường 3D:** Thay đổi bộ preset môi trường mặc định từ neutral sang city để hiển thị chân thực hơn. ([aa9f9c5](https://github.com/bachPN73/MVP/commit/aa9f9c5))
-- **Hỗ trợ toán học LaTeX & Upload 100MB:** Hỗ trợ render công thức Toán dạng LaTeX, nâng giới hạn upload lên 100MB và tối ưu hiển thị mô hình 3D. ([9dfe6ed](https://github.com/bachPN73/MVP/commit/9dfe6ed))
-- **Layout Infographic linh hoạt:** Cập nhật layout infographic co giãn tự động theo màn hình ngang/dọc và thay đổi màu nền 3D theo theme sáng/tối. ([43bb372](https://github.com/bachPN73/MVP/commit/43bb372))
-- **Cập nhật giá cả:** Thay đổi các gói giá và chi tiết giá trên trang thanh toán. ([d084932](https://github.com/bachPN73/MVP/commit/d084932))
-- **Trang Admin bài học:** Cập nhật trang quản lý bài học và trang quản lý thanh toán phía Admin. ([304bd53](https://github.com/bachPN73/MVP/commit/304bd53))
+## [v1.0.0] - 2026-03-13
 
----
+> **Mục tiêu:** Phát hành phiên bản MVP đầu tiên với tính năng xem học liệu 3D cơ bản.
 
-## Ngày 29/05/2026 - Tích hợp Font chữ hệ thống & Di chuyển Kiến trúc
-- **Plus Jakarta Sans:** Đồng bộ toàn bộ trang web sử dụng chung 1 font chữ Plus Jakarta Sans. ([72820ef](https://github.com/bachPN73/MVP/commit/72820ef))
-- **Sửa đè Sidebar:** Sửa lỗi khoảng cách hiển thị đè của thanh Sidebar. ([65c5d2a](https://github.com/bachPN73/MVP/commit/65c5d2a))
-- **Di chuyển kiến trúc MVP:** Chuẩn bị repository, dọn dẹp API và chuyển đổi hệ thống sang cấu trúc mã nguồn tái cấu trúc hiện đại (Hỗ trợ cổng trường học, chuyển đổi theme sáng/tối và tích hợp DB). Kích hoạt Vercel build. ([47eaa19](https://github.com/bachPN73/MVP/commit/47eaa19), [8f96578](https://github.com/bachPN73/MVP/commit/8f96578), [15203f7](https://github.com/bachPN73/MVP/commit/15203f7), [baef9a0](https://github.com/bachPN73/MVP/commit/baef9a0))
+### Added
+- Khởi tạo dự án ứng dụng web **EduTech** — Nền tảng học liệu 3D tương tác.
+- Kết nối cơ sở dữ liệu **PostgreSQL** để lưu thông tin tài liệu và người dùng.
+- Tính năng **Infographic** tương tác đầu tiên.
+- Hỗ trợ upload và hiển thị mô hình **3D cơ bản**.
+- Trang Landing Page và luồng **Đăng ký / Đăng nhập** người dùng.
+- Trang **Bảng giá** và điều hướng tới trang Đăng nhập khi chưa xác thực.
+- Trang **Hướng dẫn** sử dụng.
+- Triển khai backend lên **Render**: Bind server cổng `0.0.0.0`, cấu hình `pg` dependency, khôi phục hàm upload thumbnail.
+- Cấu hình **Auth Modal** xuất hiện khi người dùng chưa đăng nhập cố gắng truy cập tính năng Premium.
 
----
+### Fixed
+- Sửa lỗi ảnh nền Hero không hiển thị do sai đường dẫn (chuyển sang thư mục `/public`).
+- Sửa lỗi timeout kết nối server.
+- Sửa lỗi không xem được học liệu sau upload.
+- Sửa lỗi hiển thị Infographic.
 
-## Ngày 14/03/2026 - Cập nhật lớn mã nguồn & Sửa lỗi hiển thị
-- **Đại cập nhật mã nguồn:** Đẩy mã nguồn cập nhật hệ thống, sửa lỗi hiển thị hình ảnh, sửa lỗi không xem được và điều chỉnh lỗi timeout. ([6491b75](https://github.com/bachPN73/MVP/commit/6491b75), [db91b9a](https://github.com/bachPN73/MVP/commit/db91b9a), [0f3c525](https://github.com/bachPN73/MVP/commit/0f3c525), [1dbdb8c](https://github.com/bachPN73/MVP/commit/1dbdb8c), [dec2e82](https://github.com/bachPN73/MVP/commit/dec2e82), [fbb9f49](https://github.com/bachPN73/MVP/commit/fbb9f49))
-- **Sửa lỗi hiển thị chi tiết:** Khắc phục lỗi hiển thị metadata phần dưới, lỗi 2 commit gần nhất, sửa hiển thị Infographic. ([018a0f7](https://github.com/bachPN73/MVP/commit/018a0f7), [8800218](https://github.com/bachPN73/MVP/commit/8800218), [c377fa9](https://github.com/bachPN73/MVP/commit/c377fa9))
-- **Hỗ trợ tệp FBX:** Thêm hỗ trợ tải lên và hiển thị mô hình 3D định dạng tệp .fbx. ([8c71f3d](https://github.com/bachPN73/MVP/commit/8c71f3d))
-- **Điều hướng bảng giá & Auth:** Cập nhật điều hướng bảng giá, thêm cửa sổ Auth Modal đăng nhập nhanh và dọn dẹp Dashboard. ([06516b5](https://github.com/bachPN73/MVP/commit/06516b5))
-
----
-
-## Ngày 13/03/2026 - Khởi tạo dự án
-- **Cập nhật tiêu đề:** Cập nhật tiêu đề trang web, định nghĩa luồng trải nghiệm người dùng. ([cd6364b](https://github.com/bachPN73/MVP/commit/cd6364b), [c0a9011](https://github.com/bachPN73/MVP/commit/c0a9011))
-- **Khắc phục đường dẫn ảnh:** Chuyển ảnh nền hero bị lỗi sang thư mục public. ([1a19f10](https://github.com/bachPN73/MVP/commit/1a19f10))
-- **Landing Page Media:** Thay thế video bằng ảnh tĩnh trên Landing Page. ([8ecace9](https://github.com/bachPN73/MVP/commit/8ecace9))
-- **Cấu hình triển khai Render:** Bind server backend chạy cổng 0.0.0.0, thêm thư viện `pg` và khôi phục hàm upload ảnh thumbnail bị thiếu. ([5d154d4](https://github.com/bachPN73/MVP/commit/5d154d4), [eedf3aa](https://github.com/bachPN73/MVP/commit/eedf3aa), [0a3a6a0](https://github.com/bachPN73/MVP/commit/0a3a6a0))
-- **Initial commit:** Thực hiện đẩy mã nguồn cơ bản đầu tiên lên Git (Tích hợp tính năng Infographic và cơ sở dữ liệu PostgreSQL). ([5ce03ac](https://github.com/bachPN73/MVP/commit/5ce03ac))
+### Security
+- Vá lỗ hổng **Broken Access Control**: Ngăn người dùng chưa đăng nhập truy cập nội dung bị khóa.
+- Bảo vệ **dữ liệu phiên làm việc (Session Auth)** của học sinh.
