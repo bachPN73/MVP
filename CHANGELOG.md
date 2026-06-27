@@ -13,6 +13,13 @@ và dự án này tuân thủ [Semantic Versioning](https://semver.org/lang/vi/)
 > - `Fixed` — Sửa lỗi.
 > - `Security` — Vá lỗ hổng bảo mật.
 
+## [v2.5.1] - 2026-06-27
+
+> **Mục tiêu:** Cải thiện trải nghiệm người dùng (UX) khi điều hướng quay lại trang Thư viện học liệu.
+
+### Fixed
+- Sửa lỗi tự động đưa người dùng về trang 1 của Thư viện sau khi xem chi tiết học liệu: Tích hợp `sessionStorage` giúp lưu giữ và tự động phục hồi trang hiện tại (`currentPage`) cùng các bộ lọc (`subject`, `type`, `grade`, `searchQuery`).
+
 ---
 
 ## [v2.5.0] - 2026-06-27

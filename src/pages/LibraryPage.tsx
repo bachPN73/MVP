@@ -15,8 +15,12 @@ export default function Library() {
     const [isLoading, setIsLoading] = useState(true);
 
     const [userPlan, setUserPlan] = useState('free');
-    const [searchQuery, setSearchQuery] = useState('');
-    const [debouncedSearch, setDebouncedSearch] = useState('');
+    const [searchQuery, setSearchQuery] = useState(() => {
+        return sessionStorage.getItem('lib_searchQuery') || '';
+    });
+    const [debouncedSearch, setDebouncedSearch] = useState(() => {
+        return sessionStorage.getItem('lib_debouncedSearch') || '';
+    });
     const searchTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
     // Debounce search input - only filter after 300ms of no typing
@@ -25,13 +29,38 @@ export default function Library() {
         if (searchTimerRef.current) clearTimeout(searchTimerRef.current);
         searchTimerRef.current = setTimeout(() => setDebouncedSearch(value), 300);
     }, []);
-    const [selectedSubject, setSelectedSubject] = useState<Material['subject'] | 'all'>(initialSubject || 'all');
-    const [selectedType, setSelectedType] = useState<Material['type'] | 'all'>(initialType || 'all');
-    const [selectedGrade, setSelectedGrade] = useState<number | 'all'>('all');
+    const [selectedSubject, setSelectedSubject] = useState<Material['subject'] | 'all'>(() => {
+        if (initialSubject) return initialSubject;
+        return (sessionStorage.getItem('lib_selectedSubject') as any) || 'all';
+    });
+    const [selectedType, setSelectedType] = useState<Material['type'] | 'all'>(() => {
+        if (initialType) return initialType;
+        return (sessionStorage.getItem('lib_selectedType') as any) || 'all';
+    });
+    const [selectedGrade, setSelectedGrade] = useState<number | 'all'>(() => {
+        const saved = sessionStorage.getItem('lib_selectedGrade');
+        if (saved) return saved === 'all' ? 'all' : Number(saved);
+        return 'all';
+    });
 
     // Pagination states
-    const [currentPage, setCurrentPage] = useState(1);
+    const [currentPage, setCurrentPage] = useState(() => {
+        const saved = sessionStorage.getItem('lib_currentPage');
+        return saved ? Number(saved) : 1;
+    });
     const [itemsPerPage, setItemsPerPage] = useState(20);
+
+    const isFirstRender = useRef(true);
+
+    // Lưu các trạng thái lọc và phân trang vào sessionStorage
+    useEffect(() => {
+        sessionStorage.setItem('lib_searchQuery', searchQuery);
+        sessionStorage.setItem('lib_debouncedSearch', debouncedSearch);
+        sessionStorage.setItem('lib_selectedSubject', selectedSubject);
+        sessionStorage.setItem('lib_selectedType', selectedType);
+        sessionStorage.setItem('lib_selectedGrade', String(selectedGrade));
+        sessionStorage.setItem('lib_currentPage', String(currentPage));
+    }, [searchQuery, debouncedSearch, selectedSubject, selectedType, selectedGrade, currentPage]);
 
     const [viewMode, setViewMode] = useState<'all' | 'lessons'>('all');
     const [lessons, setLessons] = useState<any[]>([]);
@@ -60,8 +89,12 @@ export default function Library() {
 
     const gridRef = useRef<HTMLDivElement>(null);
 
-    // Reset to page 1 when filters or search change
+    // Reset to page 1 when filters or search change, but skip the initial mount
     useEffect(() => {
+        if (isFirstRender.current) {
+            isFirstRender.current = false;
+            return;
+        }
         setCurrentPage(1);
     }, [debouncedSearch, selectedSubject, selectedType, selectedGrade]);
 
