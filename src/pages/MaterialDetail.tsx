@@ -1103,10 +1103,10 @@ export default function MaterialDetail() {
                                     <div className="flex-1 overflow-y-auto pr-1 space-y-4 font-sans text-xs">
                                         {/* Tiêu đề */}
                                         <div className="flex flex-col gap-1.5">
-                                            <label className="font-bold text-slate-400 uppercase tracking-wider">Tiêu đề</label>
+                                            <label className="font-extrabold text-slate-600 dark:text-slate-300 uppercase tracking-wider text-[11px]">Tiêu đề</label>
                                             <input 
                                                 type="text" 
-                                                className="p-2.5 bg-slate-50 dark:bg-slate-950/40 border border-slate-200 dark:border-white/10 rounded-xl text-xs font-semibold focus:outline-none w-full text-slate-950 dark:text-white"
+                                                className="p-2.5 bg-slate-50 dark:bg-slate-950/40 border border-slate-200 dark:border-white/10 rounded-xl text-[11px] font-medium focus:outline-none w-full text-slate-700 dark:text-slate-300"
                                                 value={editFormData.title}
                                                 onChange={e => setEditFormData({ ...editFormData, title: e.target.value })}
                                             />
@@ -1114,10 +1114,10 @@ export default function MaterialDetail() {
 
                                         {/* Phụ đề */}
                                         <div className="flex flex-col gap-1.5">
-                                            <label className="font-bold text-slate-400 uppercase tracking-wider">Phụ đề (Subtitle)</label>
+                                            <label className="font-extrabold text-slate-600 dark:text-slate-300 uppercase tracking-wider text-[11px]">Phụ đề (Subtitle)</label>
                                             <input 
                                                 type="text" 
-                                                className="p-2.5 bg-slate-50 dark:bg-slate-950/40 border border-slate-200 dark:border-white/10 rounded-xl text-xs font-semibold focus:outline-none w-full text-slate-950 dark:text-white"
+                                                className="p-2.5 bg-slate-50 dark:bg-slate-950/40 border border-slate-200 dark:border-white/10 rounded-xl text-[11px] font-medium focus:outline-none w-full text-slate-700 dark:text-slate-300"
                                                 value={editFormData.subtitle}
                                                 onChange={e => setEditFormData({ ...editFormData, subtitle: e.target.value })}
                                             />
@@ -1126,9 +1126,9 @@ export default function MaterialDetail() {
                                         {/* Dropdowns: Môn học, Lớp, Loại */}
                                         <div className="grid grid-cols-3 gap-2">
                                             <div className="flex flex-col gap-1.5">
-                                                <label className="font-bold text-slate-400 uppercase tracking-wider">Môn học</label>
+                                                <label className="font-extrabold text-slate-600 dark:text-slate-300 uppercase tracking-wider text-[11px]">Môn học</label>
                                                 <select
-                                                    className="p-2.5 bg-slate-50 dark:bg-slate-950/40 border border-slate-200 dark:border-white/10 rounded-xl text-xs font-semibold focus:outline-none w-full text-slate-950 dark:text-white"
+                                                    className="p-2.5 bg-slate-50 dark:bg-slate-950/40 border border-slate-200 dark:border-white/10 rounded-xl text-[11px] font-medium focus:outline-none w-full text-slate-700 dark:text-slate-300"
                                                     value={editFormData.subject}
                                                     onChange={e => setEditFormData({ ...editFormData, subject: e.target.value })}
                                                 >
@@ -1138,9 +1138,9 @@ export default function MaterialDetail() {
                                                 </select>
                                             </div>
                                             <div className="flex flex-col gap-1.5">
-                                                <label className="font-bold text-slate-400 uppercase tracking-wider">Lớp</label>
+                                                <label className="font-extrabold text-slate-600 dark:text-slate-300 uppercase tracking-wider text-[11px]">Lớp</label>
                                                 <select
-                                                    className="p-2.5 bg-slate-50 dark:bg-slate-950/40 border border-slate-200 dark:border-white/10 rounded-xl text-xs font-semibold focus:outline-none w-full text-slate-950 dark:text-white"
+                                                    className="p-2.5 bg-slate-50 dark:bg-slate-950/40 border border-slate-200 dark:border-white/10 rounded-xl text-[11px] font-medium focus:outline-none w-full text-slate-700 dark:text-slate-300"
                                                     value={editFormData.grade}
                                                     onChange={e => setEditFormData({ ...editFormData, grade: Number(e.target.value) })}
                                                 >
@@ -1150,9 +1150,9 @@ export default function MaterialDetail() {
                                                 </select>
                                             </div>
                                             <div className="flex flex-col gap-1.5">
-                                                <label className="font-bold text-slate-400 uppercase tracking-wider">Loại</label>
+                                                <label className="font-extrabold text-slate-600 dark:text-slate-300 uppercase tracking-wider text-[11px]">Loại</label>
                                                 <select
-                                                    className="p-2.5 bg-slate-50 dark:bg-slate-950/40 border border-slate-200 dark:border-white/10 rounded-xl text-xs font-semibold focus:outline-none w-full text-slate-950 dark:text-white"
+                                                    className="p-2.5 bg-slate-50 dark:bg-slate-950/40 border border-slate-200 dark:border-white/10 rounded-xl text-[11px] font-medium focus:outline-none w-full text-slate-700 dark:text-slate-300"
                                                     value={editFormData.type}
                                                     onChange={e => setEditFormData({ ...editFormData, type: e.target.value })}
                                                 >
@@ -1165,19 +1165,19 @@ export default function MaterialDetail() {
                                         {/* Phân nhóm & Kích thước */}
                                         <div className="grid grid-cols-2 gap-3">
                                             <div className="flex flex-col gap-1.5">
-                                                <label className="font-bold text-slate-400 uppercase tracking-wider">Phân nhóm</label>
+                                                <label className="font-extrabold text-slate-600 dark:text-slate-300 uppercase tracking-wider text-[11px]">Phân nhóm</label>
                                                 <input 
                                                     type="text" 
-                                                    className="p-2.5 bg-slate-50 dark:bg-slate-950/40 border border-slate-200 dark:border-white/10 rounded-xl text-xs font-semibold focus:outline-none w-full text-slate-950 dark:text-white"
+                                                    className="p-2.5 bg-slate-50 dark:bg-slate-950/40 border border-slate-200 dark:border-white/10 rounded-xl text-[11px] font-medium focus:outline-none w-full text-slate-700 dark:text-slate-300"
                                                     value={editFormData.category}
                                                     onChange={e => setEditFormData({ ...editFormData, category: e.target.value })}
                                                 />
                                             </div>
                                             <div className="flex flex-col gap-1.5">
-                                                <label className="font-bold text-slate-400 uppercase tracking-wider">Kích thước</label>
+                                                <label className="font-extrabold text-slate-600 dark:text-slate-300 uppercase tracking-wider text-[11px]">Kích thước</label>
                                                 <input 
                                                     type="text" 
-                                                    className="p-2.5 bg-slate-50 dark:bg-slate-950/40 border border-slate-200 dark:border-white/10 rounded-xl text-xs font-semibold focus:outline-none w-full text-slate-950 dark:text-white"
+                                                    className="p-2.5 bg-slate-50 dark:bg-slate-950/40 border border-slate-200 dark:border-white/10 rounded-xl text-[11px] font-medium focus:outline-none w-full text-slate-700 dark:text-slate-300"
                                                     value={editFormData.size}
                                                     onChange={e => setEditFormData({ ...editFormData, size: e.target.value })}
                                                 />
@@ -1187,19 +1187,19 @@ export default function MaterialDetail() {
                                         {/* Phân bố & Khả năng quan sát */}
                                         <div className="grid grid-cols-2 gap-3">
                                             <div className="flex flex-col gap-1.5">
-                                                <label className="font-bold text-slate-400 uppercase tracking-wider">Phân bố chính</label>
+                                                <label className="font-extrabold text-slate-600 dark:text-slate-300 uppercase tracking-wider text-[11px]">Phân bố chính</label>
                                                 <input 
                                                     type="text" 
-                                                    className="p-2.5 bg-slate-50 dark:bg-slate-950/40 border border-slate-200 dark:border-white/10 rounded-xl text-xs font-semibold focus:outline-none w-full text-slate-950 dark:text-white"
+                                                    className="p-2.5 bg-slate-50 dark:bg-slate-950/40 border border-slate-200 dark:border-white/10 rounded-xl text-[11px] font-medium focus:outline-none w-full text-slate-700 dark:text-slate-300"
                                                     value={editFormData.location}
                                                     onChange={e => setEditFormData({ ...editFormData, location: e.target.value })}
                                                 />
                                             </div>
                                             <div className="flex flex-col gap-1.5">
-                                                <label className="font-bold text-slate-400 uppercase tracking-wider">Cách quan sát</label>
+                                                <label className="font-extrabold text-slate-600 dark:text-slate-300 uppercase tracking-wider text-[11px]">Cách quan sát</label>
                                                 <input 
                                                     type="text" 
-                                                    className="p-2.5 bg-slate-50 dark:bg-slate-950/40 border border-slate-200 dark:border-white/10 rounded-xl text-xs font-semibold focus:outline-none w-full text-slate-950 dark:text-white"
+                                                    className="p-2.5 bg-slate-50 dark:bg-slate-950/40 border border-slate-200 dark:border-white/10 rounded-xl text-[11px] font-medium focus:outline-none w-full text-slate-700 dark:text-slate-300"
                                                     value={editFormData.visibleInLM}
                                                     onChange={e => setEditFormData({ ...editFormData, visibleInLM: e.target.value })}
                                                 />
@@ -1208,10 +1208,10 @@ export default function MaterialDetail() {
 
                                         {/* Sự thật thú vị */}
                                         <div className="flex flex-col gap-1.5">
-                                            <label className="font-bold text-slate-400 uppercase tracking-wider">Sự thật thú vị (Fun Fact)</label>
+                                            <label className="font-extrabold text-slate-600 dark:text-slate-300 uppercase tracking-wider text-[11px]">Sự thật thú vị (Fun Fact)</label>
                                             <input 
                                                 type="text" 
-                                                className="p-2.5 bg-slate-50 dark:bg-slate-950/40 border border-slate-200 dark:border-white/10 rounded-xl text-xs font-semibold focus:outline-none w-full text-slate-950 dark:text-white"
+                                                className="p-2.5 bg-slate-50 dark:bg-slate-950/40 border border-slate-200 dark:border-white/10 rounded-xl text-[11px] font-medium focus:outline-none w-full text-slate-700 dark:text-slate-300"
                                                 value={editFormData.funFact}
                                                 onChange={e => setEditFormData({ ...editFormData, funFact: e.target.value })}
                                             />
@@ -1220,20 +1220,20 @@ export default function MaterialDetail() {
                                         {/* Nguồn gốc phân bố (whereItOccurs) */}
                                         <div className="grid grid-cols-2 gap-3">
                                             <div className="flex flex-col gap-1.5">
-                                                <label className="font-bold text-slate-400 uppercase tracking-wider">Thông số phân bố (Text)</label>
+                                                <label className="font-extrabold text-slate-600 dark:text-slate-300 uppercase tracking-wider text-[11px]">Thông số phân bố (Text)</label>
                                                 <input 
                                                     type="text" 
-                                                    className="p-2.5 bg-slate-50 dark:bg-slate-950/40 border border-slate-200 dark:border-white/10 rounded-xl text-xs font-semibold focus:outline-none w-full text-slate-950 dark:text-white"
+                                                    className="p-2.5 bg-slate-50 dark:bg-slate-950/40 border border-slate-200 dark:border-white/10 rounded-xl text-[11px] font-medium focus:outline-none w-full text-slate-700 dark:text-slate-300"
                                                     value={editFormData.whereItOccursText}
                                                     onChange={e => setEditFormData({ ...editFormData, whereItOccursText: e.target.value })}
                                                 />
                                             </div>
                                             <div className="flex flex-col gap-1.5">
-                                                <label className="font-bold text-slate-400 uppercase tracking-wider">Khu vực phân bố (Habitat)</label>
+                                                <label className="font-extrabold text-slate-600 dark:text-slate-300 uppercase tracking-wider text-[11px]">Khu vực phân bố (Habitat)</label>
                                                 <input 
                                                     type="text" 
                                                     placeholder="Cách nhau bằng dấu ·"
-                                                    className="p-2.5 bg-slate-50 dark:bg-slate-950/40 border border-slate-200 dark:border-white/10 rounded-xl text-xs font-semibold focus:outline-none w-full text-slate-950 dark:text-white"
+                                                    className="p-2.5 bg-slate-50 dark:bg-slate-950/40 border border-slate-200 dark:border-white/10 rounded-xl text-[11px] font-medium focus:outline-none w-full text-slate-700 dark:text-slate-300"
                                                     value={editFormData.whereItOccursHabitat}
                                                     onChange={e => setEditFormData({ ...editFormData, whereItOccursHabitat: e.target.value })}
                                                 />
@@ -1242,7 +1242,7 @@ export default function MaterialDetail() {
 
                                         {/* Mô tả chính */}
                                         <div className="flex flex-col gap-1.5">
-                                            <label className="font-bold text-slate-400 uppercase tracking-wider">Mô tả học liệu</label>
+                                            <label className="font-extrabold text-slate-600 dark:text-slate-300 uppercase tracking-wider text-[11px]">Mô tả học liệu</label>
                                             <textarea 
                                                 rows={3} 
                                                 className="p-2.5 bg-slate-50 dark:bg-slate-950/40 border border-slate-200 dark:border-white/10 rounded-xl text-xs font-semibold focus:outline-none resize-none w-full text-slate-950 dark:text-white"
@@ -1253,10 +1253,10 @@ export default function MaterialDetail() {
 
                                         {/* Từ khóa */}
                                         <div className="flex flex-col gap-1.5">
-                                            <label className="font-bold text-slate-400 uppercase tracking-wider">Từ khóa (Tags - cách nhau bằng dấu phẩy)</label>
+                                            <label className="font-extrabold text-slate-600 dark:text-slate-300 uppercase tracking-wider text-[11px]">Từ khóa (Tags - cách nhau bằng dấu phẩy)</label>
                                             <input 
                                                 type="text" 
-                                                className="p-2.5 bg-slate-50 dark:bg-slate-950/40 border border-slate-200 dark:border-white/10 rounded-xl text-xs font-semibold focus:outline-none w-full text-slate-950 dark:text-white"
+                                                className="p-2.5 bg-slate-50 dark:bg-slate-950/40 border border-slate-200 dark:border-white/10 rounded-xl text-[11px] font-medium focus:outline-none w-full text-slate-700 dark:text-slate-300"
                                                 value={editFormData.tags}
                                                 onChange={e => setEditFormData({ ...editFormData, tags: e.target.value })}
                                             />
@@ -1264,10 +1264,10 @@ export default function MaterialDetail() {
 
                                         {/* Nguồn / Tác giả thiết kế */}
                                         <div className="flex flex-col gap-1.5">
-                                            <label className="font-bold text-slate-400 uppercase tracking-wider">Nguồn / Tác giả thiết kế</label>
+                                            <label className="font-extrabold text-slate-600 dark:text-slate-300 uppercase tracking-wider text-[11px]">Nguồn / Tác giả thiết kế</label>
                                             <input 
                                                 type="text" 
-                                                className="p-2.5 bg-slate-50 dark:bg-slate-950/40 border border-slate-200 dark:border-white/10 rounded-xl text-xs font-semibold focus:outline-none w-full text-slate-950 dark:text-white"
+                                                className="p-2.5 bg-slate-50 dark:bg-slate-950/40 border border-slate-200 dark:border-white/10 rounded-xl text-[11px] font-medium focus:outline-none w-full text-slate-700 dark:text-slate-300"
                                                 value={editFormData.source}
                                                 onChange={e => setEditFormData({ ...editFormData, source: e.target.value })}
                                             />
@@ -1287,7 +1287,7 @@ export default function MaterialDetail() {
 
                                          {/* Học liệu liên quan */}
                                          <div className="flex flex-col gap-1.5 font-sans">
-                                             <label className="font-bold text-slate-400 uppercase tracking-wider">
+                                             <label className="font-extrabold text-slate-600 dark:text-slate-300 uppercase tracking-wider text-[11px]">
                                                  Học liệu liên quan ({editFormData.relatedMaterials?.length || 0} đã chọn)
                                              </label>
                                              <div className="border border-slate-200 dark:border-white/10 rounded-xl p-3 bg-slate-50 dark:bg-slate-950/40 flex flex-col gap-2">
@@ -1342,7 +1342,7 @@ export default function MaterialDetail() {
                                          {/* Quiz Editor */}
                                          <div className="flex flex-col gap-1.5 font-sans mt-4 border-t border-slate-200 dark:border-white/10 pt-4">
                                              <div className="flex justify-between items-center">
-                                                 <label className="font-bold text-slate-400 uppercase tracking-wider">
+                                                 <label className="font-extrabold text-slate-600 dark:text-slate-300 uppercase tracking-wider text-[11px]">
                                                      Câu hỏi trắc nghiệm ({editFormData.quiz?.length || 0})
                                                  </label>
                                                  <button
@@ -1410,7 +1410,7 @@ export default function MaterialDetail() {
                                                              <input
                                                                  type="text"
                                                                  placeholder="Giải thích đáp án đúng (tùy chọn)"
-                                                                 className="p-2 mt-1 bg-slate-50 dark:bg-slate-950/40 border border-slate-200 dark:border-white/10 rounded-lg text-xs focus:outline-none w-full text-slate-950 dark:text-white"
+                                                                 className="p-2 mt-1 bg-slate-50 dark:bg-slate-950/40 border border-slate-200 dark:border-white/10 rounded-lg text-[11px] font-medium focus:outline-none w-full text-slate-700 dark:text-slate-300"
                                                                  value={q.explanation || ''}
                                                                  onChange={e => {
                                                                      const newQuiz = [...editFormData.quiz];
@@ -1531,10 +1531,10 @@ export default function MaterialDetail() {
                                                 ? (theme === 'light' ? 'bg-stone-50/50 border-stone-200/30 shadow-sm' : 'bg-slate-950/40 border-white/5 shadow-md') 
                                                 : 'bg-slate-50/50 dark:bg-slate-950/40 border-slate-100 dark:border-white/5'
                                         }`}>
-                                            <h3 className="text-[0.6875rem] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-[0.15em] mb-2">
+                                            <h3 className="text-xs font-black text-stone-800 dark:text-slate-200 uppercase tracking-wider mb-2">
                                                 Khái niệm khoa học
                                             </h3>
-                                            <p className={`text-sm leading-relaxed text-slate-700 dark:text-slate-300 font-normal ${
+                                            <p className={`text-[11px] leading-relaxed text-stone-600 dark:text-slate-400 font-semibold ${
                                                 material.subtitle ? 'font-sans font-light' : ''
                                             }`}>
                                                 <LatexText text={material.description} />
@@ -1546,38 +1546,38 @@ export default function MaterialDetail() {
 
                                         {/* Quick Stats Grid for Premium Models */}
                                         {material.subtitle && (
-                                            <div className={`grid grid-cols-2 gap-x-5 gap-y-4 p-5 sm:p-6 rounded-2xl border ${
+                                            <div className={`grid grid-cols-1 gap-y-5 p-5 sm:p-6 rounded-2xl border ${
                                                 theme === 'light' ? 'bg-stone-50/50 border-stone-200/30 shadow-sm' : 'bg-slate-950/40 border-white/5 shadow-md'
                                             }`}>
-                                                <div className="space-y-1">
-                                                    <div className="text-stone-400 dark:text-slate-500 text-[0.6875rem] font-bold uppercase tracking-wider">
+                                                <div className="space-y-1.5">
+                                                    <div className="text-xs font-black text-stone-800 dark:text-slate-200 uppercase tracking-wider">
                                                         {cleanLabel(config.category.label)}
                                                     </div>
-                                                    <div className="text-stone-800 dark:text-slate-200 text-sm font-semibold leading-relaxed">
+                                                    <div className="text-[11px] font-semibold text-stone-600 dark:text-slate-400 leading-relaxed">
                                                         <LatexText text={material.category || 'Mô hình 3D'} />
                                                     </div>
                                                 </div>
-                                                <div className="space-y-1">
-                                                    <div className="text-stone-400 dark:text-slate-500 text-[0.6875rem] font-bold uppercase tracking-wider">
+                                                <div className="space-y-1.5">
+                                                    <div className="text-xs font-black text-stone-800 dark:text-slate-200 uppercase tracking-wider">
                                                         {cleanLabel(config.size.label)}
                                                     </div>
-                                                    <div className="text-stone-800 dark:text-slate-200 text-sm font-semibold leading-relaxed">
+                                                    <div className="text-[11px] font-semibold text-stone-600 dark:text-slate-400 leading-relaxed">
                                                         <LatexText text={material.size || 'N/A'} />
                                                     </div>
                                                 </div>
-                                                <div className="space-y-1">
-                                                    <div className="text-stone-400 dark:text-slate-500 text-[0.6875rem] font-bold uppercase tracking-wider">
+                                                <div className="space-y-1.5">
+                                                    <div className="text-xs font-black text-stone-800 dark:text-slate-200 uppercase tracking-wider">
                                                         {cleanLabel(config.location.label)}
                                                     </div>
-                                                    <div className="text-stone-800 dark:text-slate-200 text-sm font-semibold leading-relaxed">
+                                                    <div className="text-[11px] font-semibold text-stone-600 dark:text-slate-400 leading-relaxed">
                                                         <LatexText text={material.location || 'N/A'} />
                                                     </div>
                                                 </div>
-                                                <div className="space-y-1">
-                                                    <div className="text-stone-400 dark:text-slate-500 text-[0.6875rem] font-bold uppercase tracking-wider leading-snug">
+                                                <div className="space-y-1.5">
+                                                    <div className="text-xs font-black text-stone-800 dark:text-slate-200 uppercase tracking-wider leading-snug">
                                                         {cleanLabel(config.visibleInLM.label)}
                                                     </div>
-                                                    <div className="text-stone-800 dark:text-slate-200 text-sm font-semibold leading-relaxed">
+                                                    <div className="text-[11px] font-semibold text-stone-600 dark:text-slate-400 leading-relaxed">
                                                         {material.id === 'dna' ? (
                                                             <span className="text-[#b53b3b] dark:text-[#f472b6] font-bold">Điện tử</span>
                                                         ) : (
@@ -1591,7 +1591,7 @@ export default function MaterialDetail() {
                                         {/* Tags for Normal Models */}
                                         {!material.subtitle && material.tags && material.tags.length > 0 && (
                                             <div className="p-5 sm:p-6 rounded-2xl border bg-slate-50/50 dark:bg-slate-950/40 border-slate-100 dark:border-white/5">
-                                                <h3 className="text-[0.6875rem] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-[0.15em] mb-2.5">
+                                                <h3 className="text-xs font-black text-stone-800 dark:text-slate-200 uppercase tracking-wider mb-2.5">
                                                     Từ khóa liên quan
                                                 </h3>
                                                 <div className="flex flex-wrap gap-1.5">
@@ -1616,11 +1616,11 @@ export default function MaterialDetail() {
                                             }`}>
                                                 <div className="flex items-center gap-1.5 mb-2">
                                                     <span className="text-base">💡</span>
-                                                    <div className={`text-[0.6875rem] font-bold uppercase tracking-[0.15em] ${theme === 'light' ? 'text-amber-700' : 'text-amber-400'}`}>
+                                                    <div className={`text-xs font-black uppercase tracking-wider ${theme === 'light' ? 'text-amber-900' : 'text-amber-200'}`}>
                                                         {cleanLabel(config.funFact.label)}
                                                     </div>
                                                 </div>
-                                                <p className="text-sm font-heading italic leading-relaxed">
+                                                <p className="text-[11px] font-heading font-semibold italic leading-relaxed opacity-80">
                                                     "<LatexText text={material.funFact} />"
                                                 </p>
                                             </div>
@@ -1637,7 +1637,7 @@ export default function MaterialDetail() {
                                                     ? (theme === 'light' ? 'bg-stone-50/50 border-stone-200/30 shadow-sm' : 'bg-slate-950/40 border-white/5 shadow-md') 
                                                     : 'bg-slate-50/50 dark:bg-slate-950/40 border-slate-100 dark:border-white/5'
                                             }`}>
-                                                <h3 className="text-[0.6875rem] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-[0.15em] mb-4">
+                                                <h3 className="text-xs font-black text-stone-800 dark:text-slate-200 uppercase tracking-wider mb-4">
                                                     {material.subtitle ? cleanLabel(config.featuresText.label) : 'Cấu trúc chính'}
                                                 </h3>
                                                 <ul className="flex flex-col gap-4">
@@ -1645,10 +1645,10 @@ export default function MaterialDetail() {
                                                         <li key={idx} className="flex gap-2.5 items-start">
                                                             <span className="w-1.5 h-1.5 rounded-full bg-sky-400 border border-sky-300 shadow-sm flex-shrink-0 mt-1.5" />
                                                             <div className="flex-1 min-w-0">
-                                                                <div className={`text-slate-900 dark:text-white font-bold text-sm ${material.subtitle ? 'font-heading' : ''}`}>
+                                                                <div className={`text-stone-700 dark:text-slate-300 font-bold text-[11px] ${material.subtitle ? 'font-heading' : ''}`}>
                                                                     <LatexText text={feature.name} />
                                                                 </div>
-                                                                <div className={`text-slate-500 dark:text-slate-400 text-xs mt-0.5 leading-relaxed font-normal ${material.subtitle ? 'font-sans' : ''}`}>
+                                                                <div className={`text-stone-500 dark:text-slate-400 text-[11px] font-medium mt-0.5 leading-relaxed ${material.subtitle ? 'font-sans' : ''}`}>
                                                                     <LatexText text={feature.detail} />
                                                                 </div>
                                                             </div>
