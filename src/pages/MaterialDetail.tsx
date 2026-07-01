@@ -1534,7 +1534,7 @@ export default function MaterialDetail() {
                                             <h3 className="text-xs font-black text-stone-800 dark:text-slate-200 uppercase tracking-wider mb-2">
                                                 Khái niệm khoa học
                                             </h3>
-                                            <p className={`text-[11px] leading-relaxed text-stone-600 dark:text-slate-400 font-semibold ${
+                                            <p className={`text-[13px] leading-relaxed text-stone-600 dark:text-slate-400 font-medium ${
                                                 material.subtitle ? 'font-sans font-light' : ''
                                             }`}>
                                                 <LatexText text={material.description} />
@@ -1553,7 +1553,7 @@ export default function MaterialDetail() {
                                                     <div className="text-xs font-black text-stone-800 dark:text-slate-200 uppercase tracking-wider">
                                                         {cleanLabel(config.category.label)}
                                                     </div>
-                                                    <div className="text-[11px] font-semibold text-stone-600 dark:text-slate-400 leading-relaxed">
+                                                    <div className="text-[13px] font-medium text-stone-600 dark:text-slate-400 leading-relaxed">
                                                         <LatexText text={material.category || 'Mô hình 3D'} />
                                                     </div>
                                                 </div>
@@ -1561,7 +1561,7 @@ export default function MaterialDetail() {
                                                     <div className="text-xs font-black text-stone-800 dark:text-slate-200 uppercase tracking-wider">
                                                         {cleanLabel(config.size.label)}
                                                     </div>
-                                                    <div className="text-[11px] font-semibold text-stone-600 dark:text-slate-400 leading-relaxed">
+                                                    <div className="text-[13px] font-medium text-stone-600 dark:text-slate-400 leading-relaxed">
                                                         <LatexText text={material.size || 'N/A'} />
                                                     </div>
                                                 </div>
@@ -1569,7 +1569,7 @@ export default function MaterialDetail() {
                                                     <div className="text-xs font-black text-stone-800 dark:text-slate-200 uppercase tracking-wider">
                                                         {cleanLabel(config.location.label)}
                                                     </div>
-                                                    <div className="text-[11px] font-semibold text-stone-600 dark:text-slate-400 leading-relaxed">
+                                                    <div className="text-[13px] font-medium text-stone-600 dark:text-slate-400 leading-relaxed">
                                                         <LatexText text={material.location || 'N/A'} />
                                                     </div>
                                                 </div>
@@ -1577,7 +1577,7 @@ export default function MaterialDetail() {
                                                     <div className="text-xs font-black text-stone-800 dark:text-slate-200 uppercase tracking-wider leading-snug">
                                                         {cleanLabel(config.visibleInLM.label)}
                                                     </div>
-                                                    <div className="text-[11px] font-semibold text-stone-600 dark:text-slate-400 leading-relaxed">
+                                                    <div className="text-[13px] font-medium text-stone-600 dark:text-slate-400 leading-relaxed">
                                                         {material.id === 'dna' ? (
                                                             <span className="text-[#b53b3b] dark:text-[#f472b6] font-bold">Điện tử</span>
                                                         ) : (
@@ -1620,7 +1620,7 @@ export default function MaterialDetail() {
                                                         {cleanLabel(config.funFact.label)}
                                                     </div>
                                                 </div>
-                                                <p className="text-[11px] font-heading font-semibold italic leading-relaxed opacity-80">
+                                                <p className="text-[13px] font-heading font-medium italic leading-relaxed opacity-90">
                                                     "<LatexText text={material.funFact} />"
                                                 </p>
                                             </div>
@@ -1645,10 +1645,10 @@ export default function MaterialDetail() {
                                                         <li key={idx} className="flex gap-2.5 items-start">
                                                             <span className="w-1.5 h-1.5 rounded-full bg-sky-400 border border-sky-300 shadow-sm flex-shrink-0 mt-1.5" />
                                                             <div className="flex-1 min-w-0">
-                                                                <div className={`text-stone-700 dark:text-slate-300 font-bold text-[11px] ${material.subtitle ? 'font-heading' : ''}`}>
+                                                                <div className={`text-stone-700 dark:text-slate-300 font-bold text-[13px] ${material.subtitle ? 'font-heading' : ''}`}>
                                                                     <LatexText text={feature.name} />
                                                                 </div>
-                                                                <div className={`text-stone-500 dark:text-slate-400 text-[11px] font-medium mt-0.5 leading-relaxed ${material.subtitle ? 'font-sans' : ''}`}>
+                                                                <div className={`text-stone-500 dark:text-slate-400 text-xs font-medium mt-0.5 leading-relaxed ${material.subtitle ? 'font-sans' : ''}`}>
                                                                     <LatexText text={feature.detail} />
                                                                 </div>
                                                             </div>
