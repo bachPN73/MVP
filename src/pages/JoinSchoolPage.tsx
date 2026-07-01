@@ -204,7 +204,7 @@ export default function JoinSchoolPage() {
                             <h1 className="text-2xl sm:text-3xl font-black leading-tight">
                                 Tham gia Trường học
                             </h1>
-                            <p className="text-teal-100 text-sm mt-2 max-w-lg leading-relaxed">
+                            <p className="text-teal-50/95 text-[15px] font-semibold mt-2.5 max-w-lg leading-relaxed">
                                 Liên kết tài khoản với tổ chức giáo dục của bạn để nhận gói <strong className="text-white">Pro miễn phí</strong> và
                                 truy cập toàn bộ tài liệu premium được trường cấp phép.
                             </p>
@@ -219,8 +219,8 @@ export default function JoinSchoolPage() {
                             { label: "Kích hoạt", value: "Tức thì" },
                         ].map((s) => (
                             <div key={s.label} className="bg-white/10 border border-white/15 rounded-2xl p-3 text-center backdrop-blur-sm">
-                                <div className="text-lg font-black text-white leading-none">{s.value}</div>
-                                <div className="text-[0.625rem] text-teal-100 font-semibold uppercase tracking-wider mt-1">{s.label}</div>
+                                <div className="text-xl font-black text-white leading-none">{s.value}</div>
+                                <div className="text-xs text-teal-50/90 font-bold uppercase tracking-wider mt-1.5">{s.label}</div>
                             </div>
                         ))}
                     </div>
@@ -232,7 +232,7 @@ export default function JoinSchoolPage() {
 
                         {/* Benefits */}
                         <div className="bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-white/10 rounded-3xl p-6 shadow-sm backdrop-blur-md">
-                            <h2 className="text-base font-black text-slate-900 dark:text-white flex items-center gap-2 mb-5">
+                            <h2 className="text-[17px] font-black text-slate-950 dark:text-white flex items-center gap-2 mb-5">
                                 <Star className="w-4 h-4 text-amber-500" />
                                 Quyền lợi khi tham gia
                             </h2>
@@ -261,8 +261,8 @@ export default function JoinSchoolPage() {
                                                 <b.icon className="w-4 h-4" />
                                             </div>
                                             <div>
-                                                <h3 className="text-sm font-bold text-slate-900 dark:text-white">{b.title}</h3>
-                                                <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5 leading-relaxed">{b.desc}</p>
+                                                <h3 className="text-base font-extrabold text-slate-950 dark:text-white">{b.title}</h3>
+                                                <p className="text-sm text-slate-700 dark:text-slate-300 mt-1 leading-relaxed">{b.desc}</p>
                                             </div>
                                         </div>
                                     );
@@ -272,7 +272,7 @@ export default function JoinSchoolPage() {
 
                         {/* How it works */}
                         <div className="bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-white/10 rounded-3xl p-6 shadow-sm backdrop-blur-md">
-                            <h2 className="text-base font-black text-slate-900 dark:text-white flex items-center gap-2 mb-5">
+                            <h2 className="text-[17px] font-black text-slate-950 dark:text-white flex items-center gap-2 mb-5">
                                 <Info className="w-4 h-4 text-indigo-500" />
                                 Quy trình tham gia
                             </h2>
@@ -290,9 +290,9 @@ export default function JoinSchoolPage() {
                                         <div className="pb-4">
                                             <div className="flex items-center gap-2 mb-1">
                                                 <step.icon className="w-4 h-4 text-teal-500" />
-                                                <h3 className="text-sm font-bold text-slate-900 dark:text-white">{step.title}</h3>
+                                                <h3 className="text-base font-extrabold text-slate-950 dark:text-white">{step.title}</h3>
                                             </div>
-                                            <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">{step.desc}</p>
+                                            <p className="text-sm text-slate-700 dark:text-slate-300 mt-1 leading-relaxed">{step.desc}</p>
                                         </div>
                                     </div>
                                 ))}
@@ -301,7 +301,7 @@ export default function JoinSchoolPage() {
                             {/* Info note */}
                             <div className="mt-4 p-3.5 bg-blue-50 dark:bg-blue-500/10 border border-blue-200 dark:border-blue-500/20 rounded-2xl flex gap-2.5 items-start">
                                 <Info className="w-4 h-4 text-blue-500 shrink-0 mt-0.5" />
-                                <p className="text-xs text-blue-600 dark:text-blue-400 leading-relaxed">
+                                <p className="text-sm font-semibold text-blue-700 dark:text-blue-300 leading-relaxed">
                                     Sau khi bị xóa khỏi trường, tài khoản sẽ <strong>tự động hoàn trả</strong> về gói dịch vụ bạn có trước khi tham gia (Free, Basic hoặc Pro nếu còn hạn).
                                 </p>
                             </div>
@@ -317,7 +317,7 @@ export default function JoinSchoolPage() {
                                 </div>
                                 <div>
                                     <h2 className="text-base font-black text-slate-900 dark:text-white">Điền thông tin</h2>
-                                    <p className="text-xs text-slate-400 dark:text-slate-500">Nhập mã mời của trường bạn</p>
+                                    <p className="text-sm font-semibold text-slate-600 dark:text-slate-400">Nhập mã mời của trường bạn</p>
                                 </div>
                             </div>
 
@@ -340,7 +340,7 @@ export default function JoinSchoolPage() {
                             <form onSubmit={handleSubmit} className="space-y-4">
                                 {/* Invite code */}
                                 <div className="space-y-1.5">
-                                    <label className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                                    <label className="text-sm font-extrabold text-slate-800 dark:text-slate-200 uppercase tracking-wider">
                                         Mã mời trường học <span className="text-red-500">*</span>
                                     </label>
                                     <div className="flex gap-2">
@@ -351,7 +351,7 @@ export default function JoinSchoolPage() {
                                             placeholder="Ví dụ: NGUYENDU2026"
                                             value={schoolCode}
                                             onChange={(e) => setSchoolCode(e.target.value.toUpperCase())}
-                                            className="flex-1 p-3.5 bg-slate-50 dark:bg-slate-950/60 rounded-2xl border border-slate-200 dark:border-white/10 outline-none text-slate-900 dark:text-white focus:border-teal-500 text-sm uppercase font-mono tracking-widest transition-colors min-w-0"
+                                            className="flex-1 p-3.5 bg-slate-50 dark:bg-slate-950/60 rounded-2xl border border-slate-200 dark:border-white/10 outline-none text-slate-950 dark:text-white focus:border-teal-500 text-base uppercase font-mono tracking-widest transition-colors min-w-0"
                                         />
                                         <button
                                             type="button"
@@ -362,14 +362,14 @@ export default function JoinSchoolPage() {
                                             <ScanLine className="w-5 h-5" />
                                         </button>
                                     </div>
-                                    <p className="text-[0.6875rem] text-slate-400 dark:text-slate-500">
+                                    <p className="text-sm font-medium text-slate-600 dark:text-slate-400 mt-1">
                                         Hoặc bấm vào icon camera để quét mã QR từ trường
                                     </p>
                                 </div>
 
                                 {/* Role */}
                                 <div className="space-y-1.5">
-                                    <label className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                                    <label className="text-sm font-extrabold text-slate-800 dark:text-slate-200 uppercase tracking-wider">
                                         Vai trò ứng tuyển
                                     </label>
                                     <div className="grid grid-cols-2 gap-2">
@@ -394,7 +394,7 @@ export default function JoinSchoolPage() {
                                 {/* Class (students only) */}
                                 {requestedRole === "student" && (
                                     <div className="space-y-1.5 animate-in slide-in-from-top-2 duration-200">
-                                        <label className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                                        <label className="text-sm font-extrabold text-slate-800 dark:text-slate-200 uppercase tracking-wider">
                                             Lớp học <span className="text-red-500">*</span>
                                         </label>
                                         <input
@@ -403,7 +403,7 @@ export default function JoinSchoolPage() {
                                             placeholder="Ví dụ: 12A1, 10A5..."
                                             value={requestedClass}
                                             onChange={(e) => setRequestedClass(e.target.value)}
-                                            className="w-full p-3.5 bg-slate-50 dark:bg-slate-950/60 rounded-2xl border border-slate-200 dark:border-white/10 outline-none text-slate-900 dark:text-white focus:border-teal-500 text-sm transition-colors"
+                                            className="w-full p-3.5 bg-slate-50 dark:bg-slate-950/60 rounded-2xl border border-slate-200 dark:border-white/10 outline-none text-slate-950 dark:text-white focus:border-teal-500 text-base transition-colors"
                                         />
                                     </div>
                                 )}
@@ -458,8 +458,8 @@ export default function JoinSchoolPage() {
                                     <QrCode className="w-5 h-5 text-teal-500" />
                                 </div>
                                 <div className="text-left">
-                                    <p className="text-sm font-bold text-slate-900 dark:text-white">Quét mã QR từ trường</p>
-                                    <p className="text-xs text-slate-400 dark:text-slate-500">Mở camera và hướng vào mã QR của trường học</p>
+                                    <p className="text-base font-extrabold text-slate-950 dark:text-white">Quét mã QR từ trường</p>
+                                    <p className="text-sm font-semibold text-slate-600 dark:text-slate-400">Mở camera và hướng vào mã QR của trường học</p>
                                 </div>
                                 <ChevronRight className="w-4 h-4 text-slate-400 ml-auto group-hover:translate-x-0.5 transition-transform" />
                             </button>
@@ -481,7 +481,7 @@ export default function JoinSchoolPage() {
                                 </div>
                                 <div>
                                     <h3 className="font-bold text-slate-900 dark:text-white text-sm">Quét mã QR</h3>
-                                    <p className="text-xs text-slate-400 dark:text-slate-500">Hướng camera vào mã QR của trường</p>
+                                    <p className="text-sm font-semibold text-slate-600 dark:text-slate-400">Hướng camera vào mã QR của trường</p>
                                 </div>
                             </div>
                             <button
@@ -525,7 +525,7 @@ export default function JoinSchoolPage() {
                             </div>
                         </div>
                         <div className="p-4 text-center">
-                            <p className="text-xs text-slate-400 dark:text-slate-500">
+                            <p className="text-sm font-semibold text-slate-600 dark:text-slate-400">
                                 Mã QR sẽ được nhận dạng tự động và điền vào ô nhập mã mời.
                             </p>
                         </div>

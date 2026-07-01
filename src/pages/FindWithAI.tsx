@@ -168,7 +168,7 @@ export default function FindWithAI() {
                     <h1 className="text-3xl sm:text-4xl font-extrabold mb-3 tracking-tight bg-gradient-to-r from-indigo-600 via-purple-600 to-emerald-600 dark:from-indigo-400 dark:via-purple-400 dark:to-emerald-400 bg-clip-text text-transparent font-heading">
                         AI tìm kiếm
                     </h1>
-                    <p className="text-base sm:text-lg text-slate-600 dark:text-slate-300 max-w-2xl mx-auto font-medium">
+                    <p className="text-[1.05rem] text-slate-800 dark:text-slate-200 max-w-2xl mx-auto font-semibold leading-relaxed">
                         Mô tả nội dung bạn muốn tìm kiếm, AI sẽ thông minh phân tích ngữ cảnh, trích xuất chủ đề và đề xuất học liệu phù hợp nhất
                     </p>
                 </div>
@@ -183,14 +183,14 @@ export default function FindWithAI() {
                                     onChange={(e) => setQuery(e.target.value.slice(0, 500))}
                                     onKeyDown={handleKeyPress}
                                     placeholder="Ví dụ: Tôi muốn tìm mô hình 3D sinh động về cấu trúc nguyên tử và các electron quay quanh hạt nhân..."
-                                    className="w-full px-4 sm:px-6 py-4 bg-transparent border-0 focus:outline-none resize-none min-h-[8.125rem] text-base sm:text-lg text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 leading-relaxed"
+                                    className="w-full px-4 sm:px-6 py-4 bg-transparent border-0 focus:outline-none resize-none min-h-[8.125rem] text-base sm:text-lg text-slate-950 dark:text-white placeholder:text-slate-600 dark:placeholder:text-slate-350 placeholder:font-semibold leading-relaxed"
                                     disabled={isSearching}
                                 />
                             </div>
                         </div>
                         <div className="flex flex-col sm:flex-row items-center justify-between gap-4 px-4 pt-2 border-t border-slate-100 dark:border-white/5">
                             <div className="flex flex-col gap-1 text-left">
-                                <div className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 font-semibold">
+                                <div className="text-xs sm:text-sm text-slate-700 dark:text-slate-300 font-bold">
                                     {query.length} / 500 ký tự
                                 </div>
                                 {/* AI Usage Counter — shown for all plans except admin/unlimited */}
@@ -239,14 +239,14 @@ export default function FindWithAI() {
                         <div className="mt-8 animate-in fade-in slide-in-from-bottom-2 duration-400">
                             <div className="flex items-center gap-2 mb-3 px-1">
                                 <Sparkles className="w-4 h-4 text-indigo-500 dark:text-indigo-400" />
-                                <p className="text-sm font-bold text-slate-600 dark:text-slate-300">Gợi ý tìm kiếm nhanh:</p>
+                                <p className="text-[15px] font-black text-slate-900 dark:text-white">Gợi ý tìm kiếm nhanh:</p>
                             </div>
                             <div className="flex flex-wrap gap-2.5">
                                 {exampleQueries.map((example, index) => (
                                     <button
                                         key={index}
                                         onClick={() => handleExampleClick(example)}
-                                        className="px-4 py-2 bg-slate-100/80 dark:bg-slate-900/50 hover:bg-indigo-500/10 dark:hover:bg-indigo-500/20 text-slate-700 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 border border-slate-200/60 dark:border-white/10 hover:border-indigo-500/30 rounded-full text-sm font-semibold transition-all duration-300 hover:scale-[1.02] flex items-center gap-1.5 cursor-pointer shadow-sm"
+                                        className="px-4 py-2 bg-slate-100/90 dark:bg-slate-900/60 hover:bg-indigo-500/15 dark:hover:bg-indigo-500/20 text-slate-900 dark:text-slate-200 hover:text-indigo-700 dark:hover:text-indigo-300 border border-slate-300 dark:border-white/15 hover:border-indigo-500/40 rounded-full text-sm sm:text-[14px] font-bold transition-all duration-300 hover:scale-[1.02] flex items-center gap-1.5 cursor-pointer shadow-sm"
                                     >
                                         <div className="w-1.5 h-1.5 rounded-full bg-indigo-500 dark:bg-indigo-400" />
                                         {example}
