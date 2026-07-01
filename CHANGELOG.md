@@ -13,6 +13,23 @@ và dự án này tuân thủ [Semantic Versioning](https://semver.org/lang/vi/)
 > - `Fixed` — Sửa lỗi.
 > - `Security` — Vá lỗ hổng bảo mật.
 
+## [v2.5.2] - 2026-07-01
+
+> **Mục tiêu:** Tối ưu hóa hiệu năng, giảm thời gian tải trang (FCP/LCP) và xóa bỏ tình trạng nháy màn hình (flickering) khi điều hướng.
+
+### Added
+- Tích hợp **Native Code Splitting** (`lazy` prop của `createBrowserRouter` React Router v7), loại bỏ hoàn toàn `<Suspense>` bọc ngoài page để giữ giao diện mượt mà, không bị giật chớp trắng khi chuyển trang.
+- Tích hợp **Cache API** của trình duyệt trong `fetchWithProgress` giúp lưu trữ vĩnh viễn mô hình 3D dung lượng lớn dưới Local, tải lại tức thì ở những lần sau.
+- Áp dụng cơ chế **Preload Font** (`<link rel="preconnect" />`) trong `index.html` và gỡ bỏ `@import` render-blocking trong CSS.
+
+### Changed
+- Tái cấu trúc `ModelViewer.tsx`: Đưa `<Suspense>` vào sâu bên trong `<Canvas>` để bảo toàn WebGL Context, ngăn lỗi chớp đen khi mô hình đang tải.
+- Sử dụng `useMemo` bọc `<Canvas>` nhằm cô lập quá trình Re-render của thanh Progress bar ra khỏi Engine 3D, duy trì FPS ổn định.
+- Tích hợp sự kiện `onMouseEnter` để kích hoạt tải ngầm (pre-import) Chunk file 3D Viewer trước khi người dùng thực sự click vào học liệu.
+- Kích hoạt `loading="lazy"` và `decoding="async"` cho toàn bộ ảnh trên hệ thống để tiết kiệm băng thông và RAM lúc khởi động.
+
+---
+
 ## [v2.5.1] - 2026-06-27
 
 > **Mục tiêu:** Cải thiện trải nghiệm người dùng (UX) khi điều hướng quay lại trang Thư viện học liệu.
@@ -60,16 +77,21 @@ và dự án này tuân thủ [Semantic Versioning](https://semver.org/lang/vi/)
 - Tích hợp `IntersectionObserver` vào `ModelViewer`: Canvas 3D tự động chuyển sang chế độ **"ngủ đông"** (`frameloop="demand"`) khi người dùng cuộn khỏi vùng nhìn thấy, giúp tiết kiệm tài nguyên đáng kể.
 - Triển khai **Code Splitting** toàn diện: Toàn bộ các trang (Landing, Dashboard, Library, Admin...) được chuyển sang `React.lazy()` + `Suspense` để tải chậm (lazy load), giảm ~60% dung lượng bundle JavaScript tải về ban đầu.
 - Bổ sung cấu hình **Agent AI** (GEMINI.md) và các tài nguyên ảnh tĩnh mới cho hệ thống.
+- Thay thế mô hình 3D bằng video trên LandingPage nhằm giảm tải tài nguyên CPU/GPU và tối ưu hiệu năng tải trang.
 
 ### Changed
 - Nút hỗ trợ kỹ thuật trên trang Thanh toán: Thay liên kết **Zalo cá nhân** bằng **Fanpage Facebook** chính thức.
 - Khung Theme Switcher trong Sidebar: Thay đổi màu viền và nền sang tông **Indigo** nổi bật hơn trên cả giao diện Sáng và Tối.
+- Đặt chế độ **Giao diện Sáng (Light Mode)** làm mặc định cho tất cả người dùng truy cập lần đầu (thay vì tự động theo hệ điều hành).
+- Rút gọn trang Hướng dẫn sử dụng, lược bỏ nội dung phụ để tập trung vào quy trình Đăng ký và Đăng nhập.
+- Tinh chỉnh UI Hero section trên LandingPage: Căn lề lại logo, điều chỉnh padding và giảm kích thước tiêu đề EduTech cùng tagline cho cân đối hơn.
+- Tối ưu hóa thiết kế responsive cho màn hình di động tại Hero section của LandingPage.
+- Áp dụng cơ chế co giãn linh hoạt (fluid scaling) bằng `clamp()` và `vh` cho font chữ và các khối tính năng trên LandingPage khi hiển thị trên các màn hình có chiều cao thấp.
 
 ### Fixed
 - Sửa lỗi crash app do thiếu import `ThemeToggle` trong `AppSidebar.tsx`.
-
-### Changed
-- Đặt chế độ **Giao diện Sáng (Light Mode)** làm mặc định cho tất cả người dùng truy cập lần đầu (thay vì tự động theo hệ điều hành).
+- Sửa lỗi trang Bảng giá công khai luôn tự động điều hướng về `/login` thay vì cho phép đi tiếp vào trang thanh toán khi người dùng đã xác thực.
+- Sửa link các nút chọn gói cước trên bảng giá điều hướng đúng đến trang đăng nhập nếu người dùng chưa đăng nhập.
 
 ---
 

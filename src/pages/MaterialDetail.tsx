@@ -790,8 +790,12 @@ export default function MaterialDetail() {
                                     <>
                                         {!viewerActive ? (
                                             /* ======================== CLICK-TO-LOAD PLACEHOLDER ======================== */
-                                            <div className="absolute inset-0 flex flex-col items-center justify-center cursor-pointer select-none"
+                                            <div className="absolute inset-0 flex flex-col items-center justify-center cursor-pointer select-none group"
                                                 onClick={() => setViewerActive(true)}
+                                                onMouseEnter={() => {
+                                                    // Bắt đầu tải ngầm chunk JS của ModelViewer ngay khi di chuột vào
+                                                    import('../components/ModelViewer');
+                                                }}
                                             >
                                                 {/* Show thumbnail as blurred background */}
                                                 {thumbnailUrl && (

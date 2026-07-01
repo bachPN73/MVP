@@ -1,6 +1,6 @@
 import { Canvas, ThreeElements } from '@react-three/fiber';
 import { useFBX, OrbitControls, Stage, Environment } from '@react-three/drei';
-import { Suspense, useEffect, useState, useRef } from 'react';
+import { Suspense, useEffect, useState, useRef, useMemo } from 'react';
 import { Loader2, HelpCircle, HardDrive, RefreshCw, Zap, Sparkles, Sun } from 'lucide-react';
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
@@ -84,8 +84,24 @@ function applyPBRUpgrades(scene: THREE.Group | THREE.Object3D, isAmber: boolean,
     });
 }
 
-// Fetch with Progressive ReadableStream
+// Fetch with Progressive ReadableStream and Browser Caching
 async function fetchWithProgress(url: string, onProgress: (loaded: number, total: number) => void): Promise<ArrayBuffer> {
+    const CACHE_NAME = '3d-models-cache-v1';
+    
+    // 1. Try to load from cache first
+    try {
+        const cache = await caches.open(CACHE_NAME);
+        const cachedResponse = await cache.match(url);
+        
+        if (cachedResponse) {
+            // Fake loading progress for smooth UI
+            onProgress(1, 1);
+            return await cachedResponse.arrayBuffer();
+        }
+    } catch (e) {
+        console.warn("Cache API không khả dụng", e);
+    }
+
     const response = await fetch(url);
     if (!response.ok) {
         throw new Error(`Tải mô hình thất bại: HTTP status ${response.status}`);
@@ -96,7 +112,13 @@ async function fetchWithProgress(url: string, onProgress: (loaded: number, total
 
     const reader = response.body?.getReader();
     if (!reader) {
-        return await response.arrayBuffer();
+        const buffer = await response.arrayBuffer();
+        onProgress(1, 1);
+        try {
+            const cache = await caches.open(CACHE_NAME);
+            cache.put(url, new Response(buffer.slice(0)));
+        } catch (e) {}
+        return buffer;
     }
 
     let loadedBytes = 0;
@@ -119,7 +141,16 @@ async function fetchWithProgress(url: string, onProgress: (loaded: number, total
         position += chunk.length;
     }
 
-    return allChunks.buffer;
+    const finalBuffer = allChunks.buffer;
+    
+    // 2. Save to cache in background for next time
+    try {
+        caches.open(CACHE_NAME).then(cache => {
+            cache.put(url, new Response(finalBuffer.slice(0)));
+        });
+    } catch (e) {}
+
+    return finalBuffer;
 }
 
 // GLTF model with progressive stream loading & DRACO decoder
@@ -481,7 +512,7 @@ export default function ModelViewer({
                 </div>
             )}
 
-            <Suspense fallback={null}>
+            {useMemo(() => (
                 <Canvas
                     frameloop={isVisible ? "always" : "demand"} // Ngủ đông (demand) khi khuất màn hình để tránh lag
 
@@ -498,75 +529,80 @@ export default function ModelViewer({
                         gl.toneMappingExposure = 1.05;
                     }}
                 >
-                    {highQuality ? (
-                        isAmber ? <Environment preset="studio" /> : <Environment preset="city" />
-                    ) : (
-                        // Fallback ánh sáng Hemisphere khi tắt Environment để đạt hiệu năng cực đại mà vẫn giữ chiều sâu 3D
-                        <hemisphereLight skyColor="#ffffff" groundColor="#333333" intensity={isAmber ? 0.9 : 1.1} />
-                    )}
+                    <Suspense fallback={null}>
+                        {highQuality ? (
+                            isAmber ? <Environment preset="studio" /> : <Environment preset="city" />
+                        ) : (
+                            // Fallback ánh sáng Hemisphere khi tắt Environment để đạt hiệu năng cực đại mà vẫn giữ chiều sâu 3D
+                            <hemisphereLight skyColor="#ffffff" groundColor="#333333" intensity={isAmber ? 0.9 : 1.1} />
+                        )}
 
-                    <ambientLight intensity={(isAmber ? 0.65 : 0.8) * lightIntensity} />
-                    <directionalLight position={[10, 10, 10]} intensity={(isAmber ? 0.8 : 1.4) * lightIntensity} />
+                        <ambientLight intensity={(isAmber ? 0.65 : 0.8) * lightIntensity} />
+                        <directionalLight position={[10, 10, 10]} intensity={(isAmber ? 0.8 : 1.4) * lightIntensity} />
 
-                    {!isMobile && (
-                        <>
-                            <directionalLight position={[-10, 5, -10]} intensity={(isAmber ? 0.75 : 0.55) * lightIntensity} color="#ffffff" />
-                            <pointLight position={[0, -5, 5]} intensity={(isAmber ? 0.5 : 0.35) * lightIntensity} color="#ffffff" />
-                        </>
-                    )}
+                        {!isMobile && (
+                            <>
+                                <directionalLight position={[-10, 5, -10]} intensity={(isAmber ? 0.75 : 0.55) * lightIntensity} color="#ffffff" />
+                                <pointLight position={[0, -5, 5]} intensity={(isAmber ? 0.5 : 0.35) * lightIntensity} color="#ffffff" />
+                            </>
+                        )}
 
-                    {isFBX ? (
-                        <Stage environment={null} intensity={isAmber ? 0.55 : 1.1} shadows={false} adjustCamera={1.3}>
-                            <FBXModel url={modelUrl} highQuality={highQuality} />
-                        </Stage>
-                    ) : (
-                        <>
-                            <ProgressiveGLTFModel
-                                url={modelUrl}
-                                highQuality={highQuality}
-                                onProgress={(percent, loaded, total) => {
-                                    setPct(percent);
-                                    setLoadedMb(loaded);
-                                    setTotalMb(total);
-                                    if (percent === 100) {
-                                        setLoadingStage('decoding');
-                                    }
-                                }}
-                                onLoaded={(scene) => {
-                                    setLoadedScene(scene);
-                                    setLoadingStage('stabilizing');
-                                }}
-                                onError={(err) => {
-                                    setErrorMsg(err.message || "Không thể tải hoặc giải nén mô hình GLTF.");
-                                    setLoadingStage('error');
-                                }}
-                            />
-                            {loadedScene && (
-                                <Stage environment={null} intensity={isAmber ? 0.55 : 1.1} shadows={false} adjustCamera={1.3}>
-                                    <primitive 
-                                        object={loadedScene} 
-                                        rotation={finalRotation} 
-                                        position={modelPosition} 
-                                        scale={modelScale} 
-                                    />
-                                </Stage>
-                            )}
-                        </>
-                    )}
+                        {isFBX ? (
+                            <Stage environment={null} intensity={isAmber ? 0.55 : 1.1} shadows={false} adjustCamera={1.3}>
+                                <FBXModel url={modelUrl} highQuality={highQuality} />
+                            </Stage>
+                        ) : (
+                            <>
+                                <ProgressiveGLTFModel
+                                    url={modelUrl}
+                                    highQuality={highQuality}
+                                    onProgress={(percent, loaded, total) => {
+                                        setPct(percent);
+                                        setLoadedMb(loaded);
+                                        setTotalMb(total);
+                                        if (percent === 100) {
+                                            setLoadingStage('decoding');
+                                        }
+                                    }}
+                                    onLoaded={(scene) => {
+                                        setLoadedScene(scene);
+                                        setLoadingStage('stabilizing');
+                                    }}
+                                    onError={(err) => {
+                                        setErrorMsg(err.message || "Không thể tải hoặc giải nén mô hình GLTF.");
+                                        setLoadingStage('error');
+                                    }}
+                                />
+                                {loadedScene && (
+                                    <Stage environment={null} intensity={isAmber ? 0.55 : 1.1} shadows={false} adjustCamera={1.3}>
+                                        <primitive 
+                                            object={loadedScene} 
+                                            rotation={finalRotation} 
+                                            position={modelPosition} 
+                                            scale={modelScale} 
+                                        />
+                                    </Stage>
+                                )}
+                            </>
+                        )}
 
-                    <OrbitControls 
-                        makeDefault 
-                        enableZoom={!minimal} 
-                        enablePan={!minimal} 
-                        zoomSpeed={1.2} 
-                        enableDamping={true} 
-                        dampingFactor={0.05} 
-                        autoRotate={isVisible && autoRotate} 
-                        autoRotateSpeed={0.8} 
-                        target={finalTarget} 
-                    />
+                        <OrbitControls 
+                            makeDefault 
+                            enableZoom={!minimal} 
+                            enablePan={!minimal} 
+                            zoomSpeed={1.2} 
+                            enableDamping={true} 
+                            dampingFactor={0.05} 
+                            autoRotate={isVisible && autoRotate} 
+                            autoRotateSpeed={0.8} 
+                            target={finalTarget} 
+                        />
+                    </Suspense>
                 </Canvas>
-            </Suspense>
+            ), [
+                isVisible, isMobile, highQuality, isAmber, lightIntensity, modelUrl, minimal, 
+                autoRotate, finalTarget, finalRotation, modelPosition, modelScale, loadedScene, isFBX
+            ])}
 
             {/* Brightness Slider - dọc bên trái */}
             {!minimal && (

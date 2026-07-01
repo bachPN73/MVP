@@ -226,6 +226,7 @@ export default function Landing() {
                                 src="/Backgrod.png"
                                 alt=""
                                 aria-hidden
+                                decoding="async"
                                 style={{
                                     position: 'absolute',
                                     top: 0,
@@ -460,6 +461,8 @@ export default function Landing() {
                                         <img
                                             src={m.img}
                                             alt={m.title}
+                                            loading="lazy"
+                                            decoding="async"
                                             className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-300"
                                             onError={(e) => {
                                                 (e.target as HTMLImageElement).style.display = 'none';
