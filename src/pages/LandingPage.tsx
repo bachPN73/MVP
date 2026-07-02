@@ -119,58 +119,127 @@ export default function Landing() {
 
     return (
         <div className="min-h-screen bg-white text-slate-900 font-sans antialiased">
+            {/* Inline CSS dành riêng cho màn hình 1366x768 để phóng to chữ và thanh menu mà không ảnh hưởng đến màn hình khác */}
+            <style>{`
+                @media (min-width: 1300px) and (max-width: 1400px) {
+                    .custom-1366-navbar-wrapper {
+                        max-width: 84rem !important;
+                    }
+                    .custom-1366-navbar-container {
+                        padding-top: 1.5rem !important;
+                        padding-bottom: 1.5rem !important;
+                        padding-left: 2.75rem !important;
+                        padding-right: 2.75rem !important;
+                    }
+                    .custom-1366-logo-img {
+                        width: 5.25rem !important;
+                        height: 5.25rem !important;
+                    }
+                    .custom-1366-logo-text-title {
+                        font-size: 1.85rem !important;
+                    }
+                    .custom-1366-logo-text-sub {
+                        font-size: 1.05rem !important;
+                    }
+                    .custom-1366-nav-btn {
+                        font-size: 1.25rem !important;
+                        padding-left: 1.5rem !important;
+                        padding-right: 1.5rem !important;
+                        padding-top: 0.85rem !important;
+                        padding-bottom: 0.85rem !important;
+                    }
+                    .custom-1366-nav-action-btn {
+                        font-size: 1.25rem !important;
+                        padding-left: 2.25rem !important;
+                        padding-right: 2.25rem !important;
+                        padding-top: 0.85rem !important;
+                        padding-bottom: 0.85rem !important;
+                    }
+                    .custom-1366-hero-padding {
+                        padding-top: 13.5rem !important;
+                    }
+                    .custom-1366-h1 {
+                        font-size: 8.5rem !important;
+                    }
+                    .custom-1366-tagline {
+                        font-size: 3.5rem !important;
+                        max-width: 60rem !important;
+                    }
+                    .custom-1366-subdesc {
+                        font-size: 1.55rem !important;
+                        max-width: 52rem !important;
+                    }
+                    .custom-1366-hero-btn {
+                        font-size: 1.25rem !important;
+                        padding-left: 2.5rem !important;
+                        padding-right: 2.5rem !important;
+                        padding-top: 1rem !important;
+                        padding-bottom: 1rem !important;
+                    }
+                    .custom-1366-card {
+                        padding: 1.5rem !important;
+                        min-height: 10.5rem !important;
+                    }
+                    .custom-1366-card-title {
+                        font-size: 1.35rem !important;
+                    }
+                    .custom-1366-card-sub {
+                        font-size: 1.05rem !important;
+                    }
+                }
+            `}</style>
 
             {/* ══════════════════════════════════════
                 NAVBAR – pill bar, đúng theo ảnh
             ══════════════════════════════════════ */}
-            <header className="fixed left-0 right-0 top-0 z-50 px-4 pt-3">
+            <header className="fixed left-0 right-0 top-0 z-50 px-4 pt-4">
                 <div
-                    className={`mx-auto max-w-7xl xl:max-w-[90rem] rounded-2xl border transition-all duration-300 ${
+                    className={`mx-auto max-w-7xl xl:max-w-[92rem] rounded-3xl border transition-all duration-300 custom-1366-navbar-wrapper ${
                         scrolled
                             ? 'border-slate-200/80 bg-white/95 shadow-md backdrop-blur-md'
                             : 'border-white/30 bg-white/80 shadow-sm backdrop-blur-sm'
                     }`}
                 >
-                    <div className="flex items-center justify-between px-4 py-3.5 sm:px-6 sm:py-4">
+                    <div className="flex items-center justify-between px-6 py-4 sm:px-8 sm:py-5 custom-1366-navbar-container">
                         {/* Logo – square */}
                         <button
                             onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-                            className="flex items-center gap-3 group"
+                            className="flex items-center gap-4 group"
                         >
-                            <div className="h-14 w-14 overflow-hidden rounded-none flex-shrink-0">
+                            <div className="h-16 w-16 overflow-hidden rounded-none flex-shrink-0 custom-1366-logo-img">
                                 <img src="/logo.png" alt="EduTech" className="h-full w-full object-contain" />
                             </div>
-                            <div className="leading-tight mt-1">
-                                <p className="text-lg font-black text-black">Edu Tech</p>
-                                <p className="text-[0.8125rem] font-bold text-black mt-0.5">Học liệu 3D cho KHTN</p>
+                            <div className="leading-tight mt-1 text-left">
+                                <p className="text-xl sm:text-2xl font-black text-black custom-1366-logo-text-title">Edu Tech</p>
+                                <p className="text-xs sm:text-sm font-bold text-black mt-0.5 custom-1366-logo-text-sub">Học liệu 3D cho KHTN</p>
                             </div>
                         </button>
 
                         {/* Desktop nav */}
-                        <nav className="hidden items-center gap-0.5 md:flex">
+                        <nav className="hidden items-center gap-2 md:flex">
                             <button
                                 onClick={scrollToStory}
-                                className="rounded-xl px-4 py-2.5 text-[0.9375rem] font-bold text-slate-900 hover:bg-slate-100 transition-all"
+                                className="rounded-xl px-5 py-3 text-base sm:text-lg font-bold text-slate-900 hover:bg-slate-100 transition-all custom-1366-nav-btn"
                             >
                                 Về Edu
                             </button>
                             <Link
                                 to="/guide"
-                                className="rounded-xl px-4 py-2.5 text-[0.9375rem] font-bold text-slate-900 hover:bg-slate-100 transition-all"
+                                className="rounded-xl px-5 py-3 text-base sm:text-lg font-bold text-slate-900 hover:bg-slate-100 transition-all custom-1366-nav-btn"
                             >
                                 Hướng dẫn
                             </Link>
 
-                            <div className="ml-3 flex items-center gap-2">
+                            <div className="ml-4 flex items-center gap-3">
                                 <Link
                                     to="/login"
-                                    className="rounded-xl border-2 border-slate-200 bg-white px-5 py-2.5 text-[0.9375rem] font-bold text-slate-900 hover:border-slate-300 hover:bg-slate-50 transition-all shadow-sm"
+                                    className="rounded-full border-2 border-slate-200 bg-white px-7 py-3 text-base sm:text-lg font-bold text-slate-900 hover:border-slate-300 hover:bg-slate-50 transition-all shadow-sm custom-1366-nav-action-btn"
                                 >
                                     Đăng nhập
                                 </Link>
                                 <Link
                                     to="/register"
-                                    className="rounded-xl bg-blue-600 px-5 py-2.5 text-[0.9375rem] font-bold text-white hover:bg-blue-700 transition-all shadow-sm"
+                                    className="rounded-full bg-blue-600 px-7 py-3 text-base sm:text-lg font-bold text-white hover:bg-blue-700 transition-all shadow-sm custom-1366-nav-action-btn"
                                 >
                                     Đăng ký
                                 </Link>
@@ -183,24 +252,24 @@ export default function Landing() {
                             className="rounded-lg p-2 text-slate-600 hover:bg-slate-100 md:hidden"
                             onClick={() => setIsMenuOpen(v => !v)}
                         >
-                            {isMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+                            {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
                         </button>
                     </div>
 
                     {/* Mobile menu */}
                     {isMenuOpen && (
-                        <div className="border-t border-slate-100 px-4 pb-4 pt-2 md:hidden">
-                            <button onClick={scrollToStory} className="block w-full rounded-xl px-4 py-3 text-left text-[0.9375rem] font-bold text-slate-900 hover:bg-slate-50">
+                        <div className="border-t border-slate-100 px-6 pb-5 pt-3 md:hidden">
+                            <button onClick={scrollToStory} className="block w-full rounded-xl px-5 py-3.5 text-left text-base font-bold text-slate-900 hover:bg-slate-50">
                                 Về Edu
                             </button>
-                            <Link to="/guide" className="block rounded-xl px-4 py-3 text-[0.9375rem] font-bold text-slate-900 hover:bg-slate-50" onClick={() => setIsMenuOpen(false)}>
+                            <Link to="/guide" className="block rounded-xl px-5 py-3.5 text-base font-bold text-slate-900 hover:bg-slate-50" onClick={() => setIsMenuOpen(false)}>
                                 Hướng dẫn
                             </Link>
-                            <div className="mt-3 flex flex-col gap-2">
-                                <Link to="/login" className="block w-full rounded-xl border-2 border-slate-200 px-4 py-3 text-center text-[0.9375rem] font-bold text-slate-900" onClick={() => setIsMenuOpen(false)}>
+                            <div className="mt-4 flex flex-col gap-3">
+                                <Link to="/login" className="block w-full rounded-full border-2 border-slate-200 px-5 py-3.5 text-center text-base font-bold text-slate-900" onClick={() => setIsMenuOpen(false)}>
                                     Đăng nhập
                                 </Link>
-                                <Link to="/register" className="block w-full rounded-xl bg-blue-600 px-4 py-3 text-center text-[0.9375rem] font-bold text-white" onClick={() => setIsMenuOpen(false)}>
+                                <Link to="/register" className="block w-full rounded-full bg-blue-600 px-5 py-3.5 text-center text-base font-bold text-white" onClick={() => setIsMenuOpen(false)}>
                                     Đăng ký
                                 </Link>
                             </div>
@@ -251,34 +320,34 @@ export default function Landing() {
 
 
                     {/* Content */}
-                    <div className="relative z-10 mx-auto max-w-[90rem] px-6 sm:px-12 lg:px-16 flex flex-col min-h-[100dvh] pt-[5rem]">
+                    <div className="relative z-10 mx-auto max-w-[90rem] px-6 sm:px-12 lg:px-16 flex flex-col min-h-[100dvh] pt-[8rem] sm:pt-[9.5rem] lg:pt-[10rem] custom-1366-hero-padding">
                         <div className="my-auto py-4 sm:py-8">
                             {/* Brand title */}
                             <h1
-                                className="font-black text-white leading-none text-4xl sm:text-6xl lg:text-[5.25rem] xl:text-[6rem] tracking-tight"
+                                className="font-black text-white leading-none text-5xl sm:text-7xl lg:text-[6.5rem] xl:text-[7.5rem] tracking-tight custom-1366-h1"
                             >
                                 EduTech
                             </h1>
 
                             {/* Tagline */}
-                            <p className="mt-3 sm:mt-5 [@media(max-height:750px)]:mt-2 font-bold text-white leading-tight text-lg sm:text-2xl lg:text-[2.15rem] xl:text-[2.45rem] max-w-[45rem]">
+                            <p className="mt-4 sm:mt-6 [@media(max-height:750px)]:mt-3 font-bold text-white leading-tight text-xl sm:text-3xl lg:text-[2.85rem] xl:text-[3.25rem] max-w-[55rem] custom-1366-tagline">
                                 Biến kiến thức trừu tượng
                                 <br className="hidden sm:inline" />
                                 {' '}thành trải nghiệm trực quan
                             </p>
 
                             {/* Sub-description */}
-                            <p className="mt-2 sm:mt-4 [@media(max-height:750px)]:mt-2 font-medium text-slate-200 leading-relaxed text-sm sm:text-base lg:text-[1.2rem] xl:text-[1.3rem] max-w-[40rem]">
+                            <p className="mt-3 sm:mt-5 [@media(max-height:750px)]:mt-3 font-medium text-slate-200 leading-relaxed text-base sm:text-xl lg:text-[1.35rem] xl:text-[1.5rem] max-w-[48rem] custom-1366-subdesc">
                                 Hiểu nhanh hơn nhớ lâu hơn với mô hình 3D, infographic và AI
                                 <br className="hidden sm:inline" />
                                 {' '}Tiết kiệm thời gian soạn bài và tìm học liệu trực quan
                             </p>
 
                             {/* CTA – rounded pill blue button */}
-                            <div className="mt-5 sm:mt-8 [@media(max-height:750px)]:mt-4">
+                            <div className="mt-6 sm:mt-10 [@media(max-height:750px)]:mt-5">
                                 <Link
                                     to="/register"
-                                    className="inline-flex items-center gap-2 rounded-full bg-blue-600 px-7 py-3 sm:px-9 sm:py-3.5 font-bold text-white shadow-lg hover:bg-blue-500 hover:-translate-y-0.5 hover:shadow-blue-600/40 hover:shadow-xl transition-all duration-200 text-sm sm:text-base lg:text-[1rem] xl:text-[1.125rem]"
+                                    className="inline-flex items-center gap-2 rounded-full bg-blue-600 px-8 py-3.5 sm:px-10 sm:py-4 font-bold text-white shadow-lg hover:bg-blue-500 hover:-translate-y-0.5 hover:shadow-blue-600/40 hover:shadow-xl transition-all duration-200 text-base sm:text-lg lg:text-[1.125rem] xl:text-[1.25rem] custom-1366-hero-btn"
                                 >
                                     Trải nghiệm ngay
                                 </Link>
@@ -291,13 +360,13 @@ export default function Landing() {
                                 {FEATURES.map((f, i) => (
                                     <div
                                         key={i}
-                                        className="rounded-3xl border border-white/20 bg-white/10 backdrop-blur-md hover:bg-white/15 transition-colors p-4 sm:p-5 lg:p-6 shadow-sm flex flex-col items-center justify-center min-h-[7.5rem] sm:min-h-[8rem] lg:min-h-[8.5rem] xl:min-h-[9rem]"
+                                        className="rounded-3xl border border-white/20 bg-white/10 backdrop-blur-md hover:bg-white/15 transition-colors p-4 sm:p-5 lg:p-6 shadow-sm flex flex-col items-center justify-center min-h-[7.5rem] sm:min-h-[8rem] lg:min-h-[8.5rem] xl:min-h-[9rem] custom-1366-card"
                                     >
                                         <div className="flex justify-center scale-90 sm:scale-100 lg:scale-110 mb-1.5 sm:mb-2">{f.icon}</div>
-                                        <p className="mt-1 sm:mt-1.5 text-center font-black text-white leading-snug whitespace-pre-line text-[0.95rem] sm:text-sm lg:text-[1.15rem] xl:text-[1.25rem] tracking-wide">
+                                        <p className="mt-1 sm:mt-1.5 text-center font-black text-white leading-snug whitespace-pre-line text-[0.95rem] sm:text-sm lg:text-[1.15rem] xl:text-[1.25rem] tracking-wide custom-1366-card-title">
                                             {f.title}
                                         </p>
-                                        <p className="mt-1.5 sm:mt-2 text-center text-white leading-relaxed whitespace-pre-line text-[0.78rem] sm:text-xs lg:text-[0.925rem] xl:text-[0.975rem] font-medium opacity-90">
+                                        <p className="mt-1.5 sm:mt-2 text-center text-white leading-relaxed whitespace-pre-line text-[0.78rem] sm:text-xs lg:text-[0.925rem] xl:text-[0.975rem] font-medium opacity-90 custom-1366-card-sub">
                                             {f.sub}
                                         </p>
                                     </div>
