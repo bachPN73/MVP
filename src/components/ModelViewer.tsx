@@ -1,7 +1,7 @@
 import { Canvas, ThreeElements } from '@react-three/fiber';
 import { useFBX, OrbitControls, Stage, Environment } from '@react-three/drei';
-import { Suspense, useEffect, useState, useRef, useMemo } from 'react';
-import { Loader2, HelpCircle, HardDrive, RefreshCw, Zap, Sparkles, Sun } from 'lucide-react';
+import React, { Suspense, useEffect, useState, useRef, useMemo } from 'react';
+import { Loader2, HelpCircle, HardDrive, RefreshCw, Zap, Sparkles, Sun, AlertTriangle } from 'lucide-react';
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js';
@@ -21,6 +21,61 @@ const dracoLoader = new DRACOLoader();
 dracoLoader.setDecoderPath('/draco/');
 const gltfLoader = new GLTFLoader();
 gltfLoader.setDRACOLoader(dracoLoader);
+
+class WebGLErrorBoundary extends React.Component<
+    { children: React.ReactNode },
+    { hasError: boolean; error: Error | null }
+> {
+    constructor(props: any) {
+        super(props);
+        this.state = { hasError: false, error: null };
+    }
+
+    static getDerivedStateFromError(error: Error) {
+        return { hasError: true, error };
+    }
+
+    componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
+        console.error("WebGL error caught in boundary:", error, errorInfo);
+    }
+
+    render() {
+        if (this.state.hasError) {
+            return (
+                <div className="flex flex-col items-center justify-center w-full h-full p-6 text-center bg-slate-950/40 border border-white/5 rounded-2xl text-slate-100 backdrop-blur-md">
+                    <div className="p-3.5 rounded-2xl bg-red-500/10 border border-red-500/20 text-red-400 mb-4 animate-pulse">
+                        <AlertTriangle className="w-7 h-7" />
+                    </div>
+                    <h3 className="text-sm font-bold mb-1.5 text-white tracking-wide">Không thể hiển thị không gian 3D</h3>
+                    <p className="text-xs text-slate-400 max-w-sm mb-5 leading-relaxed">
+                        Trình duyệt không thể khởi tạo ngữ cảnh WebGL. Vui lòng bật <strong>Tăng tốc phần cứng</strong> trong cài đặt trình duyệt để xem học liệu 3D.
+                    </p>
+                    <div className="flex flex-wrap gap-2.5 justify-center">
+                        <button 
+                            onClick={() => window.location.reload()}
+                            className="px-3.5 py-1.5 text-[11px] font-bold text-white bg-indigo-600 hover:bg-indigo-500 active:bg-indigo-700 rounded-lg transition-all shadow-md shadow-indigo-600/10 flex items-center gap-1"
+                        >
+                            Thử tải lại
+                        </button>
+                        <a 
+                            href="https://get.webgl.org/" 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                            className="px-3.5 py-1.5 text-[11px] font-bold text-slate-300 bg-white/5 hover:bg-white/10 active:bg-white/15 rounded-lg transition-all border border-white/10"
+                        >
+                            Kiểm tra WebGL
+                        </a>
+                    </div>
+                    <div className="mt-4 text-[9px] text-slate-600 font-mono select-all bg-black/20 px-2.5 py-1 rounded-md border border-white/5">
+                        {this.state.error?.message || "WebGL Context Creation Failed"}
+                    </div>
+                </div>
+            );
+        }
+
+        return this.props.children;
+    }
+}
 
 function applyPBRUpgrades(scene: THREE.Group | THREE.Object3D, isAmber: boolean, highQuality: boolean) {
     scene.traverse((child) => {
@@ -513,92 +568,94 @@ export default function ModelViewer({
             )}
 
             {useMemo(() => (
-                <Canvas
-                    frameloop={isVisible ? "always" : "demand"} // Ngủ đông (demand) khi khuất màn hình để tránh lag
+                <WebGLErrorBoundary>
+                    <Canvas
+                        frameloop={isVisible ? "always" : "demand"} // Ngủ đông (demand) khi khuất màn hình để tránh lag
 
-                    performance={{ min: isMobile ? 0.3 : 0.5 }}
-                    dpr={highQuality ? Math.min(2, window.devicePixelRatio) : 1} // Ép độ phân giải 1x khi lag, 2x khi cần chất lượng cao
-                    camera={{ position: [0, 0, 4], fov: 45 }}
-                    gl={{
-                        antialias: highQuality, // Tắt khử răng cưa khi mượt mà để giải phóng tài nguyên GPU
-                        powerPreference: "high-performance",
-                        precision: highQuality ? "highp" : "mediump", // Giảm độ chính xác shader ở chế độ mượt mà
-                        toneMapping: 4,
-                    }}
-                    onCreated={({ gl }) => {
-                        gl.toneMappingExposure = 1.05;
-                    }}
-                >
-                    <Suspense fallback={null}>
-                        {highQuality ? (
-                            isAmber ? <Environment preset="studio" /> : <Environment preset="city" />
-                        ) : (
-                            // Fallback ánh sáng Hemisphere khi tắt Environment để đạt hiệu năng cực đại mà vẫn giữ chiều sâu 3D
-                            <hemisphereLight skyColor="#ffffff" groundColor="#333333" intensity={isAmber ? 0.9 : 1.1} />
-                        )}
+                        performance={{ min: isMobile ? 0.3 : 0.5 }}
+                        dpr={highQuality ? Math.min(2, window.devicePixelRatio) : 1} // Ép độ phân giải 1x khi lag, 2x khi cần chất lượng cao
+                        camera={{ position: [0, 0, 4], fov: 45 }}
+                        gl={{
+                            antialias: highQuality, // Tắt khử răng cưa khi mượt mà để giải phóng tài nguyên GPU
+                            powerPreference: "high-performance",
+                            precision: highQuality ? "highp" : "mediump", // Giảm độ chính xác shader ở chế độ mượt mà
+                            toneMapping: 4,
+                        }}
+                        onCreated={({ gl }) => {
+                            gl.toneMappingExposure = 1.05;
+                        }}
+                    >
+                        <Suspense fallback={null}>
+                            {highQuality ? (
+                                isAmber ? <Environment preset="studio" /> : <Environment preset="city" />
+                            ) : (
+                                // Fallback ánh sáng Hemisphere khi tắt Environment để đạt hiệu năng cực đại mà vẫn giữ chiều sâu 3D
+                                <hemisphereLight skyColor="#ffffff" groundColor="#333333" intensity={isAmber ? 0.9 : 1.1} />
+                            )}
 
-                        <ambientLight intensity={(isAmber ? 0.65 : 0.8) * lightIntensity} />
-                        <directionalLight position={[10, 10, 10]} intensity={(isAmber ? 0.8 : 1.4) * lightIntensity} />
+                            <ambientLight intensity={(isAmber ? 0.65 : 0.8) * lightIntensity} />
+                            <directionalLight position={[10, 10, 10]} intensity={(isAmber ? 0.8 : 1.4) * lightIntensity} />
 
-                        {!isMobile && (
-                            <>
-                                <directionalLight position={[-10, 5, -10]} intensity={(isAmber ? 0.75 : 0.55) * lightIntensity} color="#ffffff" />
-                                <pointLight position={[0, -5, 5]} intensity={(isAmber ? 0.5 : 0.35) * lightIntensity} color="#ffffff" />
-                            </>
-                        )}
+                            {!isMobile && (
+                                <>
+                                    <directionalLight position={[-10, 5, -10]} intensity={(isAmber ? 0.75 : 0.55) * lightIntensity} color="#ffffff" />
+                                    <pointLight position={[0, -5, 5]} intensity={(isAmber ? 0.5 : 0.35) * lightIntensity} color="#ffffff" />
+                                </>
+                            )}
 
-                        {isFBX ? (
-                            <Stage environment={null} intensity={isAmber ? 0.55 : 1.1} shadows={false} adjustCamera={1.3}>
-                                <FBXModel url={modelUrl} highQuality={highQuality} />
-                            </Stage>
-                        ) : (
-                            <>
-                                <ProgressiveGLTFModel
-                                    url={modelUrl}
-                                    highQuality={highQuality}
-                                    onProgress={(percent, loaded, total) => {
-                                        setPct(percent);
-                                        setLoadedMb(loaded);
-                                        setTotalMb(total);
-                                        if (percent === 100) {
-                                            setLoadingStage('decoding');
-                                        }
-                                    }}
-                                    onLoaded={(scene) => {
-                                        setLoadedScene(scene);
-                                        setLoadingStage('stabilizing');
-                                    }}
-                                    onError={(err) => {
-                                        setErrorMsg(err.message || "Không thể tải hoặc giải nén mô hình GLTF.");
-                                        setLoadingStage('error');
-                                    }}
-                                />
-                                {loadedScene && (
-                                    <Stage environment={null} intensity={isAmber ? 0.55 : 1.1} shadows={false} adjustCamera={1.3}>
-                                        <primitive 
-                                            object={loadedScene} 
-                                            rotation={finalRotation} 
-                                            position={modelPosition} 
-                                            scale={modelScale} 
-                                        />
-                                    </Stage>
-                                )}
-                            </>
-                        )}
+                            {isFBX ? (
+                                <Stage environment={null} intensity={isAmber ? 0.55 : 1.1} shadows={false} adjustCamera={1.3}>
+                                    <FBXModel url={modelUrl} highQuality={highQuality} />
+                                </Stage>
+                            ) : (
+                                <>
+                                    <ProgressiveGLTFModel
+                                        url={modelUrl}
+                                        highQuality={highQuality}
+                                        onProgress={(percent, loaded, total) => {
+                                            setPct(percent);
+                                            setLoadedMb(loaded);
+                                            setTotalMb(total);
+                                            if (percent === 100) {
+                                                setLoadingStage('decoding');
+                                            }
+                                        }}
+                                        onLoaded={(scene) => {
+                                            setLoadedScene(scene);
+                                            setLoadingStage('stabilizing');
+                                        }}
+                                        onError={(err) => {
+                                            setErrorMsg(err.message || "Không thể tải hoặc giải nén mô hình GLTF.");
+                                            setLoadingStage('error');
+                                        }}
+                                    />
+                                    {loadedScene && (
+                                        <Stage environment={null} intensity={isAmber ? 0.55 : 1.1} shadows={false} adjustCamera={1.3}>
+                                            <primitive 
+                                                object={loadedScene} 
+                                                rotation={finalRotation} 
+                                                position={modelPosition} 
+                                                scale={modelScale} 
+                                            />
+                                        </Stage>
+                                    )}
+                                </>
+                            )}
 
-                        <OrbitControls 
-                            makeDefault 
-                            enableZoom={!minimal} 
-                            enablePan={!minimal} 
-                            zoomSpeed={1.2} 
-                            enableDamping={true} 
-                            dampingFactor={0.05} 
-                            autoRotate={isVisible && autoRotate} 
-                            autoRotateSpeed={0.8} 
-                            target={finalTarget} 
-                        />
-                    </Suspense>
-                </Canvas>
+                            <OrbitControls 
+                                makeDefault 
+                                enableZoom={!minimal} 
+                                enablePan={!minimal} 
+                                zoomSpeed={1.2} 
+                                enableDamping={true} 
+                                dampingFactor={0.05} 
+                                autoRotate={isVisible && autoRotate} 
+                                autoRotateSpeed={0.8} 
+                                target={finalTarget} 
+                            />
+                        </Suspense>
+                    </Canvas>
+                </WebGLErrorBoundary>
             ), [
                 isVisible, isMobile, highQuality, isAmber, lightIntensity, modelUrl, minimal, 
                 autoRotate, finalTarget, finalRotation, modelPosition, modelScale, loadedScene, isFBX

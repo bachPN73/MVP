@@ -1,6 +1,7 @@
 import { createBrowserRouter, Outlet } from "react-router";
 import ScrollToTop from "./components/ScrollToTop";
 import AuthGuard from "./components/AuthGuard";
+import ErrorPage from "./pages/ErrorPage";
 
 export const router = createBrowserRouter([
     {
@@ -10,6 +11,7 @@ export const router = createBrowserRouter([
                 <Outlet />
             </>
         ),
+        errorElement: <ErrorPage />,
         children: [
             // ================= PUBLIC ROUTES =================
             {
