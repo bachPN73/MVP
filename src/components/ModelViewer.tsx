@@ -223,6 +223,11 @@ function ProgressiveGLTFModel({
     onError: (err: any) => void;
 }) {
     const [scene, setScene] = useState<THREE.Group | null>(null);
+    const sceneRef = useRef<THREE.Group | null>(null);
+
+    useEffect(() => {
+        sceneRef.current = scene;
+    }, [scene]);
 
     useEffect(() => {
         let isMounted = true;
@@ -270,6 +275,33 @@ function ProgressiveGLTFModel({
 
         return () => {
             isMounted = false;
+            // Giải phóng tài nguyên Three.js của scene cũ khi đổi model hoặc unmount để tránh rò rỉ GPU
+            if (sceneRef.current) {
+                try {
+                    sceneRef.current.traverse((object: any) => {
+                        if (object.isMesh) {
+                            if (object.geometry) {
+                                object.geometry.dispose();
+                            }
+                            if (object.material) {
+                                const materials = Array.isArray(object.material) ? object.material : [object.material];
+                                materials.forEach((material: any) => {
+                                    for (const key in material) {
+                                        if (material[key] && material[key].isTexture) {
+                                            material[key].dispose();
+                                        }
+                                    }
+                                    if (typeof material.dispose === 'function') {
+                                        material.dispose();
+                                    }
+                                });
+                            }
+                        }
+                    });
+                } catch (e) {
+                    console.warn("Lỗi khi giải phóng tài nguyên GLTF scene:", e);
+                }
+            }
         };
     }, [url]);
 
@@ -446,6 +478,26 @@ export default function ModelViewer({
         return false;
     });
 
+    // Quản lý và dọn dẹp WebGLRenderer tránh rò rỉ WebGL context
+    const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
+
+    useEffect(() => {
+        return () => {
+            if (rendererRef.current) {
+                try {
+                    const gl = rendererRef.current;
+                    const extension = gl.getContext().getExtension('WEBGL_lose_context');
+                    if (extension) {
+                        extension.loseContext();
+                    }
+                    gl.dispose();
+                } catch (e) {
+                    console.warn("Lỗi khi giải phóng WebGL context:", e);
+                }
+            }
+        };
+    }, []);
+
     // Tối ưu hóa: Chỉ render mô hình khi nó nằm trong vùng nhìn thấy của màn hình
     const containerRef = useRef<HTMLDivElement>(null);
     const [isVisible, setIsVisible] = useState(true);
@@ -583,6 +635,7 @@ export default function ModelViewer({
                         }}
                         onCreated={({ gl }) => {
                             gl.toneMappingExposure = 1.05;
+                            rendererRef.current = gl;
                         }}
                     >
                         <Suspense fallback={null}>
