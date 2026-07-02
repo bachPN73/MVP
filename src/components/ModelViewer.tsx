@@ -422,7 +422,7 @@ function StreamingLoadingOverlay({
     );
 }
 
-export default function ModelViewer({ 
+function ModelViewerInner({ 
     modelUrl, 
     minimal = false, 
     autoRotate = false,
@@ -801,5 +801,21 @@ export default function ModelViewer({
                 </div>
             )}
         </div>
+    );
+}
+
+export default function ModelViewer(props: {
+    modelUrl: string;
+    minimal?: boolean;
+    autoRotate?: boolean;
+    modelRotation?: [number, number, number];
+    modelPosition?: [number, number, number];
+    modelScale?: number;
+    cameraTarget?: [number, number, number];
+}) {
+    return (
+        <WebGLErrorBoundary>
+            <ModelViewerInner {...props} />
+        </WebGLErrorBoundary>
     );
 }
