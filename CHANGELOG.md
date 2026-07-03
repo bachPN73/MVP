@@ -13,7 +13,7 @@ và dự án này tuân thủ [Semantic Versioning](https://semver.org/lang/vi/)
 > - `Fixed` — Sửa lỗi.
 > - `Security` — Vá lỗ hổng bảo mật.
 
-## [v2.5.2] - 2026-07-01
+## [v2.5.2] - 2026-07-03
 
 > **Mục tiêu:** Tối ưu hóa hiệu năng, giảm thời gian tải trang (FCP/LCP) và xóa bỏ tình trạng nháy màn hình (flickering) khi điều hướng.
 
@@ -48,7 +48,7 @@ và dự án này tuân thủ [Semantic Versioning](https://semver.org/lang/vi/)
 
 ---
 
-## [v2.4.0] - 2026-06-27
+## [v2.4.0] - 2026-06-26
 
 > **Mục tiêu:** Tối ưu hóa toàn diện khả năng hiển thị (Responsive) trên màn hình nhỏ (1366x768) và thiết bị di động.
 
@@ -95,7 +95,7 @@ và dự án này tuân thủ [Semantic Versioning](https://semver.org/lang/vi/)
 
 ---
 
-## [v2.3.0] - 2026-06-23
+## [v2.3.0] - 2026-06-22
 
 > **Mục tiêu:** Tích hợp hệ thống trắc nghiệm tương tác trực tiếp bên cạnh mô hình 3D.
 
@@ -113,7 +113,7 @@ và dự án này tuân thủ [Semantic Versioning](https://semver.org/lang/vi/)
 
 ---
 
-## [v2.2.0] - 2026-06-22
+## [v2.2.0] - 2026-06-19
 
 > **Mục tiêu:** Redesign trang Tổng quan và bổ sung tính năng Kho lưu trữ học liệu Premium.
 
@@ -136,7 +136,7 @@ và dự án này tuân thủ [Semantic Versioning](https://semver.org/lang/vi/)
 
 ---
 
-## [v2.1.0] - 2026-06-06 đến 2026-06-13
+## [v2.1.0] - 2026-06-13
 
 > **Mục tiêu:** Tích hợp các dịch vụ nền tảng (OAuth Google, SMTP) và tái thiết kế giao diện chuyên nghiệp.
 
@@ -184,7 +184,7 @@ và dự án này tuân thủ [Semantic Versioning](https://semver.org/lang/vi/)
 
 ---
 
-## [v1.3.0] - 2026-06-05
+## [v1.3.0] - 2026-06-09
 
 > **Mục tiêu:** Đo lường hành vi người dùng thực tế và chuẩn hóa bộ nhận diện thương hiệu.
 
@@ -198,7 +198,7 @@ và dự án này tuân thủ [Semantic Versioning](https://semver.org/lang/vi/)
 
 ---
 
-## [v1.2.0] - 2026-06-05
+## [v1.2.0] - 2026-06-08
 
 > **Mục tiêu:** Tự động hóa quy trình thanh toán và nâng cấp tài khoản, không cần duyệt thủ công.
 
@@ -222,7 +222,7 @@ và dự án này tuân thủ [Semantic Versioning](https://semver.org/lang/vi/)
 
 ---
 
-## [v1.1.0] - 2026-05-29
+## [v1.1.0] - 2026-06-06
 
 > **Mục tiêu:** Nâng cấp kiến trúc lên chuẩn ứng dụng hiện đại, hỗ trợ nhiều trường học và đa giao diện.
 
