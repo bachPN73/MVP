@@ -15,33 +15,28 @@ và dự án này tuân thủ [Semantic Versioning](https://semver.org/lang/vi/)
 
 ## [v0.17.0] - 2026-07-03 (d159f8d...e8900cd)
 
-> **Mục tiêu:** Tích hợp công cụ nén mô hình Draco, tối ưu hóa giải phóng bộ nhớ GPU (WebGL context disposal), bảo vệ route bằng WebGLErrorBoundary và hoàn thiện UI cho các thiết bị màn hình nhỏ.
+> **Mục tiêu:** Tăng tốc độ tải mô hình 3D, tối ưu hóa bộ nhớ tránh giật lag, ngăn ngừa lỗi treo ứng dụng đồ họa và hoàn thiện giao diện cho màn hình nhỏ.
 
 ### Added
-- Tích hợp công cụ nén mô hình 3D `draco_compress.cjs` sử dụng thư viện `@gltf-transform` và bộ giải mã Draco, giúp giảm dung lượng mô hình 3D cực lớn (giảm đến 75% kích thước file `.glb`, ví dụ file Kỳ sau từ 223MB xuống còn 59MB) (e8900cd).
-- Bổ sung mô hình phân bào DNA Kỳ giữa và Kỳ sau đã qua xử lý nén Draco (`giam_phan_1_ky_giua_draco.glb`, `giam_phan_1_ky_sau_draco.glb`).
-- Tích hợp `WebGLErrorBoundary` bao bọc trình xem 3D, ngăn chặn việc crash ứng dụng khi có lỗi WebGL hoặc mất ngữ cảnh GPU đột ngột (dd77e51, d159f8d).
-- Xây dựng trang báo lỗi toàn cục `ErrorPage` thân thiện với người dùng khi hệ thống gặp sự cố không thể tự phục hồi ở cấp độ routing (dd77e51).
-- Tích hợp thanh điều chỉnh độ sáng (brightness slider) dạng cột dọc nhỏ đặt ở bên trái mô hình 3D, hỗ trợ học sinh tinh chỉnh ánh sáng mô hình từ 20% đến 200% với mốc trung bình 100% là độ sáng mặc định (123d0a8).
+- Tối ưu hóa kích thước mô hình 3D: Nén và giảm dung lượng các file mô hình lên đến 75% (Ví dụ: bài học phân bào DNA Kỳ sau giảm từ 223MB xuống còn 59MB), giúp học sinh tải học liệu nhanh hơn gấp nhiều lần (e8900cd).
+- Bổ sung mô hình phân bào DNA Kỳ giữa và Kỳ sau đã qua xử lý nén tối ưu.
+- Khắc phục sự cố đồ họa: Tự động phát hiện và ngăn lỗi làm đơ hoặc đóng ứng dụng đột ngột khi thiết bị gặp sự cố xử lý đồ họa 3D (dd77e51, d159f8d).
+- Bổ sung trang thông báo lỗi thân thiện khi hệ thống gặp sự cố kết nối hoặc lỗi đường truyền (dd77e51).
+- Bổ sung thanh điều chỉnh độ sáng trực quan ở bên trái mô hình 3D để học sinh dễ dàng học tập theo nhu cầu ánh sáng cá nhân (123d0a8).
 
 ### Changed
-- Điều chỉnh kích thước font chữ và thanh điều hướng (navbar) trên Landing Page để hiển thị hoàn hảo trên độ phân giải màn hình 1366x768 (36e9f66).
-- Tinh chỉnh màu sắc, độ tương phản và font size của các trang Tìm kiếm AI và Tham gia Trường học nhằm tăng tính dễ đọc (1c7bfce).
+- Cải tiến giao diện: Điều chỉnh kích thước chữ và thanh công cụ để hiển thị hoàn hảo trên các màn hình máy tính cỡ nhỏ (độ phân giải 1366x768) (36e9f66).
+- Tăng độ tương phản màu sắc, cỡ chữ hiển thị tại trang Tìm kiếm AI và Tham gia Trường học để dễ đọc hơn (1c7bfce).
 
 ### Performance & UX
-- Triển khai cơ chế hủy (dispose) WebGL renderer context cùng toàn bộ geometries/materials của GLTF khi component `ModelViewer` unmount, khắc phục triệt để tình trạng rò rỉ bộ nhớ GPU (GPU memory leak) khi người dùng chuyển trang nhiều lần (8c97cf7).
-- Tăng cỡ chữ nội dung chi tiết bài học lên 13px để cải thiện độ dễ đọc (80b3502).
-- Tối ưu hóa bố cục trang chi tiết học liệu và loại bỏ các dữ liệu mẫu không cần thiết (46bb4da).
-- Tích hợp **Native Code Splitting** (`lazy` prop của React Router v7), loại bỏ hoàn toàn `<Suspense>` bọc ngoài page để giữ giao diện mượt mà, không bị giật chớp trắng khi chuyển trang (922764d).
-- Tích hợp **Cache API** của trình duyệt trong `fetchWithProgress` giúp lưu trữ vĩnh viễn mô hình 3D dung lượng lớn dưới Local, tải lại tức thì ở những lần sau (922764d).
-- Áp dụng cơ chế **Preload Font** (`<link rel="preconnect" />`) trong `index.html` và gỡ bỏ `@import` render-blocking trong CSS (922764d).
-- Tái cấu trúc `ModelViewer.tsx`: Đưa `<Suspense>` vào sâu bên trong `<Canvas>` để bảo toàn WebGL Context, ngăn lỗi chớp đen khi mô hình đang tải (922764d).
-- Sử dụng `useMemo` bọc `<Canvas>` nhằm cô lập quá trình Re-render của thanh Progress bar ra khỏi Engine 3D, duy trì FPS ổn định (922764d).
-- Tích hợp sự kiện `onMouseEnter` để kích hoạt tải ngầm (pre-import) Chunk file 3D Viewer trước khi người dùng thực sự click vào học liệu (922764d).
-- Kích hoạt `loading="lazy"` và `decoding="async"` cho toàn bộ ảnh trên hệ thống để tiết kiệm băng thông và RAM lúc khởi động (922764d).
+- Tiết kiệm RAM và bộ nhớ đồ họa: Tự động giải phóng hoàn toàn tài nguyên đồ họa của thiết bị ngay sau khi đóng mô hình 3D, tránh máy bị nóng hoặc lag khi học tập lâu (8c97cf7).
+- Cải thiện tốc độ tải trang: Chuyển trang mượt mà hơn, loại bỏ hoàn toàn hiện tượng nhấp nháy hoặc màn hình trắng lúc chuyển bài học (922764d).
+- Công nghệ lưu trữ thông minh: Tự động lưu mô hình 3D đã xem vào trình duyệt, giúp các lần học tiếp theo mở lên ngay lập tức mà không cần tải lại (922764d).
+- Tăng cỡ chữ nội dung chi tiết bài học lên 13px giúp học sinh dễ dàng theo dõi bài học (80b3502).
+- Tối ưu hóa bố cục trang chi tiết học liệu trực quan hơn (46bb4da).
 
 ### Fixed
-- Sửa lỗi tự động đưa người dùng về trang 1 của Thư viện sau khi xem chi tiết học liệu: Tích hợp `sessionStorage` giúp lưu giữ và tự động phục hồi trang hiện tại (`currentPage`) cùng các bộ lọc (`subject`, `type`, `grade`, `searchQuery`) (6c065a4).
+- Sửa lỗi mất bộ lọc: Tự động giữ nguyên vị trí trang, các lựa chọn môn học và kết quả tìm kiếm khi học sinh quay lại trang Thư viện (6c065a4).
 
 ---
 
