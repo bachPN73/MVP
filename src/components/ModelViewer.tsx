@@ -41,14 +41,29 @@ class WebGLErrorBoundary extends React.Component<
 
     render() {
         if (this.state.hasError) {
+            const errorMessage = this.state.error?.message || "";
+            const errorStack = this.state.error?.stack || "";
+            const isWebGLRelated = 
+                errorMessage.toLowerCase().includes("webgl") || 
+                errorMessage.toLowerCase().includes("context lost") || 
+                errorMessage.toLowerCase().includes("renderer") ||
+                errorStack.toLowerCase().includes("webgl") || 
+                errorStack.toLowerCase().includes("contextlost");
+
             return (
                 <div className="flex flex-col items-center justify-center w-full h-full p-6 text-center bg-slate-950/40 border border-white/5 rounded-2xl text-slate-100 backdrop-blur-md">
                     <div className="p-3.5 rounded-2xl bg-red-500/10 border border-red-500/20 text-red-400 mb-4 animate-pulse">
                         <AlertTriangle className="w-7 h-7" />
                     </div>
-                    <h3 className="text-sm font-bold mb-1.5 text-white tracking-wide">Không thể hiển thị không gian 3D</h3>
+                    <h3 className="text-sm font-bold mb-1.5 text-white tracking-wide">
+                        {isWebGLRelated ? "Sự cố hiển thị 3D (WebGL)" : "Lỗi tải mô hình 3D"}
+                    </h3>
                     <p className="text-xs text-slate-400 max-w-sm mb-5 leading-relaxed">
-                        Trình duyệt không thể khởi tạo ngữ cảnh WebGL. Vui lòng bật <strong>Tăng tốc phần cứng</strong> trong cài đặt trình duyệt để xem học liệu 3D.
+                        {isWebGLRelated ? (
+                            <span>Trình duyệt không thể khởi tạo ngữ cảnh WebGL. Vui lòng bật <strong>Tăng tốc phần cứng</strong> trong cài đặt trình duyệt để xem học liệu 3D.</span>
+                        ) : (
+                            <span>Không thể tải hoặc xử lý tệp mô hình 3D này. Vui lòng kiểm tra kết nối mạng, đảm bảo tệp mô hình hợp lệ hoặc thử lại sau.</span>
+                        )}
                     </p>
                     <div className="flex flex-wrap gap-2.5 justify-center">
                         <button 
@@ -57,14 +72,16 @@ class WebGLErrorBoundary extends React.Component<
                         >
                             Thử tải lại
                         </button>
-                        <a 
-                            href="https://get.webgl.org/" 
-                            target="_blank" 
-                            rel="noopener noreferrer"
-                            className="px-3.5 py-1.5 text-[11px] font-bold text-slate-300 bg-white/5 hover:bg-white/10 active:bg-white/15 rounded-lg transition-all border border-white/10"
-                        >
-                            Kiểm tra WebGL
-                        </a>
+                        {isWebGLRelated && (
+                            <a 
+                                href="https://get.webgl.org/" 
+                                target="_blank" 
+                                rel="noopener noreferrer"
+                                className="px-3.5 py-1.5 text-[11px] font-bold text-slate-300 bg-white/5 hover:bg-white/10 active:bg-white/15 rounded-lg transition-all border border-white/10"
+                            >
+                                Kiểm tra WebGL
+                            </a>
+                        )}
                     </div>
                     <div className="mt-4 text-[9px] text-slate-600 font-mono select-all bg-black/20 px-2.5 py-1 rounded-md border border-white/5">
                         {this.state.error?.message || "WebGL Context Creation Failed"}

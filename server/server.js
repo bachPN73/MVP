@@ -1042,7 +1042,7 @@ app.post('/api/ai-search', async (req, res) => {
         let aiAnalysis = null;
         const apiKey = process.env.GEMINI_API_KEY;
 
-        if (apiKey && apiKey !== 'YOUR_API_KEY_HERE') {
+        if (apiKey && apiKey !== 'YOUR_API_KEY_HERE' && apiKey !== 'YOUR_NEW_API_KEY_HERE') {
             const genAI = new GoogleGenerativeAI(apiKey);
             const modelSummary = models.map(m => `ID:${m.id} | Title:${m.title} | Subject:${m.subject} | Description:${m.description || ''} | Tags:${JSON.stringify(m.tags)}`).join('\n');
 
@@ -1072,13 +1072,10 @@ Return strictly a valid JSON object matching this schema (do not output any mark
 }`;
 
             const fallbackModels = [
-                'gemini-3.1-flash-lite',
-                'gemini-3.5-flash',
-                'gemini-3-flash',
-                'gemini-2.5-flash-lite',
                 'gemini-2.5-flash',
-                'gemma-4-31b-it',
-                'gemma-4-26b-a4b-it'
+                'gemini-2.0-flash',
+                'gemini-1.5-flash',
+                'gemini-1.5-pro'
             ];
 
             for (const modelName of fallbackModels) {
@@ -1098,10 +1095,14 @@ Return strictly a valid JSON object matching this schema (do not output any mark
         }
 
         const searchTerms = query.toLowerCase().split(/[\s,]+/).filter(t => t.length > 1);
-        const aiKeywords = aiAnalysis?.keywords?.map(k => k.toLowerCase()) || [];
+        const aiKeywords = Array.isArray(aiAnalysis?.keywords)
+            ? aiAnalysis.keywords.filter(k => typeof k === 'string').map(k => k.toLowerCase())
+            : [];
         const allKeywords = [...new Set([...searchTerms, ...aiKeywords])];
-        const predictedSubject = aiAnalysis?.predicted_subject || null;
-        const aiMatchedIds = aiAnalysis?.matched_ids || [];
+        const predictedSubject = typeof aiAnalysis?.predicted_subject === 'string' ? aiAnalysis.predicted_subject : null;
+        const aiMatchedIds = Array.isArray(aiAnalysis?.matched_ids)
+            ? aiAnalysis.matched_ids.map(id => String(id))
+            : [];
 
         const scoredModels = formattedModels.map(m => {
             let score = 0;

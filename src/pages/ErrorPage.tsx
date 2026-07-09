@@ -16,8 +16,15 @@ export default function ErrorPage() {
     // Check if error is related to WebGL
     const isWebGLRelated = 
         errorMessage.toString().toLowerCase().includes("webgl") || 
-        (error?.stack && error.stack.toString().toLowerCase().includes("webgl")) ||
-        (error?.stack && error.stack.toString().toLowerCase().includes("three"));
+        errorMessage.toString().toLowerCase().includes("context lost") ||
+        errorMessage.toString().toLowerCase().includes("hardware acceleration") ||
+        (error?.stack && (
+            error.stack.toString().toLowerCase().includes("webgl") ||
+            error.stack.toString().toLowerCase().includes("contextlost") ||
+            (error.stack.toString().toLowerCase().includes("three") && 
+             (error.stack.toString().toLowerCase().includes("renderer") || 
+              error.stack.toString().toLowerCase().includes("canvas")))
+        ));
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 flex items-center justify-center p-6 text-white">
