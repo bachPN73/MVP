@@ -586,7 +586,7 @@ export default function MaterialDetail() {
     
     if (userRole === 'admin') {
         isBlocked = false;
-    } else if (requiredPlan === null || requiredPlan === 'free' || requiredPlan === '') {
+    } else if (!requiredPlan || requiredPlan === 'free') {
         isBlocked = false;
     } else if (requiredPlan) {
         isBlocked = userPlan === 'free';
