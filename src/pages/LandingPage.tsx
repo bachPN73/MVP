@@ -2,7 +2,6 @@ import { Link } from 'react-router';
 import { ChevronRight, Menu, X } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import ThemeToggle from '../components/ThemeToggle';
-import ModelViewer from '../components/ModelViewer';
 
 /* ─────────────────────────────────────────────────────────
    MODEL DATA – 5 cards đúng theo ảnh

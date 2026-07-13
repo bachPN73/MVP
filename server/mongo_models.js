@@ -32,6 +32,8 @@ const membershipRequestSchema = new mongoose.Schema({
     status: { type: String, enum: ['pending', 'approved', 'rejected'], default: 'pending' }
 }, { timestamps: true });
 
+membershipRequestSchema.index({ schoolId: 1, userId: 1 });
+
 const modelSchema = new mongoose.Schema({
     title: String,
     description: String,
@@ -61,6 +63,8 @@ const modelSchema = new mongoose.Schema({
     relatedMaterials: { type: [String], default: [] },
     quiz: { type: [mongoose.Schema.Types.Mixed], default: [] }
 }, { timestamps: true });
+
+modelSchema.index({ subject: 1, grade: 1, type: 1 });
 
 const resetTokenSchema = new mongoose.Schema({
     email: { type: String, required: true },
@@ -104,6 +108,8 @@ const lessonSchema = new mongoose.Schema({
     materials: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Material' }],
     order: { type: Number, default: 0 }
 }, { timestamps: true });
+
+lessonSchema.index({ subject: 1, grade: 1 });
 
 export const Lesson = mongoose.model('Lesson', lessonSchema);
 

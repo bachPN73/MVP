@@ -477,14 +477,26 @@ function ModelViewerInner({
     const isNeuron = lowerUrl.includes('neuron') || lowerUrl.includes('than-kinh') || lowerUrl.includes('thần kinh');
     const isWhiteBloodCell = lowerUrl.includes('white-blood-cell') || lowerUrl.includes('bach-cau') || lowerUrl.includes('bạch cầu');
 
-    const finalRotation = modelRotation || (
-        isPlantCell ? [0, -Math.PI / 2, 0] : 
-        isAnimalCell ? [0, Math.PI, 0] : 
-        isWhiteBloodCell ? [0, Math.PI, 0] :
-        isNeuron ? [0, Math.PI / 2, 0] :
-        undefined
-    );
-    const finalTarget = cameraTarget || (isPlantCell ? [0, -0.2, 0] : [0, 0, 0]);
+    const rotationKey = modelRotation ? modelRotation.join(',') : '';
+    const finalRotation = useMemo(() => {
+        if (modelRotation) return modelRotation;
+        if (isPlantCell) return [0, -Math.PI / 2, 0] as [number, number, number];
+        if (isAnimalCell || isWhiteBloodCell) return [0, Math.PI, 0] as [number, number, number];
+        if (isNeuron) return [0, Math.PI / 2, 0] as [number, number, number];
+        return undefined;
+    }, [rotationKey, isPlantCell, isAnimalCell, isWhiteBloodCell, isNeuron]);
+
+    const targetKey = cameraTarget ? cameraTarget.join(',') : '';
+    const finalTarget = useMemo(() => {
+        if (cameraTarget) return cameraTarget;
+        if (isPlantCell) return [0, -0.2, 0] as [number, number, number];
+        return [0, 0, 0] as [number, number, number];
+    }, [targetKey, isPlantCell]);
+
+    const positionKey = modelPosition ? modelPosition.join(',') : '';
+    const finalPosition = useMemo(() => {
+        return modelPosition;
+    }, [positionKey]);
 
     // Dynamic quality setting, persisted to localStorage. Mặc định là false (Mượt mà) để tránh giật lag ngay từ đầu.
     const [highQuality, setHighQuality] = useState<boolean>(() => {
@@ -704,14 +716,14 @@ function ModelViewerInner({
                                             <primitive 
                                                 object={loadedScene} 
                                                 rotation={finalRotation} 
-                                                position={modelPosition} 
+                                                position={finalPosition} 
                                                 scale={modelScale} 
                                             />
                                         </Stage>
                                     )}
                                 </>
                             )}
-
+ 
                             <OrbitControls 
                                 makeDefault 
                                 enableZoom={!minimal} 
@@ -728,7 +740,7 @@ function ModelViewerInner({
                 </WebGLErrorBoundary>
             ), [
                 isVisible, isMobile, highQuality, isAmber, lightIntensity, modelUrl, minimal, 
-                autoRotate, finalTarget, finalRotation, modelPosition, modelScale, loadedScene, isFBX
+                autoRotate, finalTarget, finalRotation, finalPosition, modelScale, loadedScene, isFBX
             ])}
 
             {/* Brightness Slider - dọc bên trái */}

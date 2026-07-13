@@ -14,6 +14,9 @@ const defaultModels = [
     { id: 'white-blood-cell', title: 'Tế bào bạch cầu', file_url: '/models/white-blood-cell.glb', thumbnail: '/thumbnails/images/white-blood-cell.jpg' }
 ];
 
+const DASHBOARD_MODEL_ROTATION: [number, number, number] = [0, Math.PI / 2, 0];
+const DASHBOARD_CAMERA_TARGET: [number, number, number] = [0, -0.2, 0];
+
 export default function Dashboard() {
     const navigate = useNavigate();
     const [userName, setUserName] = useState('Học sinh');
@@ -255,8 +258,8 @@ export default function Dashboard() {
                                         modelUrl={selectedModel.file_url} 
                                         autoRotate={false} 
                                         minimal={true} 
-                                        modelRotation={[0, Math.PI / 2, 0]} 
-                                        cameraTarget={[0, -0.2, 0]} 
+                                        modelRotation={DASHBOARD_MODEL_ROTATION} 
+                                        cameraTarget={DASHBOARD_CAMERA_TARGET} 
                                     />
                                 </Suspense>
                             </div>

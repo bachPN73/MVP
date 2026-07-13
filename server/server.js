@@ -14,8 +14,25 @@ import { GoogleGenerativeAI } from '@google/generative-ai';
 import crypto from 'crypto';
 import { OAuth2Client } from 'google-auth-library';
 import nodemailer from 'nodemailer';
+import compression from 'compression';
+import { exec } from 'child_process';
 
 import mongoose from 'mongoose';
+
+const compress3DModel = (tempPath, outputPath) => {
+    return new Promise((resolve, reject) => {
+        const cmd = `node "${path.resolve(__dirname, '../draco_compress.cjs')}" "${tempPath}" "${outputPath}"`;
+        exec(cmd, (err, stdout, stderr) => {
+            if (err) {
+                console.error('[DRACO COMPRESSION ERROR]', err, stderr);
+                reject(err);
+            } else {
+                console.log('[DRACO COMPRESSION SUCCESS]', stdout);
+                resolve(true);
+            }
+        });
+    });
+};
 import { User, Material, ResetToken, School, MembershipRequest, Payment, Lesson, SystemConfig } from './mongo_models.js';
 import { createClient } from '@supabase/supabase-js';
 
@@ -105,6 +122,7 @@ app.use(cors({
     credentials: true,
 }));
 
+app.use(compression());
 app.use(express.json({ limit: '100mb' }));
 app.use(express.urlencoded({ limit: '100mb', extended: true }));
 
@@ -276,10 +294,10 @@ function generateResetCode() {
 // API Endpoints
 app.get('/api/users', requireAdmin, async (req, res) => {
     try {
-        const users = await User.find({}, '-password');
+        const users = await User.find({}, '-password').lean();
         // Map _id to id for frontend compatibility
         const formattedUsers = users.map(u => ({
-            ...u.toObject(),
+            ...u,
             id: u._id.toString()
         }));
         res.json(formattedUsers);
@@ -454,9 +472,9 @@ app.all('/api/users*', (req, res, next) => {
 
 app.get('/api/models', async (req, res) => {
     try {
-        const models = await Material.find({});
+        const models = await Material.find({}).lean();
         const formatted = models.map(m => ({
-            ...m.toObject(),
+            ...m,
             id: m._id.toString()
         }));
         res.json(formatted);
@@ -468,10 +486,12 @@ app.get('/api/models', async (req, res) => {
 app.get('/api/models/:id', async (req, res) => {
     const { id } = req.params;
     try {
-        const model = await Material.findById(id);
+        const model = await Material.findById(id).lean();
         if (!model) return res.status(404).json({ error: 'Không tìm thấy học liệu' });
-        const formatted = model.toObject();
-        formatted.id = model._id.toString();
+        const formatted = {
+            ...model,
+            id: model._id.toString()
+        };
         res.json(formatted);
     } catch (err) {
         res.status(500).json({ error: err.message });
@@ -589,35 +609,85 @@ app.post('/api/upload', requireAdmin, upload.single('file'), async (req, res) =>
 
     try {
         const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
-        const fileExt = path.extname(req.file.originalname);
+        const fileExt = path.extname(req.file.originalname).toLowerCase();
         const fileBaseName = `${uniqueSuffix}${fileExt}`;
-
-        if (!supabase) {
-            // Local Fallback
-            const modelsDir = path.resolve(DATA_DIR, 'models');
-            if (!fs.existsSync(modelsDir)) {
-                fs.mkdirSync(modelsDir, { recursive: true });
-            }
-            const localPath = path.join(modelsDir, fileBaseName);
-            fs.writeFileSync(localPath, req.file.buffer);
-            console.log(`[LOCAL UPLOAD] Saved model locally at: ${localPath}`);
-            
-            const host = req.get('host');
-            const protocol = req.protocol;
-            const publicUrl = `${protocol}://${host}/models/${fileBaseName}`;
-            
-            return res.json({ file_url: publicUrl, message: 'Tải lên máy cục bộ thành công (Không có Supabase)' });
+        const modelsDir = path.resolve(DATA_DIR, 'models');
+        if (!fs.existsSync(modelsDir)) {
+            fs.mkdirSync(modelsDir, { recursive: true });
         }
 
+        const is3DModel = fileExt === '.glb' || fileExt === '.gltf';
+        let finalBuffer = req.file.buffer;
+
+        // Nếu là mô hình 3D, tiến hành nén Draco tự động
+        if (is3DModel) {
+            const tempPath = path.join(modelsDir, `temp_${fileBaseName}`);
+            const outputPath = path.join(modelsDir, fileBaseName);
+            
+            // Ghi file tạm
+            fs.writeFileSync(tempPath, req.file.buffer);
+            
+            try {
+                console.log(`[DRACO] Khởi chạy nén mô hình 3D: ${req.file.originalname}`);
+                await compress3DModel(tempPath, outputPath);
+                
+                // Đọc file đã nén thành buffer mới
+                finalBuffer = fs.readFileSync(outputPath);
+                
+                // Xoá file tạm
+                if (fs.existsSync(tempPath)) fs.unlinkSync(tempPath);
+                
+                // Nếu không dùng Supabase, file nén đã ở đúng localPath (outputPath).
+                // Ta chỉ cần trả về url local.
+                if (!supabase) {
+                    const host = req.get('host');
+                    const protocol = req.protocol;
+                    const publicUrl = `${protocol}://${host}/models/${fileBaseName}`;
+                    return res.json({ file_url: publicUrl, message: 'Tải lên và nén Draco cục bộ thành công' });
+                }
+            } catch (compressErr) {
+                console.warn(`[DRACO WARNING] Nén Draco thất bại. Sử dụng file gốc. Lỗi: ${compressErr.message}`);
+                // Fallback: Xoá file tạm nếu có, và dùng buffer gốc
+                if (fs.existsSync(tempPath)) fs.unlinkSync(tempPath);
+                if (fs.existsSync(outputPath)) fs.unlinkSync(outputPath);
+                
+                // Nếu không dùng Supabase, ta ghi lại file gốc
+                if (!supabase) {
+                    fs.writeFileSync(outputPath, req.file.buffer);
+                    const host = req.get('host');
+                    const protocol = req.protocol;
+                    const publicUrl = `${protocol}://${host}/models/${fileBaseName}`;
+                    return res.json({ file_url: publicUrl, message: 'Tải lên cục bộ thành công (Nén Draco thất bại, dùng file gốc)' });
+                }
+            }
+        } else {
+            // Không phải file 3D, nếu không dùng Supabase thì ghi file trực tiếp xuống ổ đĩa
+            if (!supabase) {
+                const localPath = path.join(modelsDir, fileBaseName);
+                fs.writeFileSync(localPath, req.file.buffer);
+                const host = req.get('host');
+                const protocol = req.protocol;
+                const publicUrl = `${protocol}://${host}/models/${fileBaseName}`;
+                return res.json({ file_url: publicUrl, message: 'Tải lên máy cục bộ thành công' });
+            }
+        }
+
+        // Tải lên Supabase (cho cả file 3D nén/gốc hoặc file thường)
         const fileName = `models/${fileBaseName}`;
         const { data, error } = await supabase.storage
             .from(supabaseBucket)
-            .upload(fileName, req.file.buffer, {
+            .upload(fileName, finalBuffer, {
                 contentType: req.file.mimetype,
                 upsert: false
             });
 
         if (error) throw error;
+
+        // Xoá file nén local nếu dùng Supabase và đã nén thành công
+        if (is3DModel && supabase) {
+            const outputPath = path.join(modelsDir, fileBaseName);
+            if (fs.existsSync(outputPath)) fs.unlinkSync(outputPath);
+        }
 
         const { data: { publicUrl } } = supabase.storage
             .from(supabaseBucket)

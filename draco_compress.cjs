@@ -14,9 +14,16 @@ fs.readFileSync = function (path, options) {
     return originalReadFileSync.apply(this, arguments);
 };
 
-// Monkey-patch fs.readFile as well just in case
+// Monkey-patch fs.promises.readFile and fs.readFile correctly
+const originalReadFilePromise = fs.promises.readFile;
+fs.promises.readFile = async function(path, ...args) { 
+    if (typeof path === 'string' && path.includes('unknownmaterial')) {
+        return Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=', 'base64'); 
+    }
+    return originalReadFilePromise.apply(this, arguments); 
+};
+
 const originalReadFile = fs.readFile;
-fs.promises.readFile = async function(path, ...args) { if(typeof path==='string' && path.includes('unknownmaterial')) return Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=', 'base64'); return fs.promises.readFile.apply(this, arguments); };
 fs.readFile = function (path, ...args) {
     if (typeof path === 'string' && path.includes('unknownmaterial')) {
         console.log('Intercepted reading of unknown material:', path);
