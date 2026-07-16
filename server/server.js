@@ -135,26 +135,39 @@ app.use((req, res, next) => {
 
 app.get('/api/ping', (req, res) => res.json({ status: 'ok', time: Date.now() }));
 
-// Session validation middleware
+// Session validation middleware — only populates req.user, never rejects.
+// Session enforcement (single-device check) is handled ONLY in /api/check-session route.
 app.use(async (req, res, next) => {
     const sessionToken = req.headers['x-session-token'];
-    const userId = req.headers['x-user-id'];
-    
-    if (userId) {
+    let rawUserId = req.headers['x-user-id'];
+
+    // Handle duplicate headers: Express may return array or comma-separated string
+    if (Array.isArray(rawUserId)) rawUserId = rawUserId[0];
+    if (typeof rawUserId === 'string' && rawUserId.includes(',')) {
+        rawUserId = rawUserId.split(',')[0].trim();
+    }
+    const userId = rawUserId;
+
+    // Validate ObjectId format before querying (24-char hex string)
+    if (userId && /^[a-fA-F0-9]{24}$/.test(userId)) {
         try {
             const user = await User.findById(userId);
             if (user) {
-                if (user.sessionToken && user.sessionToken !== sessionToken) {
-                    return res.status(401).json({ error: 'SESSION_INVALID', message: 'Phiên đăng nhập không hợp lệ hoặc đã đăng nhập ở thiết bị khác' });
-                }
+                // Attach user to request for downstream use.
+                // Do NOT reject here — /api/check-session is the single source of truth
+                // for session enforcement. Rejecting here causes false-positive logouts
+                // due to race conditions and request ordering.
                 req.user = user;
+                req.sessionTokenValid = (!user.sessionToken || user.sessionToken === sessionToken);
             }
         } catch (err) {
-            console.error('[MIDDLEWARE SESSION ERROR]', err.message);
+            // Silent fail — invalid session should not crash the request
+            console.warn('[MIDDLEWARE SESSION WARN]', err.message);
         }
     }
     next();
 });
+
 
 // Auth middlewares
 const requireAuth = (req, res, next) => {
@@ -165,7 +178,11 @@ const requireAuth = (req, res, next) => {
 };
 
 const requireAdmin = (req, res, next) => {
-    if (!req.user || (req.user.role !== 'admin' && req.user.role !== 'school-admin')) {
+    if (!req.user) {
+        return res.status(401).json({ error: 'UNAUTHORIZED', message: 'Vui lòng đăng nhập để tiếp tục' });
+    }
+    if (req.user.role !== 'admin' && req.user.role !== 'school-admin') {
+        console.log(`[requireAdmin] FORBIDDEN: user ${req.user._id} has role '${req.user.role}'`);
         return res.status(403).json({ error: 'FORBIDDEN', message: 'Bạn không có quyền thực hiện hành động này' });
     }
     next();
@@ -971,10 +988,6 @@ app.get('/api/admin/ai-config', async (req, res) => {
 // PUT /api/admin/ai-config — Admin cập nhật config giới hạn AI
 app.put('/api/admin/ai-config', requireAdmin, async (req, res) => {
     try {
-        const user = req.user;
-        if (!user || user.role !== 'admin') {
-            return res.status(403).json({ error: 'Chỉ Admin mới có thể thay đổi cấu hình' });
-        }
 
         const { limits } = req.body;
         if (!limits || typeof limits !== 'object') {
@@ -1059,7 +1072,12 @@ app.post('/api/ai-search', async (req, res) => {
 
     try {
         // --- Server-side rate limiting ---
-        const userId = req.headers['x-user-id'];
+        let rawUserId = req.headers['x-user-id'];
+        // Handle duplicate headers (comma-separated or array)
+        if (Array.isArray(rawUserId)) rawUserId = rawUserId[0];
+        if (typeof rawUserId === 'string' && rawUserId.includes(',')) rawUserId = rawUserId.split(',')[0].trim();
+        const userId = (rawUserId && /^[a-fA-F0-9]{24}$/.test(rawUserId)) ? rawUserId : null;
+
         const clientIp = req.headers['x-forwarded-for']?.split(',')[0]?.trim() || req.socket.remoteAddress || 'unknown';
         const rateLimitKey = userId || `ip:${clientIp}`;
 
@@ -1080,6 +1098,7 @@ app.post('/api/ai-search', async (req, res) => {
                 console.warn('[AI Rate Limit] Could not fetch user:', e.message);
             }
         }
+
 
         const limits = await getAILimits();
         const planLimit = userPlan === 'unlimited' ? -1 : (limits[userPlan] ?? limits['free'] ?? 3);

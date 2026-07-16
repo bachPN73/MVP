@@ -40,8 +40,8 @@ export default function AuthGuard({ children }: AuthGuardProps) {
             // Initial check on mount or navigation
             checkSession();
 
-            // Run check every 15 seconds
-            const intervalId = setInterval(checkSession, 15000);
+            // Run check every 5 minutes (300s) — reduce false-positive logouts
+            const intervalId = setInterval(checkSession, 300000);
             return () => clearInterval(intervalId);
         } catch (e) {
             console.error('Error parsing user session in AuthGuard effect:', e);

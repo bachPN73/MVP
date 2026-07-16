@@ -216,7 +216,9 @@ export const api = {
             body: JSON.stringify({ limits }),
         });
         const data = await response.json();
-        if (!response.ok) throw new Error(data.error || 'Failed to update AI config');
+        if (response.status === 401) throw new Error('Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.');
+        if (response.status === 403) throw new Error('Bạn không có quyền thay đổi cấu hình AI. Chỉ Admin mới được phép.');
+        if (!response.ok) throw new Error(data.error || data.message || 'Không thể cập nhật cấu hình AI');
         return data;
     },
 
