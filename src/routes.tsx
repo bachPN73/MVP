@@ -2,12 +2,14 @@ import { createBrowserRouter, Outlet } from "react-router";
 import ScrollToTop from "./components/ScrollToTop";
 import AuthGuard from "./components/AuthGuard";
 import ErrorPage from "./pages/ErrorPage";
+import PageTitle from "./components/PageTitle";
 
 export const router = createBrowserRouter([
     {
         element: (
             <>
                 <ScrollToTop />
+                <PageTitle />
                 <Outlet />
             </>
         ),
