@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { useLocation } from 'react-router';
+import { trackPageView } from '../utils/analytics';
 
 const routeTitles: Record<string, string> = {
     '/': 'Trang chủ - Edu Tech',
@@ -32,16 +33,22 @@ export default function PageTitle() {
     const location = useLocation();
     
     useEffect(() => {
+        let newTitle = 'Edu Tech - Học liệu 3D trực quan';
         // Handle dynamic routes like /material/:id
         if (location.pathname.startsWith('/material/')) {
-            document.title = 'Chi tiết học liệu - Edu Tech';
+            newTitle = 'Chi tiết học liệu - Edu Tech';
         } else if (location.pathname.startsWith('/presentation/')) {
-            document.title = 'Trình chiếu - Edu Tech';
+            newTitle = 'Trình chiếu - Edu Tech';
         } else if (location.pathname.startsWith('/payment/')) {
-            document.title = 'Thanh toán - Edu Tech';
+            newTitle = 'Thanh toán - Edu Tech';
         } else {
-            document.title = routeTitles[location.pathname] || 'Edu Tech - Học liệu 3D trực quan';
+            newTitle = routeTitles[location.pathname] || 'Edu Tech - Học liệu 3D trực quan';
         }
+        
+        document.title = newTitle;
+        
+        // Track page view AFTER title has been updated
+        trackPageView(location.pathname + location.search, newTitle);
     }, [location]);
     
     return null;

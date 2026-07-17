@@ -52,12 +52,15 @@ export function initGA() {
 /**
  * Tracks a pageview event. Call this on route changes.
  * @param path - The page path (e.g. /library or /dashboard)
+ * @param title - The page title
  */
-export function trackPageView(path: string) {
+export function trackPageView(path: string, title?: string) {
   if (GA_MEASUREMENT_ID && typeof window.gtag === "function") {
-    window.gtag("config", GA_MEASUREMENT_ID, {
-      page_path: path,
-    });
+    const configOptions: Record<string, any> = { page_path: path };
+    if (title) {
+      configOptions.page_title = title;
+    }
+    window.gtag("config", GA_MEASUREMENT_ID, configOptions);
   }
 }
 
