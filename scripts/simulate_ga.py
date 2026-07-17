@@ -8,25 +8,9 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import Select
 
-# Đảm bảo console Windows hỗ trợ in UTF-8
-if sys.platform.startswith('win'):
-    import io
-    sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
-    sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding='utf-8')
-
-
 # Danh sách 40 tài khoản được sinh ngẫu nhiên cực đẹp và tự nhiên (32 Học sinh, 8 Giáo viên)
 # Sử dụng chung mật khẩu dễ quản lý: EduTech2026@
 CUSTOM_USERS = [
-  {"name":"Phan Bảo Sơn","email":"sonphan2008@gmail.com","pass":"EduTech2026@","role":"student"},
-  {"name":"Trần Tuấn Chấn","email":"tuanchan1988@outlook.com","pass":"EduTech2026@","role":"teacher"},
-  {"name":"Hồ Văn Bình","email":"hovanbinh08@gmail.com","pass":"EduTech2026@","role":"student"},
-  {"name":"Đỗ Thanh Linh","email":"thanhlinh.do@outlook.com","pass":"EduTech2026@","role":"student"},
-  {"name":"Ngô Quỳnh Phong","email":"ngoquynhphong09@gmail.com","pass":"EduTech2026@","role":"student"},
-  {"name":"Vũ Văn Phong","email":"vuvanphong01@gmail.com","pass":"EduTech2026@","role":"student"},
-  {"name":"Lê Như Linh","email":"lenhulinh2209@gmail.com","pass":"EduTech2026@","role":"student"},
-  {"name":"Trần Như Vy","email":"nhuvy.tran09@hotmail.com","pass":"EduTech2026@","role":"student"},
-  {"name":"Hồ Đức Trang","email":"ductrangho@gmail.com","pass":"EduTech2026@","role":"student"},
   {"name":"Nguyễn Thanh Bách","email":"nguyenthanhbach1987@gmail.com","pass":"EduTech2026@","role":"teacher"},
   {"name":"Phạm Tuấn Vy","email":"phamtuanvy08@gmail.com","pass":"EduTech2026@","role":"student"},
   {"name":"Bùi Đức Khánh","email":"buiduckhanh98@outlook.com","pass":"EduTech2026@","role":"student"},
@@ -149,7 +133,7 @@ def perform_random_clicks_in_main(driver, clicks_count=3):
             print(f"      ⚠️ Lỗi click ngẫu nhiên lần #{click_idx+1}: {e}")
             time.sleep(2)
 
-def run_bot(url, count=40, run_headless=True, duration=600):
+def run_bot(url, count=40, run_headless=True):
     # Limit count to custom users if SKIP_REGISTER is True to avoid errors
     if SKIP_REGISTER:
         count = min(count, len(CUSTOM_USERS))
@@ -158,18 +142,18 @@ def run_bot(url, count=40, run_headless=True, duration=600):
             return
 
     print(f"==================================================")
-    print(f" 🤖 GA4 TRAFFIC SIMULATOR BOT - {duration // 60} MINS SESSION ")
+    print(f" 🤖 GA4 TRAFFIC SIMULATOR BOT - 10 MINS SESSION ")
     print(f" Đường dẫn đích: {url}")
     print(f" Số lượng người dùng giả lập: {count}")
     print(f" Chế độ chạy ẩn: {'BẬT (Headless)' if run_headless else 'TẮT (Hiện trình duyệt)'}")
-    print(f" Quy trình: {'Đăng nhập' if SKIP_REGISTER else 'Đăng ký -> Đăng nhập'} -> Tương tác sâu tại Thư viện ({duration // 60} phút)")
+    print(f" Quy trình: {'Đăng nhập' if SKIP_REGISTER else 'Đăng ký -> Đăng nhập'} -> Tương tác sâu tại Thư viện (10 phút)")
     print(f"==================================================")
     
-    # Chuẩn hóa URL
-    if not url.endswith("/"):
-        base_url = url + "/"
-    else:
-        base_url = url
+    # Chuẩn hóa URL — tách base domain khỏi query params (fbclid, utm...) 
+    # để các đường dẫn con (/register, /login, /library) được ghép đúng
+    from urllib.parse import urlparse
+    parsed = urlparse(url)
+    base_url = f"{parsed.scheme}://{parsed.netloc}/"
 
     for i in range(count):
         print(f"\n[Người dùng #{i+1}/{count}] Khởi động trình duyệt sạch session...")
@@ -199,7 +183,7 @@ def run_bot(url, count=40, run_headless=True, duration=600):
         try:
             # Ghi nhận mốc thời gian bắt đầu của user này
             user_start_time = time.time()
-            target_duration = duration  # Tổng thời gian tương tác (giây)
+            target_duration = 600  # 10 phút (600 giây)
             
             # Pick from custom users list if available, else fallback to random generation
             if i < len(CUSTOM_USERS):
@@ -427,8 +411,7 @@ def run_bot(url, count=40, run_headless=True, duration=600):
                         driver.get(f"{base_url}library")
                         time.sleep(5)
             
-            duration_desc = f"{target_duration // 60} phút" if target_duration >= 60 else f"{target_duration} giây"
-            print(f"✅ [Người dùng #{i+1}] Hoàn thành phiên tương tác chất lượng cao đạt mốc {duration_desc}.")
+            print(f"✅ [Người dùng #{i+1}] Hoàn thành phiên tương tác chất lượng cao đạt mốc 10 phút.")
             
         except Exception as e:
             print(f"❌ Gặp lỗi trong kịch bản người dùng #{i+1}: {e}")
@@ -446,7 +429,6 @@ if __name__ == "__main__":
     url = "https://www.edutechvn.me/?fbclid=IwZXh0bgNhZW0CMTAAYnJpZBExRGVQQ0JvdVJSb0UwTHlDeHNydGMGYXBwX2lkEDIyMjAzOTE3ODgyMDA4OTIAAR5AebO48ccn0PghKsUv03r1vnjk5e6AxFg4doDatQanxkB_woe36bRP2VY6eA_aem_D9qWr3RNR8uY19vP6_1x5A"
     count = 40
     headless = True
-    duration = 600
     
     if len(sys.argv) > 1:
         url = sys.argv[1]
@@ -457,10 +439,5 @@ if __name__ == "__main__":
             pass
     if len(sys.argv) > 3:
         headless = sys.argv[3].lower() != "false"
-    if len(sys.argv) > 4:
-        try:
-            duration = int(sys.argv[4])
-        except ValueError:
-            pass
         
-    run_bot(url, count, headless, duration)
+    run_bot(url, count, headless)

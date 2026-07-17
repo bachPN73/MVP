@@ -1,162 +1,118 @@
 import time
 import random
 import sys
-import os
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
-# Đảm bảo console Windows hỗ trợ in UTF-8
 if sys.platform.startswith('win'):
     import io
     sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
     sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding='utf-8')
 
-# Danh sách 4 tài khoản cố định được cung cấp
+# Danh sách tài khoản subscriber
 ACCOUNTS = [
-    {"email": "admin@mvp.com", "pass": "Admin123456K@kaS"},
     {"email": "haothienkhuyen71@gmail.com", "pass": "Admin123456K@kaS"},
     {"email": "schooladmin@mvp.com", "pass": "Admin123"},
-    {"email": "phamngocback@gmail.com", "pass": "123456Ga"}
+    {"email": "lamta1988@gmial.com", "pass": "Admin123456K@kaS"}
 ]
 
-def fast_interact(driver, actions_count=1000):
-    """
-    Thực hiện tương tác siêu tốc (click và scroll liên tục với delay rất nhỏ)
-    để kích hoạt nhiều sự kiện GA4 nhất có thể trong cùng một session.
-    """
-    base_url = driver.current_url.split('/login')[0].split('/register')[0].split('/library')[0]
-    if not base_url.endswith("/"):
-        base_url += "/"
+BASE_URL = "https://www.edutechvn.me/"
 
-    print(f"   [INFO] Bat dau chuoi {actions_count} tuong tac sieu toc de tao event...")
+def slow_scroll(driver, max_scrolls=3):
+    """Mô phỏng hành vi cuộn trang chậm rãi để đọc nội dung"""
+    for _ in range(max_scrolls):
+        scroll_amount = random.randint(200, 600)
+        driver.execute_script(f"window.scrollBy({{top: {scroll_amount}, left: 0, behavior: 'smooth'}});")
+        time.sleep(random.uniform(1.5, 3.5))
+
+def human_interact(driver, min_actions=28, max_actions=35, target_duration_minutes=10):
+    """
+    Tương tác theo hành vi thực tế ~30 actions/phien.
+    """
+    target_actions = random.randint(min_actions, max_actions)
+    target_seconds = target_duration_minutes * 60
     
-    actions_done = 0
-    consecutive_errors = 0
+    # Tính thời gian chờ trung bình cho mỗi action để rải đều trong 10 phút
+    avg_sleep_per_action = target_seconds / target_actions
+    
+    print(f"   [INFO] Thuc hien {target_actions} hanh dong tuong tac rải đều trong ~{target_duration_minutes} phút (avg {avg_sleep_per_action:.1f}s/action)...")
 
-    while actions_done < actions_count:
+    start_time = time.time()
+
+    for i in range(target_actions):
         try:
-            # Random chọn hành động: cuộn trang (40%), click dạo (55%), chuyển trang lớn (5%)
-            rand_choice = random.random()
-            
             current_url = driver.current_url
             if "login" in current_url or "register" in current_url:
-                print("   [WARNING] Bi lac ve trang login/register. Dang tu dong quay lai thu vien...")
-                driver.get(f"{base_url}library")
+                driver.get(f"{BASE_URL}library")
                 time.sleep(3)
                 continue
 
-            # 1. Hành động CUỘN TRANG (Scroll) - Tạo event scroll và user_engagement
+            rand_choice = random.random()
+
+            # 40% cơ hội cuộn trang từ từ
             if rand_choice < 0.40:
-                scroll_y = random.randint(-500, 500)
-                driver.execute_script(f"window.scrollBy(0, {scroll_y});")
-                actions_done += 1
-                consecutive_errors = 0
-                if actions_done % 100 == 0:
-                    print(f"      -> Da hoan thanh {actions_done}/{actions_count} tuong tac...")
-                time.sleep(random.uniform(0.1, 0.3))
+                slow_scroll(driver, random.randint(1, 4))
 
-            # 2. Hành động CLICK DẠO (Click) - Tạo event click
-            elif rand_choice < 0.95:
+            # 40% cơ hội click vào các thành phần trên trang
+            elif rand_choice < 0.80:
                 elements = driver.find_elements(By.CSS_SELECTOR, "main a, main button, aside a")
-                valid_elements = []
+                valid_elements = [el for el in elements if el.is_displayed() and el.is_enabled() and 
+                                  not any(x in el.text.strip().lower() for x in ["đăng xuất", "logout", "delete", "xóa"])]
                 
-                for elem in elements:
-                    try:
-                        if elem.is_displayed() and elem.is_enabled():
-                            text = elem.text.strip().lower()
-                            if any(x in text for x in ["đăng xuất", "logout", "delete", "xóa", "hủy", "cancel", "deactivate"]):
-                                continue
-                            valid_elements.append(elem)
-                    except:
-                        continue
-
                 if valid_elements:
                     target = random.choice(valid_elements)
-                    driver.execute_script("arguments[0].scrollIntoView({behavior: 'instant', block: 'center'});", target)
-                    time.sleep(0.05)
+                    driver.execute_script("arguments[0].scrollIntoView({behavior: 'smooth', block: 'center'});", target)
+                    time.sleep(random.uniform(0.5, 1.5))
                     driver.execute_script("arguments[0].click();", target)
-                    
-                    actions_done += 1
-                    consecutive_errors = 0
-                    if actions_done % 100 == 0:
-                        print(f"      -> Da hoan thanh {actions_done}/{actions_count} tuong tac...")
-                    time.sleep(random.uniform(0.3, 0.6))
                 else:
-                    driver.get(f"{base_url}library")
-                    time.sleep(2)
+                    slow_scroll(driver, 1)
 
-            # 3. Hành động CHUYỂN TRANG LỚN - Tạo event page_view
+            # 20% cơ hội nhảy sang một tài liệu ngẫu nhiên
             else:
                 if "/library" in current_url:
                     materials = driver.find_elements(By.CSS_SELECTOR, "a[href*='/material/']")
                     if materials:
-                        target = random.choice(materials[:10])
+                        target = random.choice(materials[:5])
+                        driver.execute_script("arguments[0].scrollIntoView({behavior: 'smooth', block: 'center'});", target)
+                        time.sleep(1)
                         driver.execute_script("arguments[0].click();", target)
                     else:
-                        driver.get(f"{base_url}library")
+                        driver.get(f"{BASE_URL}library")
                 else:
-                    driver.get(f"{base_url}library")
+                    driver.get(f"{BASE_URL}library")
                 
-                actions_done += 1
-                consecutive_errors = 0
-                time.sleep(random.uniform(1.0, 1.8))
+            # Đợi thời gian ngẫu nhiên dựa trên mức trung bình để tổng phiên đạt target_duration_minutes
+            sleep_time = random.uniform(avg_sleep_per_action * 0.6, avg_sleep_per_action * 1.4)
+            time.sleep(sleep_time)
+
+            if (i+1) % 5 == 0:
+                elapsed = time.time() - start_time
+                print(f"      -> Da xong {i+1}/{target_actions} hanh dong... (Đã chạy {elapsed/60:.1f} phút)")
 
         except Exception as e:
-            consecutive_errors += 1
-            if consecutive_errors > 20:
-                print(f"   [ERROR] Gap loi lien tuc ({consecutive_errors} lan): {e}. Dung tuong tac.")
-                break
-            time.sleep(1)
+            time.sleep(2)
+            pass
 
-    print(f"   [SUCCESS] Hoan thanh chuoi tuong tac tren tai khoan nay. Da thuc heit: {actions_done} actions")
-    return actions_done
+    return target_actions
 
-def run_ga_booster(target_url, total_events_target=15000, run_headless=True):
+def run_ga_booster(total_sessions=20, run_headless=True):
     print("==================================================")
-    print(" [BOT] GA EVENT BOOST BOT - MINIMIZE SESSIONS ")
-    print(f" URL muc tieu: {target_url}")
-    print(f" Muc tieu tong event: {total_events_target}")
-    print(f" Chay tren cac tai khoan co san")
-    print(f" Che do chay: {'Chay ngam (Headless)' if run_headless else 'Hien trinh duyet'}")
+    print(" [BOT] GA QUALITY TRAFFIC - FIRST USER: FACEBOOK ")
+    print(f" Muc tieu tong so PHIEN (Sessions): {total_sessions}")
+    print(f" Che do chay: {'Ngam (Headless)' if run_headless else 'Hien thi trinh duyet'}")
     print("==================================================")
 
-    if not target_url.endswith("/"):
-        base_url = target_url + "/"
-    else:
-        base_url = target_url
+    successful_sessions = 0
 
-    login_url = f"{base_url}login"
-    
-    # Ước lượng 1 hành động click/scroll sinh ra trung bình 1.5 event GA4
-    estimated_events_per_action = 1.5
-    total_actions_needed = int(total_events_target / estimated_events_per_action)
-    
-    remained_actions = total_actions_needed
-    successful_accounts = 0
-
-    print(f" [PLAN] Tong so tuong tac can thuc hien: {total_actions_needed}")
-
-    for index, acc in enumerate(ACCOUNTS):
-        # Tính số lượng tài khoản còn lại có thể xử lý (tính cả tài khoản hiện tại)
-        remained_accounts = len(ACCOUNTS) - index
-        
-        # Nếu đã hoàn thành đủ số event mục tiêu thì dừng
-        if remained_actions <= 0:
-            print("\n [INFO] Da dat du so luong tuong tac muc tieu. Dung chuong trinh.")
-            break
-            
-        # Chia đều số tương tác còn lại cho các tài khoản còn lại
-        current_target_actions = int(remained_actions / remained_accounts)
-        current_target_actions = max(10, current_target_actions) # Tối thiểu 10 tương tác
-
+    for session_id in range(1, total_sessions + 1):
+        acc = random.choice(ACCOUNTS)
         email = acc["email"]
         password = acc["pass"]
-        
-        print(f"\n[Tai khoan #{index+1}/{len(ACCOUNTS)}] Bat dau phien: {email}")
-        print(f" -> Muc tieu can tuong tac cua tai khoan nay: {current_target_actions} actions")
+
+        print(f"\n[Phien #{session_id}/{total_sessions}] Tai khoan: {email}")
 
         chrome_options = Options()
         if run_headless:
@@ -164,25 +120,90 @@ def run_ga_booster(target_url, total_events_target=15000, run_headless=True):
         chrome_options.add_argument("--disable-gpu")
         chrome_options.add_argument("--no-sandbox")
         chrome_options.add_argument("--disable-dev-shm-usage")
-        chrome_options.add_argument("--window-size=1280,800")
+        chrome_options.add_argument("--window-size=1366,768")
+        chrome_options.add_argument("--disable-blink-features=AutomationControlled")
+        chrome_options.add_experimental_option("excludeSwitches", ["enable-automation"])
+        chrome_options.add_experimental_option("useAutomationExtension", False)
         
         user_agents = [
             "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
-            "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+            "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:121.0) Gecko/20100101 Firefox/121.0"
         ]
         chrome_options.add_argument(f"user-agent={random.choice(user_agents)}")
 
+        driver = None
         try:
             driver = webdriver.Chrome(options=chrome_options)
-        except Exception as e:
-            print(f"   [ERROR] Khong the mo Chrome Driver: {e}")
-            continue
+            
+            # Xóa cờ webdriver để GA4 không nhận diện là bot (Bot thường bị GA4 cho vào not set)
+            driver.execute_cdp_cmd("Page.addScriptToEvaluateOnNewDocument", {
+                "source": "Object.defineProperty(navigator, 'webdriver', {get: () => undefined})"
+            })
+            
+            # Random chọn nguồn Facebook (l hoặc m) hoặc Google
+            source_type = random.choice(["l.facebook.com", "m.facebook.com", "google"])
+            
+            if source_type in ["l.facebook.com", "m.facebook.com"]:
+                # 1A. GHI NHẬN FIRST USER LÀ FACEBOOK.COM / REFERRAL QUA HTTP REFERER
+                print(f"   [INFO] Đang thiết lập Nguồn từ {source_type}...")
+                driver.get(f"https://{source_type}/")
+                time.sleep(2.0)
+                
+                # Cố tình KHÔNG dùng UTM để GA4 bắt buộc phải tự đọc Referer và phân loại thành l.facebook.com hoặc m.facebook.com
+                target_url = f"{BASE_URL}login"
+                driver.execute_script(f"""
+                    var a = document.createElement('a');
+                    a.href = '{target_url}';
+                    document.body.appendChild(a);
+                    a.click();
+                """)
+            else:
+                # 1B. GHI NHẬN FIRST USER LÀ GOOGLE / ORGANIC
+                print("   [INFO] Đang thiết lập Nguồn từ Google Search...")
+                driver.get("https://www.google.com/")
+                time.sleep(random.uniform(1.5, 3.0))
+                
+                try:
+                    # Tìm ô tìm kiếm của Google và gõ từ khóa
+                    from selenium.webdriver.common.keys import Keys
+                    search_box = WebDriverWait(driver, 10).until(
+                        EC.presence_of_element_located((By.NAME, "q"))
+                    )
+                    search_box.send_keys("edutechvn")
+                    time.sleep(1.0)
+                    search_box.send_keys(Keys.RETURN)
+                    
+                    # Cuộn trang giả vờ đang tìm kiếm kết quả
+                    time.sleep(random.uniform(2.0, 4.0))
+                    driver.execute_script("window.scrollBy({top: 300, left: 0, behavior: 'smooth'});")
+                    time.sleep(2.0)
+                    
+                    # Bắt buộc click vào kết quả tìm kiếm ĐẦU TIÊN trên Google
+                    print("   [INFO] Đang tìm và click vào kết quả tìm kiếm đầu tiên trên Google...")
+                    
+                    # Trên Google Search, kết quả tự nhiên đầu tiên luôn là thẻ <h3>
+                    first_result_h3 = driver.find_element(By.CSS_SELECTOR, "h3")
+                    
+                    # Lấy thẻ <a> bọc ngoài <h3> để lấy link
+                    first_link = first_result_h3.find_element(By.XPATH, "..")
+                    
+                    driver.execute_script("arguments[0].scrollIntoView({behavior: 'smooth', block: 'center'});", first_link)
+                    time.sleep(1.0)
+                    driver.execute_script("arguments[0].click();", first_link)
+                    
+                except Exception as e:
+                    print(f"   [ERROR] Bị lỗi khi cố gắng click kết quả đầu tiên trên Google: {e}")
+            
+            # Đợi 8 giây để GA4 load xong và gửi ping đầu tiên
+            time.sleep(8.0)
 
-        try:
-            # 1. Đăng nhập
-            driver.get(login_url)
-            time.sleep(2)
-
+            # 2. Đăng nhập
+            if "login" not in driver.current_url:
+                driver.get(f"{BASE_URL}login")
+                time.sleep(3.0)
+                
+            print("   [INFO] Đang tiến hành điền form đăng nhập...")
             email_input = WebDriverWait(driver, 10).until(
                 EC.presence_of_element_located((By.ID, "email"))
             )
@@ -190,64 +211,59 @@ def run_ga_booster(target_url, total_events_target=15000, run_headless=True):
 
             email_input.send_keys(email)
             password_input.send_keys(password)
-            time.sleep(0.5)
+            time.sleep(1)
 
             submit_btn = driver.find_element(By.CSS_SELECTOR, "button[type='submit']")
             driver.execute_script("arguments[0].click();", submit_btn)
-            
-            time.sleep(4)
-            current_url = driver.current_url
+            time.sleep(random.uniform(4.0, 6.0))
 
-            if "login" in current_url:
-                print("   [ERROR] Dang nhap THAT BAI! Bo qua tai khoan nay.")
-                driver.quit()
+            if "login" in driver.current_url:
+                print("   [ERROR] Đăng nhập thất bại. Chuyển sang phiên tiếp theo.")
                 continue
 
-            print("   [SUCCESS] Dang nhap thanh cong.")
-            successful_accounts += 1
+            print("   [SUCCESS] Đăng nhập thành công.")
 
-            # Điều hướng sang trang thư viện
-            driver.get(f"{base_url}library")
-            time.sleep(3)
+            # 3. Tiến vào thư viện và tương tác
+            driver.get(f"{BASE_URL}library")
+            time.sleep(random.uniform(3.0, 5.0))
 
-            # 2. Chạy tương tác
-            actions_completed = fast_interact(driver, actions_count=current_target_actions)
+            # Thực hiện khoảng 28 - 35 tương tác như bạn yêu cầu
+            human_interact(driver, min_actions=28, max_actions=35)
+
+            successful_sessions += 1
+            print("   [INFO] Chờ 15s để GA4 chốt toàn bộ dữ liệu phiên...")
+            time.sleep(15) 
+
+            # QUAN TRỌNG: Điều hướng ra khỏi trang để GA4 kịp gửi sự kiện chốt thời gian phiên (user_engagement) qua sendBeacon
+            print("   [INFO] Thoát trang để GA4 chốt thời gian tương tác (1s -> ~10m)...")
+            driver.get("about:blank")
+            time.sleep(5)
             
-            # Khấu trừ số lượng tương tác đã thực hiện
-            remained_actions -= actions_completed
-            print(f"   [INFO] Con lai can thuc hien: {max(0, remained_actions)} actions.")
-
-            # 3. Đợi để GA4 gửi nốt event
-            print("   [INFO] Dang doi 15 giay de GA4 hoan thanh gui toan bo event...")
-            time.sleep(15)
-
         except Exception as e:
-            print(f"   [ERROR] Gap loi trong phien chay cua {email}: {e}")
+            print(f"   [ERROR] Phiên {session_id} gặp sự cố: {e}")
         finally:
-            driver.quit()
+            if driver:
+                driver.quit()
 
-        print(f"[Tai khoan #{index+1}] Hoan thanh phien.")
-        time.sleep(5)
+        delay_between_sessions = random.randint(15, 30)
+        print(f"[Hoàn thành Phiên #{session_id}] Nghỉ {delay_between_sessions}s trước khi chạy phiên tiếp...")
+        time.sleep(delay_between_sessions)
 
     print("\n==================================================")
-    print(" [COMPLETE] DA HOAN THANH TOAN BO TIEN TRINH GA BOOST ")
-    print(f" So tai khoan dang nhap thanh cong: {successful_accounts}/{len(ACCOUNTS)}")
-    print(f" So tuong tac con thieu (chua hoan thanh): {max(0, remained_actions)}")
+    print(" [COMPLETE] ĐÃ HOÀN THÀNH TIẾN TRÌNH TẠO TRAFFIC ")
+    print(f" Số phiên (Sessions) thành công: {successful_sessions}/{total_sessions}")
     print("==================================================")
 
 if __name__ == "__main__":
-    url = "https://www.edutechvn.me/"
-    target_events = 15000
-    headless = True
+    target_sessions = 20
+    headless = False 
 
     if len(sys.argv) > 1:
-        url = sys.argv[1]
-    if len(sys.argv) > 2:
         try:
-            target_events = int(sys.argv[2])
+            target_sessions = int(sys.argv[1])
         except ValueError:
             pass
-    if len(sys.argv) > 3:
-        headless = sys.argv[3].lower() != "false"
+    if len(sys.argv) > 2:
+        headless = sys.argv[2].lower() != "false"
 
-    run_ga_booster(url, target_events, headless)
+    run_ga_booster(target_sessions, headless)
