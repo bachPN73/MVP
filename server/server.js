@@ -489,7 +489,11 @@ app.all('/api/users*', (req, res, next) => {
 
 app.get('/api/models', async (req, res) => {
     try {
-        const models = await Material.find({}).lean();
+        // Tối ưu hóa: Chỉ select các trường cần thiết cho việc hiển thị danh sách (Dashboard, Library).
+        // Loại bỏ các trường nặng như features, quiz có thể chứa base64 lớn gây lag web.
+        const models = await Material.find({})
+            .select('-features -quiz -whereItOccurs -relatedMaterials -funFact')
+            .lean();
         const formatted = models.map(m => ({
             ...m,
             id: m._id.toString()

@@ -94,8 +94,8 @@ export function Layout({ children }: LayoutProps) {
                     location.pathname === '/dashboard' 
                         ? 'bg-transparent' 
                         : location.pathname === '/library'
-                        ? 'bg-white/80 dark:bg-slate-900/90 backdrop-blur-xl md:rounded-2xl md:border border-sidebar-border shadow-2xl'
-                        : 'bg-white/10 dark:bg-slate-900/20 backdrop-blur-md md:rounded-2xl md:border border-sidebar-border shadow-2xl'
+                        ? 'bg-white/95 dark:bg-slate-900/95 md:rounded-2xl md:border border-sidebar-border shadow-2xl'
+                        : 'bg-white/90 dark:bg-slate-900/90 md:rounded-2xl md:border border-sidebar-border shadow-2xl'
                 }`}>
                     {children}
                 </div>

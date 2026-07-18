@@ -1,0 +1,548 @@
+[
+  {
+    "name": "Trần Tuấn Chấn",
+    "email": "tuanchan1988@outlook.com",
+    "password": "$2b$10$GcTN0gkFG3WWV9TR9EsDu.Ig0EPXktDgk3achpaJRMbFkQYvpGK76",
+    "role": "teacher",
+    "plan": "free",
+    "createdAt": {
+      "$date": "2026-07-17T11:50:28.344Z"
+    },
+    "updatedAt": {
+      "$date": "2026-07-17T11:50:28.344Z"
+    },
+    "__v": 0
+  },
+  {
+    "name": "Hồ Văn Bình",
+    "email": "hovanbinh08@gmail.com",
+    "password": "$2b$10$86hVl4pS4loUgNfaA9WtK.mtbSlBZ2AUAmsSj6rKkRIydt.RMEkhW",
+    "role": "student",
+    "plan": "free",
+    "createdAt": {
+      "$date": "2026-07-17T11:50:28.344Z"
+    },
+    "updatedAt": {
+      "$date": "2026-07-17T11:50:28.344Z"
+    },
+    "__v": 0
+  },
+  {
+    "name": "Đỗ Thanh Linh",
+    "email": "thanhlinh.do@outlook.com",
+    "password": "$2b$10$GH8v1EG0/Cc2V1/u0pUt4uuQQ2kJTigAegu61qaiFRCoFMdKjMon6",
+    "role": "student",
+    "plan": "free",
+    "createdAt": {
+      "$date": "2026-07-17T11:50:28.344Z"
+    },
+    "updatedAt": {
+      "$date": "2026-07-17T11:50:28.344Z"
+    },
+    "__v": 0
+  },
+  {
+    "name": "Ngô Quỳnh Phong",
+    "email": "ngoquynhphong09@gmail.com",
+    "password": "$2b$10$Pudg132XrYitoRgpaa/bSOQgD95iYtEi9xJ69jHdhUzzNvOhyakgC",
+    "role": "student",
+    "plan": "free",
+    "createdAt": {
+      "$date": "2026-07-17T11:50:28.344Z"
+    },
+    "updatedAt": {
+      "$date": "2026-07-17T11:50:28.344Z"
+    },
+    "__v": 0
+  },
+  {
+    "name": "Vũ Văn Phong",
+    "email": "vuvanphong01@gmail.com",
+    "password": "$2b$10$rSV2uObfRwlF.pmAdjr1rO7gvBbnWZ5AHbccp9RHed.e.EgMqf/mG",
+    "role": "student",
+    "plan": "free",
+    "createdAt": {
+      "$date": "2026-07-17T11:50:28.344Z"
+    },
+    "updatedAt": {
+      "$date": "2026-07-17T11:50:28.344Z"
+    },
+    "__v": 0
+  },
+  {
+    "name": "Lê Như Linh",
+    "email": "lenhulinh2209@gmail.com",
+    "password": "$2b$10$M/9OrfTVx.G31tZ0rN1SPeRMcgKr/LNYCKupxomADLF9nAGGUdveS",
+    "role": "student",
+    "plan": "free",
+    "createdAt": {
+      "$date": "2026-07-17T11:50:28.344Z"
+    },
+    "updatedAt": {
+      "$date": "2026-07-17T11:50:28.344Z"
+    },
+    "__v": 0
+  },
+  {
+    "name": "Trần Như Vy",
+    "email": "nhuvy.tran09@hotmail.com",
+    "password": "$2b$10$ieV.k9GOBkQSzskw9aVUh.TRkBWVlWCWOqq42ZgehLn.e9it1XCsi",
+    "role": "student",
+    "plan": "free",
+    "createdAt": {
+      "$date": "2026-07-17T11:50:28.344Z"
+    },
+    "updatedAt": {
+      "$date": "2026-07-17T11:50:28.344Z"
+    },
+    "__v": 0
+  },
+  {
+    "name": "Hồ Đức Trang",
+    "email": "ductrangho@gmail.com",
+    "password": "$2b$10$CzLY2rFx0Im7DEtRu/UUUepXyclc.guoNV9dmBR4RVCHd4FaocGBi",
+    "role": "student",
+    "plan": "free",
+    "createdAt": {
+      "$date": "2026-07-17T11:50:28.344Z"
+    },
+    "updatedAt": {
+      "$date": "2026-07-17T11:50:28.344Z"
+    },
+    "__v": 0
+  },
+  {
+    "name": "Nguyễn Thanh Bách",
+    "email": "nguyenthanhbach1987@gmail.com",
+    "password": "$2b$10$cTWMIriLgQlJiQ1P1lWFy.0rRIDBXq.doK6Y8EqFjjDxHlib1diN6",
+    "role": "teacher",
+    "plan": "free",
+    "createdAt": {
+      "$date": "2026-07-17T11:50:28.344Z"
+    },
+    "updatedAt": {
+      "$date": "2026-07-17T11:50:28.344Z"
+    },
+    "__v": 0
+  },
+  {
+    "name": "Phạm Tuấn Vy",
+    "email": "phamtuanvy08@gmail.com",
+    "password": "$2b$10$GdShW.th6Vsp/XNCLz9riO4euL/1F5n0iY7s1uCA0Ki/CV8j268v2",
+    "role": "student",
+    "plan": "free",
+    "createdAt": {
+      "$date": "2026-07-17T11:50:28.344Z"
+    },
+    "updatedAt": {
+      "$date": "2026-07-17T11:50:28.344Z"
+    },
+    "__v": 0
+  },
+  {
+    "name": "Bùi Đức Khánh",
+    "email": "buiduckhanh98@outlook.com",
+    "password": "$2b$10$iNQAIbkY/YTDWjSBABPqGuHLz/P..5RSokDIMcySuTuEyB86yHw/u",
+    "role": "student",
+    "plan": "free",
+    "createdAt": {
+      "$date": "2026-07-17T11:50:28.344Z"
+    },
+    "updatedAt": {
+      "$date": "2026-07-17T11:50:28.344Z"
+    },
+    "__v": 0
+  },
+  {
+    "name": "Đặng Thị Sơn",
+    "email": "thisondang@gmail.com",
+    "password": "$2b$10$ljBVKg69Hil.PTCPJOvwjeH7PcShAjYj.JFf2xDEh.mKyY/S7llGq",
+    "role": "student",
+    "plan": "free",
+    "createdAt": {
+      "$date": "2026-07-17T11:50:28.344Z"
+    },
+    "updatedAt": {
+      "$date": "2026-07-17T11:50:28.344Z"
+    },
+    "__v": 0
+  },
+  {
+    "name": "Ngô Hữu Duy",
+    "email": "huuduy.ngo09@gmail.com",
+    "password": "$2b$10$CK5wBWdBX52OSJFt5hZppeFDS2aHzQIz3x5Xqn5yJLGlj/Pj8k8ri",
+    "role": "student",
+    "plan": "free",
+    "createdAt": {
+      "$date": "2026-07-17T11:50:28.344Z"
+    },
+    "updatedAt": {
+      "$date": "2026-07-17T11:50:28.344Z"
+    },
+    "__v": 0
+  },
+  {
+    "name": "Trần Thị Vy",
+    "email": "tranthivy08@outlook.com",
+    "password": "$2b$10$bSrNl0E3p076YHCtgLEVGuSPAMk/n3E7aeP/mu9D/KMhv18Hjx7B6",
+    "role": "student",
+    "plan": "free",
+    "createdAt": {
+      "$date": "2026-07-17T11:50:28.344Z"
+    },
+    "updatedAt": {
+      "$date": "2026-07-17T11:50:28.344Z"
+    },
+    "__v": 0
+  },
+  {
+    "name": "Phan Hoài Vy",
+    "email": "phanhoaivy@gmail.com",
+    "password": "$2b$10$Fmw.3uQTAkjTKHahWlZEh.iNcgeBK29501/Ajt3z8E9.Te/p7JL8O",
+    "role": "student",
+    "plan": "free",
+    "createdAt": {
+      "$date": "2026-07-17T11:50:28.344Z"
+    },
+    "updatedAt": {
+      "$date": "2026-07-17T11:50:28.344Z"
+    },
+    "__v": 0
+  },
+  {
+    "name": "Lê Như Sơn",
+    "email": "lenhuson08@gmail.com",
+    "password": "$2b$10$Zpa5fOabf17nGqX2jgXYD.J9SVyx.eF2PLb90mS1OPUJAhLlKIbNW",
+    "role": "student",
+    "plan": "free",
+    "createdAt": {
+      "$date": "2026-07-17T11:50:28.344Z"
+    },
+    "updatedAt": {
+      "$date": "2026-07-17T11:50:28.344Z"
+    },
+    "__v": 0
+  },
+  {
+    "name": "Hồ Như Trang",
+    "email": "honhutrang@icloud.com",
+    "password": "$2b$10$mcugGh079OSyvdwO4liwxeBJlyxionVUrYWWBKaRvnFN6yWbwmlem",
+    "role": "student",
+    "plan": "free",
+    "createdAt": {
+      "$date": "2026-07-17T11:50:28.344Z"
+    },
+    "updatedAt": {
+      "$date": "2026-07-17T11:50:28.344Z"
+    },
+    "__v": 0
+  },
+  {
+    "name": "Lê Hoài Khánh",
+    "email": "lehoaikhanh1986@gmail.com",
+    "password": "$2b$10$CMQUDuXyaWrFuUUgLOuhwO7MKWb7Lsqx19LEC6feL6l.Wz7xbc6he",
+    "role": "teacher",
+    "plan": "free",
+    "createdAt": {
+      "$date": "2026-07-17T11:50:28.344Z"
+    },
+    "updatedAt": {
+      "$date": "2026-07-17T11:50:28.344Z"
+    },
+    "__v": 0
+  },
+  {
+    "name": "Ngô Thanh Duy",
+    "email": "thanhduyngo08@gmail.com",
+    "password": "$2b$10$MfJPo.NdiSbxc00fwa8iVewpVbp2zY93mB/FdmQPY10ZEoVhLsBmq",
+    "role": "student",
+    "plan": "free",
+    "createdAt": {
+      "$date": "2026-07-17T11:50:28.344Z"
+    },
+    "updatedAt": {
+      "$date": "2026-07-17T11:50:28.344Z"
+    },
+    "__v": 0
+  },
+  {
+    "name": "Hoàng Thị Sơn",
+    "email": "hoangthison09@hotmail.com",
+    "password": "$2b$10$PZt4JKWK0/1PdkwljvWGB.FoGt3v8M7GFSUzbyVQV/C9o5JfyiFOi",
+    "role": "student",
+    "plan": "free",
+    "createdAt": {
+      "$date": "2026-07-17T11:50:28.344Z"
+    },
+    "updatedAt": {
+      "$date": "2026-07-17T11:50:28.344Z"
+    },
+    "__v": 0
+  },
+  {
+    "name": "Đặng Kim Linh",
+    "email": "kimlinhdang@gmail.com",
+    "password": "$2b$10$JctENorhMnN9f6SQL4Q25.Be4Usfnu1RcUN1JHWBbyhECEGaTKnYO",
+    "role": "student",
+    "plan": "free",
+    "createdAt": {
+      "$date": "2026-07-17T11:50:28.344Z"
+    },
+    "updatedAt": {
+      "$date": "2026-07-17T11:50:28.344Z"
+    },
+    "__v": 0
+  },
+  {
+    "name": "Lâm Hoài Vy",
+    "email": "lamhoaivy1989@outlook.com",
+    "password": "$2b$10$Wi9uBTMFuKdBu14TBmP0yukZC0.hDG/BJNzn2kDcPiuTdC677j0/q",
+    "role": "teacher",
+    "plan": "free",
+    "createdAt": {
+      "$date": "2026-07-17T11:50:28.344Z"
+    },
+    "updatedAt": {
+      "$date": "2026-07-17T11:50:28.344Z"
+    },
+    "__v": 0
+  },
+  {
+    "name": "Trịnh Hữu Phong",
+    "email": "trinhhuuphong@gmail.com",
+    "password": "$2b$10$fyvvvyBUMeoV5YLpiLrfROy5UD90Eybz/uliXWyKHEQ6vDnqS93Zq",
+    "role": "student",
+    "plan": "free",
+    "createdAt": {
+      "$date": "2026-07-17T11:50:28.344Z"
+    },
+    "updatedAt": {
+      "$date": "2026-07-17T11:50:28.344Z"
+    },
+    "__v": 0
+  },
+  {
+    "name": "Lê Quỳnh Linh",
+    "email": "quynhlinh.le08@icloud.com",
+    "password": "$2b$10$uj/KlB4Fi154g.9dD.7HqOwOCvlDYlZJN8uHf3trupR0ztDn7naCK",
+    "role": "student",
+    "plan": "free",
+    "createdAt": {
+      "$date": "2026-07-17T11:50:28.344Z"
+    },
+    "updatedAt": {
+      "$date": "2026-07-17T11:50:28.344Z"
+    },
+    "__v": 0
+  },
+  {
+    "name": "Đặng Hoài Sơn",
+    "email": "danghoaison1985@gmail.com",
+    "password": "$2b$10$6/So4wqnCg5.r7kzSuthVOnptYJwWNKJ2EKiakNDJa9G07.C1.D/K",
+    "role": "teacher",
+    "plan": "free",
+    "createdAt": {
+      "$date": "2026-07-17T11:50:28.344Z"
+    },
+    "updatedAt": {
+      "$date": "2026-07-17T11:50:28.344Z"
+    },
+    "__v": 0
+  },
+  {
+    "name": "Lê Hữu Vy",
+    "email": "huuvyle09@gmail.com",
+    "password": "$2b$10$JUZcOsfQ4g8HwyJ2vnUlAu38hvwkyd4f73vzjYyP9AItbgl.jSK.K",
+    "role": "student",
+    "plan": "free",
+    "createdAt": {
+      "$date": "2026-07-17T11:50:28.344Z"
+    },
+    "updatedAt": {
+      "$date": "2026-07-17T11:50:28.344Z"
+    },
+    "__v": 0
+  },
+  {
+    "name": "Đỗ Khánh Vy",
+    "email": "dokhanhvy08@hotmail.com",
+    "password": "$2b$10$v2Lk4/r1o5vtUvxFourHPuv2Iqj07iXXYrHP75kFQYytIdfkEK4N.",
+    "role": "student",
+    "plan": "free",
+    "createdAt": {
+      "$date": "2026-07-17T11:50:28.344Z"
+    },
+    "updatedAt": {
+      "$date": "2026-07-17T11:50:28.344Z"
+    },
+    "__v": 0
+  },
+  {
+    "name": "Vũ Thanh Yến",
+    "email": "vuthanhyen@gmail.com",
+    "password": "$2b$10$PAWxvJsNKlSetf8Kz5T3TO.rqxO51/l9RIrgzELoAGnkMkySMfe3y",
+    "role": "student",
+    "plan": "free",
+    "createdAt": {
+      "$date": "2026-07-17T11:50:28.344Z"
+    },
+    "updatedAt": {
+      "$date": "2026-07-17T11:50:28.344Z"
+    },
+    "__v": 0
+  },
+  {
+    "name": "Trần Quỳnh Vy",
+    "email": "tranquynhvy09@gmail.com",
+    "password": "$2b$10$o5v44dzVdqSvFo8rNCxrWughZPexhd7M6APnrtyRnK9nIec/EGpCC",
+    "role": "student",
+    "plan": "free",
+    "createdAt": {
+      "$date": "2026-07-17T11:50:28.344Z"
+    },
+    "updatedAt": {
+      "$date": "2026-07-17T11:50:28.344Z"
+    },
+    "__v": 0
+  },
+  {
+    "name": "Võ Kim Duy",
+    "email": "kimduy.vo@outlook.com",
+    "password": "$2b$10$c/shp/Ufz0OHRuO7DKURWOAwj/0g86XFYVv4DGdgRmOd.jvAUCOV6",
+    "role": "student",
+    "plan": "free",
+    "createdAt": {
+      "$date": "2026-07-17T11:50:28.344Z"
+    },
+    "updatedAt": {
+      "$date": "2026-07-17T11:50:28.344Z"
+    },
+    "__v": 0
+  },
+  {
+    "name": "Đỗ Đức Chấn",
+    "email": "doducchan08@gmail.com",
+    "password": "$2b$10$BsFy6IAIW7LcC3BwtLtwN.C/aEbQEPHl87aaPjDrX8rDJJUSV/JbG",
+    "role": "student",
+    "plan": "free",
+    "createdAt": {
+      "$date": "2026-07-17T11:50:28.344Z"
+    },
+    "updatedAt": {
+      "$date": "2026-07-17T11:50:28.344Z"
+    },
+    "__v": 0
+  },
+  {
+    "name": "Phạm Thị Duy",
+    "email": "phamthiduy09@gmail.com",
+    "password": "$2b$10$hn88QG59vJheJLXULB4hQODKbHmhkh21gC0/ll.JiDVtRqyUcGDhW",
+    "role": "student",
+    "plan": "free",
+    "createdAt": {
+      "$date": "2026-07-17T11:50:28.344Z"
+    },
+    "updatedAt": {
+      "$date": "2026-07-17T11:50:28.344Z"
+    },
+    "__v": 0
+  },
+  {
+    "name": "Trịnh Quỳnh Trang",
+    "email": "trinhquynhtrang1988@outlook.com",
+    "password": "$2b$10$jH2srmUFk/43vSmeOa.b5eNRJ8FIoNsUMcZj6HkwdqpFxf7Z.Hfy2",
+    "role": "teacher",
+    "plan": "free",
+    "createdAt": {
+      "$date": "2026-07-17T11:50:28.344Z"
+    },
+    "updatedAt": {
+      "$date": "2026-07-17T11:50:28.344Z"
+    },
+    "__v": 0
+  },
+  {
+    "name": "Lâm Hoài Vy",
+    "email": "hoaivylam08@gmail.com",
+    "password": "$2b$10$ADrEfAWYx9QLNAbNyju/LeuamUxfkvMMDwpP.AKWcD9tbJfPswT6K",
+    "role": "student",
+    "plan": "free",
+    "createdAt": {
+      "$date": "2026-07-17T11:50:28.344Z"
+    },
+    "updatedAt": {
+      "$date": "2026-07-17T11:50:28.344Z"
+    },
+    "__v": 0
+  },
+  {
+    "name": "Đặng Thị Hải",
+    "email": "dangthihai08@hotmail.com",
+    "password": "$2b$10$4l00/D2u9A./tI5u9XL0Q.FzA8jFJbAYBK/pcO41lneiXrwgJ.PfC",
+    "role": "student",
+    "plan": "free",
+    "createdAt": {
+      "$date": "2026-07-17T11:50:28.344Z"
+    },
+    "updatedAt": {
+      "$date": "2026-07-17T11:50:28.344Z"
+    },
+    "__v": 0
+  },
+  {
+    "name": "Phạm Minh Vy",
+    "email": "phamminhvy1987@gmail.com",
+    "password": "$2b$10$g.e0ANsOg0hGiBo8iA1e.edbf6ls359sy6ar5JjhQzE.7cpu2db.S",
+    "role": "teacher",
+    "plan": "free",
+    "createdAt": {
+      "$date": "2026-07-17T11:50:28.344Z"
+    },
+    "updatedAt": {
+      "$date": "2026-07-17T11:50:28.344Z"
+    },
+    "__v": 0
+  },
+  {
+    "name": "Đỗ Quỳnh Phong",
+    "email": "doquynhphong09@gmail.com",
+    "password": "$2b$10$V.DSjUYtK91SOU12aeg.0.oXXECWB4ZOaTk9KCg.jtDsBITbVCr9m",
+    "role": "student",
+    "plan": "free",
+    "createdAt": {
+      "$date": "2026-07-17T11:50:28.344Z"
+    },
+    "updatedAt": {
+      "$date": "2026-07-17T11:50:28.344Z"
+    },
+    "__v": 0
+  },
+  {
+    "name": "Đặng Như Yến",
+    "email": "nhuyendang@gmail.com",
+    "password": "$2b$10$0nura/mIZ80cTgOfKQYWz.J9Q.0Oaxe4EKpBcYsdPwcc3770IJdeC",
+    "role": "student",
+    "plan": "free",
+    "createdAt": {
+      "$date": "2026-07-17T11:50:28.344Z"
+    },
+    "updatedAt": {
+      "$date": "2026-07-17T11:50:28.344Z"
+    },
+    "__v": 0
+  },
+  {
+    "name": "Vũ Hữu Vy",
+    "email": "vuhuuvy1986@outlook.com",
+    "password": "$2b$10$OqxuKpa4enGWixOg/9oDu.bcq4F20WuLz7t1PGDM0EJ..BUIQ2sO6",
+    "role": "teacher",
+    "plan": "free",
+    "createdAt": {
+      "$date": "2026-07-17T11:50:28.344Z"
+    },
+    "updatedAt": {
+      "$date": "2026-07-17T11:50:28.344Z"
+    },
+    "__v": 0
+  }
+]
