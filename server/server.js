@@ -127,9 +127,10 @@ app.use(express.json({ limit: '100mb' }));
 app.use(express.urlencoded({ limit: '100mb', extended: true }));
 
 app.use((req, res, next) => {
-    const log = `[${new Date().toISOString()}] ${req.method} ${req.url}\n`;
-    fs.appendFileSync(path.resolve(DATA_DIR, 'server_debug.log'), log);
-    console.log(log.trim());
+    if (process.env.NODE_ENV !== 'production') {
+        const log = `[${new Date().toISOString()}] ${req.method} ${req.url}\n`;
+        fs.appendFile(path.resolve(DATA_DIR, 'server_debug.log'), log, () => {});
+    }
     next();
 });
 

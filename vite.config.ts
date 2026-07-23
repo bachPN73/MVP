@@ -15,8 +15,15 @@ export default defineConfig({
                 manualChunks: {
                     // Separate vendor chunks for better caching
                     'react-vendor': ['react', 'react-dom', 'react-router'],
-                    'ui-vendor': ['lucide-react', 'recharts', 'sonner'],
                     'three-vendor': ['three', '@react-three/fiber', '@react-three/drei'],
+                    'ui-vendor': ['lucide-react', 'recharts', 'sonner'],
+                    'radix-vendor': [
+                        '@radix-ui/react-dialog',
+                        '@radix-ui/react-dropdown-menu',
+                        '@radix-ui/react-tooltip',
+                        '@radix-ui/react-select',
+                        '@radix-ui/react-tabs'
+                    ],
                 },
             },
         },

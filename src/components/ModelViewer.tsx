@@ -547,7 +547,7 @@ function ModelViewerInner({
         if (loadingStage === 'stabilizing') {
             const timer = setTimeout(() => {
                 setLoadingStage('done');
-            }, minimal ? 0 : 1500); // 1.5s delay to stabilize graphics (bỏ qua nếu minimal)
+            }, minimal ? 0 : 400); // 400ms delay to stabilize graphics for snappy load
             return () => clearTimeout(timer);
         }
     }, [loadingStage, minimal]);

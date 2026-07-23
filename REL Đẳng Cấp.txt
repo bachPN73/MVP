@@ -1,0 +1,1609 @@
+1. What role does the target policy play in off-policy learning?
+A. It defines the behavior policy
+B. It defines the policy being learned and improved
+C. It defines the reward function
+D. It defines the exploration strategy
+
+2. Which of the following is a key benefit of using Dyna Architecture?
+A. Reduced computational resources
+B. Increased data redundancy
+C. Improved model scalability and adaptability
+D. Simplified system design
+
+3. How is the average reward calculated in reinforcement learning?
+A. By summing up all rewards and dividing by the number of time steps
+B. By dividing the total reward by the number of episodes
+C. By taking the median of all rewards obtained
+D. By calculating the mode of the reward distribution
+
+4. Which aspect of Temporal Difference makes it suitable for individuals with busy schedules?
+A. Fixed learning pace
+B. Limited access to resources
+C. Flexibility in scheduling
+D. Static course materials
+
+5. Which of the following is a technique for improving the accuracy of models with biased predictions?
+A. Introducing more bias into the model
+B. Regularization to penalize overly complex models
+C. Ignoring the bias and relying solely on historical data
+D. Using only one type of data source for model training
+
+6. Which of the following best describes the exploration strategy known as epsilon-greedy?
+A. Always choosing the action with the highest Q-value
+B. Randomly choosing any action with equal probability
+C. Choosing the best-known action most of the time while occasionally exploring random actions
+D. Using a decaying learning rate to choose actions
+
+7. How can Monte-Carlo Tree Search algorithms be modified to favor exploration in uncertain or less explored regions?
+A. By reducing the exploration constant
+B. By adjusting the reward function to penalize uncertainty
+C. By increasing the exploration constant
+D. By pruning less explored nodes
+
+8. What is the main purpose of using linear function approximation in reinforcement learning?
+A. To simplify the state space
+B. To reduce computational complexity
+C. To provide a way to generalize value functions
+D. To avoid using neural networks
+
+9. What role does the unpredictability of interstellar environments play in star exploration?
+A. It makes it easier to find habitable planets.
+B. It can lead to unexpected hazards and mission failures.
+C. It simplifies the navigation process.
+D. It ensures that all missions are successful.
+
+10. What advantage does Tile Coding provide compared to a single large lookup table?
+A. Increased computational speed
+B. Reduced overfitting
+C. More memory efficiency
+D. Higher resolution of state representation
+
+11. Which algorithm is commonly used to solve MDPs by iteratively estimating the value function?
+A. Q-Learning
+B. SARSA
+C. Value Iteration
+D. Policy Iteration
+
+12. What is the primary difference between Dyna-Q and Q-learning?
+A. Dyna-Q uses a model of the environment
+B. Q-learning updates Q-values online
+C. Q-learning is model-free, while Dyna-Q is model-based
+D. Dyna-Q is less prone to overestimation bias
+
+13. Which of the following describes 'model-free’ reinforcement learning methods?
+A. They rely on an explicit model of the environment
+B. They update policies based on simulated experiences
+C. They do not use a model of the environment
+D. They are used exclusively for planning
+
+14. Coarse coding can be seen as a form of which of the following in the context of state aggregation?
+A. Clustering
+B. Overfitting
+C. Exact encoding
+D. Model-free learning
+
+15. How does the Policy Iteration Framework handle changing environments or goals?
+A. By completely discarding the current policy and starting from scratch
+B. By adjusting the policy gradually
+C. By ignoring changes and sticking to the initial policy
+D. None of the above
+
+16. In Actor-Critic, what does the "Actor" component represent?
+A. Estimates of the expected return
+B. The policy function
+C. The value function
+D. The exploration strategy
+
+17. Off-policy learning is particularly useful in which scenario?
+A. When the environment is static and unchanging
+B. When exploration is not necessary
+C. When learning from demonstrations or historical data
+D. When actions have immediate and deterministic outcomes
+
+18. In the context of Monte-Carlo algorithms, what is meant by "exploration-exploitation trade-off"?
+A. Balancing the computational cost with the accuracy of results
+B. Balancing the depth of search with the breadth of search
+C. Balancing the search for new information with the use of known information
+D. Balancing the algorithm's speed with its stability
+
+19. Which mathematical concept is essential for understanding differential value functions?
+A. Integration
+B. Differentiation
+C. Algebra
+D. Geometry
+
+20. In the context of the k-armed bandit problem, what is meant by "exploitation"?
+A. Selecting arms at random to gather information.
+B. Selecting the arm with the highest estimated reward.
+C. Ignoring previously chosen arms.
+D. Maximizing the exploration rate.
+
+21. How does coarse coding handle the trade-off between bias and variance?
+A. It increases bias by using fewer features
+B. It reduces bias by using a detailed state representation
+C. It balances bias and variance by using overlapping coarse features
+D. It primarily focuses on reducing variance
+
+22. Which characteristic distinguishes Temporal Difference(TD) methods from Dynamic Programming and Monte Carlo methods?
+A. TD methods are model-free.
+B. TD methods require the entire sequence of states, actions, and rewards.
+C. TD methods have high computational complexity.
+D. TD methods are suitable only for deterministic environments.
+
+23. What does it mean for Q-learning to be off-policy?
+A. It learns the value of the policy it is currently following.
+B. It learns the value of the optimal policy while following a different policy.
+C. It learns the value of random actions.
+D. It does not follow any policy.
+
+24. Which of the following is a disadvantage of using state aggregation?
+A. It simplifies the problem.
+B. It may lead to a loss of detail and precision.
+C. It increases the computational burden.
+D. It guarantees an exact value function.
+
+25. Which of the following best describes a reward signal in reinforcement learning?
+A. Itis a fixed value assigned to each action regardless of the outcome.
+B. It is a numerical value given to the agent to indicate the success of an action.
+C. It is a symbolic representation of the agent's decision-making process.
+D. It is a sequence of states the agent goes through.
+
+26. What is discrimination in the context of learning and behavior?
+A. The process by which a response spreads from one specific stimulus to other stimuli that resemble the original.
+B. The ability to respond differently to similar but distinct stimuli.
+C. The reinforcement of a behavior in order to increase its frequency.
+D. The gradual weakening and disappearance of a conditioned response.
+
+27. What distinguishes Monte Carlo methods from Temporal-Difference (TD) methods?
+A. Monte Carlo methods update action values at the end of an episode, while TD methods update them at each time step.
+B. Monte Carlo methods require a model of the environment, while TD methods do not.
+C. Monte Carlo methods can be used online, while TD methods cannot.
+D. Monte Carlo methods always converge faster than TD methods.
+
+28. What is the effect of using a more complex proposal distribution in importance sampling?
+A. It decreases the variance of the estimator.
+B. It increases the variance of the estimator.
+C. It reduces the bias of the estimator.
+D. It improves the efficiency of the estimator.
+
+29. Which of the following statements is true about the Actor-Critic algorithm?
+A. It is a type of supervised learning algorithm
+B. It requires a separate neural network for each state-action pair
+C. It updates the policy based on the estimated advantage function
+D. Itis only applicable to discrete action spaces
+
+30. In the policy gradient theorem, what does the policy gradient represent?
+A. The slope of the value function
+B. The rate of change of the policy parameters
+C. The probability of taking each action
+D. The discounted future reward
+
+31. In the Bellman equation, what does V(s) represent?
+A. The expected reward starting from state s
+B. The value of taking action a in state s
+C. The transition probability from state s to state s‘
+D. The discount factor
+
+32. What is the main advantage of temporal-difference learning over other reinforcement learning methods?
+A. It requires less computational resources.
+B. It can handle non-stationary environments.
+C. It doesn't rely on rewards.
+D. It guarantees optimal policy convergence.
+
+33. What is a common method for ensuring adequate exploration in the initial stages of a Monte-Carlo Tree Search?
+A. Decreasing the exploration constant
+B. Increasing the exploration constant
+C. Reducing the number of simulations
+D. Pruning the tree aggressively
+
+34. What does the MSVE objective aim to minimize in the context of policy evaluation?
+A. The variance of the rewards
+B. The difference between consecutive policy updates
+C. The sum of squared differences between the estimated and true values
+D. The number of policy iterations
+
+35. Which of the following algorithms is more prone to overfitting in reinforcement learning?
+A. Value Iteration
+B. Policy Gradient
+C. Q-Learning
+D. Monte Carlo Methods
+
+36. What is the primary goal of reinforcement learning?
+A. To classify data into different categories
+B. To minimize the error between predicted and actual values
+C. To maximize the cumulative reward over time
+D. To find patterns in unlabelled data
+
+37. In the context of Deep Q-Networks (DQN), what does the term "experience replay" refer to?
+A. Replaying a sequence of actions to improve exploration.
+B. Storing and reusing past experiences to stabilize learning.
+C. Replaying an episode when the agent performs poorly.
+D. None of the above.
+
+38. What is one strategy for detecting inaccuracies in predictive models?
+A. Trusting the model outputs blindly
+B. Validating the model against new data
+C. Ignoring feedback from stakeholders
+D. Relying solely on historical performance
+
+39. What does a Monte Carlo simulation typically produce?
+A. Asingle, exact result
+B. Arange of possible outcomes
+C. A linear equation
+D. A fixed constant
+
+40. What does the term "iterative" signify in Iterative Policy Evaluation?
+A. The process involves repeated computation until convergence
+B. It updates the policy in every iteration
+C. It requires iterating through all possible states
+D. It involves iterating through different reinforcement learning algorithms
+
+41. What is the primary objective of policy control in reinforcement learning?
+A. Maximizing immediate rewards
+B. Minimizing state-action space
+C. Balancing exploration and exploitation
+D. Optimizing computational resources
+
+42. In which field of study is the estimation of gradients using samples commonly applied?
+A. Quantum physics
+B. Computer graphics
+C. Sociology
+D. Linguistics
+
+43. Which factor makes Temporal Difference particularly suitable for self-directed learners?
+A. Fixed learning pace
+B. Limited access to resources
+C. Adaptive learning pathways
+D. Static course materials
+
+44. What differentiates off-policy Q-learning from on-policy methods like SARSA?
+A. Q-learning uses past experiences while SARSA uses future predictions.
+B. Q-learning updates using the highest Q-value of the next state, while SARSA updates using the action actually taken.
+C. Q-learning requires a model of the environment, while SARSA does not.
+D. Q-learning is based on deterministic policies, while SARSA is based on stochastic policies.
+
+45. What is the Bellman equation used for in the context of MDPs?
+A. To calculate the shortest path between states.
+B. To update the policy in reinforcement learning.
+C. To express the relationship between the value of a state and the values of its successor States.
+D. To compute the transition probabilities between states to get maximum rewards
+
+46. What is the significance of the Bellman optimality equation in reinforcement learning?
+A. It defines the optimal exploration strategy
+B. It gives a recursive decomposition for the optimal policy
+C. It calculates the exact future rewards
+D. It simplifies the state transition probabilities
+
+47. Which algorithm is commonly used to estimate the average reward in reinforcement learning?
+A. Q-learning
+B. Monte Carlo methods
+C. Deep Q-Networks (DQN)
+D. Temporal Difference (TD) learning
+
+48. Which of the following algorithms is NOT typically used in reinforcement learning?
+A. Q-learning
+B. Sarsa
+C. Backpropagation
+D. Deep Deterministic Policy Gradient (DDPG)
+
+49. In Q-learning, which term is used to update the Q-value for state s and action a?
+A. a (learning rate)
+B. B (exploration rate)
+C. 6 (error term)
+D. A (decay rate)
+
+50. In Q-learning, how is the action value updated for a given state-action pair?
+A. Using the expected return
+B. Using the maximum action value of the next state
+C. Using the discounted reward of the next state
+D. Using the average of all action values
+
+51. In the context of Temporal Difference (TD), What is the primary advantage of TD(0) over Monte Carlo methods?
+A. Lower computational complexity
+B. Better convergence properties
+C. Ability to handle partial observability
+D. No dependence on policy selection
+
+52. Which of the following is an example of a continuing task?
+A. Writing a research paper in one sitting.
+B. Practicing a musical instrument daily.
+C. Completing a crossword puzzle.
+D. Painting a landscape over multiple sessions.
+
+53. Which of the following techniques uses a decreasing probability of random actions over time to balance exploration and exploitation?
+A. Q-Learning
+B. Epsilon-Greedy
+C. Softmax
+D. Thompson Sampling
+
+54. In the context of Temporal Difference (TD), Which factor influences the trade-off between exploration and exploitation in TD(0)?
+A. Learning rate
+B. Discount factor
+C. Reward function
+D. Exploration rate
+
+55. Which of the following is true about the actor-critic method in reinforcement learning?
+A. The actor updates the value function while the critic updates the policy
+B. The critic updates the value function while the actor updates the policy
+C. Both the actor and critic update the policy
+D. Both the actor and critic update the value function
+
+56. Which term describes the process of gradually shaping behavior through the use of rewards?
+A. Punishment
+B. Extinction
+C. Reinforcement
+D. Conditioning
+
+57. What is the primary objective of policy gradient algorithms in reinforcement learning?
+A. Maximize the state-value function
+B. Minimize the action-value function
+C. Maximize the expected cumulative reward
+D. Minimize the exploration-exploitation trade-off
+
+58. What is one common exploration strategy used in conjunction with Expected Sarsa?
+A. Greedy policy
+B. Softmax selection
+C. e-greedy policy
+D. Random walk
+
+59. In Sarsa, the Q-value update rule uses which of the following to update the current state-action pair?
+A. Q(s', a’) - Q(s, a)
+B. The reward received plus the discounted Q-value of the next state-action pair
+C. The reward received plus the maximum Q-value of the next state
+D. The reward received plus the average Q-value of the next state-action pair
+
+60. Which of the following is NOT a benefit of learning with Temporal Difference?
+A. Personalized learning experiences
+B. Accessible anytime, anywhere
+C. Limited interaction with peers
+D. Self-paced learning
+
+61. What role does the discount factor y play in the state value function?
+A. It balances the trade-off between exploration and exploitation to get maximum rewards
+B. It determines the importance of future rewards in the value function
+C. It adjusts the learning rate of the state value function
+D. It controls the randomness in the policy
+
+62. How does coarse coding help in handling large state spaces in reinforcement learning?
+A. By dividing the state space into non-overlapping regions
+B. By using a high-dimensional binary feature vector for each state
+C. By approximating value functions over a coarsely divided state space
+D. By applying a hierarchical approach to action selection
+
+63. When might the average reward fail as a performance metric in reinforcement learning?
+A. In deterministic environments
+B. When the reward distribution is uniform
+C. In environments with sparse rewards
+D. When the agent only receives positive rewards
+
+64. What is a common technique to reduce the impact of overly optimistic initial values over time?
+A. Decaying exploration rate
+B. Increasing learning rate
+C. Dynamic programming
+D. Reducing the discount factor
+
+65. What is the purpose of the discount factor (gamma, y) in reinforcement learning?
+A. To control the learning rate of the agent
+B. To prioritize recent rewards over distant future rewards
+C. To balance exploration and exploitation
+D. To determine the convergence rate of the algorithm
+
+66. Which of the following is NOT a variation of policy gradient methods?
+A. Deep Q-Network (DQN)
+B. Trust Region Policy Optimization (TRPO)
+C. Deterministic Policy Gradient (DPG)
+D. Natural Policy Gradient (NPG)
+
+67. What is Softmax policy parameterization primarily used for in reinforcement learning?
+A. Feature selection
+B. Action selection
+C. State representation
+D. Reward calculation
+
+68. What does the term "policy" refer to in the context of reinforcement learning?
+A. Asequence of actions
+B. Amapping from states to actions
+C. Asequence of rewards
+D. Amapping from actions to states
+
+69. Why might shaping rewards be necessary in reinforcement learning?
+A. To make the learning process more challenging
+B. To encourage exploration of less obvious actions
+C. To prevent the agent from achieving the goal
+D. To simplify the reward structure for the agent
+
+70. In reinforcement learning, what does the temperature parameter represent?
+A. The learning rate
+B. The exploration-exploitation trade-off
+C. The discount factor
+D. The number of episodes
+
+71. What does the Bellman equation for Q-learning update represent?
+A. The average reward per state
+B. The relationship between the Q-value of a state-action pair and the expected future rewards
+C. The difference between the expected and actual reward
+D. The probability of transitioning to a new state
+
+72. Which method involves using a model to simulate the environment for planning in reinforcement learning?
+A. Model-free methods
+B. Model-based methods
+C. Policy gradient methods
+D. Genetic algorithms
+
+73. Which of the following best describes Monte Carlo methods in the context of reinforcement learning?
+A. Methods that require a model of the environment to update policies.
+B. Methods that use a deterministic approach to update state values.
+C. Methods that use random sampling to estimate value functions and update policies.
+D. Methods that always guarantee finding the optimal policy.
+
+74. Why might Expected Sarsa be preferred in environments with large action spaces?
+A. It requires fewer samples for each update
+B. It avoids the need for a policy altogether
+C. It can better handle the uncertainty of many possible actions
+D. It simplifies the computation of the Q-value updates
+
+75. In policy improvement, what does the policy gradient represent?
+A. Direction of steepest ascent in the parameter space
+B. Direction of steepest descent in the parameter space
+C. Magnitude of immediate reward
+D. Probability of selecting an action
+
+76. Why is generalization important in reinforcement learning?
+A. To avoid overfitting to specific states
+B. To increase the state space size
+C. To ensure each state is precisely defined
+D. To complicate the learning algorithm
+
+77. What is the primary difference between Sarsa and Expected Sarsa in reinforcement learning?
+A. Sarsa uses the maximum Q-value of the next state
+B. Expected Sarsa uses the maximum Q-value of the next state
+C. Sarsa uses a sample of the previous state's Q-value
+D. Expected Sarsa uses the expected value of the next state's Q-value
+
+78. Which of the following is NOT a characteristic of Epsilon-soft policies?
+A. Flexibility
+B. Transparency
+C. Rigidity
+D. Accountability
+
+79. What is a common issue when using the mean-squared value error for large state spaces?
+A. Overfitting
+B. Underfitting
+C. Computational complexity
+D. Lack of convergence
+
+80. Which of the following best describes the time complexity of dynamic programming algorithms?
+A. Exponential
+B. Polynomial
+C. Logarithmic
+D. Linear
+
+81. In importance sampling, what does the proposal distribution refer to?
+A. The distribution from which samples are drawn
+B. The distribution of the target variable
+C. The distribution of the importance weights
+D. The distribution of the estimator
+
+82. How does the discount rate affect intertemporal choices in continuing tasks?
+A. It has no effect on intertemporal choices
+B. It influences the perception of the relative value of immediate versus delayed rewards
+C. It determines the time it takes to complete the task
+D. It dictates the level of risk associated with the task
+
+83. What advantage does Temporal Difference offer in terms of accessibility?
+A. Restriction to specific devices
+B. Fixed location for learning
+C. Accessible anytime, anywhere
+D. Limited availability of course materials
+
+84. What is the impact of the granularity of coarse coding on learning?
+A. Finer granularity increases generalization but decreases learning speed
+B. Coarser granularity decreases generalization but increases learning speed
+C. Finer granularity decreases both generalization and learning speed
+D. Coarser granularity increases both generalization and learning speed
+
+85. Which exploration method in Monte Carlo control assigns exploration bonuses based on the number of times an action has been selected?
+A. UCB (Upper Confidence Bound)
+B. e-greedy
+C. Thompson Sampling
+D. Boltzmann Exploration
+
+86. In Expected Sarsa, what does the parameter y represent?
+A. Learning rate
+B. Discount factor
+C. Exploration rate
+D. Update rate
+
+87. In reinforcement learning, what does the policy gradient method aim to optimize?
+A. The value function
+B. The Q-function
+C. The policy directly
+D. The reward function
+
+88. Which of the following is NOT a typical component of a reinforcement learning model?
+A. State transition probabilities
+B. Reward function
+C. Policy network
+D. Action space
+
+89. Why is it difficult to design technology for star exploration?
+A. Limited understanding of the necessary physics.
+B. The high levels of electromagnetic interference.
+C. Rapid technological advancements.
+D. The need for materials that can withstand extreme conditions.
+
+90. In reinforcement learning, the state value function V(s) represents:
+A. The immediate reward received after taking an action in state s
+B. The total accumulated reward from state s
+C. The expected return starting from state s
+D. The likelihood of transitioning from state s to another state
+
+91. Which factor influences the stability of policy gradient algorithms during training?
+A. Learning rate
+B. Discount factor
+C. Exploration rate
+D. Entropy regularization
+
+92. How does Temporal Difference enhance engagement compared to traditional learning methods?
+A. By providing passive learning experiences
+B. By limiting interaction with instructors
+C. By offering real-time feedback and interactivity
+D. By restricting access to course materials
+
+93. Which of the following methods uses parameterized functions to directly approximate the policy in reinforcement learning?
+A. Q-learning
+B. SARSA
+C. Deep Q-Networks (DQN)
+D. Policy Gradient Methods
+
+94. In Monte-Carlo Tree Search, what does the exploration term in the Upper Confidence Bound formula typically depend on?
+A. The depth of the tree
+B. The number of simulations
+C. The average reward
+D. The total number of times a node has been visited
+
+95. What is the main purpose of using a decaying epsilon in the Epsilon-Greedy strategy?
+A. To increase the randomness of actions over time.
+B. To decrease the randomness of actions over time.
+C. To maintain a constant level of exploration.
+D. To switch to a different policy entirely.
+
+96. Which method can be used to encourage exploration in reinforcement learning?
+A. Setting a high discount factor
+B. Using a fixed learning rate
+C. Implementing an €-greedy policy
+D. Decreasing the reward values
+
+97. What is a deterministic policy in reinforcement learning?
+A. A policy that selects actions based on a random process
+B. A policy that selects actions with a fixed probability distribution
+C. A policy that selects the same action for a given state every time
+D. Apolicy that changes based on the environment
+
+98. In reinforcement learning, what is the purpose of using a parameterized function to approximate the value function?
+A. To reduce the exploration space
+B. To simplify the problem by reducing the number of actions
+C. To generalize the value function across different states
+D. To guarantee an exact solution
+
+99. Which of the following techniques is commonly used to balance exploration and exploitation in Monte-Carlo Tree Search (MCTS)?
+A. Minimax algorithm
+B. Upper Confidence Bound (UCB)
+C. Simulated annealing
+D. Genetic algorithms
+
+100. In the context of reinforcement learning, what does a negative reward signify?
+A. It indicates the agent has achieved the goal.
+B. It discourages the agent from repeating the action that led to it.
+C. It has no impact on the agent's future actions.
+D. It stops the learning process.
+
+101. In Monte-Carlo Tree Search, what does the exploration term in the Upper Confidence Bound formula ty depend on?
+A. The depth of the tree
+B. The number of simulations
+C. The average reward
+D. The total number of times a node has been visited
+
+102. Why is the balance between discrimination and generalization crucial in adaptive learning systems?
+A. It ensures consistent repetition of known tasks.
+B. It avoids the need for discrimination.
+C. It allows the system to apply learned knowledge to new situations while recognizing differences.
+D. It reduces the system's processing power.
+
+103. Which problem arises due to the use of linear function approximation in reinforcement learning?
+A. Overfitting
+B. Curse of dimensionality
+C. Underfitting
+D. Vanishing gradients
+
+104. Which statement best describes Tabular Temporal Difference (TD) learning?
+A. It uses a table to store values for each state-action pair.
+B. It uses function approximation to estimate value functions.
+C. It updates values based on rewards and State transitions without using tables.
+D. It requires the exact model of the environment.
+
+105. What is Policy Evaluation in reinforcement learning?
+A. Determining the optimal policy
+B. Assessing the quality of a given policy
+C. Selecting the best action in a given state
+D. Updating the state-action values
+
+106. How can generalization be reduced in a learning environment?
+A. By reinforcing behaviors inconsistently.
+B. By using a variety of stimuli during training.
+C. By providing specific cues for different responses.
+D. By not reinforcing any behavior.
+
+107. In Expected Sarsa, the expectation is taken over which element?
+A. Future states
+B. Rewards
+C. Possible next actions
+D. Current state values
+
+108. What is the primary purpose of Dyna Architecture?
+A. To develop operating systems
+B. To design scalable web servers
+C. To model complex dynamic systems
+D. To manage database transactions
+
+109. Which factor determines the quality of the estimate in importance sampling?
+A. The size of the sample
+B. The closeness of the proposal distribution to the target distribution
+C. The number of iterations in the estimation process
+D. The order of convergence of the estimator
+
+110. Which aspect of Temporal Difference makes it advantageous for learners?
+A. Real-time feedback
+B. Delayed response mechanism
+C. Limited access to course materials
+D. Static content delivery
+
+111. What is the primary objective of reinforcement learning in build mode?
+A. To minimize the time spent on training
+B. To find the optimal strategy for an agent to maximize cumulative reward
+C. To reduce the size of the neural network
+D. To ensure the agent performs well in a single task
+
+112. Which of the following is NOT a common reason for inaccuracies in models?
+A. Data quality issues
+B. Incorrect model assumptions
+C. Overfitting
+D. Perfect alignment with real-world scenarios
+
+113. What happens to the softmax temperature parameter as it approaches infinity?
+A. The policy becomes more deterministic
+B. The policy becomes more stochastic
+C. The policy becomes completely random
+D. The policy becomes independent of the state
+
+114. Which technique is often used to reduce variance in Monte Carlo simulations?
+A. Gradient descent
+B. Variance reduction techniques like importance sampling
+C. Simple random sampling
+D. Fixed partitioning
+
+115. In which type of environment is Expected Sarsa generally more stable than Q-learning?
+A. Deterministic environments
+B. Stochastic environments
+C. Fully observable environments
+D. Static environments
+
+116. What term describes the phenomenon where people discount future rewards more steeply when the re are closer in time?
+A. Hyperbolic discounting
+B. Exponential discounting
+C. Temporal myopia
+D. Time preference reversal
+
+117. Which advantage of Temporal Difference (TD) methods allows them to be applied in online settings wh environment changes over time?
+A. TD methods require a fixed environment for learning.
+B. TD methods rely on a pre-defined transition model.
+C. TD methods adapt quickly to changing environments.
+D. TD methods are only suitable for offline learning.
+
+118. In Random Tabular Q-planning, what does the Q in Q-planning stand for?
+A. Quantity
+B. Quality
+C. Queue
+D. Q-value
+
+119. Which component of a parameterized policy is typically adjusted during training?
+A. State space
+B. Action space
+C. Parameters
+D. Rewards
+
+120. In Actor-Critic, what is the purpose of the advantage function?
+A. To estimate the probability distribution of actions
+B. To measure the improvement of taking a particular action in a given state over the average action
+C. To calculate the discounted cumulative reward
+D. To optimize the policy directly
+
+121. Why is it beneficial to update Q-values randomly in Random Tabular Q-planning?
+A. It ensures that all state-action pairs are updated equally.
+B. It helps in better exploration of the state-action space.
+C. It makes the algorithm simpler to implement.
+D. It guarantees convergence to the optimal policy.
+
+122. Which of the following best describes the primary goal of coarse coding?
+A. To minimize the number of states in the state space
+B. To reduce computational complexity by using fewer resources
+C. To generalize the state representation by using overlapping features
+D. To ensure exact representation of the state space
+
+123. In Monte-Carlo algorithms, what is the potential downside of too much exploration?
+A. It can lead to overfitting
+B. It can cause the algorithm to ignore the best-known solutions
+C. It increases the risk of convergence to a suboptimal solution
+D. It may significantly increase computational time without improving results
+
+124. Which factor is crucial for effectively managing episodic tasks?
+A. Procrastination
+B. Flexibility
+C. Rigid schedules
+D. Micro-management
+
+125. Which of the following statements is true about the SARSA algorithm?
+A. SARSA is an off-policy algorithm.
+B. SARSA always converges to the optimal policy.
+C. SARSA updates the Q-values using the action taken by the policy.
+D. SARSA requires a model of the environment.
+
+126. What is a key characteristic of continuing tasks?
+A. They require infrequent attention.
+B. They involve discrete, one-time actions.
+C. They have indefinite or ongoing durations.
+D. They are always completed in a single session.
+
+127. Which of the following best describes the Bellman equation?
+A. Arecursive decomposition of optimization problems.
+B. A linear equation solving system.
+C. Amethod for linear regression analysis.
+D. A probabilistic forecasting model.
+
+128. What does policy improvement involve?
+A. Updating the policy to be more greedy with respect to the value function
+B. Randomly changing the policy
+C. Keeping the policy fixed while evaluating its value
+D. Evaluating all possible policies before choosing the best one
+
+129. What is one approach to aggregating states in continuous state spaces?
+A. Using discrete state spaces only.
+B. Clustering states based on feature similarity.
+C. Ignoring state features altogether.
+D. Randomly grouping states.
+
+130. In the context of Temporal Difference (TD) learning, what is the main advantage of linear semi-gradient over Tabular TD learning?
+A. It provides exact solutions.
+B. It can generalize to unseen states through feature representation.
+C. It does not require any parameter tuning.
+D. Itis simpler to implement.
+
+131. In the epsilon-greedy policy, what role does the parameter epsilon (€) play in balancing exploration and exploitation?
+A. It determines the probability of selecting the best-known action
+B. It adjusts the learning rate of the algorithm
+C. It influences the discount factor for future rewards
+D. It determines the probability of exploring new actions
+
+132. What distinguishes Monte Carlo methods from Temporal Difference (TD) methods in reinforcement lea
+A. Monte Carlo methods update estimates based on the entire episode, while TD methods update bas current steps.
+B. Monte Carlo methods require knowledge of the model, while TD methods do not.
+C. Monte Carlo methods are more computationally expensive than TD methods.
+D. Monte Carlo methods cannot be used for online learning.
+
+133. Which strategy is NOT typically used to maintain exploration in Monte-Carlo Tree Search?
+A. Increasing the exploration constant in Upper Confidence Bound
+B. Using random playouts
+C. Reducing the number of rollouts
+D. Incorporating domain-specific heuristics
+
+134. In reinforcement learning, what does the policy gradient theorem provide a method for?
+A. Calculating the optimal policy directly
+B. Evaluating the value function of a policy
+C. Approximating the gradient of a policy's performance
+D. Finding the optimal action in each state
+
+135. In Monte Carlo control, which exploration method considers uncertainty by sampling from a posterior distribution of action values?
+A. UCB (Upper Confidence Bound)
+B. e-greedy
+C. Thompson Sampling
+D. Boltzmann Exploration
+
+136. When using Epsilon-greedy with function approximation, what role does the function approximator play
+A. It generates the random exploration rate
+B. It approximates the Q-values for given states and actions
+C. It determines when to switch between exploration and exploitation
+D. It sets the value of epsilon
+
+137. What is the goal of an agent in an MDP?
+A. To explore the state space.
+B. To maximize the cumulative reward.
+C. To minimize the number of actions taken.
+D. To transition between states as often as possible.
+
+138. Which technique is commonly used to approximate the optimal value function when the state space is t large to compute it exactly?
+A. Deep Q-Networks (DQN)
+B. Monte Carlo Methods
+C. Policy gradients
+D. Temporal Difference Learning
+
+139. What does Temporal Difference (TD) learning combine?
+A. Monte Carlo methods and dynamic programming
+B. Supervised learning and unsupervised learning
+C. Gradient descent and stochastic gradient descent
+D. Neural networks and decision trees
+
+140. What role does the policy n(a|s) play in the Bellman equation for the state value function?
+A. It determines the immediate reward
+B. It specifies the probability of taking action a in state s
+C. It is used to compute the transition probabilities
+D. It discounts the future rewards
+
+141. Which of the following is an example of an episodic task?
+A. Checking email daily
+B. Attending a weekly team meeting
+C. Planning a company retreat
+D. Monitoring website traffic hourly
+
+142. In the context of parameterized functions, what is gradient descent used for?
+A. To determine the optimal actions
+B. To update the parameters to minimize the loss function
+C. To increase the randomness in actions
+D. To split the data into training and testing sets
+
+143. If you're preparing for an exam by studying a little bit each day, what type of task is this?
+A. Episodic task.
+B. Continuing task.
+C. Project-based task.
+D. Occasional task.
+
+144. Dyna Architecture primarily deals with which type of models?
+A. Static models
+B. Dynamic models
+C. Predictive models
+D. Relational models
+
+145. Which of the following best describes the law of large numbers as it applies to Monte Carlo simulations
+A. The larger the sample size, the less accurate the results
+B. The larger the sample size, the more accurate the results
+C. The sample size does not affect the results
+D. The sample size should always be small
+
+146. In a policy improvement step, how is the state value function used?
+A. To initialize the action value function
+B. To generate new policies based on the current state values
+C. To calculate the expected reward for each possible action
+D. To terminate the learning process when a threshold is met
+
+147. When a child learns to use a specific greeting for different individuals (e.g., 'Hi' for peers, 'Good morning teachers), this is an example of:
+A. Generalization
+B. Discrimination
+C. Extinction
+D. Classical conditioning
+
+148. What is the difference between "exploration" and "exploitation" in reinforcement learning?
+A. Exploration involves trying new actions to discover their effects, while exploitation involves using kn actions to maximize reward
+B. Exploration is related to searching through a dataset, while exploitation is related to using the mode predictions
+C. Exploration is used in supervised learning, while exploitation is used in unsupervised learning
+D. Exploration refers to reducing the complexity of the model, while exploitation refers to increasing the complexity of the model
+
+149. How does Expected Sarsa reduce the variance in Q-value updates compared to Q-learning?
+A. By using a fixed learning rate.
+B. By averaging over all possible actions.
+C. By always Selecting the action with the highest Q-value.
+D. By ignoring the reward signal.
+
+150. In the context of reinforcement learning, what is a key advantage of distribution models over sample-ba models?
+A. Simplicity and ease of implementation
+B. Reduced computational complexity
+C. Ability to generalize from a broader set of scenarios
+D. Faster convergence to the optimal policy
+
+151. What is the relationship between sample efficiency and sample-based models?
+A. Sample-based models are more sample-efficient than distribution models
+B. Sample-based models are generally less sample-efficient than distribution models
+C. Both types of models have the same sample efficiency
+D. Sample efficiency is not a concern in reinforcement learning
+
+152. Which method is commonly used in conjunction with state aggregation to estimate the value function?
+A. Random search.
+B. Dynamic programming.
+C. Monte Carlo methods.
+D. Direct enumeration.
+
+153. What happens if the eligibility trace decay rate is set too low in Semi-Gradient TD learning?
+A. The algorithm becomes more sensitive to noise
+B. The updates become more biased
+C. The algorithm may fail to converge
+D. The learning rate becomes unstable
+
+154. How does the exploration-exploitation dilemma relate to parameterized policies?
+A. It determines the size of the neural network
+B. It guides the policy towards actions that lead to higher rewards
+C. It defines the trade-off between trying new actions and exploiting known actions
+D. It regulates the learning rate during training
+
+155. What does the 'k' in k-armed bandit stand for?
+A. The total number of steps taken.
+B. The number of actions (or arms) available.
+C. The discount factor.
+D. The learning rate.
+
+156. What is the key characteristic of an episode in the context of Monte Carlo methods?
+A. Itis a sequence of states, actions, and rewards that terminates.
+B. itis a fixed number of time steps in the environment.
+C. Itis a set of independent trials to estimate probabilities.
+D. Itis a single action taken by the agent.
+
+157. What is the typical objective when training a parameterized value function in reinforcement learning?
+A. Minimizing the time to convergence
+B. Maximizing the exploration rate
+C. Minimizing the loss between predicted and actual rewards
+D. Maximizing the number of parameters
+
+158. What is a potential drawback of Monte Carlo prediction methods?
+A. They require a model of the environment
+B. They can only be applied to deterministic environments
+C. They may require a large number of episodes to obtain accurate value estimates
+D. They are not suitable for on-policy learning
+
+159. What effect does decreasing the step size (h) have on the accuracy of the gradient estimation?
+A. Increases accuracy
+B. Decreases accuracy
+C. No effect on accuracy
+D. Increases computation time
+
+160. In policy evaluation, what does the Bellman expectation equation represent?
+A. The expected cumulative reward when following a policy
+B. The expected value of a state under a given policy
+C. The expected value of a state-action pair under a given policy
+D. The expected future reward of taking an action in a state
+
+161. What is generalization in the context of learning and behavior?
+A. The ability to distinguish between different stimuli.
+B. The process by which a response spreads from one specific stimulus to other stimuli that resemble original.
+C. Areduction in the frequency of a learned behavior.
+D. The process of strengthening a specific behavior through reinforcement.
+
+162. What is the goal of a policy gradient method in reinforcement learning?
+A. To update the value function directly
+B. To learn the model of the environment
+C. To improve the policy by optimizing the expected return
+D. To compute the Q-value of each state-action pair to get maximum rewards
+
+163. Which algorithm estimates the action value using a model of the environment?
+A. Q-learning
+B. SARSA
+C. Monte Carlo Control
+D. Dynamic Programming
+
+164. In Monte Carlo methods, what does the term "policy evaluation" refer to?
+A. The process of determining the optimal policy.
+B. The process of improving the policy based on value estimates.
+C. The process of estimating the value function for a given policy.
+D. The process of selecting the best action based on current values.
+
+165. What is a policy in reinforcement learning?
+A. The set of all possible states in an environment
+B. The method by which an agent maps states to actions
+C. A function that assigns rewards to actions
+D. The discount factor for future rewards
+
+166. In Softmax policy parameterization, what does the softmax function do?
+A. Squashes values to a range between 0 and 1
+B. Normalizes values into probabilities
+C. Maps values to discrete actions
+D. Converts values into gradients
+
+167. Which exploration strategy is commonly used in Q-learning to maintain off-policy learning?
+A. Greedy strategy.
+B. Epsilon-greedy strategy.
+C. Softmax strategy.
+D. Random strategy.
+
+168. Which parameter is NOT typically a part of Tile Coding configuration?
+A. Number of tilings
+B. Tile width
+C. Learning rate
+D. Offset of each tiling
+
+169. In Monte Carlo control, what is the major drawback of using Boltzmann Exploration?
+A. High computational complexity
+B. Tendency to exploit rather than explore
+C. Fixed exploration rate
+D. Sensitivity to initial conditions
+
+170. Which of the following is a key component of Monte Carlo simulations?
+A. Deterministic algorithms
+B. Random sampling
+C. Fixed input values
+D. Analytical solutions
+
+171. In the context of neural networks, what do the parameters of a policy represent?
+A. The input features
+B. The output actions
+C. The activation functions
+D. The weights and biases
+
+172. What happens to the value of a reward if it is consistently provided regardless of behavior?
+A. Itincreases
+B. It decreases
+C. Itremains the same
+D. It becomes unpredictable
+
+173. What is the main purpose of gradient descent in machine learning?
+A. To find the maximum of a function
+B. To find the minimum of a function
+C. To calculate the derivative of a function
+D. To optimize the model architecture
+
+174. What is a common method for building a model in reinforcement learning?
+A. Supervised learning with labeled data
+B. Unsupervised learning with unlabeled data
+C. Using historical data to approximate state transitions and rewards
+D. Clustering similar states and actions together
+
+175. Which of the following is NOT a source of bias in policy gradient methods?
+A. Variance reduction techniques
+B. Finite sample size
+C. Choice of baseline
+D. Exploration-exploitation trade-off
+
+176. What is the primary goal of using exploration in Monte-Carlo algorithms?
+A. To minimize computational cost
+B. To find the most optimal solution
+C. To avoid overfitting the model
+D. To ensure the algorithm samples a wide range of possibilities
+
+177. What is a potential challenge when determining the number of aggregated states?
+A. Ensuring they are all exactly the same.
+B. Balancing between the level of detail and computational efficiency.
+C. Making sure they are all unique.
+D. Finding a fixed number that works for all problems.
+
+178. In Monte Carlo methods, what is the term for the total accumulated reward obtained from a state?
+A. Immediate reward
+B. Discounted reward
+C. Return
+D. Cumulative penalty
+
+179. Which of the following best describes an off-policy algorithm?
+A. lt optimizes the policy based on past experiences only.
+B. It updates the policy based on the actions taken by the agent.
+C. It learns from actions that are not necessarily taken by the current policy.
+D. It only learns from the actions dictated by the current policy.
+
+180. Which of the following is an advantage of Temporal Difference Learning over Monte Carlo methods for Evaluation?
+A. Temporal Difference Learning is computationally less expensive.
+B. Temporal Difference Learning provides unbiased estimates.
+C. Temporal Difference Learning does not require exploration.
+D. Temporal Difference Learning guarantees convergence.
+
+181. What is the role of the learning rate 1 in the Q-learning algorithm?
+A. It determines the discount factor for future rewards
+B. It controls the exploration rate in the action selection process
+C. It adjusts the step size for updating the action values
+D. It defines the probability of choosing a random action
+
+182. What is temporal-difference learning primarily used for?
+A. Supervised learning
+B. Unsupervised learning
+C. Reinforcement learning
+D. None of the above
+
+183. In the context of reinforcement learning, what does the term "planning" typically refer to?
+A. Executing actions based on a fixed strategy
+B. Learning from immediate rewards only
+C. Using a model to evaluate future actions and outcomes
+D. Randomly exploring the environment
+
+184. What is the Bellman equation used for in reinforcement learning?
+A. To calculate the optimal policy
+B. To calculate the expected reward
+C. To calculate the transition probabilities
+D. To calculate the value function
+
+185. In Temporal Difference(0), how is the state-value function updated?
+A. By taking the derivative of the reward function.
+B. By using the Bellman equation.
+C. By averaging the rewards over time.
+D. By randomly selecting new state values.
+
+186. Which Monte Carlo method updates value estimates based on the average returns observed from state
+A. First-visit Monte Carlo
+B. Every-visit Monte Carlo
+C. Temporal Difference Learning
+D. Q-learning
+
+187. In Policy Iteration, which step involves evaluating the current policy's performance and updating the val function?
+A. Policy Evaluation
+B. Policy Improvement
+C. Policy Initialization
+D. Policy Iteration
+
+188. Which of the following is an example of generalization?
+A. A dog Salivates only to the sound of a specific bell.
+B. Astudent raises their hand only in one particular classroom.
+C. Achild calls all four-legged animals "dog".
+D. A person can tell the difference between a real and a fake smile.
+
+189. What makes sending human missions to explore stars particularly challenging?
+A. Stars are constantly moving at high speeds.
+B. The distances are too great for current spacecraft speeds.
+C. Lack of interest from astronauts.
+D. Stars have unpredictable weather patterns.
+
+190. What is the advantage of using a baseline in policy gradient methods?
+A. It reduces the variance of gradient estimates
+B. It increases the learning rate
+C. It guarantees convergence to the optimal policy
+D. It simplifies the action selection process
+
+191. In policy gradient algorithms, what is the role of the objective function?
+A. To minimize the variance of the policy
+B. To maximize the expected cumulative reward
+C. To regularize the policy parameters
+D. To penalize exploration
+
+192. Which Monte Carlo method is particularly useful for high-dimensional integration?
+A. Markov Chain Monte Carlo (MCMC)
+B. Simple Random Sampling
+C. Stratified Sampling
+D. Bootstrap Sampling
+
+193. In SARSA, the next action 1’ is chosen based on which policy?
+A. The current Q-values without any exploration
+B. A fixed policy not related to Q-values
+C. The same policy used to generate the current action A
+D. Arandom selection independent of the policy
+
+194. Which of the following is true about the exploration-exploitation trade-off in Q-learning?
+A. It deals with the agent's tendency to choose the most rewarding action always
+B. It addresses the need to explore new actions and exploit known rewarding actions
+C. It ensures the agent always explores new states
+D. It focuses on minimizing the Q-values of all actions
+
+195. In Q-learning, the update rule uses which action's reward to update the Q-values?
+A. The action dictated by the current policy.
+B. The action chosen by an exploration strategy.
+C. The action chosen by a different policy.
+D. The action with the highest estimated Q-value.
+
+196. What is the main objective of the Q-learning algorithm?
+A. To minimize the state-action pair values
+B. To maximize the total reward over time
+C. To minimize the exploration rate
+D. To maximize the number of actions taken
+
+197. What does SARSA stand for in the context of reinforcement learning?
+A. State-Action-Reward-State-Action
+B. State-Action-Reward-Sequence-Action
+C. State-Action-Return-State-Action
+D. State-Action-Reward-State-Adaptation
+
+198. What role does the policy's probability distribution play in Expected Sarsa?
+A. It determines which action to take next
+B. It weights the Q-values of possible actions to compute the expected value
+C. Itis used to calculate the maximum Q-value of the next state
+D. It helps in selecting the greedy action for the update rule
+
+199. How are policy gradient algorithms typically applied to continuous action spaces?
+A. By discretizing the action space
+B. By using actor-critic architectures
+C. By applying Gaussian policy distributions
+D. By incorporating additional reward functions
+
+200. What does the optimal value function represent?
+A. The maximum reward achievable from a given state
+B. The minimum reward achievable from a given state
+C. The average reward achievable from a given state
+D. The discounted future reward achievable from a given state
+
+201. Which parameter determines the degree of exploration in Actor-Critic with Softmax Policies?
+A. Learning rate
+B. Temperature parameter
+C. Discount factor
+D. Advantage function
+
+202. What role does the reward signal play in adjusting the parameters of a policy?
+A. It determines the size of the neural network
+B. It guides the policy towards actions that lead to higher rewards
+C. It defines the state space of the environment
+D. It regulates the exploration rate
+
+203. Why is it important to update Q-values iteratively in Q-learning?
+A. To ensure the immediate reward is maximized
+B. To approximate the optimal action-value function over time
+C. To maintain a fixed policy
+D. To prevent overfitting to the training data and testing step
+
+204. What is the primary purpose of the state value function in reinforcement learning?
+A. To determine the probability of taking a certain action
+B. To estimate the future rewards from a given state
+C. To record the history of visited states
+D. To minimize the error rate of predictions
+
+205. In the context of gradient descent, what is a ‘learning rate’?
+A. The amount of data processed per iteration
+B. The step size used to update the parameters
+C. The total number of iterations
+D. The rate at which the model's performance improves
+
+206. What does the epsilon (€) represent in the ¢-greedy algorithm?
+A. The probability of selecting a random arm.
+B. The reward received from the best arm.
+C. The rate of learning over time.
+D. The number of arms in the problem.
+
+207. Which variant of gradient descent is typically used in reinforcement learning to handle large and contin state spaces?
+A. Mini-batch gradient descent
+B. Stochastic gradient descent (SGD)
+C. Batch gradient descent
+D. None of the above
+
+208. In the Q-learning algorithm, what is the main goal when updating the Q-values?
+A. To maximize the immediate reward
+B. To find the shortest path
+C. To minimize the temporal difference error
+D. To maximize the exploration rate
+
+209. Which function is typically used to represent the action value in reinforcement learning?
+A. Reward function (R)
+B. Value function (V)
+C. Policy function (n)
+D. Q-function (Q)
+
+210. Which type of policy directly associates actions with states without using a value function?
+A. Value-based policy
+B. Model-based policy
+C. Policy-based policy
+D. Q-learning policy
+
+211. In SARSA, what is typically done if the learning rate (alpha) is too high?
+A. The algorithm converges too slowly.
+B. The algorithm might not converge and the Q-values will fluctuate.
+C. The algorithm will ignore the discount factor (gamma).
+D. The rewards will not be properly discounted.
+
+212. What is the Bellman equation used for in dynamic programming?
+A. To minimize a cost function over time.
+B. To find the shortest path in a graph.
+C. To determine the value of a decision problem.
+D. To maximize profit in a business model.
+
+213. Which algorithm typically results in smoother learning updates, reducing variance in the updates?
+A. Sarsa
+B. Expected Sarsa
+C. Q-learning
+D. Monte Carlo methods
+
+214. Which of the following is NOT a component of the reinforcement learning framework?
+A. Agent
+B. Environment
+C. Memory
+D. Reward Signal
+
+215. What is the objective of estimating action values in reinforcement learning?
+A. To determine the optimal policy
+B. To compute the state values
+C. To minimize the temporal difference error
+D. To calculate the reward function
+
+216. Which task type is more conducive to forming habits?
+A. Episodic tasks.
+B. Continuing tasks.
+C. Both episodic and continuing tasks.
+D. Neither episodic nor continuing tasks.
+
+217. Which of the following is the key difference between SARSA and Q-learning?
+A. SARSA is on-policy, while Q-learning is off-policy.
+B. SARSA is off-policy, while Q-learning is on-policy.
+C. SARSA does not use a learning rate, while Q-learning does.
+D. SARSA is deterministic, while Q-learning is stochastic.
+
+218. In the context of Temporal Difference (TD) learning, which feature of Tabular TD learning makes it a sp case of linear semi-gradient TD learning?
+A. The use of function approximation.
+B. The use of linear functions.
+C. The discretization of state space into individual entries.
+D. The non-linear combination of features.
+
+219. What is the primary challenge addressed by the SARSA (State-Action-Reward-State-Action) algorithm compared to Q-learning?
+A. SARSA does not require a model of the environment
+B. SARSA directly optimizes the policy without estimating action values
+C. SARSA uses the action taken in the next state for updates, leading to on-policy learning
+D. SARSA avoids the need for a discount factor
+
+220. Which of the following is NOT a characteristic of a problem suitable for dynamic programming?
+A. Optimal substructure
+B. Overlapping subproblems
+C. Greedy solution approach
+D. Recursion
+
+221. What is the main advantage of using function approximation in reinforcement learning?
+A. Faster convergence
+B. Reduced computational complexity
+C. Ability to generalize across states
+D. Increased exploration
+
+222. Which of the following methods is primarily used to estimate action values in model-free reinforcement learning?
+A. Policy gradient methods
+B. Monte Carlo methods
+C. Temporal Difference learning
+D. Dynamic programming
+
+223. In numerical methods, what is one limitation of estimating the gradient using samples?
+A. It always provides an exact solution
+B. It cannot handle non-linear functions
+C. Itis sensitive to the choice of step size
+D. It requires knowledge of calculus
+
+224. What is the advantage of using the Actor-Critic algorithm over other reinforcement learning methods?
+A. lt requires less computational resources
+B. Itis more stable and faster to converge
+C. It guarantees convergence to the optimal policy
+D. Itis less sensitive to hyperparameter tuning
+
+225. Which of the following is a primary purpose of using a model in reinforcement learning?
+A. To visualize data
+B. To predict the next action of an agent
+C. To simulate the environment's response to different actions
+D. To increase the speed of the learning process
+
+226. In the SARSA algorithm, what is the role of the discount factor 1?
+A. It determines the rate at which the algorithm explores new actions.
+B. It balances the trade-off between immediate and future rewards.
+C. It adjusts the learning rate dynamically.
+D. It scales the rewards to be in the range of [0,1].
+
+227. Which of the following methods combines linear function approximation with policy improvement?
+A. Policy Gradient Methods
+B. Value Iteration
+C. Actor-Critic Methods
+D. Tabular Q-Learning
+
+228. In the context of Temporal Difference (TD), what is the main objective of the TD(0) algorithm?
+A. To maximize the immediate reward.
+B. To minimize the temporal difference error.
+C. To reduce the variance of the estimate.
+D. To explore the state-action space.
+
+229. In reinforcement learning, what is a model-based approach?
+A. An approach where the agent learns a policy without any knowledge of the environment
+B. An approach where the agent uses a model of the environment to plan actions
+C. An approach where the agent is supervised by a teacher
+D. An approach where the agent learns solely through trial and error
+
+
+230. What is the key objective of using a Temporal Difference (TD) learning algorithm? (choose the best answer/core idea of TD learning)
+A. To estimate the value of a state based on the complete return from a full episode.
+B. To update the value function by using the difference between successive state values.
+C. To learn the optimal value function without requiring a model of the environment's dynamics.
+D. To approximate the total return by bootstrapping from the immediate reward and the estimated value of the next state.
+
+231. Which of the following methods is associated with distribution models for handling uncertainty in state transitions?
+A. Markov Decision Processes (MDPs)
+B. Policy Gradient Methods
+C. Particle Filters
+D. Q-Learning
+
+232. What does the exploration in Gaussian policies rely on?
+A. Random noise added to the mean action
+B. Random sampling from a uniform distribution
+C. Fixed exploration rate
+D. Adaptive exploration based on reward feedback
+
+233. Which of the following algorithms is commonly used in reinforcement learning?
+A. k-Nearest Neighbors
+B. Q-Learning
+C. Principal Component Analysis
+D. Decision Trees
+
+234. What is a potential disadvantage of using Expected Sarsa over Sarsa?
+A. It tends to have higher variance in updates
+B. It requires knowledge of the policy's action probabilities
+C. It converges more slowly than Sarsa
+D. It cannot be used in online learning settings
+
+235. In the sample average method, what does the step size parameter determine?
+A. The total number of actions taken
+B. The influence of the most recent reward on the estimate
+C. The number of ads to display
+D. The initial value of Q
+
+236. Which technique is commonly used to reduce the variance of policy gradient estimates?
+A. Actor-Critic methods
+B. Temporal Difference learning
+C. Monte Carlo Tree Search
+D. Model-based reinforcement learning
+
+237. What is the main challenge associated with using parameterized policies in reinforcement learning?
+A. They are computationally expensive
+B. They often lead to overfitting
+C. They require a large amount of training data
+D. They can suffer from local optima
+
+238. What is the advantage of using a higher number of sample points in estimating the gradient?
+A. Increased accuracy
+B. Decreased computation time
+C. Reduced memory usage
+D. Smaller margin of error
+
+239. What does the Q-Learning update do in the context of planning?
+A. It generates new states.
+B. It improves the policy based on updated action values.
+C. It eliminates the need for a model.
+D. It only focuses on real-world experiences.
+
+240. In expected Sarsa, the weights used in the expectation calculation are based on:
+A. The rewards received
+B. The probability of taking each action under the agent's policy
+C. The number of actions available
+D. The current state of the environment
+
+241. Which algorithm is commonly used to solve an MDP?
+A. K-means clustering
+B. Breadth-first search
+C. Value iteration
+D. Gradient descent
+
+242. What is a common approach to reduce the variance in Monte Carlo estimates?
+A. Using a discount factor.
+B. Using importance sampling.
+C. Using eligibility traces.
+D. Using linear function approximation.
+
+243. In contrast to Dynamic Programming and Monte Carlo methods, what aspect makes Temporal Difference (TD) methods more suitable for online learning?
+A. TD methods are slower to update values.
+B. TD methods require extensive computational resources.
+C. TD methods update values based on incomplete sequences.
+D. TD methods are less flexible in adapting to changing environments. 
+
+244. What is the main purpose of using optimistic initial values in function approximation?
+A. To ensure faster convergence
+B. To encourage exploration
+C. To minimize errors
+D. To guarantee optimal solutions
+
+245. In the Monte Carlo prediction method, what is the purpose of using the policy π?
+A. To determine the sequence of states
+B. To generate episodes
+C. To update the value function
+D. To ensure convergence of the algorithm
+
+246. What does the term "semi-gradient" refer to in the context of linear semi-gradient Temporal Difference learning?
+A. Using gradients to update the table values.
+B. Approximating gradients using a non-linear function.
+C. Using part of the gradient information to update parameters.
+D. Calculating exact gradients for function updates.
+
+247. In reinforcement learning, what does a stochastic policy do?
+A. Selects actions randomly with equal probability
+B. Selects the same action for a given state every time
+C. Selects actions based on a probability distribution
+D. Does not select any action
+
+248. What does the term "greedification" refer to in the context of policy improvement?
+A. Making a policy more random
+B. Selecting actions that maximize the value function
+C. Evaluating the performance of a policy
+D. Following the original policy without changes
+
+249. In an experiment, a pigeon is trained to peck a key when it sees a red light but not when it sees a green light. This is an example of:
+A. Generalization
+B. Spontaneous recovery
+C. Discrimination
+D. Habituation
+
+250. How many components does the feature vector have when there are four features and three actions in a stacked representation?
+A. 4
+B. 7
+C. 12
+D. 16
+
+251. In policy iteration, what is the role of the policy evaluation step?
+A. To improve the policy based on current estimates of the value function
+B. To randomly update the policy
+C. To compute the value function of the current policy
+D. To explore different policies without updating them
+
+252. Which of the following exploration strategies is commonly used with SARSA?
+A. Softmax action selection
+B. Upper Confidence Bound (UCB)
+C. Epsilon-greedy
+D. Boltzmann exploration
+
+253. Which type of reinforcement learning model typically uses Monte Carlo simulations to estimate values?
+A. Sample-based models
+B. Distribution models
+C. Both sample-based and distribution models
+D. Neither sample-based nor distribution models
+
+254. Which of the following is a primary characteristic of a distribution model in reinforcement learning?
+A. It directly samples actions based on a policy.
+B. It approximates the transition dynamics of the environment.
+C. It only updates after the entire episode ends.
+D. It requires a deterministic policy.
+
+255. Which term describes a methodical approach to handling episodic tasks?
+A. Ad hoc management
+B. Reactive management
+C. Proactive management
+D. Time-blocking
+
+256. Which term describes the probability distribution over next states given a current state and action in an MDP?
+A. Policy
+B. Reward function
+C. Transition model
+D. Value function
+
+257. What is the purpose of the accumulated product of important sampling ratios (W) in the off-policy Monte Carlo prediction algorithm?
+A. To store all past values of Rho
+B. To correct the returns generated by the behavior policy
+C. To calculate the average reward
+D. To simplify the algorithm
+
+258. What is the advantage of using policy gradient methods over value-based methods like Q-learning?
+A. Better convergence guarantees
+B. Simpler implementation
+C. More efficient memory usage
+D. Ability to handle continuous action spaces
+
+259. What is the Bellman equation used for in the context of MDPs?
+A To determine the optimal policy. 
+B To update the value function. 
+C To calculate the transition probabilities. 
+D To find the immediate reward. 
+
+260.In the context of linear function approximation, what is the gradient of the value function approximation? 
+
+A The true value of the state 
+B The feature vector in that state 
+C The mean squared error 
+D The policy value 
+
+261.Which phase of Policy Iteration involves updating the policy based on the current value function? 
+A Policy Evaluation 
+B Policy Improvement 
+C Policy Initialization 
+D Policy Iteration 
+
+262.In the context of function approximation, what does Mu of S represent? 
+A The total number of states 
+B The probability distribution of state visits 
+C The error in value function approximation 
+D The learning rate of the algorithm 
+
+263.What does the term "off-policy" refer to in the context of Expected Sarsa? 
+A Learning from actions that are not taken by the agent. 
+B Learning from actions that are taken by the agent. 
+C Learning without any prior knowledge of the environment. 
+D Learning that does not depend on the current policy. 
+
+264.What is the Bellman equation used for in the context of MDPs? 
+A To calculate the shortest path between states. 
+B To update the policy in reinforcement learning. 
+C To express the relationship between the value of a state and the values of its successor states. 
+D To compute the transition probabilities between states to get maximum rewards. 
+
+265.What distinguishes Temporal Difference (TD) methods from Monte Carlo methods regarding the handling of incomplete episodes? 
+A TD methods require complete episodes for updating values. 
+B TD methods update values based on incomplete episodes. 
+C TD methods cannot handle incomplete episodes efficiently. 
+D TD methods do not rely on experiences for learning. 
+
+266.Which problem arises due to the use of linear function approximation in reinforcement learning? 
+A Overfitting 
+B Curse of dimensionality 
+C Underfitting 
+D Vanishing gradients 
+
+267.In the context of Temporal Difference (TD), Which of the following is NOT a step in the TD(0) algorithm? 
+A Prediction 
+B Evaluation 
+C Backpropagation 
+D Bootstrapping 
+
+268.What is the primary purpose of Dyna Architecture? 
+A To develop operating systems 
+B To design scalable web servers 
+C To model complex dynamic systems 
+D To manage database transactions
