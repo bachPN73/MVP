@@ -17,6 +17,7 @@ export interface QuizQuestion {
     options: string[];
     correctAnswerIndex: number;
     explanation?: string;
+    source?: string;
 }
 
 export interface Material {

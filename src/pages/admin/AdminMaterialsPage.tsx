@@ -266,7 +266,7 @@ export default function AdminMaterialsPage() {
     const handleAddQuizQuestion = () => {
         setFormData({
             ...formData,
-            quiz: [...formData.quiz, { question: "", options: ["", "", "", ""], correctAnswerIndex: 0, explanation: "" }]
+            quiz: [...formData.quiz, { question: "", options: ["", "", "", ""], correctAnswerIndex: 0, explanation: "", source: "" }]
         });
     };
 
@@ -843,6 +843,17 @@ export default function AdminMaterialsPage() {
                                                         className="p-2 bg-slate-50/50 dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-white/10 text-xs font-semibold text-slate-900 dark:text-white focus:outline-none resize-none w-full"
                                                         value={q.explanation}
                                                         onChange={(e) => handleQuizQuestionChange(qIndex, 'explanation', e.target.value)}
+                                                    />
+                                                </div>
+
+                                                <div className="mt-2">
+                                                    <label className="text-[0.625rem] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 mb-1.5 block">Nguồn</label>
+                                                    <input
+                                                        type="text"
+                                                        placeholder="Nhập nguồn gốc câu hỏi (ví dụ: Sách giáo khoa, Đề thi THPT)..."
+                                                        className="p-2 bg-slate-50/50 dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-white/10 text-xs font-semibold text-slate-900 dark:text-white focus:outline-none w-full"
+                                                        value={q.source || ''}
+                                                        onChange={(e) => handleQuizQuestionChange(qIndex, 'source', e.target.value)}
                                                     />
                                                 </div>
                                             </div>
