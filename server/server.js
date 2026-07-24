@@ -1157,8 +1157,8 @@ app.post('/api/ai-search', async (req, res) => {
             const genAI = new GoogleGenerativeAI(apiKey);
             const modelSummary = models.map(m => `ID:${m.id} | Title:${m.title} | Subject:${m.subject} | Description:${m.description || ''} | Tags:${JSON.stringify(m.tags)}`).join('\n');
 
-            const prompt = `You are a search query assistant for an educational 3D models and materials library.
-Analyze the user search query in Vietnamese/English, understand the intent, extract/expand search terms, predict the subject, and match relevant models from the database.
+            const prompt = `You are an expert AI search assistant for a STEM 3D model & educational materials library.
+Analyze the user's search query in Vietnamese or English, detect the primary subject domain, expand key terms, and select matching library models.
 
 User Search Query: "${query}"
 
@@ -1166,19 +1166,27 @@ Available Library Models:
 ${modelSummary}
 
 Instructions:
-1. "keywords": Extract key concepts from the query. Expand with synonyms, standard Vietnamese spelling, accents/non-accents, and English translations.
-   SPECIAL BIOLOGY OPTIMIZATION: If the query is related to biology, cell biology, genetics, ecosystems, botany, zoology, physiology, human organs/anatomy, or medicine:
-   - Perform deep synonym expansion. Map general terms to specific biological concepts and English terms.
-   - Example: "quang hợp" -> ["photosynthesis", "chloroplast", "thực vật", "quang tự dưỡng", "lục lạp", "quá trình quang hợp"]; "tế bào" -> ["cell", "tế bào thực vật", "tế bào động vật", "bào quan", "organelle", "ti thể", "mitochondria", "nhân tế bào", "nucleus"]; "gen" or "di truyền" -> ["gene", "dna", "di truyền", "xoắn kép", "nhiễm sắc thể", "chromosome"]; "tuần hoàn" or "tim" -> ["circulatory", "heart", "hệ tuần hoàn", "máu", "tế bào bạch cầu", "white blood cell", "cơ tim"].
-2. "predicted_subject": Infer the subject. MUST be exactly one of: "physics", "chemistry", "biology", or null. For any biology-related query (including anatomy, physiology, genetics, ecology, and botany), ensure it is classified as "biology".
-3. "intent": A brief, professional search intent summary in Vietnamese.
-4. "matched_ids": Select IDs of the library models that match the query or expanded concepts. Order them by relevance (highest match first). Only include models that actually fit the search intent.
+1. "predicted_subject": Accurately classify the academic subject of the user's search query:
+   - "physics": Mechanics, kinematics, Newton's laws, forces, motion, gravity, optics, thermodynamics, electricity, magnetism, waves, acoustics, nuclear physics.
+     Examples: "Định luật chuyển động Newton", "lực hấp dẫn", "quang học", "thấu kính", "mạch điện", "sóng cơ", "con lắc", "vật lý", "quỹ đạo".
+   - "chemistry": Chemical reactions, elements, periodic table, chemical bonds, acids, bases, organic chemistry, molecules, solutions, stoichiometry.
+     Examples: "phản ứng hóa học", "axit", "bảng tuần hoàn", "nguyên tử", "phân tử", "bazo", "este", "hóa học".
+   - "biology": Cell biology, genetics, DNA/RNA, anatomy, physiology, organs, ecosystems, botany, zoology, biochemistry.
+     Examples: "tế bào thực vật", "màng tế bào", "ADN", "hệ tuần hoàn", "quang hợp", "nhiễm sắc thể", "sinh học".
+   - null: if ambiguous or multi-disciplinary.
 
-Return strictly a valid JSON object matching this schema (do not output any markdown formatting, only the JSON block):
+2. "keywords": Extract core concepts. Expand with standard Vietnamese spellings, non-accented variations, technical terms, and English translations.
+   - For Newton/Physics queries: include terms like ["newton", "chuyển động", "động học", "lực", "kinematics", "force", "mechanics", "quán tính"].
+
+3. "intent": A clear 1-sentence search intent summary in Vietnamese.
+
+4. "matched_ids": Select ONLY model IDs that directly or closely match the query intent. Do NOT match models from an unrelated subject. If no models in the database match, return an empty array [].
+
+Return strictly a valid JSON object matching this schema (do not output markdown code blocks, return ONLY valid JSON):
 {
   "keywords": ["keyword1", "keyword2"],
   "predicted_subject": "physics" | "chemistry" | "biology" | null,
-  "intent": "Ý định tìm kiếm bằng tiếng Việt",
+  "intent": "Mô tả ý định tìm kiếm bằng tiếng Việt",
   "matched_ids": ["id1", "id2"]
 }`;
 
@@ -1205,11 +1213,20 @@ Return strictly a valid JSON object matching this schema (do not output any mark
             }
         }
 
-        const searchTerms = query.toLowerCase().split(/[\s,]+/).filter(t => t.length > 1);
+        const STOP_WORDS = new Set([
+            'định', 'luật', 'các', 'những', 'của', 'và', 'trong', 'cho', 'về', 'là',
+            'bài', 'học', 'mô', 'hình', 'tìm', 'kiếm', 'xem', 'thẻ', 'gì', 'thế', 'nào'
+        ]);
+
+        const queryLower = query.toLowerCase().trim();
+        const rawTerms = queryLower.split(/[\s,]+/).filter(t => t.length > 1);
+        const meaningfulTerms = rawTerms.filter(t => !STOP_WORDS.has(t));
         const aiKeywords = Array.isArray(aiAnalysis?.keywords)
             ? aiAnalysis.keywords.filter(k => typeof k === 'string').map(k => k.toLowerCase())
             : [];
-        const allKeywords = [...new Set([...searchTerms, ...aiKeywords])];
+        const allKeywords = [...new Set([...rawTerms, ...aiKeywords])];
+        const meaningfulKeywords = allKeywords.filter(k => !STOP_WORDS.has(k));
+
         const predictedSubject = typeof aiAnalysis?.predicted_subject === 'string' ? aiAnalysis.predicted_subject : null;
         const aiMatchedIds = Array.isArray(aiAnalysis?.matched_ids)
             ? aiAnalysis.matched_ids.map(id => String(id))
@@ -1218,24 +1235,69 @@ Return strictly a valid JSON object matching this schema (do not output any mark
         const scoredModels = formattedModels.map(m => {
             let score = 0;
             const titleLower = (m.title || '').toLowerCase();
+            const descLower = (m.description || '').toLowerCase();
             const tags = Array.isArray(m.tags) ? m.tags : [];
             const tagsLower = tags.map(t => t.toLowerCase());
 
+            const isAiMatched = aiMatchedIds.includes(m.id);
             const aiIndex = aiMatchedIds.indexOf(m.id);
-            if (aiIndex !== -1) score += 30 * (aiMatchedIds.length - aiIndex);
-            if (predictedSubject && m.subject === predictedSubject) score += 20;
 
-            for (const kw of allKeywords) {
-                if (tagsLower.some(t => t.includes(kw))) score += 15;
-                if (titleLower.includes(kw)) score += 10;
+            // 1. Direct AI match bonus
+            if (isAiMatched) {
+                score += 50 + (aiMatchedIds.length - aiIndex) * 10;
             }
-            return { ...m, score };
+
+            // 2. Subject alignment & cross-subject penalty
+            if (predictedSubject) {
+                if (m.subject === predictedSubject) {
+                    score += 30;
+                } else if (!isAiMatched) {
+                    // Heavily penalize off-subject models (e.g. biology on a physics search)
+                    score -= 60;
+                }
+            }
+
+            // 3. Full phrase or exact title match
+            if (titleLower.includes(queryLower)) {
+                score += 45;
+            }
+
+            // 4. Meaningful keyword matching
+            const matchTokens = meaningfulKeywords.length > 0 ? meaningfulKeywords : rawTerms;
+            for (const kw of matchTokens) {
+                if (titleLower.includes(kw)) score += 15;
+                if (tagsLower.some(t => t.includes(kw))) score += 12;
+                if (descLower.includes(kw)) score += 5;
+            }
+
+            // Calculate realistic match percentage
+            let matchPercentage = 0;
+            if (score > 0) {
+                if (isAiMatched && m.subject === predictedSubject) {
+                    matchPercentage = 95 + Math.min(4, Math.floor(score / 25));
+                } else if (isAiMatched || m.subject === predictedSubject) {
+                    matchPercentage = 85 + Math.min(10, Math.floor(score / 15));
+                } else {
+                    matchPercentage = Math.min(84, 70 + Math.floor(score / 10));
+                }
+            }
+
+            return { ...m, score, matchPercentage };
         });
 
-        const rankedResults = scoredModels.filter(m => m.score > 0).sort((a, b) => b.score - a.score).slice(0, 10);
+        // Filter out items with score <= 0 (eliminates off-subject models matching stop words)
+        const rankedResults = scoredModels
+            .filter(m => m.score > 0)
+            .sort((a, b) => b.score - a.score)
+            .slice(0, 10)
+            .map(m => ({
+                ...m,
+                matchPercentage: m.matchPercentage || 95
+            }));
+
         const responseData = {
             results: rankedResults,
-            ai_insight: aiAnalysis?.intent || `Tìm kiếm: ${allKeywords.join(', ')}`,
+            ai_insight: aiAnalysis?.intent || `Phân tích từ khóa tìm kiếm: ${allKeywords.join(', ')}`,
             keywords: allKeywords,
             predicted_subject: predictedSubject
         };

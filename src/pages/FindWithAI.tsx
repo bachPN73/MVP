@@ -92,7 +92,7 @@ export default function FindWithAI() {
             const response = await api.aiSearch(query);
 
             // Map results to Material format
-            const formattedResults: Material[] = response.results.map((m: any) => ({
+            const formattedResults: (Material & { matchPercentage?: number })[] = response.results.map((m: any) => ({
                 id: `db-${m.id}`,
                 title: m.title,
                 subject: m.subject,
@@ -104,6 +104,7 @@ export default function FindWithAI() {
                 tags: Array.isArray(m.tags) ? m.tags : [],
                 grade: m.grade || 10,
                 file_url: m.file_url,
+                matchPercentage: m.matchPercentage || 95,
             }));
 
             setResults(formattedResults);
@@ -311,7 +312,7 @@ export default function FindWithAI() {
                                                     {/* Glassmorphic Match Badge */}
                                                     <div className="absolute top-3 right-3 bg-indigo-600/90 backdrop-blur-md text-white text-xs px-3 py-1 rounded-full font-bold flex items-center gap-1 shadow-md border border-white/20">
                                                         <Sparkles className="w-3.5 h-3.5 animate-pulse text-yellow-300" />
-                                                        Khớp {Math.floor(Math.random() * 6) + 94}%
+                                                        Khớp { (material as any).matchPercentage || 95 }%
                                                     </div>
                                                 </div>
 
@@ -351,11 +352,15 @@ export default function FindWithAI() {
                                     /* Beautiful Zero results card */
                                     <div className="text-center py-16 bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/10 rounded-3xl shadow-lg relative overflow-hidden max-w-lg mx-auto">
                                         <div className="inline-flex items-center justify-center w-16 h-16 bg-slate-100 dark:bg-slate-800 rounded-2xl mb-4">
-                                            <Sparkles className="w-8 h-8 text-slate-400" />
+                                            <Sparkles className="w-8 h-8 text-indigo-500" />
                                         </div>
-                                        <h3 className="text-xl font-bold mb-2 text-slate-900 dark:text-white font-heading">Không tìm thấy kết quả phù hợp</h3>
-                                        <p className="text-slate-500 dark:text-slate-400 mb-6 font-medium px-4">
-                                            AI không tìm thấy học liệu khớp trực tiếp. Bạn vui lòng thử mô tả chi tiết hơn hoặc nhập các từ khóa khác.
+                                        <h3 className="text-xl font-bold mb-2 text-slate-900 dark:text-white font-heading">Chưa có học liệu phù hợp</h3>
+                                        <p className="text-slate-500 dark:text-slate-400 mb-6 font-medium px-6 leading-relaxed">
+                                            {aiSubject ? (
+                                                <>AI đã nhận diện chủ đề môn <strong className="text-indigo-600 dark:text-indigo-400">{subjectNameMap[aiSubject] || aiSubject}</strong>, nhưng thư viện hiện chưa có mô hình phù hợp với từ khóa này. Bạn vui lòng thử mô tả lại hoặc tìm kiếm mô hình khác.</>
+                                            ) : (
+                                                <>AI không tìm thấy mô hình hoặc tài liệu nào trong thư viện khớp với từ khóa tìm kiếm của bạn. Vui lòng thử lại với các từ khóa ngắn hơn.</>
+                                            )}
                                         </p>
                                         <button
                                             onClick={() => {
