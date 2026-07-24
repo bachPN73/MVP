@@ -76,6 +76,8 @@ export default function JoinSchoolPage() {
     const [joinSuccess, setJoinSuccess] = useState("");
     const [joinError, setJoinError] = useState("");
     const [showScanner, setShowScanner] = useState(false);
+    const [leaveLoading, setLeaveLoading] = useState(false);
+    const [leaveError, setLeaveError] = useState("");
 
     useEffect(() => {
         const stored = localStorage.getItem("edu_tech_user");
@@ -127,6 +129,34 @@ export default function JoinSchoolPage() {
         }
     };
 
+    const handleLeaveSchool = async () => {
+        if (!user) return;
+        if (!window.confirm("Bạn có chắc chắn muốn rời khỏi trường học hiện tại? Tài khoản của bạn sẽ mất các đặc quyền Pro được cấp từ trường.")) return;
+        setLeaveLoading(true);
+        setLeaveError("");
+        try {
+            const userId = user.id || user._id;
+            const res = await api.leaveSchool(userId);
+            // Sync localStorage with server response
+            const stored = localStorage.getItem("edu_tech_user");
+            if (stored) {
+                const curr = JSON.parse(stored);
+                localStorage.setItem("edu_tech_user", JSON.stringify({
+                    ...curr,
+                    role: res.user.role,
+                    plan: res.user.plan,
+                    schoolId: null,
+                    className: ''
+                }));
+            }
+            window.location.reload();
+        } catch (err: any) {
+            setLeaveError(err.message || "Rời trường thất bại. Vui lòng thử lại.");
+        } finally {
+            setLeaveLoading(false);
+        }
+    };
+
     if (!user) return null;
 
     return (
@@ -149,22 +179,15 @@ export default function JoinSchoolPage() {
                                         <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">Vai trò của bạn: {user.role === 'teacher' ? 'Giáo viên' : 'Học sinh'} {user.className ? `- Lớp ${user.className}` : ''}</p>
                                     </div>
                                 </div>
+                                {leaveError && (
+                                    <p className="text-red-500 text-xs font-semibold mt-1 text-right">{leaveError}</p>
+                                )}
                                 <button 
-                                    onClick={() => {
-                                        if (window.confirm("Bạn có chắc chắn muốn rời khỏi trường học hiện tại? Tài khoản của bạn sẽ mất các đặc quyền Pro được cấp từ trường.")) {
-                                            const stored = localStorage.getItem("edu_tech_user");
-                                            if (stored) {
-                                                const curr = JSON.parse(stored);
-                                                localStorage.setItem("edu_tech_user", JSON.stringify({
-                                                    ...curr, role: "user", schoolId: null, className: null
-                                                }));
-                                                window.location.reload();
-                                            }
-                                        }
-                                    }}
-                                    className="px-5 py-2.5 bg-red-50 text-red-600 dark:bg-red-500/10 dark:text-red-400 font-bold rounded-xl hover:bg-red-100 dark:hover:bg-red-500/20 transition-colors border border-red-200 dark:border-red-500/20 whitespace-nowrap"
+                                    onClick={handleLeaveSchool}
+                                    disabled={leaveLoading}
+                                    className="px-5 py-2.5 bg-red-50 text-red-600 dark:bg-red-500/10 dark:text-red-400 font-bold rounded-xl hover:bg-red-100 dark:hover:bg-red-500/20 transition-colors border border-red-200 dark:border-red-500/20 whitespace-nowrap disabled:opacity-60 disabled:cursor-not-allowed"
                                 >
-                                    Rời khỏi trường
+                                    {leaveLoading ? 'Đang xử lý...' : 'Rời khỏi trường'}
                                 </button>
                             </div>
                         </div>

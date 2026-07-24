@@ -1525,6 +1525,7 @@ app.get('/api/school/members', async (req, res) => {
     }
 
     try {
+        // Include all school members: teacher, student (exclude admin & school-admin who manage the school)
         const members = await User.find({ schoolId, role: { $in: ['teacher', 'student'] } })
             .select('name email role className plan previousPlan createdAt')
             .sort({ createdAt: -1 });
@@ -1588,6 +1589,61 @@ app.post('/api/school/members/kick', async (req, res) => {
         await school.save();
 
         res.json({ message: `Đã xóa thành công ${members.length} thành viên khỏi trường học.` });
+    } catch (err) {
+        res.status(500).json({ error: 'Lỗi hệ thống: ' + err.message });
+    }
+});
+
+
+// POST /api/school/members/leave - User self-leaves from school
+app.post('/api/school/members/leave', async (req, res) => {
+    const { userId } = req.body;
+    if (!userId) {
+        return res.status(400).json({ error: 'Thiếu userId' });
+    }
+
+    try {
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).json({ error: 'Không tìm thấy người dùng' });
+        }
+        if (!user.schoolId) {
+            return res.status(400).json({ error: 'Người dùng chưa tham gia trường học nào' });
+        }
+
+        const school = await School.findById(user.schoolId);
+        if (school) {
+            if (user.role === 'teacher') {
+                school.teacherSeatsUsed = Math.max(0, school.teacherSeatsUsed - 1);
+            } else if (user.role === 'student') {
+                school.studentSeatsUsed = Math.max(0, school.studentSeatsUsed - 1);
+            }
+            await school.save();
+        }
+
+        // Revert user's plan and reset school-related fields
+        const previousPlan = user.previousPlan || 'free';
+        user.plan = previousPlan;
+        user.role = 'student';
+        user.schoolId = null;
+        user.className = '';
+        await user.save();
+
+        // Also cancel any pending membership requests for this user
+        await MembershipRequest.deleteMany({ userId, status: 'pending' });
+
+        res.json({
+            message: 'Đã rời khỏi trường học thành công.',
+            user: {
+                id: user._id.toString(),
+                name: user.name,
+                email: user.email,
+                role: user.role,
+                plan: user.plan,
+                schoolId: null,
+                className: ''
+            }
+        });
     } catch (err) {
         res.status(500).json({ error: 'Lỗi hệ thống: ' + err.message });
     }

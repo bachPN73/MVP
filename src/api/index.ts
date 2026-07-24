@@ -303,6 +303,17 @@ export const api = {
         return data;
     },
 
+    leaveSchool: async (userId: string): Promise<{ message: string; user: any }> => {
+        const response = await fetch(`${API_URL}/school/members/leave`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ userId }),
+        });
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.error || 'Failed to leave school');
+        return data;
+    },
+
     approveRequests: async (requestIds: string[], schoolId: string): Promise<{ message: string }> => {
         const response = await fetch(`${API_URL}/school/requests/approve`, {
             method: 'POST',
