@@ -47,6 +47,26 @@ img, video {
   height: auto;
 }
 
+/* Performance & Rendering Optimizations */
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* Enable hardware acceleration for smooth transforms & modals */
+.gpu-accelerated,
+.animate-in,
+.transition-all {
+  will-change: transform, opacity;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
 /* Utility to prevent scrolling and set full viewport height */
 .no-scroll {
   height: 100vh;

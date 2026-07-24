@@ -20,12 +20,47 @@ function getAuthHeaders(): Record<string, string> {
     return {};
 }
 
+// In-memory cache for GET API requests to ensure ultra-fast sub-millisecond page transitions
+const apiCache = new Map<string, { data: any; timestamp: number }>();
+const DEFAULT_TTL = 15000; // 15 seconds cache
+
+function getCachedData<T>(key: string, ttl: number = DEFAULT_TTL): T | null {
+    const entry = apiCache.get(key);
+    if (!entry) return null;
+    if (Date.now() - entry.timestamp > ttl) {
+        apiCache.delete(key);
+        return null;
+    }
+    return entry.data as T;
+}
+
+function setCachedData(key: string, data: any): void {
+    apiCache.set(key, { data, timestamp: Date.now() });
+}
+
+export function clearApiCache(keyPrefix?: string): void {
+    if (!keyPrefix) {
+        apiCache.clear();
+        return;
+    }
+    for (const key of apiCache.keys()) {
+        if (key.startsWith(keyPrefix)) {
+            apiCache.delete(key);
+        }
+    }
+}
+
 export const api = {
     // User APIs
     getUsers: async (): Promise<User[]> => {
+        const cacheKey = 'users_all';
+        const cached = getCachedData<User[]>(cacheKey);
+        if (cached) return cached;
+
         const response = await fetch(`${API_URL}/users`);
         const data = await response.json();
         if (!response.ok) throw new Error(data.error || 'Failed to fetch users');
+        setCachedData(cacheKey, data);
         return data;
     },
     updateUser: async (id: string | number, updateData: Partial<User>): Promise<{ message: string }> => {
@@ -102,20 +137,31 @@ export const api = {
 
     // Model APIs
     getModels: async (): Promise<any[]> => {
+        const cacheKey = 'models_all';
+        const cached = getCachedData<any[]>(cacheKey);
+        if (cached) return cached;
+
         const response = await fetch(`${API_URL}/models`);
         const data = await response.json();
         if (!response.ok) throw new Error(data.error || 'Failed to fetch models');
+        setCachedData(cacheKey, data);
         return data;
     },
 
     getModel: async (id: string | number): Promise<any> => {
+        const cacheKey = `model_${id}`;
+        const cached = getCachedData<any>(cacheKey);
+        if (cached) return cached;
+
         const response = await fetch(`${API_URL}/models/${id}`);
         const data = await response.json();
         if (!response.ok) throw new Error(data.error || 'Failed to fetch model');
+        setCachedData(cacheKey, data);
         return data;
     },
 
     saveModel: async (modelData: ModelInput): Promise<{ id: number; message: string }> => {
+        clearApiCache('model');
         const response = await fetch(`${API_URL}/models`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -127,6 +173,7 @@ export const api = {
     },
 
     updateModel: async (id: string | number, modelData: Partial<ModelInput>): Promise<{ message: string; model: any }> => {
+        clearApiCache('model');
         const response = await fetch(`${API_URL}/models/${id}`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
@@ -164,6 +211,7 @@ export const api = {
     },
 
     deleteModel: async (id: string | number): Promise<{ message: string }> => {
+        clearApiCache('model');
         console.log(`[API] Deleting model ${id} at ${API_URL}/models/${id}`);
         const response = await fetch(`${API_URL}/models/${id}`, {
             method: 'DELETE',
@@ -282,27 +330,44 @@ export const api = {
     },
 
     getSchoolSummary: async (schoolId: string): Promise<any> => {
+        const cacheKey = `school_summary_${schoolId}`;
+        const cached = getCachedData<any>(cacheKey);
+        if (cached) return cached;
+
         const response = await fetch(`${API_URL}/school/summary?schoolId=${schoolId}`);
         const data = await response.json();
         if (!response.ok) throw new Error(data.error || 'Failed to fetch school summary');
+        setCachedData(cacheKey, data);
         return data;
     },
 
     getMembershipRequests: async (schoolId: string): Promise<any[]> => {
+        const cacheKey = `school_requests_${schoolId}`;
+        const cached = getCachedData<any[]>(cacheKey);
+        if (cached) return cached;
+
         const response = await fetch(`${API_URL}/school/requests?schoolId=${schoolId}`);
         const data = await response.json();
         if (!response.ok) throw new Error(data.error || 'Failed to fetch membership requests');
+        setCachedData(cacheKey, data);
         return data;
     },
 
     getSchoolMembers: async (schoolId: string): Promise<any[]> => {
+        const cacheKey = `school_members_${schoolId}`;
+        const cached = getCachedData<any[]>(cacheKey);
+        if (cached) return cached;
+
         const response = await fetch(`${API_URL}/school/members?schoolId=${schoolId}`);
         const data = await response.json();
         if (!response.ok) throw new Error(data.error || 'Failed to fetch school members');
+        setCachedData(cacheKey, data);
         return data;
     },
 
     kickSchoolMembers: async (memberIds: string[], schoolId: string): Promise<{ message: string }> => {
+        clearApiCache('school');
+        clearApiCache('users');
         const response = await fetch(`${API_URL}/school/members/kick`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -314,6 +379,8 @@ export const api = {
     },
 
     leaveSchool: async (userId: string): Promise<{ message: string; user: any }> => {
+        clearApiCache('school');
+        clearApiCache('users');
         const response = await fetch(`${API_URL}/school/members/leave`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -325,6 +392,8 @@ export const api = {
     },
 
     approveRequests: async (requestIds: string[], schoolId: string): Promise<{ message: string }> => {
+        clearApiCache('school');
+        clearApiCache('users');
         const response = await fetch(`${API_URL}/school/requests/approve`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -336,6 +405,7 @@ export const api = {
     },
 
     rejectRequests: async (requestIds: string[]): Promise<{ message: string }> => {
+        clearApiCache('school');
         const response = await fetch(`${API_URL}/school/requests/reject`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -347,6 +417,7 @@ export const api = {
     },
 
     updateSchoolConfig: async (schoolId: string, configData: { isInviteCodeEnabled?: boolean; schoolCode?: string; name?: string; schoolYear?: string; tiet?: string }): Promise<{ message: string; school: any }> => {
+        clearApiCache('school');
         const response = await fetch(`${API_URL}/school/config`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
@@ -358,13 +429,19 @@ export const api = {
     },
 
     getSchools: async (): Promise<any[]> => {
+        const cacheKey = 'schools_all';
+        const cached = getCachedData<any[]>(cacheKey);
+        if (cached) return cached;
+
         const response = await fetch(`${API_URL}/schools`);
         const data = await response.json();
         if (!response.ok) throw new Error(data.error || 'Failed to fetch schools');
+        setCachedData(cacheKey, data);
         return data;
     },
 
     createSchool: async (schoolData: { name: string; schoolCode: string; teacherQuota: number; studentQuota: number; schoolYear: string; tiet: string }): Promise<any> => {
+        clearApiCache('school');
         const response = await fetch(`${API_URL}/schools`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -376,6 +453,7 @@ export const api = {
     },
 
     updateSchool: async (id: string, schoolData: Partial<{ name: string; schoolCode: string; teacherQuota: number; studentQuota: number; schoolYear: string; tiet: string }>): Promise<any> => {
+        clearApiCache('school');
         const response = await fetch(`${API_URL}/schools/${id}`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
@@ -387,6 +465,8 @@ export const api = {
     },
 
     deleteSchool: async (id: string): Promise<any> => {
+        clearApiCache('school');
+        clearApiCache('users');
         const response = await fetch(`${API_URL}/schools/${id}`, {
             method: 'DELETE',
         });
@@ -397,6 +477,7 @@ export const api = {
 
     // Payment APIs
     createPayment: async (userId: string, planId: string, amount: number): Promise<any> => {
+        clearApiCache('payments');
         const response = await fetch(`${API_URL}/payments`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -408,20 +489,32 @@ export const api = {
     },
 
     getPayments: async (): Promise<any[]> => {
+        const cacheKey = 'payments_all';
+        const cached = getCachedData<any[]>(cacheKey);
+        if (cached) return cached;
+
         const response = await fetch(`${API_URL}/payments`);
         const data = await response.json();
         if (!response.ok) throw new Error(data.error || 'Failed to fetch payments');
+        setCachedData(cacheKey, data);
         return data;
     },
 
     getUserPayments: async (userId: string): Promise<any[]> => {
+        const cacheKey = `payments_user_${userId}`;
+        const cached = getCachedData<any[]>(cacheKey);
+        if (cached) return cached;
+
         const response = await fetch(`${API_URL}/payments/user/${userId}`);
         const data = await response.json();
         if (!response.ok) throw new Error(data.error || 'Failed to fetch user payments');
+        setCachedData(cacheKey, data);
         return data;
     },
 
     approvePayment: async (id: string): Promise<{ message: string }> => {
+        clearApiCache('payments');
+        clearApiCache('users');
         const response = await fetch(`${API_URL}/payments/${id}/approve`, {
             method: 'POST',
         });
@@ -431,6 +524,7 @@ export const api = {
     },
 
     rejectPayment: async (id: string): Promise<{ message: string }> => {
+        clearApiCache('payments');
         const response = await fetch(`${API_URL}/payments/${id}/reject`, {
             method: 'POST',
         });
@@ -455,6 +549,8 @@ export const api = {
 
     // Simulate payment approval (dev/test only)
     simulatePaymentApproval: async (paymentId: string): Promise<{ message: string }> => {
+        clearApiCache('payments');
+        clearApiCache('users');
         const response = await fetch(`${API_URL}/payments/${paymentId}/approve`, {
             method: 'POST',
         });
@@ -465,6 +561,10 @@ export const api = {
 
     // Lesson APIs
     getLessons: async (filters?: { subject?: string; grade?: number }): Promise<any[]> => {
+        const cacheKey = `lessons_${filters?.subject || 'all'}_${filters?.grade || 'all'}`;
+        const cached = getCachedData<any[]>(cacheKey);
+        if (cached) return cached;
+
         let url = `${API_URL}/lessons`;
         const params = new URLSearchParams();
         if (filters?.subject) params.append('subject', filters.subject);
@@ -474,9 +574,11 @@ export const api = {
         const response = await fetch(url);
         const data = await response.json();
         if (!response.ok) throw new Error(data.error || 'Failed to fetch lessons');
+        setCachedData(cacheKey, data);
         return data;
     },
     createLesson: async (lessonData: any): Promise<any> => {
+        clearApiCache('lessons');
         const response = await fetch(`${API_URL}/lessons`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -487,6 +589,7 @@ export const api = {
         return data;
     },
     updateLesson: async (id: string, lessonData: any): Promise<any> => {
+        clearApiCache('lessons');
         const response = await fetch(`${API_URL}/lessons/${id}`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
@@ -497,6 +600,7 @@ export const api = {
         return data;
     },
     deleteLesson: async (id: string): Promise<any> => {
+        clearApiCache('lessons');
         const response = await fetch(`${API_URL}/lessons/${id}`, {
             method: 'DELETE',
         });

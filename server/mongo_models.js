@@ -12,6 +12,9 @@ const userSchema = new mongoose.Schema({
     sessionToken: { type: String, default: null }
 }, { timestamps: true });
 
+userSchema.index({ schoolId: 1, role: 1 });
+userSchema.index({ sessionToken: 1 });
+
 const schoolSchema = new mongoose.Schema({
     name: { type: String, required: true },
     schoolCode: { type: String, unique: true, required: true },
@@ -33,6 +36,7 @@ const membershipRequestSchema = new mongoose.Schema({
 }, { timestamps: true });
 
 membershipRequestSchema.index({ schoolId: 1, userId: 1 });
+membershipRequestSchema.index({ schoolId: 1, status: 1 });
 
 const modelSchema = new mongoose.Schema({
     title: String,
@@ -82,6 +86,9 @@ const paymentSchema = new mongoose.Schema({
     accountNumber: { type: String, default: '00000801691' },
     accountName: { type: String, default: 'PHAM NGOC BACH' }
 }, { timestamps: true });
+
+paymentSchema.index({ userId: 1, status: 1 });
+paymentSchema.index({ status: 1 });
 
 // SystemConfig: stores global admin-configurable settings as key-value pairs
 // Key 'ai_limits' stores an object like: { free: 3, basic: 20, pro: 50, school: 100 }
