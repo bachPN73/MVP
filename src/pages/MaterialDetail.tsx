@@ -968,7 +968,7 @@ export default function MaterialDetail() {
                                         {/* Toggle Button */}
                                         <div 
                                             className="absolute top-1/2 z-50 flex items-center justify-center group"
-                                            style={{ right: isQuizExpanded ? '376px' : '16px', transform: 'translateY(-50%)', transition: 'right 0.7s cubic-bezier(0, 0, 0.2, 1)' }}
+                                            style={{ right: isQuizExpanded ? '396px' : '16px', transform: 'translateY(-50%)', transition: 'right 0.5s cubic-bezier(0.16, 1, 0.3, 1)' }}
                                         >
                                             {!isQuizExpanded && (
                                                 <div className="absolute right-full mr-2 px-3 py-1.5 bg-indigo-600 dark:bg-indigo-500 text-white text-xs font-bold rounded-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none shadow-lg flex items-center gap-1.5">
@@ -985,18 +985,17 @@ export default function MaterialDetail() {
                                         </div>
                                         
                                         <div 
-                                            className="absolute right-4 top-1/2 z-40 bg-slate-50/95 dark:bg-slate-800/95 backdrop-blur-xl rounded-2xl border border-slate-200/80 dark:border-white/10 overflow-hidden shadow-2xl transition-all duration-700 ease-out flex flex-col"
+                                            className="absolute right-4 top-1/2 z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur-2xl rounded-3xl border border-slate-200/80 dark:border-white/10 shadow-2xl transition-all duration-500 ease-out overflow-hidden flex flex-col"
                                             style={{ 
-                                                width: '360px', 
-                                                height: 'fit-content',
+                                                width: '380px', 
                                                 maxHeight: 'calc(100% - 32px)',
                                                 transform: `translateY(-50%) translateX(${isQuizExpanded ? '0' : '120%'})`,
                                                 opacity: isQuizExpanded ? 1 : 0,
                                                 pointerEvents: isQuizExpanded ? 'auto' : 'none'
                                             }}
                                         >
-                                            <div className="w-[22.5rem] h-fit max-h-[calc(100vh-64px)] overflow-y-auto custom-scrollbar">
-                                                <QuizPanel quiz={material.quiz} theme={theme} isFullscreen={true} />
+                                            <div className="w-full h-full max-h-[80vh] overflow-y-auto custom-scrollbar">
+                                                <QuizPanel quiz={material.quiz} theme={theme} />
                                             </div>
                                         </div>
                                     </>
@@ -1018,7 +1017,7 @@ export default function MaterialDetail() {
                                             }
                                         }}
                                         className="absolute top-4 z-50 flex items-center gap-2 px-4 py-2 bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm rounded-lg hover:bg-white dark:hover:bg-slate-700 transition-colors shadow-lg cursor-pointer text-slate-800 dark:text-white"
-                                        style={{ right: isQuizExpanded ? 'calc(390px + 1rem)' : '1rem', transition: 'right 0.7s cubic-bezier(0, 0, 0.2, 1)' }}
+                                        style={{ right: isQuizExpanded ? 'calc(410px + 1rem)' : '1rem', transition: 'right 0.5s cubic-bezier(0.16, 1, 0.3, 1)' }}
                                         title={isFullscreen ? "Thu nhỏ" : "Mở toàn màn hình"}
                                     >
                                         {isFullscreen ? <Minimize2 className="w-4 h-4" /> : <Maximize2 className="w-4 h-4" />}

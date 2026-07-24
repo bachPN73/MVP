@@ -7,6 +7,16 @@ interface QuizPanelProps {
     theme: 'light' | 'dark';
 }
 
+const formatQuestionText = (text: string) => {
+    if (!text) return '';
+    return text.replace(/^(?:C\d+|Câu\s*\d+|Question\s*\d+|\d+)[\.\:]\s*/i, '').trim();
+};
+
+const formatOptionText = (text: string) => {
+    if (!text) return '';
+    return text.replace(/^[A-D1-4][\.\)\/\-]\s*/i, '').trim();
+};
+
 export function QuizPanel({ quiz, theme }: QuizPanelProps) {
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
     const [selectedOption, setSelectedOption] = useState<number | null>(null);
@@ -52,12 +62,12 @@ export function QuizPanel({ quiz, theme }: QuizPanelProps) {
     const baseClasses = "bg-transparent text-slate-800 dark:text-white";
 
     const getOptionClasses = (index: number) => {
-        let classes = `w-full text-left p-3.5 rounded-xl border transition-all duration-300 flex items-center justify-between group backdrop-blur-sm `;
+        let classes = `w-full text-left p-3.5 rounded-xl border transition-all duration-300 flex items-start justify-between gap-3 group backdrop-blur-sm `;
         
         if (!isAnswerSubmitted) {
             if (selectedOption === index) {
                 classes += theme === 'light' 
-                    ? "border-indigo-500 bg-indigo-50/80 text-indigo-700 shadow-md scale-[1.01]" 
+                    ? "border-indigo-500 bg-indigo-50/90 text-indigo-700 shadow-md scale-[1.01]" 
                     : "border-indigo-400 bg-indigo-500/20 text-indigo-300 shadow-md scale-[1.01]";
             } else {
                 classes += theme === 'light'
@@ -107,17 +117,17 @@ export function QuizPanel({ quiz, theme }: QuizPanelProps) {
 
     if (quizCompleted) {
         return (
-            <div className={`w-full h-full p-8 flex flex-col items-center justify-center rounded-2xl ${baseClasses}`}>
-                <div className="w-20 h-20 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-3xl flex items-center justify-center text-white mb-6 shadow-2xl shadow-indigo-500/30 rotate-3 hover:rotate-6 transition-transform">
-                    <CheckCircle2 className="w-10 h-10" />
+            <div className={`w-full p-6 flex flex-col items-center justify-center rounded-2xl ${baseClasses}`}>
+                <div className="w-16 h-16 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl flex items-center justify-center text-white mb-4 shadow-xl shadow-indigo-500/30 rotate-3 hover:rotate-6 transition-transform">
+                    <CheckCircle2 className="w-8 h-8" />
                 </div>
-                <h3 className="text-2xl font-black mb-2 font-heading bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-indigo-400 dark:to-purple-400 bg-clip-text text-transparent">Hoàn thành!</h3>
-                <p className={`text-base font-medium mb-6 ${theme === 'light' ? 'text-slate-600' : 'text-slate-300'}`}>
+                <h3 className="text-xl font-black mb-2 font-heading bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-indigo-400 dark:to-purple-400 bg-clip-text text-transparent">Hoàn thành!</h3>
+                <p className={`text-sm font-medium mb-6 ${theme === 'light' ? 'text-slate-600' : 'text-slate-300'}`}>
                     Bạn đã trả lời đúng <span className="text-indigo-600 dark:text-indigo-400 font-bold">{score}</span> / {quiz.length} câu hỏi.
                 </p>
                 <button
                     onClick={handleRetry}
-                    className="flex items-center gap-2 px-6 py-2.5 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white rounded-xl font-bold transition-transform hover:-translate-y-0.5 shadow-lg shadow-indigo-500/25"
+                    className="flex items-center gap-2 px-6 py-2.5 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white rounded-xl font-bold text-xs uppercase tracking-wider transition-transform hover:-translate-y-0.5 shadow-lg shadow-indigo-500/25 active:scale-95"
                 >
                     <RefreshCcw className="w-4 h-4" /> Thử lại
                 </button>
@@ -126,23 +136,23 @@ export function QuizPanel({ quiz, theme }: QuizPanelProps) {
     }
 
     return (
-        <div className={`w-full h-full p-6 flex flex-col rounded-2xl overflow-y-auto custom-scrollbar ${baseClasses}`}>
+        <div className={`w-full p-5 sm:p-6 flex flex-col ${baseClasses}`}>
             {/* Header */}
-            <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center justify-between mb-4 pb-3 border-b border-slate-200/60 dark:border-white/10">
                 <div className="flex items-center gap-2">
                     <div className="p-1.5 bg-indigo-500/10 rounded-xl">
                         <HelpCircle className="w-4 h-4 text-indigo-600 dark:text-indigo-400" />
                     </div>
                     <span className="font-bold text-xs uppercase tracking-widest text-indigo-600 dark:text-indigo-400">Trắc nghiệm</span>
                 </div>
-                <div className={`px-3.5 py-1 rounded-xl text-[0.6875rem] font-bold shadow-sm backdrop-blur-md ${theme === 'light' ? 'bg-white/80 border border-white/50 text-slate-600' : 'bg-slate-800/80 border border-white/10 text-slate-300'}`}>
+                <div className={`px-3 py-1 rounded-xl text-[0.6875rem] font-bold shadow-sm backdrop-blur-md ${theme === 'light' ? 'bg-white/80 border border-slate-200/80 text-slate-600' : 'bg-slate-800/80 border border-white/10 text-slate-300'}`}>
                     Câu {currentQuestionIndex + 1} / {quiz.length}
                 </div>
             </div>
 
             {/* Question */}
-            <h2 className="text-lg md:text-xl font-bold mb-6 leading-relaxed font-heading">
-                {currentQuestion.question}
+            <h2 className="text-base sm:text-lg font-bold mb-5 leading-relaxed font-heading text-slate-900 dark:text-white break-words">
+                {formatQuestionText(currentQuestion.question)}
             </h2>
 
             {/* Options */}
@@ -154,24 +164,24 @@ export function QuizPanel({ quiz, theme }: QuizPanelProps) {
                         disabled={isAnswerSubmitted}
                         className={getOptionClasses(index)}
                     >
-                        <div className="flex items-center gap-3">
-                            <span className={`w-7 h-7 flex-shrink-0 flex items-center justify-center rounded-lg text-xs font-black transition-all duration-300 ${getBadgeClasses(index)}`}>
+                        <div className="flex items-start gap-3 flex-1 min-w-0">
+                            <span className={`w-7 h-7 flex-shrink-0 flex items-center justify-center rounded-lg text-xs font-black transition-all duration-300 mt-0.5 ${getBadgeClasses(index)}`}>
                                 {['A', 'B', 'C', 'D'][index]}
                             </span>
-                            <span className="font-semibold text-sm sm:text-base text-left leading-snug">{option}</span>
+                            <span className="font-semibold text-sm leading-relaxed text-left break-words flex-1">{formatOptionText(option)}</span>
                         </div>
                         {isAnswerSubmitted && index === currentQuestion.correctAnswerIndex && (
-                            <CheckCircle2 className="w-5 h-5 text-emerald-500 flex-shrink-0" />
+                            <CheckCircle2 className="w-5 h-5 text-emerald-500 flex-shrink-0 mt-0.5" />
                         )}
                         {isAnswerSubmitted && selectedOption === index && index !== currentQuestion.correctAnswerIndex && (
-                            <XCircle className="w-5 h-5 text-rose-500 flex-shrink-0" />
+                            <XCircle className="w-5 h-5 text-rose-500 flex-shrink-0 mt-0.5" />
                         )}
                     </button>
                 ))}
             </div>
 
             {/* Explanation & Action */}
-            <div className="mt-auto">
+            <div className="mt-auto pt-4 border-t border-slate-200/60 dark:border-white/10">
                 {isAnswerSubmitted && currentQuestion.explanation && (
                     <div className={`p-3.5 rounded-xl mb-4 text-xs leading-relaxed border-l-4 ${
                         selectedOption === currentQuestion.correctAnswerIndex 
@@ -183,15 +193,15 @@ export function QuizPanel({ quiz, theme }: QuizPanelProps) {
                     </div>
                 )}
 
-                <div className="flex justify-end">
+                <div className="flex justify-end pb-2">
                     {!isAnswerSubmitted ? (
                         <button
                             onClick={handleSubmit}
                             disabled={selectedOption === null}
                             className={`px-7 py-2.5 rounded-xl font-bold text-xs uppercase tracking-wider transition-all duration-300 shadow-md ${
                                 selectedOption !== null 
-                                    ? 'bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white hover:-translate-y-0.5 shadow-indigo-500/25 active:scale-[0.98]' 
-                                    : 'bg-slate-200/50 dark:bg-slate-800/30 text-slate-400 dark:text-slate-500 cursor-not-allowed shadow-none'
+                                    ? 'bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white hover:-translate-y-0.5 shadow-indigo-500/25 active:scale-[0.98] cursor-pointer' 
+                                    : 'bg-slate-200/60 dark:bg-slate-800/40 text-slate-400 dark:text-slate-500 cursor-not-allowed shadow-none'
                             }`}
                         >
                             Trả lời
@@ -199,7 +209,7 @@ export function QuizPanel({ quiz, theme }: QuizPanelProps) {
                     ) : (
                         <button
                             onClick={handleNext}
-                            className="flex items-center gap-1.5 px-6 py-2.5 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white rounded-xl font-bold text-xs uppercase tracking-wider shadow-md hover:-translate-y-0.5 active:scale-[0.98] transition-all duration-300"
+                            className="flex items-center gap-1.5 px-6 py-2.5 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white rounded-xl font-bold text-xs uppercase tracking-wider shadow-md hover:-translate-y-0.5 active:scale-[0.98] transition-all duration-300 cursor-pointer"
                         >
                             {currentQuestionIndex < quiz.length - 1 ? 'Câu tiếp theo' : 'Hoàn thành'} <ChevronRight className="w-4 h-4" />
                         </button>
