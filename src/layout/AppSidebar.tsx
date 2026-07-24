@@ -165,7 +165,7 @@ export function AppSidebar({ currentPath = '/', isOpen = false, setIsOpen, isCol
                                 
                                 <div className={`overflow-hidden transition-all duration-300 ease-in-out flex-1 text-left
                                     ${isCollapsed ? 'md:max-w-0 md:opacity-0 md:invisible max-w-[9.375rem] opacity-100 visible' : 'max-w-[9.375rem] opacity-100 visible'}`}>
-                                    <span className={`text-base font-extrabold tracking-wide whitespace-nowrap transition-all duration-200 ${isActive ? 'translate-x-0.5' : 'group-hover:translate-x-0.5'}`}>
+                                    <span className={`font-extrabold tracking-wide whitespace-nowrap transition-all duration-200 ${isActive ? 'translate-x-0.5' : 'group-hover:translate-x-0.5'} ${item.label.length > 12 ? 'text-sm' : 'text-base'}`}>
                                         {item.label}
                                     </span>
                                 </div>
