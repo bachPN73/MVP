@@ -818,8 +818,10 @@ export default function SchoolDashboard() {
                                                 <span className={`text-[0.625rem] font-black uppercase tracking-wider px-2.5 py-1 rounded-full border
                                                     ${m.role === 'teacher' 
                                                         ? 'bg-indigo-500/10 border-indigo-500/20 text-indigo-500 dark:text-indigo-400' 
+                                                        : m.role === 'school-admin'
+                                                        ? 'bg-amber-500/10 border-amber-500/20 text-amber-600 dark:text-amber-400'
                                                         : 'bg-teal-500/10 border-teal-500/20 text-teal-650 dark:text-teal-400'}`}>
-                                                    {m.role === 'teacher' ? 'Giáo viên' : 'Học sinh'}
+                                                    {m.role === 'teacher' ? 'Giáo viên' : m.role === 'school-admin' ? 'Quản trị viên' : 'Học sinh'}
                                                 </span>
                                             </td>
                                             <td className="p-4">

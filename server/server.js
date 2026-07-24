@@ -1525,11 +1525,23 @@ app.get('/api/school/members', async (req, res) => {
     }
 
     try {
-        // Include all school members: teacher, student (exclude admin & school-admin who manage the school)
-        const members = await User.find({ schoolId, role: { $in: ['teacher', 'student'] } })
+        // Cast schoolId string to ObjectId explicitly for reliable matching
+        let schoolObjId;
+        try {
+            schoolObjId = new mongoose.Types.ObjectId(schoolId);
+        } catch {
+            return res.status(400).json({ error: 'schoolId không hợp lệ' });
+        }
+
+        // Include all members with this schoolId: teacher, student, school-admin
+        // (role: 'admin' is excluded as they are global admins, not school-specific)
+        const members = await User.find({
+            schoolId: schoolObjId,
+            role: { $in: ['teacher', 'student', 'school-admin'] }
+        })
             .select('name email role className plan previousPlan createdAt')
             .sort({ createdAt: -1 });
-        
+
         const formattedMembers = members.map(m => ({
             id: m._id.toString(),
             name: m.name || 'Chưa cập nhật',
