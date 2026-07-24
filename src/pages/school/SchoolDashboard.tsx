@@ -450,7 +450,7 @@ export default function SchoolDashboard() {
                                 </div>
                                 <div className="mt-3 flex items-baseline gap-2">
                                     <span className="text-3xl font-black text-slate-900 dark:text-white">{school.teacherSeatsUsed}</span>
-                                    <span className="text-slate-500 text-sm">/ {school.teacherQuota} đã duyệt</span>
+                                    <span className="text-slate-500 text-sm">người trong trường</span>
                                 </div>
                                 
                                 {/* Progress Bar */}
@@ -480,7 +480,7 @@ export default function SchoolDashboard() {
                                 </div>
                                 <div className="mt-3 flex items-baseline gap-2">
                                     <span className="text-3xl font-black text-slate-900 dark:text-white">{school.studentSeatsUsed}</span>
-                                    <span className="text-slate-500 text-sm">/ {school.studentQuota} đã duyệt</span>
+                                    <span className="text-slate-500 text-sm">người trong trường</span>
                                 </div>
                                 
                                 {/* Progress Bar */}
