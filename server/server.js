@@ -1416,6 +1416,19 @@ app.get('/api/school/summary', async (req, res) => {
             return res.status(404).json({ error: 'Không tìm thấy trường học' });
         }
 
+        // Count actual members from User collection (source of truth)
+        const [realTeacherCount, realStudentCount] = await Promise.all([
+            User.countDocuments({ schoolId, role: 'teacher' }),
+            User.countDocuments({ schoolId, role: 'student' }),
+        ]);
+
+        // Auto-correct cached counters if they drifted
+        if (school.teacherSeatsUsed !== realTeacherCount || school.studentSeatsUsed !== realStudentCount) {
+            school.teacherSeatsUsed = realTeacherCount;
+            school.studentSeatsUsed = realStudentCount;
+            await school.save();
+        }
+
         res.json(school);
     } catch (err) {
         res.status(500).json({ error: 'Lỗi hệ thống: ' + err.message });
