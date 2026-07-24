@@ -308,12 +308,6 @@ export default function FindWithAI() {
                                                             <BookOpen className="w-12 h-12 text-indigo-500/30" />
                                                         </div>
                                                     )}
-                                                    
-                                                    {/* Glassmorphic Match Badge */}
-                                                    <div className="absolute top-3 right-3 bg-indigo-600/90 backdrop-blur-md text-white text-xs px-3 py-1 rounded-full font-bold flex items-center gap-1 shadow-md border border-white/20">
-                                                        <Sparkles className="w-3.5 h-3.5 animate-pulse text-yellow-300" />
-                                                        Khớp { (material as any).matchPercentage || 95 }%
-                                                    </div>
                                                 </div>
 
                                                 <div className="p-5 flex flex-col flex-1">

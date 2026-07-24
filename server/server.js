@@ -1242,58 +1242,51 @@ Return strictly a valid JSON object matching this schema (do not output markdown
             const isAiMatched = aiMatchedIds.includes(m.id);
             const aiIndex = aiMatchedIds.indexOf(m.id);
 
+            // STRICT SUBJECT ISOLATION:
+            // If query is for a specific subject (e.g. physics), models from other subjects (e.g. biology)
+            // MUST NOT be returned unless explicitly matched by AI.
+            if (predictedSubject && m.subject !== predictedSubject && !isAiMatched) {
+                return { ...m, score: -9999 };
+            }
+
             // 1. Direct AI match bonus
             if (isAiMatched) {
                 score += 50 + (aiMatchedIds.length - aiIndex) * 10;
             }
 
-            // 2. Subject alignment & cross-subject penalty
-            if (predictedSubject) {
-                if (m.subject === predictedSubject) {
-                    score += 30;
-                } else if (!isAiMatched) {
-                    // Heavily penalize off-subject models (e.g. biology on a physics search)
-                    score -= 60;
-                }
+            // 2. Subject match bonus
+            if (predictedSubject && m.subject === predictedSubject) {
+                score += 25;
             }
 
-            // 3. Full phrase or exact title match
+            // 3. Full query phrase match
             if (titleLower.includes(queryLower)) {
-                score += 45;
+                score += 40;
             }
 
             // 4. Meaningful keyword matching
-            const matchTokens = meaningfulKeywords.length > 0 ? meaningfulKeywords : rawTerms;
+            let hasKeywordMatch = false;
+            const matchTokens = meaningfulKeywords.length > 0 ? meaningfulKeywords : meaningfulTerms;
             for (const kw of matchTokens) {
-                if (titleLower.includes(kw)) score += 15;
-                if (tagsLower.some(t => t.includes(kw))) score += 12;
-                if (descLower.includes(kw)) score += 5;
+                if (titleLower.includes(kw)) { score += 20; hasKeywordMatch = true; }
+                if (tagsLower.some(t => t.includes(kw))) { score += 15; hasKeywordMatch = true; }
+                if (descLower.includes(kw)) { score += 5; hasKeywordMatch = true; }
             }
 
-            // Calculate realistic match percentage
-            let matchPercentage = 0;
-            if (score > 0) {
-                if (isAiMatched && m.subject === predictedSubject) {
-                    matchPercentage = 95 + Math.min(4, Math.floor(score / 25));
-                } else if (isAiMatched || m.subject === predictedSubject) {
-                    matchPercentage = 85 + Math.min(10, Math.floor(score / 15));
-                } else {
-                    matchPercentage = Math.min(84, 70 + Math.floor(score / 10));
-                }
+            // STRICT RELEVANCE GATE:
+            // Must either be directly matched by AI or have explicit keyword match within same subject
+            if (!isAiMatched && !hasKeywordMatch) {
+                score = -9999;
             }
 
-            return { ...m, score, matchPercentage };
+            return { ...m, score };
         });
 
-        // Filter out items with score <= 0 (eliminates off-subject models matching stop words)
+        // Filter out disqualified models (score <= 0)
         const rankedResults = scoredModels
             .filter(m => m.score > 0)
             .sort((a, b) => b.score - a.score)
-            .slice(0, 10)
-            .map(m => ({
-                ...m,
-                matchPercentage: m.matchPercentage || 95
-            }));
+            .slice(0, 10);
 
         const responseData = {
             results: rankedResults,
