@@ -324,10 +324,27 @@ app.get('/api/users', requireAdmin, async (req, res) => {
     }
 });
 
+// GET /api/users/:id - Get a single user by ID (self or admin)
+app.get('/api/users/:id', requireAuth, async (req, res) => {
+    try {
+        const { id } = req.params;
+        // Allow users to fetch their own data; admins can fetch anyone
+        if (req.user.id !== id && req.user.role !== 'admin' && req.user.role !== 'school-admin') {
+            return res.status(403).json({ error: 'Forbidden' });
+        }
+        const user = await User.findById(id, '-password').lean();
+        if (!user) return res.status(404).json({ error: 'Không tìm thấy người dùng' });
+        res.json({ ...user, id: user._id.toString() });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+
 app.put('/api/users/:id', requireAuth, async (req, res) => {
     const { id } = req.params;
     const { name, email, role, plan } = req.body;
-    
+
     if (role || plan) {
         if (!req.user || (req.user.role !== 'admin' && req.user.role !== 'school-admin')) {
             return res.status(403).json({ error: 'FORBIDDEN', message: 'Chỉ Admin mới có thể thay đổi quyền hoặc gói' });

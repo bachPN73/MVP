@@ -259,6 +259,16 @@ export const api = {
     },
 
 
+    // Fetch a single user's latest data from server (to sync localStorage after kick)
+    getUserById: async (userId: string): Promise<any> => {
+        const response = await fetch(`${API_URL}/users/${userId}`, {
+            headers: { ...getAuthHeaders() },
+        });
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.error || 'Failed to fetch user');
+        return data;
+    },
+
     // School Portal APIs
     joinSchool: async (schoolCode: string, requestedRole: 'teacher' | 'student', requestedClass: string, userId: string): Promise<{ message: string }> => {
         const response = await fetch(`${API_URL}/school/join`, {

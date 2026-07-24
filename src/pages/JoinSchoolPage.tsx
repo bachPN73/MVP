@@ -83,8 +83,31 @@ export default function JoinSchoolPage() {
         const stored = localStorage.getItem("edu_tech_user");
         if (!stored) { navigate("/login"); return; }
         const parsed = JSON.parse(stored);
-        // Removed the redirect logic
         setUser(parsed);
+
+        // Sync with server: detect if user was kicked from school by admin
+        const userId = parsed.id || parsed._id;
+        if (userId) {
+            api.getUserById(userId).then((serverUser: any) => {
+                // Check if school membership has changed on server
+                const serverSchoolId = serverUser.schoolId || null;
+                const localSchoolId = parsed.schoolId || null;
+                if (serverSchoolId !== localSchoolId) {
+                    // Server is the source of truth — sync localStorage
+                    const updated = {
+                        ...parsed,
+                        schoolId: serverSchoolId,
+                        className: serverUser.className || '',
+                        role: serverUser.role || parsed.role,
+                        plan: serverUser.plan || parsed.plan,
+                    };
+                    localStorage.setItem("edu_tech_user", JSON.stringify(updated));
+                    setUser(updated);
+                }
+            }).catch(() => {
+                // Ignore fetch errors silently — use cached localStorage data
+            });
+        }
 
         // Auto-fill from URL ?join= or ?code= param
         const params = new URLSearchParams(window.location.search);
