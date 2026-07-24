@@ -1417,6 +1417,17 @@ export default function MaterialDetail() {
                                                                      setEditFormData({ ...editFormData, quiz: newQuiz });
                                                                  }}
                                                              />
+                                                             <input
+                                                                 type="text"
+                                                                 placeholder="Nguồn (tùy chọn, vd: Sách giáo khoa)"
+                                                                 className="p-2 mt-1 bg-slate-50 dark:bg-slate-950/40 border border-slate-200 dark:border-white/10 rounded-lg text-[11px] font-medium focus:outline-none w-full text-slate-700 dark:text-slate-300"
+                                                                 value={q.source || ''}
+                                                                 onChange={e => {
+                                                                     const newQuiz = [...editFormData.quiz];
+                                                                     newQuiz[qIndex].source = e.target.value;
+                                                                     setEditFormData({ ...editFormData, quiz: newQuiz });
+                                                                 }}
+                                                             />
                                                          </div>
                                                      </div>
                                                  ))}
